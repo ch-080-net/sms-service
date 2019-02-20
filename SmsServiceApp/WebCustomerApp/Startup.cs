@@ -39,10 +39,14 @@ namespace WebCustomerApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+			services.AddTransient<ITariffRepository, TariffRepository>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
+			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
+			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
 
-            services.AddMvc();
+			services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
