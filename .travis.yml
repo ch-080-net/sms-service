@@ -1,8 +1,8 @@
 language: csharp
 solution: SmsServiceApp.sln
-
+mono: none
+dotnet: 2.1.502
 install:
-    - nuget restore ./SmsServiceApp/SmsServiceApp.sln
-    
+    - dotnet restore
 script:
     - dotnet build
