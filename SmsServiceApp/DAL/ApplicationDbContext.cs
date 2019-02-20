@@ -4,13 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Model.DB;
 using WebCustomerApp.Models;
 
 namespace WebCustomerApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
+
+        // Package Manager Console
+	    // Startup Project: WebApp
+	    // Default Project: DAL
+
+	    // 1) DB init: update-database -verbose
+	    // 2) New migration: add-migration DescriptionInCamelCase
+
+        public DbSet<Recipient> Recipients { get; set; }
+
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
 			Database.EnsureCreated();
 		}
 

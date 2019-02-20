@@ -128,6 +128,18 @@ namespace WebCustomerApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Model.DB.Recipient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Recipients");
+                });
+
             modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -165,8 +177,6 @@ namespace WebCustomerApp.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<string>("sdfsd");
 
                     b.HasKey("Id");
 

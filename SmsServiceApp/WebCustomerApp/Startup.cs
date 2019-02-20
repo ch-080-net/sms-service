@@ -12,6 +12,9 @@ using WebCustomerApp.Data;
 using WebCustomerApp.Models;
 using WebCustomerApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Model.Interfaces;
+using DAL.Repositories;
+using BAL.Managers;
 
 namespace WebCustomerApp
 {
@@ -40,6 +43,9 @@ namespace WebCustomerApp
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
 
             services.AddMvc();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRecipientManager, RecipientManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
