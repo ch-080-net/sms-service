@@ -7,8 +7,8 @@
 | [![Build status][TravisImg]][TravisLink] | CI provided by [travis-ci][] |
 
 
-[TravisImg]:https://travis-ci.org/USER_NAME/PROJECT_NAME.svg?branch=master
-[TravisLink]:https://travis-ci.org/USER_NAME/PROJECT_NAME
+[TravisImg]:https://travis-ci.org/ch-080-net/sms-service.svg?branch=master
+[TravisLink]:https://travis-ci.org/ch-080-net/sms-service
 [travis-ci]:https://travis-ci.org/
 
 
