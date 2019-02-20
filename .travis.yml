@@ -5,4 +5,4 @@ install:
     - nuget restore ./SmsServiceApp/SmsServiceApp.sln
     
 script:
-    - xbuild ./SmsServiceApp/SmsServiceApp.sln
+    - dotnet build
