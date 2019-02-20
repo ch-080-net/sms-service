@@ -4,27 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Model.DB;
 using WebCustomerApp.Models;
 
 namespace WebCustomerApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            Database.EnsureCreated();
 
-        // Package Manager Console
-	    // Startup Project: WebApp
-	    // Default Project: DAL
 
-	    // 1) DB init: update-database -verbose
-	    // 2) New migration: add-migration DescriptionInCamelCase
+        }
 
+        public DbSet<Code> Codes { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanyPhone> CompanyPhones { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Operator> Operators { get; set; }
+        public DbSet<Phone> Phones { get; set; }
         public DbSet<Recipient> Recipients { get; set; }
-
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
-			Database.EnsureCreated();
-		}
+        public DbSet<StopWord> StopWords { get; set; }
+        public DbSet<Tariff> Tariffs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +33,133 @@ namespace WebCustomerApp.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            // Explicitly setting PK:
+
+            builder.Entity<Code>().HasKey(i => i.Id);
+            builder.Entity<Company>().HasKey(i => i.Id);
+            builder.Entity<Contact>().HasKey(i => i.Id);
+            builder.Entity<Operator>().HasKey(i => i.Id);
+            builder.Entity<Recipient>().HasKey(i => i.Id);
+            builder.Entity<Phone>().HasKey(i => i.Id);
+            builder.Entity<Tariff>().HasKey(i => i.Id);
+            builder.Entity<StopWord>().HasKey(i => i.Id);
+
+            // Compound key for Many-To-Many joining table
+
+            builder.Entity<CompanyPhone>()
+                .HasKey(pm => new { pm.PhoneId, pm.CompanyId });
+
+            // Setting FK
+            #region FK
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.Contacts)
+                .WithOne(c => c.ApplicationUser)
+                .HasForeignKey(c => c.ApplicationUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.Companies)
+                .WithOne(com => com.ApplicationUser)
+                .HasForeignKey(com => com.ApplicationUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Company>()
+                .HasMany(c => c.Recipients)
+                .WithOne(r => r.Company)
+                .HasForeignKey(r => r.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Operator>()
+                .HasMany(o => o.Codes)
+                .WithOne(c => c.Operator)
+                .HasForeignKey(c => c.OperatorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Operator>()
+                .HasMany(o => o.Tariffs)
+                .WithOne(t => t.Operator)
+                .HasForeignKey(t => t.OperatorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.Contacts)
+                .WithOne(c => c.Phone)
+                .HasForeignKey(c => c.PhoneId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.Recipients)
+                .WithOne(r => r.Phone)
+                .HasForeignKey(r => r.PhoneId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Entity<Tariff>()
+                .HasMany(t => t.Companies)
+                .WithOne(com => com.Tariff)
+                .HasForeignKey(com => com.TariffId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            #endregion
+
+            // Configuring Many-To-Many relationship through PhoneMessage
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.CompanyPhones)
+                .WithOne(cp => cp.Phone)
+                .HasForeignKey(cp => cp.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany(com => com.CompanyPhones)
+                .WithOne(cp => cp.Company)
+                .HasForeignKey(cp => cp.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Required fields
+            #region Required fields
+            builder.Entity<Code>()
+                .Property(c => c.OperatorCode)
+                .IsRequired();
+
+            builder.Entity<Company>()
+                .Property(com => com.Name)
+                .IsRequired();
+
+            builder.Entity<Company>()
+                .Property(com => com.Message)
+                .IsRequired();
+
+            builder.Entity<Phone>()
+                .Property(p => p.PhoneNumber)
+                .IsRequired();
+
+            builder.Entity<Tariff>()
+                .Property(t => t.Name)
+                .IsRequired();
+
+            builder.Entity<Tariff>()
+                .Property(t => t.Price)
+                .IsRequired();
+
+            builder.Entity<Tariff>()
+                .Property(t => t.Limit)
+                .IsRequired();
+
+            builder.Entity<Operator>()
+                .Property(o => o.Name)
+                .IsRequired();
+
+            builder.Entity<StopWord>()
+                .Property(sw => sw.Word)
+                .IsRequired();
+
+            #endregion
+
+
+
+
         }
     }
 }

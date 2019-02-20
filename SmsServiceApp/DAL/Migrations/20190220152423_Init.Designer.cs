@@ -11,8 +11,8 @@ using WebCustomerApp.Data;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190220130405_AdedRecipients")]
-    partial class AdedRecipients
+    [Migration("20190220152423_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,18 +129,6 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Model.DB.Recipient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Recipients");
-                });
-
             modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -192,6 +180,182 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("WebCustomerApp.Models.Code", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("OperatorCode")
+                        .IsRequired();
+
+                    b.Property<int>("OperatorId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperatorId");
+
+                    b.ToTable("Codes");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Message")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("TariffId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("TariffId");
+
+                    b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.CompanyPhone", b =>
+                {
+                    b.Property<int>("PhoneId");
+
+                    b.Property<int>("CompanyId");
+
+                    b.HasKey("PhoneId", "CompanyId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("CompanyPhones");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<byte>("Gender");
+
+                    b.Property<string>("KeyWords");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PhoneId");
+
+                    b.Property<string>("Priority");
+
+                    b.Property<string>("Surname");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Operator", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Logo");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Operators");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Phone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Phones");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Recipient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CompanyId");
+
+                    b.Property<byte>("Gender");
+
+                    b.Property<string>("KeyWords");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PhoneId");
+
+                    b.Property<string>("Priority");
+
+                    b.Property<string>("Surname");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("PhoneId");
+
+                    b.ToTable("Recipients");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.StopWord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Word")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StopWords");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Tariff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("Limit");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("OperatorId");
+
+                    b.Property<decimal>("Price");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperatorId");
+
+                    b.ToTable("Tariffs");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -234,6 +398,68 @@ namespace DAL.Migrations
                     b.HasOne("WebCustomerApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Code", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.Operator", "Operator")
+                        .WithMany("Codes")
+                        .HasForeignKey("OperatorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Company", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Companies")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("WebCustomerApp.Models.Tariff", "Tariff")
+                        .WithMany("Companies")
+                        .HasForeignKey("TariffId");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.CompanyPhone", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.Company", "Company")
+                        .WithMany("CompanyPhones")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                        .WithMany("CompanyPhones")
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Contacts")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                        .WithMany("Contacts")
+                        .HasForeignKey("PhoneId");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Recipient", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.Company", "Company")
+                        .WithMany("Recipients")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                        .WithMany("Recipients")
+                        .HasForeignKey("PhoneId");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.Tariff", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.Operator", "Operator")
+                        .WithMany("Tariffs")
+                        .HasForeignKey("OperatorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

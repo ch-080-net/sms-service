@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebCustomerApp.Models
 {
-    public class Recipient
+    public class Contact
     {
-        public int Id { get; set; }
+        public int Id { get; set; } //PRIMARY KEY
 
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
-
-        public int PhoneId { get; set; }
+        public string ApplicationUserId { get; set; } //FOREIGN KEY (Company)
+        public ApplicationUser ApplicationUser { get; set; }
+        public int PhoneId { get; set; } //FOREIGN KEY (Phone)
         public Phone Phone { get; set; }
 
         public string Name { get; set; }
@@ -19,6 +20,5 @@ namespace WebCustomerApp.Models
         public byte Gender { get; set; }
         public string Priority { get; set; }
         public string KeyWords { get; set; }
-
     }
 }
