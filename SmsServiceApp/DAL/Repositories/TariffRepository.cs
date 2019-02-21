@@ -28,5 +28,11 @@ namespace DAL.Repositories
 			t.Limit = newLimit;
 			context.SaveChanges();
 		}
+
+		public void ChangeTariffPricing(Tariff currentTariff, decimal newPrice, string userRole)
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 }
