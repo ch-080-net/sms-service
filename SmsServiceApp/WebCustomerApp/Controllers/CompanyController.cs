@@ -8,45 +8,47 @@ using WebCustomerApp.Models;
 using Model.ViewModels.CompanyViewModels;
 using Model.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace WebApp.Controllers
 {
+    [Route("[controller]/[action]")]
     public class CompanyController : Controller
     {
-        private ICompanyManager companyManager;
-        UserManager<ApplicationUser> userManager;
+        private readonly ICompanyManager companyManager;
 
         public CompanyController(ICompanyManager company)
         {
             this.companyManager = company;
         }
 
-        public IActionResult Company()
+        public IActionResult Index()
+        {
+            return View(GetAll());
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
 
-       /* [Route("~/Company/GetAll")]
+        [Route("~/Company/GetAll")]
         [HttpGet]
-        public ICollection<CompanyViewModel> GetAll()
+        public IEnumerable<CompanyViewModel> GetAll()
         {
-            string userId = userManager.GetUserId(User);
-            List<Recipient> recipients = _unitOfWork.Recipients.Get(item => item.ApplicationUserId == userId).ToList();
-            List<RecViewModel> recepientModels = new List<RecViewModel>();
-            foreach (var rec in recipients)
-            {
-                RecViewModel recepientModel = new RecViewModel
-                {
-                    Id = rec.Id,
-                    Name = rec.Name,
-                    Address = rec.Address,
-                    PhoneNumber = rec.PhoneNumber,
-                    Gender = rec.Gender,
-                    ApplicationUserId = rec.ApplicationUserId
-                };
-                recepientModels.Add(recepientModel);
-            }
-            return recepientModels;
-        }*/
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<CompanyViewModel> companies = companyManager.GetCompanies().Where(com => com.ApplicationUserId == userId);
+            return companies;
+        }
+
+        [Route("~/Company/Create")]
+        [HttpPost]
+        public IActionResult Create(CompanyViewModel item)
+        {
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Recipient recipient = new Recipient();
+            companyManager.Insert(item);
+            return new ObjectResult("Recipient added successfully!");
+        }
     }
 }

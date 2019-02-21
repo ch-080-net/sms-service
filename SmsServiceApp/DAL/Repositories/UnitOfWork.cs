@@ -14,10 +14,12 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
+        private UserManager<ApplicationUser> userManager;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         public IBaseRepository<Company> Companies
@@ -42,6 +44,12 @@ namespace DAL.Repositories
             {
                 if (stopWordRepo == null) { stopWordRepo = new BaseRepository<StopWord>(context); }
                 return stopWordRepo;
+            }
+        }
+
+        public UserManager<ApplicationUser> Users {
+            get {
+                return userManager;
             }
         }
 
