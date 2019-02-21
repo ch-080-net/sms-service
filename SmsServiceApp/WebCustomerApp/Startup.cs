@@ -85,7 +85,6 @@ namespace WebCustomerApp
             services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IRecipientManager, RecipientManager>();
             services.AddScoped<ICompanyManager, CompanyManager>();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
@@ -136,7 +135,6 @@ namespace WebCustomerApp
             }
 
             app.UseStaticFiles();
-
             app.UseAuthentication();
 
             app.UseMvc(routes =>

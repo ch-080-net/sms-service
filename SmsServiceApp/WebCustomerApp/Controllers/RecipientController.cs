@@ -17,9 +17,9 @@ namespace WebApp.Controllers
             this.recipientManager = recipient;
         }
 
-        public IEnumerable<Recipient> GetAll()
+       /* public IEnumerable<Recipient> GetAll()
         {
             return recipientManager.GetRecipients();
-        }
+        }*/
     }
 }

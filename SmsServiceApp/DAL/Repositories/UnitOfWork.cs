@@ -13,10 +13,12 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<Company> companyRepo;
+        private UserManager<ApplicationUser> userManager;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         public IBaseRepository<Company> Companies
@@ -32,6 +34,12 @@ namespace DAL.Repositories
             get {
                 if (recipientRepo == null) { recipientRepo = new BaseRepository<Recipient>(context); }
                 return recipientRepo;
+            }
+        }
+
+        public UserManager<ApplicationUser> Users {
+            get {
+                return userManager;
             }
         }
 
