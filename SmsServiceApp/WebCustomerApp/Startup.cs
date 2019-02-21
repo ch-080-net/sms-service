@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Model.Interfaces;
 using DAL.Repositories;
 using BAL.Managers;
+using AutoMapper;
+using BAL.Services;
 
 namespace WebCustomerApp
 {
@@ -39,6 +41,15 @@ namespace WebCustomerApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             services.Configure<IdentityOptions>(options =>
