@@ -41,10 +41,6 @@ namespace WebCustomerApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-			services.AddTransient<ITariffRepository, TariffRepository>();
-			services.AddTransient<ICompanyRepository, CompanyRepository>();
-			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
-			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
@@ -71,14 +67,63 @@ namespace WebCustomerApp
                 options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Lockout.AllowedForNewUsers = true;
 
-			services.AddMvc();
+                // User settings  
+                options.User.RequireUniqueEmail = true;
+            });
+
+            //Seting the Account Login page  
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings  
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login  
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout  
+                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied  
+                options.SlidingExpiration = true;
+            });
+            services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITariffRepository, TariffRepository>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
+           // services.AddScoped<ICompanyManager, CompanyManager>();
         }
+        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            ApplicationUser applicationUser = new ApplicationUser() { UserName = "Admin@gmail.com", Email = "Admin@gmail.com" };
+            await UserManager.CreateAsync(applicationUser, "1234ABCD");
+            applicationUser = new ApplicationUser() { UserName = "User@gmail.com", Email = "User@gmail.com" };
+            await UserManager.CreateAsync(applicationUser, "1234ABCD");
 
+            IdentityResult roleResult;
+            //Adding Addmin Role  
+            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleCheck)
+            {
+                //create the roles and seed them to the database  
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+            }
+            roleCheck = await RoleManager.RoleExistsAsync("User");
+            if (!roleCheck)
+            {
+                //create the roles and seed them to the database    
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("User"));
+            }
+
+            //Assign Admin role to the main User here we have given our newly loregistered login id for Admin management  
+            ApplicationUser user = await UserManager.FindByEmailAsync("Admin@gmail.com");
+            //var User = new ApplicationUser();
+            await UserManager.AddToRoleAsync(user, "Admin");
+
+            user = await UserManager.FindByEmailAsync("User@gmail.com");
+            await UserManager.AddToRoleAsync(user, "User");
+
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
         {
             if (env.IsDevelopment())
             {
@@ -101,6 +146,7 @@ namespace WebCustomerApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            CreateUserRoles(services).Wait();
         }
     }
 }

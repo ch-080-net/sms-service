@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebCustomerApp.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Repositories
 {
@@ -13,6 +14,7 @@ namespace DAL.Repositories
 
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<Tariff> tariffRepo;
+        private UserManager<ApplicationUser> userManager;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -31,6 +33,13 @@ namespace DAL.Repositories
             {
                 if (tariffRepo == null) { tariffRepo = new BaseRepository<Tariff>(context); }
                 return tariffRepo;
+            }
+        }
+        public UserManager<ApplicationUser> Users
+        {
+            get
+            {
+                return userManager;
             }
         }
 
