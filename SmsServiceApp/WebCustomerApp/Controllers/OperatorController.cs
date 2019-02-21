@@ -13,12 +13,28 @@ using Microsoft.Extensions.Options;
 using WebCustomerApp.Models;
 using WebCustomerApp.Models.AccountViewModels;
 using WebCustomerApp.Services;
+using Model.Interfaces;
+using BAL.Managers;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class OperatorController
+    [Authorize(Roles = "Admin")]
+    [Produces("application/json")]
+    [Route("[Controller]/[action]")]
+    public class OperatorController : Controller
     {
+        private IOperatorManager operatorManager;
+
+        public OperatorController(IOperatorManager _operator)
+        {
+            this.operatorManager = _operator;
+        }
+
+        public IActionResult Operators()
+        {
+            return View();
+        }
+
         [HttpGet]
         [Route("~/Operator/GetOperatorsCount")]
         public int GetOperatorsCount()

@@ -265,12 +265,12 @@ function buildNavigationButtons() {
     else
         var pagesCount = operatorsCount / 10 + 1;
     $("#pageButtons button").remove();
-    var button = "<button type='button' class='btn btn -default ' onclick='previousPhonePage()' id='previousPage'><span class='glyphicon glyphicon-triangle-left' /></button>"
+    var button = "<button type='button' class='btn btn -default ' onclick='previousOperatorPage()' id='previousPage'><span class='glyphicon glyphicon-triangle-left' /></button>"
     $("#pageButtons").append(button);
     for (var i = 1; i <= pagesCount; i++) {
-        button = "<button type='button' class='btn btn -default' onclick='getPhonePageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
+        button = "<button type='button' class='btn btn -default' onclick='getOperatorPageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
         $("#pageButtons").append(button);
     }
-    button = "<button type='button' class='btn btn -default ' onclick='nextPhonePage()' id='nextPage'><span class='glyphicon glyphicon-triangle-right' /></button>";
+    button = "<button type='button' class='btn btn -default ' onclick='nextOperatorPage()' id='nextPage'><span class='glyphicon glyphicon-triangle-right' /></button>";
     $("#pageButtons").append(button);
 }

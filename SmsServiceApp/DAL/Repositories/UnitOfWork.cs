@@ -12,6 +12,7 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
 
         private IBaseRepository<Recipient> recipientRepo;
+        private IBaseRepository<Operator> operatorRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -22,6 +23,18 @@ namespace DAL.Repositories
             get {
                 if (recipientRepo == null) { recipientRepo = new BaseRepository<Recipient>(context); }
                 return recipientRepo;
+            }
+        }
+
+        public IBaseRepository<Operator> Operators
+        {
+            get
+            {
+                if (operatorRepo == null)
+                {
+                    operatorRepo = new BaseRepository<Operator>(context);
+                }
+                return operatorRepo;
             }
         }
 

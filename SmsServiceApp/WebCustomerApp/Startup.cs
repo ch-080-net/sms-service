@@ -46,6 +46,8 @@ namespace WebCustomerApp
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
+
+            services.AddScoped<IOperatorManager, OperatorManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
