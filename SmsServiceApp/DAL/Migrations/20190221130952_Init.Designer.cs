@@ -11,7 +11,7 @@ using WebCustomerApp.Data;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190221104426_Init")]
+    [Migration("20190221130952_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,11 +230,15 @@ namespace DAL.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<DateTime>("BirthDate");
+
                     b.Property<byte>("Gender");
 
                     b.Property<string>("KeyWords");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Notes");
 
                     b.Property<int>("PhoneId");
 
@@ -284,6 +288,8 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("BirthDate");
+
                     b.Property<int>("CompanyId");
 
                     b.Property<byte>("Gender");
@@ -291,6 +297,8 @@ namespace DAL.Migrations
                     b.Property<string>("KeyWords");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Notes");
 
                     b.Property<int>("PhoneId");
 
