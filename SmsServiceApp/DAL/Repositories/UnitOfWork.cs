@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using WebCustomerApp.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext context;
-
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
