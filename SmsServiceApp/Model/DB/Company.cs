@@ -18,10 +18,9 @@ namespace WebCustomerApp.Models
         public string ApplicationUserId { get; set; } //FOREIGN KEY (User)
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int TariffId { get; set; }
+        public int TariffId { get; set; } //FOREIGN KEY (Tariff)
         public Tariff Tariff { get; set; }
 
         public string Message { get; set; }
-
     }
 }
