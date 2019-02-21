@@ -13,6 +13,7 @@ namespace DAL.Repositories
 
         private IBaseRepository<Recipient> recipientRepo;
         private IContactRepository contactRepo;
+        private IBaseRepository<Phone> phoneRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -30,6 +31,13 @@ namespace DAL.Repositories
             get {
                 if (contactRepo == null) { contactRepo = new ContactRepository(context); }
                 return contactRepo;
+            }
+        }
+
+        public IBaseRepository<Phone> Phones {
+            get {
+                if (recipientRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
+                return phoneRepo;
             }
         }
 

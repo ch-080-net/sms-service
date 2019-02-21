@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace BAL.Managers
 {
-    class ContactManager : BaseManager, IContactManager
+    public class ContactManager : BaseManager, IContactManager
     {
         public ContactManager(IUnitOfWork unitOfWork) : base(unitOfWork)
         {

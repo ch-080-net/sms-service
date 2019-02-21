@@ -9,6 +9,7 @@ namespace Model.Interfaces
     {
         IBaseRepository<Recipient> Recipients { get; }
         IContactRepository Contacts { get; }
+        IBaseRepository<Phone> Phones { get; }
         int Save();
     }
 }

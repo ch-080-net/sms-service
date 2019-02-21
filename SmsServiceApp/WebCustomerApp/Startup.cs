@@ -73,7 +73,6 @@ namespace WebCustomerApp
             });
             services.AddMvc();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IContactManager, ContactManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
         }
