@@ -53,19 +53,15 @@ namespace WebCustomerApp.Data
                 .HasMany(au => au.Contacts)
                 .WithOne(c => c.ApplicationUser)
                 .HasForeignKey(c => c.ApplicationUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ApplicationUser>()
                 .HasMany(au => au.Companies)
                 .WithOne(com => com.ApplicationUser)
                 .HasForeignKey(com => com.ApplicationUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Company>()
-                .HasMany(c => c.Recipients)
-                .WithOne(r => r.Company)
-                .HasForeignKey(r => r.CompanyId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+
 
             builder.Entity<Operator>()
                 .HasMany(o => o.Codes)
@@ -85,11 +81,6 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(c => c.PhoneId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.Entity<Phone>()
-                .HasMany(p => p.Recipients)
-                .WithOne(r => r.Phone)
-                .HasForeignKey(r => r.PhoneId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.Entity<Tariff>()
                 .HasMany(t => t.Companies)
@@ -99,7 +90,23 @@ namespace WebCustomerApp.Data
 
             #endregion
 
-            // Configuring Many-To-Many relationship through PhoneMessage
+            // Configuring Many-To-Many relationship through Recipient and compound index
+
+            builder.Entity<Company>()
+                .HasMany(c => c.Recipients)
+                .WithOne(r => r.Company)
+                .HasForeignKey(r => r.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.Recipients)
+                .WithOne(r => r.Phone)
+                .HasForeignKey(r => r.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Recipient>()
+                .HasIndex(r => new { r.PhoneId, r.CompanyId })
+                .IsUnique();
 
             // Required fields
             #region Required fields
