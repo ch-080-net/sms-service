@@ -1,4 +1,5 @@
-﻿using WebCustomerApp.Models;
+﻿using System.Collections.Generic;
+using WebCustomerApp.Models;
 
 namespace Model.Interfaces
 {
@@ -6,4 +7,7 @@ namespace Model.Interfaces
 	{
 		void ChangeTariffLimit(Tariff currentTariff, int newLimit);
 	}
+        void ChangeTariffPricing(Tariff currentTariff, decimal newPrice, string userRole);
+        void ChangeTariffLimit(Tariff currentTariff, int newLimit, string userRole);      
+    }
 }

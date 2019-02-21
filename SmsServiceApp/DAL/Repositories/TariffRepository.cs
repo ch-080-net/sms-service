@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Model.Interfaces;
 using System;
+using System.Collections.Generic;
 using WebCustomerApp.Data;
 using WebCustomerApp.Models;
 
@@ -14,6 +15,11 @@ namespace DAL.Repositories
 		public TariffRepository(ApplicationDbContext context) :  base(context)
 		{
 		}
+
+        public IEnumerable<Tariff> GetByOperatorId(int operatorId)
+        {
+            return base.Get(filter: item => item.OperatorId == operatorId);
+        }
 
 		[Authorize(Roles = "Admin")]
 		public void ChangeTariffLimit(Tariff currentTariff, int newLimit)

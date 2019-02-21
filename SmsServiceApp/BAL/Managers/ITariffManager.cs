@@ -7,6 +7,7 @@ namespace BAL.Managers
 {
    public interface ITariffManager
     {
+        IEnumerable<Tariff> GetByOperatorId();
         IEnumerable<Tariff> GetTariffs();
     }
 }

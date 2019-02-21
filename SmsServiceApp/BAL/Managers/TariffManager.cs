@@ -16,11 +16,11 @@ namespace BAL.Managers
         {
             return unitOfWork.Tariffs.GetAll();
         }
-       public IEnumerable<Tariff> AddTariff()
-        {
-            Tariff tariff = new Tariff();
+       //public IEnumerable<Tariff> AddTariff()
+       // {
+       //     Tariff tariff = new Tariff();
          
-            return 
-        }
+       //     return 
+       // }
     }
 }
