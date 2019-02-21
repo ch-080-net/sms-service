@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Model.ViewModels.StopWordViewModels
 {
-   public class ResetStopWordDTO
+    public class StopWordViewModel
     {
-        public string PriorWordDto { get; set; }
+        public string WordDto { get; set; }
 
-        public string NewWordDto { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model.ViewModels.StopWordViewModels
 {
-   public class ResetStopWordDTO
+   public class ResetStopWordViewModel
     {
         public string PriorWordDto { get; set; }
 
