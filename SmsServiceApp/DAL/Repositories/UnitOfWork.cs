@@ -12,6 +12,7 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
 
         private IBaseRepository<Recipient> recipientRepo;
+        private IBaseRepository<Tariff> tariffRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -22,6 +23,14 @@ namespace DAL.Repositories
             get {
                 if (recipientRepo == null) { recipientRepo = new BaseRepository<Recipient>(context); }
                 return recipientRepo;
+            }
+        }
+        public IBaseRepository<Tariff> Tariffs
+        {
+            get
+            {
+                if (tariffRepo == null) { tariffRepo = new BaseRepository<Tariff>(context); }
+                return tariffRepo;
             }
         }
 
