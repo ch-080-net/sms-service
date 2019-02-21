@@ -12,6 +12,8 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
 
         private IBaseRepository<Recipient> recipientRepo;
+        private IBaseRepository<StopWord> stopWordRepo;
+
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -22,6 +24,15 @@ namespace DAL.Repositories
             get {
                 if (recipientRepo == null) { recipientRepo = new BaseRepository<Recipient>(context); }
                 return recipientRepo;
+            }
+        }
+
+        public IBaseRepository<StopWord> StopWords
+        {
+            get
+            {
+                if (stopWordRepo == null) { stopWordRepo = new BaseRepository<StopWord>(context); }
+                return stopWordRepo;
             }
         }
 
