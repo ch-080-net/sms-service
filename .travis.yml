@@ -3,6 +3,7 @@ solution: SmsServiceApp.sln
 mono: none
 dotnet: 2.1.502
 install:
+    - cd SmsServiceApp
     - dotnet restore
 script:
     - dotnet build
