@@ -8,6 +8,7 @@ namespace Model.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IBaseRepository<Recipient> Recipients { get; }
+        IContactRepository Contacts { get; }
         int Save();
     }
 }
