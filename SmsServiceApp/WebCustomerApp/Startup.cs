@@ -45,7 +45,8 @@ namespace WebCustomerApp
             services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<ICompanyManager, CompanyManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

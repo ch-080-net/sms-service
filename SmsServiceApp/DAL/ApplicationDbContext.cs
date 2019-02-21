@@ -19,7 +19,6 @@ namespace WebCustomerApp.Data
 
         public DbSet<Code> Codes { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<CompanyPhone> CompanyPhones { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Phone> Phones { get; set; }
@@ -46,9 +45,6 @@ namespace WebCustomerApp.Data
             builder.Entity<StopWord>().HasKey(i => i.Id);
 
             // Compound key for Many-To-Many joining table
-
-            builder.Entity<CompanyPhone>()
-                .HasKey(pm => new { pm.PhoneId, pm.CompanyId });
 
             // Setting FK
             #region FK
@@ -104,18 +100,6 @@ namespace WebCustomerApp.Data
             #endregion
 
             // Configuring Many-To-Many relationship through PhoneMessage
-
-            builder.Entity<Phone>()
-                .HasMany(p => p.CompanyPhones)
-                .WithOne(cp => cp.Phone)
-                .HasForeignKey(cp => cp.PhoneId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Company>()
-                .HasMany(com => com.CompanyPhones)
-                .WithOne(cp => cp.Company)
-                .HasForeignKey(cp => cp.CompanyId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             // Required fields
             #region Required fields

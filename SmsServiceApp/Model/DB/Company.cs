@@ -10,7 +10,6 @@ namespace WebCustomerApp.Models
     {
         public int Id { get; set; } //PRIMARY KEY
         public ICollection<Recipient> Recipients { get; set; }
-        public IList<CompanyPhone> CompanyPhones { get; set; }
 
         public string Name { get; set; }
 
@@ -19,10 +18,9 @@ namespace WebCustomerApp.Models
         public string ApplicationUserId { get; set; } //FOREIGN KEY (User)
         public ApplicationUser ApplicationUser { get; set; }
 
-        public int TariffId { get; set; }
+        public int TariffId { get; set; } //FOREIGN KEY (Tariff)
         public Tariff Tariff { get; set; }
 
         public string Message { get; set; }
-
     }
 }

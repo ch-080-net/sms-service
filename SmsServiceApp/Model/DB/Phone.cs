@@ -8,7 +8,6 @@ namespace WebCustomerApp.Models
     {        
         public int Id { get; set; }
         public ICollection<Contact> Contacts { get; set; }
-        public IList<CompanyPhone> CompanyPhones { get; set; }
         public ICollection<Recipient> Recipients { get; set; }
 
         public string PhoneNumber { get; set; }

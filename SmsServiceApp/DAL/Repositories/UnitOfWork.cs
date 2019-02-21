@@ -12,10 +12,20 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
 
         private IBaseRepository<Recipient> recipientRepo;
+        private IBaseRepository<Company> companyRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
+        }
+
+        public IBaseRepository<Company> Companies
+        {
+            get
+            {
+                if (companyRepo == null) { companyRepo = new BaseRepository<Company>(context); }
+                return companyRepo;
+            }
         }
 
         public IBaseRepository<Recipient> Recipients {
