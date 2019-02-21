@@ -259,7 +259,7 @@ namespace DAL.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Contacts_Phones_PhoneId",
                         column: x => x.PhoneId,
@@ -288,37 +288,13 @@ namespace DAL.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Companies_Tariffs_TariffId",
                         column: x => x.TariffId,
                         principalTable: "Tariffs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompanyPhones",
-                columns: table => new
-                {
-                    PhoneId = table.Column<int>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyPhones", x => new { x.PhoneId, x.CompanyId });
-                    table.ForeignKey(
-                        name: "FK_CompanyPhones_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CompanyPhones_Phones_PhoneId",
-                        column: x => x.PhoneId,
-                        principalTable: "Phones",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,13 +319,13 @@ namespace DAL.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Recipients_Phones_PhoneId",
                         column: x => x.PhoneId,
                         principalTable: "Phones",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -407,11 +383,6 @@ namespace DAL.Migrations
                 column: "TariffId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyPhones_CompanyId",
-                table: "CompanyPhones",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Contacts_ApplicationUserId",
                 table: "Contacts",
                 column: "ApplicationUserId");
@@ -427,9 +398,10 @@ namespace DAL.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipients_PhoneId",
+                name: "IX_Recipients_PhoneId_CompanyId",
                 table: "Recipients",
-                column: "PhoneId");
+                columns: new[] { "PhoneId", "CompanyId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tariffs_OperatorId",
@@ -456,9 +428,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Codes");
-
-            migrationBuilder.DropTable(
-                name: "CompanyPhones");
 
             migrationBuilder.DropTable(
                 name: "Contacts");
