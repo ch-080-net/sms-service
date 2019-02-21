@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Model.Interfaces;
 using System;
 using WebCustomerApp.Data;
@@ -14,18 +15,12 @@ namespace DAL.Repositories
 		{
 		}
 
-		public void ChangeTariffLimit(Tariff currentTariff, int newLimit, string userRole)
+		[Authorize(Roles = "Admin")]
+		public void ChangeTariffLimit(Tariff currentTariff, int newLimit)
 		{
-			if (userRole == "Admin")
-			{
-				Tariff t = context.Tariffs.Find(currentTariff.Id);
-				t.Limit = newLimit;
-				context.SaveChanges();
-			}
-			else
-			{
-				throw new UnauthorizedAccessException();
-			}
+			Tariff t = context.Tariffs.Find(currentTariff.Id);
+			t.Limit = newLimit;
+			context.SaveChanges();
 		}
 	}
 }
