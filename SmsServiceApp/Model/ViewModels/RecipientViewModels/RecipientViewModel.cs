@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Model.ViewModels.RecipientViewModels
 {
-    class RecipientViewModel
+    public class RecipientViewModel
     {
         public int Id { get; set; }
         public int CompanyId { get; set; }
