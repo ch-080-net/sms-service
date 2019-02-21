@@ -244,9 +244,11 @@ namespace DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
+                    BirthDate = table.Column<DateTime>(nullable: false),
                     Gender = table.Column<byte>(nullable: false),
                     KeyWords = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    Notes = table.Column<string>(nullable: true),
                     PhoneId = table.Column<int>(nullable: false),
                     Priority = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true)
@@ -303,10 +305,12 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BirthDate = table.Column<DateTime>(nullable: false),
                     CompanyId = table.Column<int>(nullable: false),
                     Gender = table.Column<byte>(nullable: false),
                     KeyWords = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    Notes = table.Column<string>(nullable: true),
                     PhoneId = table.Column<int>(nullable: false),
                     Priority = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true)

@@ -229,11 +229,15 @@ namespace DAL.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<DateTime>("BirthDate");
+
                     b.Property<byte>("Gender");
 
                     b.Property<string>("KeyWords");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Notes");
 
                     b.Property<int>("PhoneId");
 
@@ -283,6 +287,8 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("BirthDate");
+
                     b.Property<int>("CompanyId");
 
                     b.Property<byte>("Gender");
@@ -290,6 +296,8 @@ namespace DAL.Migrations
                     b.Property<string>("KeyWords");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Notes");
 
                     b.Property<int>("PhoneId");
 
