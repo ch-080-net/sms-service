@@ -29,9 +29,11 @@ namespace DAL.Repositories
 			context.SaveChanges();
 		}
 
-		public void ChangeTariffPricing(Tariff currentTariff, decimal newPrice, string userRole)
+		public void ChangeTariffPricing(Tariff currentPrice, decimal newPrice, string userRole)
 		{
-			throw new NotImplementedException();
+            Tariff p = context.Tariffs.Find(currentPrice.Price);
+            p.Price = newPrice;
+            context.SaveChanges();
 		}
 
 	}
