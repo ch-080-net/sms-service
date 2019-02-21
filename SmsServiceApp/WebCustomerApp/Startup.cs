@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Model.Interfaces;
 using DAL.Repositories;
 using BAL.Managers;
+using AutoMapper;
+using BAL.Services;
 
 namespace WebCustomerApp
 {
@@ -44,7 +46,30 @@ namespace WebCustomerApp
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
-			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings  
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequiredUniqueChars = 6;
+
+                // Lockout settings  
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
 
 			services.AddMvc();
 
