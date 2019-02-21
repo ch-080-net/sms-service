@@ -1,4 +1,5 @@
-﻿using Model.Interfaces;
+﻿using AutoMapper;
+using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace BAL.Managers
 {
    public class StopWordManager: BaseManager,IStopWordManager
     {
-        public StopWordManager(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public StopWordManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork , mapper)
         {
         }
 
