@@ -34,7 +34,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddWord(StopWordViewModels model, string returnUrl = null)
+        public async Task<IActionResult> AddWord(StopWordDTO model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetWord(ResetStopWordViewModels model, string returnUrl = null)
+        public async Task<IActionResult> ResetWord(ResetStopWordDTO model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid)

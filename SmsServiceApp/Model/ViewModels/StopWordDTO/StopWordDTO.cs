@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Model.ViewModels.StopWordViewModels
 {
-    public class StopWordViewModels
+    public class StopWordDTO
     {
-        public string Word { get; set; }
+        public string WordDto { get; set; }
 
     }
 }
