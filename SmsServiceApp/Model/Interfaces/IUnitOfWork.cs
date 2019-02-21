@@ -12,6 +12,7 @@ namespace Model.Interfaces
         IBaseRepository<Company> Companies { get; }
         UserManager<ApplicationUser> Users { get; }
         IBaseRepository<StopWord> StopWords { get; }
+        IBaseRepository<Operator> Operators { get; }
         int Save();
     }
 }

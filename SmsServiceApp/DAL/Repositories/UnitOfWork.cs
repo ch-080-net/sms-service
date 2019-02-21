@@ -15,6 +15,7 @@ namespace DAL.Repositories
         private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
         private UserManager<ApplicationUser> userManager;
+        private IBaseRepository<Operator> operatorRepo;
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -50,6 +51,18 @@ namespace DAL.Repositories
         public UserManager<ApplicationUser> Users {
             get {
                 return userManager;
+            }
+        }
+
+        public IBaseRepository<Operator> Operators
+        {
+            get
+            {
+                if (operatorRepo == null)
+                {
+                    operatorRepo = new BaseRepository<Operator>(context);
+                }
+                return operatorRepo;
             }
         }
 
