@@ -222,19 +222,6 @@ namespace DAL.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.CompanyPhone", b =>
-                {
-                    b.Property<int>("PhoneId");
-
-                    b.Property<int>("CompanyId");
-
-                    b.HasKey("PhoneId", "CompanyId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("CompanyPhones");
-                });
-
             modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -314,7 +301,8 @@ namespace DAL.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("PhoneId");
+                    b.HasIndex("PhoneId", "CompanyId")
+                        .IsUnique();
 
                     b.ToTable("Recipients");
                 });
@@ -412,31 +400,20 @@ namespace DAL.Migrations
                 {
                     b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Companies")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebCustomerApp.Models.Tariff", "Tariff")
                         .WithMany("Companies")
                         .HasForeignKey("TariffId");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.CompanyPhone", b =>
-                {
-                    b.HasOne("WebCustomerApp.Models.Company", "Company")
-                        .WithMany("CompanyPhones")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
-                        .WithMany("CompanyPhones")
-                        .HasForeignKey("PhoneId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
                 {
                     b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Contacts")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebCustomerApp.Models.Phone", "Phone")
                         .WithMany("Contacts")
@@ -447,11 +424,13 @@ namespace DAL.Migrations
                 {
                     b.HasOne("WebCustomerApp.Models.Company", "Company")
                         .WithMany("Recipients")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebCustomerApp.Models.Phone", "Phone")
                         .WithMany("Recipients")
-                        .HasForeignKey("PhoneId");
+                        .HasForeignKey("PhoneId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebCustomerApp.Models.Tariff", b =>

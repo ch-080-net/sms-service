@@ -10,7 +10,6 @@ namespace WebCustomerApp.Models
     {
         public int Id { get; set; } //PRIMARY KEY
         public ICollection<Recipient> Recipients { get; set; }
-        public IList<CompanyPhone> CompanyPhones { get; set; }
 
         public string Name { get; set; }
 

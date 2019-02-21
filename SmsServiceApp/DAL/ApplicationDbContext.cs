@@ -19,7 +19,6 @@ namespace WebCustomerApp.Data
 
         public DbSet<Code> Codes { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<CompanyPhone> CompanyPhones { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Phone> Phones { get; set; }
@@ -47,9 +46,6 @@ namespace WebCustomerApp.Data
 
             // Compound key for Many-To-Many joining table
 
-            builder.Entity<CompanyPhone>()
-                .HasKey(pm => new { pm.PhoneId, pm.CompanyId });
-
             // Setting FK
             #region FK
 
@@ -57,19 +53,15 @@ namespace WebCustomerApp.Data
                 .HasMany(au => au.Contacts)
                 .WithOne(c => c.ApplicationUser)
                 .HasForeignKey(c => c.ApplicationUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ApplicationUser>()
                 .HasMany(au => au.Companies)
                 .WithOne(com => com.ApplicationUser)
                 .HasForeignKey(com => com.ApplicationUserId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Company>()
-                .HasMany(c => c.Recipients)
-                .WithOne(r => r.Company)
-                .HasForeignKey(r => r.CompanyId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+
 
             builder.Entity<Operator>()
                 .HasMany(o => o.Codes)
@@ -89,11 +81,6 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(c => c.PhoneId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.Entity<Phone>()
-                .HasMany(p => p.Recipients)
-                .WithOne(r => r.Phone)
-                .HasForeignKey(r => r.PhoneId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.Entity<Tariff>()
                 .HasMany(t => t.Companies)
@@ -103,19 +90,23 @@ namespace WebCustomerApp.Data
 
             #endregion
 
-            // Configuring Many-To-Many relationship through PhoneMessage
-
-            builder.Entity<Phone>()
-                .HasMany(p => p.CompanyPhones)
-                .WithOne(cp => cp.Phone)
-                .HasForeignKey(cp => cp.PhoneId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // Configuring Many-To-Many relationship through Recipient and compound index
 
             builder.Entity<Company>()
-                .HasMany(com => com.CompanyPhones)
-                .WithOne(cp => cp.Company)
-                .HasForeignKey(cp => cp.CompanyId)
+                .HasMany(c => c.Recipients)
+                .WithOne(r => r.Company)
+                .HasForeignKey(r => r.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.Recipients)
+                .WithOne(r => r.Phone)
+                .HasForeignKey(r => r.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Recipient>()
+                .HasIndex(r => new { r.PhoneId, r.CompanyId })
+                .IsUnique();
 
             // Required fields
             #region Required fields
