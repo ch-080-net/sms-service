@@ -45,6 +45,8 @@ namespace WebCustomerApp
             services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<ICompanyManager, CompanyManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
             
             //services.AddScoped<IStopWordRepository, StopWordManager>();
