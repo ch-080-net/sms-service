@@ -39,7 +39,14 @@ namespace WebApp.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var word = new StopWord { Word=model.Word };
+                //var word = _unitOfWork.StopWords.FirstOrDefault{w=>w.Word == model.Word };
+                //if (word != null) {
+                //    var word = new StopWord { Word = model.Word };
+                //}
+                //else
+                //{
+                //    // write StopWord already exists
+                //}
           /*      var result = await _unitOfWork.StopWords.Create(word);
 
                 if (result.Succeeded)
