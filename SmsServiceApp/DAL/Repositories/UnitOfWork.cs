@@ -41,22 +41,19 @@ namespace DAL.Repositories
 
         private bool isDisposed = false;
 
-        protected virtual void Grind(bool disposing)
-        {
-            if (!isDisposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            isDisposed = true;
-        }
-
         public void Dispose()
         {
-            Grind(true);
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!isDisposed && disposing)
+            {
+                context.Dispose();
+            }
+            isDisposed = true;
         }
     }
 }
