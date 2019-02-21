@@ -7,6 +7,8 @@ namespace BAL.Managers
 {
     public interface IOperatorManager
     {
+
+
         IEnumerable<OperatorViewModel> GetAllOperators();
     }
 }

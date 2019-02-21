@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Model.ViewModels.OperatorViewModels;
+using WebCustomerApp.Models;
 
 namespace BAL.Services
 {
@@ -10,8 +12,11 @@ namespace BAL.Services
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-           // CreateMap<User, UserDto>();
-           // CreateMap<UserDto, User>();
+            // CreateMap<User, UserDto>();
+            // CreateMap<UserDto, User>();
+
+            CreateMap<Operator, OperatorViewModel>();
+            CreateMap<OperatorViewModel, Operator>();
         }
     }
 }
