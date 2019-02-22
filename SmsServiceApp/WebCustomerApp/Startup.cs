@@ -41,9 +41,13 @@ namespace WebCustomerApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+			services.AddTransient<ITariffRepository, TariffRepository>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
+			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
+			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
-            // Auto Mapper Configurations
-            var mappingConfig = new MapperConfiguration(mc =>
+			// Auto Mapper Configurations
+			var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
             });
