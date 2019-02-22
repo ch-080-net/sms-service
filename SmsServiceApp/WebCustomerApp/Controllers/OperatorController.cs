@@ -26,11 +26,12 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Operators(int Page = 1)
+        public IActionResult Operators(int Page = 1, string SearchQuerry = "")
         {
             ViewBag.Operators = operatorManager.GetPage(Page);
             ViewBag.CurrentPage = Page;
             ViewBag.NumOfPages = operatorManager.GetNumberOfPages();
+            ViewBag.SearchQuerry = SearchQuerry;
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult Remove(int OperatorId)
+        public IActionResult Remove(int OperatorId, int Page = 1, string SearchQuerry = "")
         {
             bool result = operatorManager.Remove(OperatorId);
             if (!result)
@@ -64,7 +65,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return RedirectToAction("Operators", "Operator");
+                return RedirectToAction("Operators", "Operator", new {Page, SearchQuerry});
             }
         }
 
@@ -75,7 +76,7 @@ namespace WebApp.Controllers
             var result = operatorManager.Update(editedOper);
             if (ModelState.IsValid)
             {
-                if (result == false)
+                if (!result)
                 {
                     ModelState.AddModelError(string.Empty, "Modify failed");
                     return RedirectToAction("Operators", "Operator");
@@ -104,6 +105,25 @@ namespace WebApp.Controllers
                 return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
         }
 
+
+        [HttpPost]
+        public IActionResult SearchOperators(OperatorSearchViewModel Search)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Operators", "Operator", new {Search.SearchQuerry });
+            }
+            else
+            {
+                return RedirectToAction("Operators", "Operator");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult SearchOperators()
+        {
+            return View();
+        }
 
 
 

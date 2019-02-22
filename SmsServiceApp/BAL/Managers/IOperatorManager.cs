@@ -13,8 +13,8 @@ namespace BAL.Managers
         bool Update(OperatorViewModel UpdatedOperator);
         bool Remove(int Id);
         IEnumerable<OperatorViewModel> FindByName(string Name);
-        IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20);
-        int GetNumberOfPages(int NumOfElements = 20);
+        IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
+        int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "");
     }
 }
 

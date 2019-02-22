@@ -59,14 +59,14 @@ namespace BAL.Managers
             return mapper.Map<OperatorViewModel>(oper);
         }
 
-        public int GetNumberOfPages(int NumOfElements = 20)
+        public int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "")
         {
-            return (unitOfWork.Operators.GetAll().Count() / NumOfElements) + 1;
+            return (unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry)).Count() / NumOfElements) + 1;
         }
 
-        public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20)
+        public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
         {
-            var allOperators = unitOfWork.Operators.GetAll();
+            var allOperators = unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry));
             var operators = allOperators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
             var result = new List<OperatorViewModel>();
             foreach (var o in operators)

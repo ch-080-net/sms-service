@@ -1,6 +1,5 @@
 ﻿@using Model.ViewModels.OperatorViewModels
 @model OperatorViewModel
-
 <h2>Operators</h2>
 
 <div class="row">
@@ -19,6 +18,8 @@
 
 <hr />
 <h4>Operators list</h4>
+
+@{await Html.RenderPartialAsync("SearchOperators");}
 
 @foreach (OperatorViewModel iter in ViewBag.Operators)
 {
@@ -39,6 +40,7 @@
                 <li class="page-item"><a class="page-link" asp-action="Operators" asp-controller="Operator" asp-route-Page="@i">@i</a></li>
             }
         }
-                <li class="page-item"><a class="page-link" asp-action="NextPage" asp-controller="Operator" asp-route-CurrentPage="@ViewBag.CurrentPage">Next</a></li>
+        <li class="page-item"><a class="page-link" asp-action="NextPage" asp-controller="Operator" asp-route-CurrentPage="@ViewBag.CurrentPage">Next</a></li>
     </ul>
 </nav>
+
