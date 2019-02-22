@@ -46,7 +46,7 @@ namespace WebApp.Controllers
         public IActionResult Create(CompanyViewModel item)
         {
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Recipient recipient = new Recipient();
+            item.ApplicationUserId = userId;
             companyManager.Insert(item);
             return new ObjectResult("Recipient added successfully!");
         }

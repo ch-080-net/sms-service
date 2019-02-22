@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Model.ViewModels.RecipientViewModels;
 
 namespace WebApp.Controllers
 {
@@ -17,9 +18,6 @@ namespace WebApp.Controllers
             this.recipientManager = recipient;
         }
 
-       /* public IEnumerable<Recipient> GetAll()
-        {
-            return recipientManager.GetRecipients();
-        }*/
+     
     }
 }
