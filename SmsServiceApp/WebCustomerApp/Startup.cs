@@ -85,7 +85,7 @@ namespace WebCustomerApp
             services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITariffRepository, TariffRepository>();
+            services.AddScoped<ITariffManager, TariffManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
            // services.AddScoped<ICompanyManager, CompanyManager>();
         }

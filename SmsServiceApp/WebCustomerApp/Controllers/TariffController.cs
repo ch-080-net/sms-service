@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
 using Microsoft.AspNetCore.Mvc;
+using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
 using WebCustomerApp.Models;
 
@@ -14,37 +15,38 @@ namespace WebApp.Controllers
 {
     public class TariffController : Controller
     {
-        private readonly ITariffManager tariffManager;
+        private  ITariffManager tariffManager;
         public TariffController(ITariffManager tariff)
         {
             this.tariffManager = tariff;
         }
-        // GET: /<controller>/
-        public IActionResult Index()
-        {
-            return View(GetAll());
-        }
+        //// get: /<controller>/
+        ////public iactionresult index()
+        ////{
+        ////    return view(getall());
+        ////}
+        
+        ////[route("~/tariff/getall")]
+        ////[httpget]
+        ////public ienumerable<tariffviewmodel> getall()
+        ////{
+            
+            
+        ////    change tommorow
+        ////    ienumerable<tariffviewmodel> tariffs = tariffmanager.gettariffs().where(com =>com.name  == operatorid);
+        ////    return tariffs;
+        //}
         public IActionResult Create()
         {
             return View();
-        }
-        [Route("~/Tariff/GetAll")]
-        [HttpGet]
-        public IEnumerable<TariffViewModel> GetAll()
-        {
-            string operatorId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //change tommorow
-            IEnumerable<TariffViewModel> tariffs = tariffManager.GetTariffs().Where(com =>com.Name  == operatorId);
-            return tariffs;
         }
         [Route("~/Tariff/Create")]
         [HttpPost]
         public IActionResult Create(TariffViewModel item)
         {
-            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Tariff tariff = new Tariff();
+            
             tariffManager.Insert(item);
-            return new ObjectResult("Recipient added successfully!");
+            return new ObjectResult("Tariff added successfully!");
         }
 
     }
