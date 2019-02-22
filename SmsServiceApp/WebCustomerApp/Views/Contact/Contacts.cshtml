@@ -15,14 +15,14 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-    <script src="~/js/TemplateTableWithFunctional.js">
+    <script src="~/js/ContactTableFunctional.js">
     </script>
 
 </head>
 <body>
     <h3>Contact Manager</h3>
     <form style="padding-left:0em;">
-            <table id="contactTable" width="50" style="border: 1px solid #999; padding-left: 0em;" cellpadding="1">
+            <table id="contactTable" style="border: 1px solid #999; padding-left: 0em;" cellpadding="1">
                 <thead>
                     <tr>
                         <td class="col-md-1 col-md-offset-1"><label> Phone number </label></td>
@@ -30,7 +30,6 @@
                         <td class="col-md-1"> Surname </td>
                         <td class="col-md-1"> Birth date </td>
                         <td class="col-md-1"> Gender </td>
-                        <td class="col-md-1"> Priority </td>
                         <td class="col-md-1"> Notes </td>
                         <td class="col-md-1"> Keywords </td>
                         <td class="col-md-1"> </td>
@@ -42,19 +41,12 @@
                         <td>
                             <input id="birthDate" />
                             <script>
-                                $('#input').datetimepicker({ footer: true, modal: true });
+                                $('#birthDate').datetimepicker({ footer: true, modal: true });
                             </script>
                         </td>
                         <td>
                             <input type="radio" name="gender" id="genderMale" value="male">Male<br>
                             <input type="radio" name="gender" id="genderFemale" value="female">Female<br>
-                        </td>
-                        <td>
-                            <select id="priority">
-                                <option>Low</option>
-                                <option>Medium</option>
-                                <option>High</option>
-                            </select>
                         </td>
                         <td><input id="notes" type="text" /></td>
                         <td><input id="keywords" type="text" /></td>

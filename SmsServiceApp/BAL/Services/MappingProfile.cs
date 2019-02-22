@@ -14,8 +14,10 @@ namespace BAL.Services
             // Add as many of these lines as you need to map your objects
             // CreateMap<User, UserDto>();
             // CreateMap<UserDto, User>();
-            CreateMap<Contact, ContactViewModel>();
-            CreateMap<ContactViewModel, Contact>();
+            CreateMap<Contact, ContactViewModel>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
+            CreateMap<ContactViewModel, Contact>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
         }
     }
 }
