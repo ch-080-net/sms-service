@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Model.Interfaces;
+using Model.ViewModels.StopWordViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +14,40 @@ namespace BAL.Managers
         {
         }
 
-        public IEnumerable<StopWord> GetStopWords()
+
+        public IEnumerable<StopWordViewModel> GetStopWords()
         {
-            return unitOfWork.StopWords.GetAll();
+            IEnumerable<StopWord> words = unitOfWork.StopWords.GetAll();
+            return mapper.Map<IEnumerable<StopWord>, IEnumerable<StopWordViewModel>>(words);
+        }
+
+        public void Insert(StopWordViewModel item)
+        {
+            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+            unitOfWork.StopWords.Insert(word);
+            unitOfWork.Save();
+        }
+
+        public void Update(StopWordViewModel item)
+        {
+            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+            unitOfWork.StopWords.Update(word);
+            unitOfWork.Save();
+        }
+
+        public void Delete(StopWordViewModel item)
+        {
+            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+            unitOfWork.StopWords.Delete(word);
+            unitOfWork.Save();
+        }
+
+
+        public void SetStateModified(StopWordViewModel item)
+        {
+            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+            unitOfWork.StopWords.SetStateModified(word);
+            unitOfWork.Save();
         }
     }
 }

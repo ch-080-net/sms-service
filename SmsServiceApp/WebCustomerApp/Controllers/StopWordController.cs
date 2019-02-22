@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BAL.Managers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Model.Interfaces;
 using Model.ViewModels.StopWordViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebCustomerApp.Controllers;
 using WebCustomerApp.Models;
@@ -14,12 +16,42 @@ namespace WebApp.Controllers
     [Route("[controller]/[action]")]
     public class StopWordController : Controller
     {
-        private IUnitOfWork _unitOfWork;
-        
-        public StopWordController(IUnitOfWork unitOfWork)
+        private readonly IStopWordManager stopWordManager;
+
+        public StopWordController(IStopWordManager stopWord)
         {
-            _unitOfWork = unitOfWork;
+            this.stopWordManager = stopWord;
         }
+        public IActionResult Index()
+        {
+            return View(GetAll());
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [Route("~/StopWord/GetAll")]
+        [HttpGet]
+        public IEnumerable<StopWordViewModel> GetAll()
+        {
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<StopWordViewModel> word = stopWordManager.GetStopWords();
+            return word;
+        }
+
+        [Route("~/StopWord/Create")]
+        [HttpPost]
+        public IActionResult Create(StopWordViewModel item)
+        {
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Recipient recipient = new Recipient();
+            stopWordManager.Insert(item);
+            return new ObjectResult("Recipient added successfully!");
+        }
+
+
 
         [TempData]
         public string ErrorMessage { get; set; }
@@ -47,13 +79,14 @@ namespace WebApp.Controllers
                 //{
                 //    // write StopWord already exists
                 //}
-          /*      var result = await _unitOfWork.StopWords.Create(word);
+              /*var result = await _unitOfWork.StopWords.Create(word);
 
                 if (result.Succeeded)
                 {
                     return RedirectToLocal(returnUrl);
                 }
-                AddErrors(result);*/
+                AddErrors(result);
+              */
             }
 
             return View(model);
@@ -69,14 +102,15 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ResetWord(ResetStopWordViewModel model, string returnUrl = null)
+        public async Task<IActionResult> ResetWord(StopWordViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-       /*     var word = await _unitOfWork.StopWords.SearchByWord(model.PriorWord);
+           /*
+           var word = await _unitOfWork.StopWords.SearchByWord(model.PriorWord);
             if (word == null)
             {
             var result = await _unitOfWork.StopWords.Update(word);
@@ -86,7 +120,8 @@ namespace WebApp.Controllers
             {
                return RedirectToAction(nameof(returnUrl));
             }
-            AddErrors(result);*/
+            AddErrors(result);
+            */
             return View();
         }
 

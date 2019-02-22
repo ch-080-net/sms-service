@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
 using WebCustomerApp.Models;
+using Model.ViewModels.StopWordViewModels;
 
 namespace BAL.Services
 {
@@ -20,6 +21,8 @@ namespace BAL.Services
             CreateMap<OperatorViewModel, Operator>();
             CreateMap<Company, CompanyViewModel>();
             CreateMap<CompanyViewModel, Company>();
+            CreateMap<StopWord, StopWordViewModel>();
+            CreateMap<StopWordViewModel, StopWord>();
         }
     }
 }

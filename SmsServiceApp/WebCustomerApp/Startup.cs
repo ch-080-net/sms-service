@@ -88,7 +88,7 @@ namespace WebCustomerApp
             services.AddScoped<ICompanyManager, CompanyManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
             
-            //services.AddScoped<IStopWordRepository, StopWordManager>();
+            services.AddScoped<IStopWordManager, StopWordManager>();
 
             services.AddScoped<IOperatorManager, OperatorManager>();
         }
