@@ -2,6 +2,9 @@
 @model OperatorWithNavigationViewModel
 <h2>Operators</h2>
 
+<hr />
+<h4>Add operator</h4>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Operators" asp-controller="Operator" method="post" asp-antiforgery="true">
@@ -9,11 +12,10 @@
             <input asp-for="Page" value="@ViewBag.CurrentPage" hidden />
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Operator.Name"></label>
-                <input asp-for="Operator.Name" class="form-control" />
+                <input asp-for="Operator.Name" class="form-control" placeholder="New operator name" />
                 <span asp-validation-for="Operator.Name" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Add Operator</button>
+            <button type="submit" class="btn btn-default">Add</button>
         </form>
     </div>
 </div>
@@ -32,37 +34,49 @@
     <ul class="pagination">
         @if (ViewBag.CurrentPage == 1)
         {
-            <li class="page-item disabled"><a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
- asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a></li>
+            <li class="page-item disabled">
+                <a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
+                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a>
+            </li>
         }
         else
         {
-            <li class="page-item"><a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
- asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a></li>
+            <li class="page-item">
+                <a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
+                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a>
+            </li>
         }
 
         @for (int i = 1; i <= ViewBag.NumOfpages; i++)
         {
             if (i == ViewBag.CurrentPage)
             {
-                <li class="page-item active"><a class="page-link" asp-action="Operators" asp-controller="Operator"
- asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a></li>
+                <li class="page-item active">
+                    <a class="page-link" asp-action="Operators" asp-controller="Operator"
+                       asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a>
+                </li>
             }
             else
             {
-                <li class="page-item"><a class="page-link" asp-action="Operators" asp-controller="Operator"
- asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a></li>
+                <li class="page-item">
+                    <a class="page-link" asp-action="Operators" asp-controller="Operator"
+                       asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a>
+                </li>
             }
         }
         @if (ViewBag.CurrentPage == ViewBag.NumOfPages)
         {
-            <li class="page-item disabled"><a class="page-link" asp-action="NextPage" asp-controller="Operator"
- asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a></li>
+            <li class="page-item disabled">
+                <a class="page-link" asp-action="NextPage" asp-controller="Operator"
+                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a>
+            </li>
         }
         else
         {
-            <li class="page-item"><a class="page-link" asp-action="NextPage" asp-controller="Operator"
- asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a></li>
+            <li class="page-item">
+                <a class="page-link" asp-action="NextPage" asp-controller="Operator"
+                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a>
+            </li>
         }
 
     </ul>

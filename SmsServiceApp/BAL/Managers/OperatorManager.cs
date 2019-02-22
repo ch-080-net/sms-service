@@ -22,35 +22,13 @@ namespace BAL.Managers
             try
             {
                 unitOfWork.Operators.Insert(result);
+                unitOfWork.Save();
             }
             catch
             {
                 return false;
             }
-            unitOfWork.Save();
             return true;
-        }
-
-        public IEnumerable<OperatorViewModel> FindByName(string Name)
-        {
-            var operators = unitOfWork.Operators.Get(o => o.Name == Name);
-            var result = new List<OperatorViewModel>();
-            foreach (var o in operators)
-            {
-                result.Add(mapper.Map<OperatorViewModel>(o));
-            }
-            return result;
-        }
-
-        public IEnumerable<OperatorViewModel> GetAll()
-        {
-            var operators = unitOfWork.Operators.GetAll();
-            var result = new List<OperatorViewModel>();
-            foreach (var o in operators)
-            {
-                result.Add(mapper.Map<OperatorViewModel>(o));
-            }
-            return result;
         }
 
         public OperatorViewModel GetById(int Id)
@@ -66,13 +44,10 @@ namespace BAL.Managers
 
         public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
         {
-            var allOperators = unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry));
-            var operators = allOperators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
-            var result = new List<OperatorViewModel>();
-            foreach (var o in operators)
-            {
-                result.Add(mapper.Map<OperatorViewModel>(o));
-            }
+            var operators = unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry),
+                o => o.OrderByDescending(s => s.Id));
+            operators = operators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
+            var result = mapper.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>(operators);
             return result;
         }
 
@@ -99,12 +74,12 @@ namespace BAL.Managers
             try
             {
                 unitOfWork.Operators.Update(result);
+                unitOfWork.Save();
             }
             catch
             {
                 return false;
             }
-            unitOfWork.Save();
             return true;
         }
     }
