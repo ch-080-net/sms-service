@@ -241,8 +241,6 @@ namespace DAL.Migrations
 
                     b.Property<int>("PhoneId");
 
-                    b.Property<string>("Priority");
-
                     b.Property<string>("Surname");
 
                     b.HasKey("Id");
@@ -259,7 +257,7 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Logo");
+                    b.Property<byte[]>("Logo");
 
                     b.Property<string>("Name")
                         .IsRequired();
