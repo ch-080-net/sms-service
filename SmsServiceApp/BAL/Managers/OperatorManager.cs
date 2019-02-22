@@ -5,6 +5,7 @@ using WebCustomerApp.Models;
 using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using AutoMapper;
+using System.Linq;
 
 namespace BAL.Managers
 {
@@ -56,6 +57,23 @@ namespace BAL.Managers
         {
             var oper = unitOfWork.Operators.GetById(Id);
             return mapper.Map<OperatorViewModel>(oper);
+        }
+
+        public int GetNumberOfPages(int NumOfElements = 20)
+        {
+            return (unitOfWork.Operators.GetAll().Count() / NumOfElements) + 1;
+        }
+
+        public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20)
+        {
+            var allOperators = unitOfWork.Operators.GetAll();
+            var operators = allOperators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
+            var result = new List<OperatorViewModel>();
+            foreach (var o in operators)
+            {
+                result.Add(mapper.Map<OperatorViewModel>(o));
+            }
+            return result;
         }
 
         public bool Remove(int Id)

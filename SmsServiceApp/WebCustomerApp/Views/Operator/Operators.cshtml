@@ -24,3 +24,21 @@
 {
     { await Html.RenderPartialAsync("Operator", iter); }
 }
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" asp-action="PreviousPage" asp-controller="Operator" asp-route-CurrentPage="@ViewBag.CurrentPage">Previous</a></li>
+        @for (int i = 1; i <= ViewBag.NumOfpages; i++)
+        {
+            if (i == ViewBag.CurrentPage)
+            {
+                <li class="page-item active"><a class="page-link" asp-action="Operators" asp-controller="Operator" asp-route-Page="@i">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" asp-action="Operators" asp-controller="Operator" asp-route-Page="@i">@i</a></li>
+            }
+        }
+                <li class="page-item"><a class="page-link" asp-action="NextPage" asp-controller="Operator" asp-route-CurrentPage="@ViewBag.CurrentPage">Next</a></li>
+    </ul>
+</nav>

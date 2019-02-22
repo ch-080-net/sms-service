@@ -26,9 +26,11 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Operators()
+        public IActionResult Operators(int Page = 1)
         {
-            ViewBag.Operators = operatorManager.GetAll();
+            ViewBag.Operators = operatorManager.GetPage(Page);
+            ViewBag.CurrentPage = Page;
+            ViewBag.NumOfPages = operatorManager.GetNumberOfPages();
             return View();
         }
 
@@ -85,6 +87,24 @@ namespace WebApp.Controllers
             }
             return RedirectToAction("Operators", "Operator");
         }
+
+        public IActionResult NextPage(int CurrentPage)
+        {
+            if (CurrentPage < operatorManager.GetNumberOfPages())
+                return RedirectToAction("Operators", "Operator", new { Page = ++CurrentPage });
+            else
+                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
+        }
+
+        public IActionResult PreviousPage(int CurrentPage)
+        {
+            if (CurrentPage > 1)
+                return RedirectToAction("Operators", "Operator", new { Page = --CurrentPage });
+            else
+                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
+        }
+
+
 
 
     }
