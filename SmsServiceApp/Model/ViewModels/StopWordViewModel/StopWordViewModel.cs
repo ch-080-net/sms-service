@@ -7,7 +7,7 @@ namespace Model.ViewModels.StopWordViewModels
     public class StopWordViewModel
     {
         public int Id { get; set; }
-        public string WordDto { get; set; }
+        public string Word { get; set; }
 
     }
 }
