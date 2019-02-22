@@ -46,9 +46,7 @@ namespace WebCustomerApp
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
-<<<<<<<<< Temporary merge branch 1
 			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
-=========
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -77,7 +75,7 @@ namespace WebCustomerApp
                 // User settings  
                 options.User.RequireUniqueEmail = true;
             });
->>>>>>>>> Temporary merge branch 2
+
 
             //Seting the Account Login page  
             services.ConfigureApplicationCookie(options =>
