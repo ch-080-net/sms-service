@@ -1,17 +1,20 @@
 ﻿@using Model.ViewModels.OperatorViewModels
-@model OperatorViewModel
+@model OperatorWithNavigationViewModel
 
 <form asp-action="Operator" asp-controller="Operator" method="post" asp-antiforgery="true">
     <div class="row">
-        <input type="hidden" class="form-control" asp-for="Id" />
+        <input type="hidden" class="form-control" asp-for="Operator.Id" />
+        <input asp-for="SearchQuerry" value="@ViewBag.SearchQuerry" hidden />
+        <input asp-for="Page" value="@ViewBag.CurrentPage" hidden />
         <div class="form-group col-md-4">
-            <input type="text" class="form-control" placeholder="Group" asp-for="Name" />
+            <input type="text" class="form-control" placeholder="Group" asp-for="Operator.Name" />
         </div>
         <div class="form-group col-md-4">
             <div class="btn-group">
                 <button type="submit" class="btn btn-default">Save</button>
-                <a class="btn btn-default" role="button" asp-action="Remove" asp-controller="Operator" asp-route-OperatorId="@Model.Id">Remove</a>
-                <a class="btn btn-default" role="button" asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">Manage tariffs</a>
+                <a class="btn btn-default" role="button" asp-action="Remove" asp-controller="Operator"
+ asp-route-OperatorId="@Model.Operator.Id" asp-route-Page="@Model.Page" asp-route-SearchQuerry="@Model.SearchQuerry">Remove</a>
+                <a class="btn btn-default" role="button" asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Operator.Id">Manage tariffs</a>
             </div>
         </div>
     </div>

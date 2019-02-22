@@ -28,20 +28,32 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Operators(int Page = 1, string SearchQuerry = "")
         {
-            ViewBag.Operators = operatorManager.GetPage(Page, 20, SearchQuerry);
-            ViewBag.CurrentPage = Page;
-            ViewBag.NumOfPages = operatorManager.GetNumberOfPages();
+            ViewBag.NumOfPages = operatorManager.GetNumberOfPages(20, SearchQuerry);
+            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages)? Page : --Page;
             ViewBag.SearchQuerry = SearchQuerry;
+
+            var operators = operatorManager.GetPage(Page, 20, SearchQuerry);
+            var navoperators = new List<OperatorWithNavigationViewModel>();
+            foreach (var iter in operators)
+            {
+                navoperators.Add(new OperatorWithNavigationViewModel()
+                {
+                    Operator = iter,
+                    Page = Page,
+                    SearchQuerry = SearchQuerry
+                });
+            }
+            ViewBag.Operators = navoperators;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Operators(OperatorViewModel newOper)
+        public IActionResult Operators(OperatorWithNavigationViewModel newOper)
         {
             if (ModelState.IsValid)
             {
-                bool result = operatorManager.Add(newOper);
+                bool result = operatorManager.Add(newOper.Operator);
                 if (!result)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid contact");
@@ -49,7 +61,7 @@ namespace WebApp.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Operators", "Operator");
+                    return RedirectToAction("Operators", "Operator", new { newOper.Page, newOper.SearchQuerry });
                 }
             }
             return View();
@@ -71,9 +83,9 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Operator(OperatorViewModel editedOper)
+        public IActionResult Operator(OperatorWithNavigationViewModel editedOper)
         {
-            var result = operatorManager.Update(editedOper);
+            var result = operatorManager.Update(editedOper.Operator);
             if (ModelState.IsValid)
             {
                 if (!result)
@@ -83,13 +95,13 @@ namespace WebApp.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Operators", "Operator");
+                    return RedirectToAction("Operators", "Operator", new { editedOper.Page, editedOper.SearchQuerry });
                 }
             }
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage(int CurrentPage)
+        public IActionResult NextPage(int CurrentPage, string SearchQuerry = "")
         {
             if (CurrentPage < operatorManager.GetNumberOfPages())
                 return RedirectToAction("Operators", "Operator", new { Page = ++CurrentPage });
@@ -97,7 +109,7 @@ namespace WebApp.Controllers
                 return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
         }
 
-        public IActionResult PreviousPage(int CurrentPage)
+        public IActionResult PreviousPage(int CurrentPage, string SearchQuerry = "")
         {
             if (CurrentPage > 1)
                 return RedirectToAction("Operators", "Operator", new { Page = --CurrentPage });
