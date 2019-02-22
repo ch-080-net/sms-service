@@ -8,105 +8,84 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using WebCustomerApp.Models;
-using WebCustomerApp.Models.AccountViewModels;
-using WebCustomerApp.Services;
-using Model.Interfaces;
-using BAL.Managers;
 using Model.ViewModels.OperatorViewModels;
+using WebCustomerApp.Services;
+using BAL.Managers;
 
 namespace WebApp.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Produces("application/json")]
-    [Route("[Controller]/[action]")]
+    
+
     public class OperatorController : Controller
     {
         private IOperatorManager operatorManager;
 
-        public OperatorController(IOperatorManager _operator)
+        public OperatorController(IOperatorManager oper)
         {
-            this.operatorManager = _operator;
+            this.operatorManager = oper;
         }
 
+        [HttpGet]
         public IActionResult Operators()
         {
+            ViewBag.Operators = operatorManager.GetAll();
             return View();
         }
 
-        [HttpGet]
-        [Route("~/Operator/GetOperatorsCount")]
-        public int GetOperatorsCount()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Operators(OperatorViewModel newOper)
         {
-            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
-            return operators.Count();
+            if (ModelState.IsValid)
+            {
+                bool result = operatorManager.Add(newOper);
+                if (!result)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid contact");
+                    return RedirectToAction("Operators", "Operator");
+                }
+                else
+                {
+                    return RedirectToAction("Operators", "Operator");
+                }
+            }
+            return View();
         }
 
-        [HttpGet]
-        [Route("~/Operator/GetOperatorsList")]
-        public IEnumerable<OperatorViewModel> GetOperatorsList(int NumberOfPage)
+        public IActionResult Remove(int OperatorId)
         {
-            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
-            return operators.Skip(NumberOfPage * 10 -10).Take(10).ToList();
-        }
-
-        [HttpGet("{id}")]
-        public OperatorViewModel Get(int id)
-        {
-            var result = operatorManager.GetById(id);
-            if (result != null)
-                return operatorManager.GetById(id);
+            bool result = operatorManager.Remove(OperatorId);
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, "Delete failed");
+                return RedirectToAction("Operators", "Operator");
+            }
             else
-                return new OperatorViewModel();
+            {
+                return RedirectToAction("Operators", "Operator");
+            }
         }
 
         [HttpPost]
-        [Route("/Operator/AddOperator")]
-        public IActionResult AddOperator(OperatorViewModel obj)
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Operator(OperatorViewModel editedOper)
         {
-            bool result = operatorManager.Add(obj);
-            if (result)
-                return new ObjectResult("Operation succesfull");
-            else
-                return new ObjectResult("Error");
+            var result = operatorManager.Update(editedOper);
+            if (ModelState.IsValid)
+            {
+                if (result == false)
+                {
+                    ModelState.AddModelError(string.Empty, "Modify failed");
+                    return RedirectToAction("Operators", "Operator");
+                }
+                else
+                {
+                    return RedirectToAction("Operators", "Operator");
+                }
+            }
+            return RedirectToAction("Operators", "Operator");
         }
 
-        [HttpPut]
-        [Route("/Operator/UpdateOperator/")]
-        public IActionResult UpdateOperator(OperatorViewModel obj)
-        {
-            bool result = operatorManager.Update(obj);
-            if (result)
-                return new ObjectResult("Operation succesfull");
-            else
-                return new ObjectResult("Error");
-        }
 
-        [HttpDelete]
-        [Route("/Phone/DeleteOperator/")]
-        public IActionResult DeleteOperator(int id)
-        {
-            bool result = operatorManager.Remove(id);
-            if (result)
-                return new ObjectResult("Operation succesfull");
-            else
-                return new ObjectResult("Error");
-        }
-
-        [HttpGet]
-        [Route("/Operator/Search/")]
-        public IEnumerable<OperatorViewModel> Search(string searchData, int numberOfPage)
-        {
-            return operatorManager.FindByName(searchData);
-        }
-
-        [HttpGet]
-        [Route("/Operator/GetNumberOfSearchOperators/")]
-        public int GetNumberOfSearchOperators(string searchData)
-        {
-            return operatorManager.FindByName(searchData).Count();
-        }
     }
 }
