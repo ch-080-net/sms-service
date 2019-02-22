@@ -5,7 +5,7 @@ using WebCustomerApp.Models;
 
 namespace BAL.Managers
 {
-    interface IPhoneManager
+    public interface IPhoneManager
     {
         IEnumerable<Phone> GetPhones();
         Phone GetPhoneById(int Id);
