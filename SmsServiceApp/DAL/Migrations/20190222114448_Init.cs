@@ -54,7 +54,7 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Logo = table.Column<string>(nullable: true),
+                    Logo = table.Column<byte[]>(nullable: true),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -250,7 +250,6 @@ namespace DAL.Migrations
                     Name = table.Column<string>(nullable: true),
                     Notes = table.Column<string>(nullable: true),
                     PhoneId = table.Column<int>(nullable: false),
-                    Priority = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
