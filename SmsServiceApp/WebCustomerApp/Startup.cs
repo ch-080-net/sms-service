@@ -83,10 +83,11 @@ namespace WebCustomerApp
                 options.SlidingExpiration = true;
             });
             services.AddMvc();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IContactManager, ContactManager>();
+            //services.AddScoped<IRecipientManager, RecipientManager>();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {

@@ -14,6 +14,8 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<Company> companyRepo;
         private UserManager<ApplicationUser> userManager;
+        private IContactRepository contactRepo;
+        private IBaseRepository<Phone> phoneRepo;
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -40,6 +42,20 @@ namespace DAL.Repositories
         public UserManager<ApplicationUser> Users {
             get {
                 return userManager;
+            }
+        }
+
+        public IContactRepository Contacts {
+            get {
+                if (contactRepo == null) { contactRepo = new ContactRepository(context); }
+                return contactRepo;
+            }
+        }
+
+        public IBaseRepository<Phone> Phones {
+            get {
+                if (recipientRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
+                return phoneRepo;
             }
         }
 
