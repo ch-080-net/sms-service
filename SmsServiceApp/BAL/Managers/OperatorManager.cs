@@ -61,7 +61,7 @@ namespace BAL.Managers
 
         public int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "")
         {
-            return (unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry)).Count() / NumOfElements) + 1;
+            return (unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry)).Count() / (NumOfElements + 1)) + 1;
         }
 
         public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "")

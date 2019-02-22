@@ -28,7 +28,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Operators(int Page = 1, string SearchQuerry = "")
         {
-            ViewBag.Operators = operatorManager.GetPage(Page);
+            ViewBag.Operators = operatorManager.GetPage(Page, 20, SearchQuerry);
             ViewBag.CurrentPage = Page;
             ViewBag.NumOfPages = operatorManager.GetNumberOfPages();
             ViewBag.SearchQuerry = SearchQuerry;
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
             if (!result)
             {
                 ModelState.AddModelError(string.Empty, "Delete failed");
-                return RedirectToAction("Operators", "Operator");
+                return RedirectToAction("Operators", "Operator", new {SearchQuerry });
             }
             else
             {
@@ -119,11 +119,6 @@ namespace WebApp.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult SearchOperators()
-        {
-            return View();
-        }
 
 
 
