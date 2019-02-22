@@ -9,8 +9,11 @@ namespace BAL.Managers
    public interface ITariffManager
     {
         void Insert(TariffViewModel item);
-        void Update(TariffViewModel item);
-        void Delete(TariffViewModel item);
-        IEnumerable<TariffViewModel> GetTariffs();
+        bool Update(TariffViewModel item);
+        bool Delete(int id);
+        IEnumerable<TariffViewModel> GetAll();
+        IEnumerable<TariffViewModel> GetPage(int Page = 1, int NumOfElements = 20);
+        int GetNumberOfPages(int NumOfElements = 20);
+       
     }
 }
