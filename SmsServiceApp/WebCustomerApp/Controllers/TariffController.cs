@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using BAL.Managers;
 using Microsoft.AspNetCore.Mvc;
+using Model.Interfaces;
+using Model.ViewModels.TariffViewModels;
+using WebCustomerApp.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,10 +15,39 @@ namespace WebApp.Controllers
 {
     public class TariffController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        private  ITariffManager tariffManager;
+        public TariffController(ITariffManager tariff)
+        {
+            this.tariffManager = tariff;
+        }
+        //// get: /<controller>/
+        ////public iactionresult index()
+        ////{
+        ////    return view(getall());
+        ////}
+        
+        ////[route("~/tariff/getall")]
+        ////[httpget]
+        ////public ienumerable<tariffviewmodel> getall()
+        ////{
+            
+            
+        ////    change tommorow
+        ////    ienumerable<tariffviewmodel> tariffs = tariffmanager.gettariffs().where(com =>com.name  == operatorid);
+        ////    return tariffs;
+        //}
+        public IActionResult Create()
         {
             return View();
         }
+        [Route("~/Tariff/Create")]
+        [HttpPost]
+        public IActionResult Create(TariffViewModel item)
+        {
+            
+            tariffManager.Insert(item);
+            return new ObjectResult("Tariff added successfully!");
+        }
+
     }
 }

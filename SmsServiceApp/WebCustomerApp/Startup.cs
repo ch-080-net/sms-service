@@ -46,8 +46,11 @@ namespace WebCustomerApp
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
-			// Auto Mapper Configurations
-			var mappingConfig = new MapperConfiguration(mc =>
+<<<<<<<<< Temporary merge branch 1
+			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+=========
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());
             });
@@ -74,6 +77,7 @@ namespace WebCustomerApp
                 // User settings  
                 options.User.RequireUniqueEmail = true;
             });
+>>>>>>>>> Temporary merge branch 2
 
             //Seting the Account Login page  
             services.ConfigureApplicationCookie(options =>
@@ -89,7 +93,10 @@ namespace WebCustomerApp
             services.AddMvc();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITariffManager, TariffManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
+
+            services.AddScoped<IOperatorManager, OperatorManager>();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
