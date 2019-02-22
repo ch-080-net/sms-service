@@ -45,7 +45,7 @@ function nextOperatorPage() {
         }
 }
 
-function previousPhonePage() {
+function previousOperatorPage() {
     if (currentPage > 1) {
         currentPage--;
         delegateToCurrentGetListFunction();
@@ -61,7 +61,7 @@ function getOperatorPageByNumber(item) {
 
 // Get all Operators to display
 function getOperatorsList() {
-    // Call Web API to get a list of Phones
+    // Call Web API to get a list of Operators
     $.ajax({
         url: '/Operator/GetOperatorsList/',
         type: 'GET',
@@ -82,12 +82,12 @@ function operatorListSuccess(operators) {
     // Iterate over the collection of data
     $("#operatorTable tbody").remove();
     $.each(operators, function (index, operator) {
-        // Add a row to the phone table
+        // Add a row to the operator table
         operatorAddRow(operator);
     });
 }
 
-// Add phone row to <table>
+// Add operator row to <table>
 function operatorAddRow(operator) {
     // First check if a <tbody> tag exists, add one if not
     if ($("#operatorTable tbody").length == 0) {
@@ -102,22 +102,20 @@ function operatorAddRow(operator) {
 // Build a <tr> for a row of table data
 function operatorBuildTableRow(operator) {
     var newRow = "<tr>" +
-        "<td><input  class='input-phone' type='text' readonly='true' value='" + operator.phoneNumber + "'/></td>" +
-        "<td><input  class='input-fullname'  type='text' readonly='false' value='" + operator.fullName + "'/></td>" +
+        "<td><input class='input-name' type='text' readonly='true' value='" + operator.Name + "'/></td>" +
         "<td>" +
         "<button type='button' " +
-        "onclick='phoneEditAllow(this);' " +
+        "onclick='operatorEditAllow(this);' " +
         "class='btn btn-default' " +
-        "data-id='" + operator.phoneId + "' " +
-        "data-phonenumber='" + operator.phoneNumber + "' " +
-        "data-fullname='" + operator.fullName + "' " +
+        "data-id='" + operator.Id + "' " +
+        "data-name='" + operator.Name + "' " +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
-        "onclick='phoneDelete(this);'" +
+        "onclick='operatorDelete(this);'" +
         "class='btn btn-default' " +
-        "data-id='" + operator.phoneId + "'>" +
+        "data-id='" + operator.Id + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
         "</td>" +
@@ -183,7 +181,7 @@ function operatorUpdate(item) {
 function operatorDelete(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/Phone/DeleteOperator/"
+    options.url = "/Operator/DeleteOperator/"
         + id;
     options.type = "DELETE";
     options.success = function (msg) {

@@ -1,0 +1,40 @@
+﻿<html>
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <script src="~/js/Operator.js">
+    </script>
+</head>
+<body>
+    <h3>Operator manager</h3>
+    <form>
+        <table id="operatorTable" style="border: 1px solid #999" cellpadding="1">
+            <thead>
+                <tr>
+                    <td> Name </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td><input id="name" type="text" /></td>                    
+                    <td><button type='button' id="insert" onclick='onAddOperator(this)' class='btn btn-default'><span class='glyphicon glyphicon-plus' />Insert</button></td>
+                </tr>
+                <tr>
+                    <td><label>Search field</label></td>
+                    <td><input id="searchField" type="text" /></td>
+                    <td><button type='button' id="searchField" onclick='searchOperators()' class='btn btn-default'><span class='glyphicon glyphicon-search' />Search</button></td>
+                </tr>
+            </thead>
+        </table>
+        <div class="btn-group" id="pageButtons">
+            <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+            <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
+            <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+        </div>
+        <br />
+        <div id="msg"></div>
+    </form>
+</body>
+</html>

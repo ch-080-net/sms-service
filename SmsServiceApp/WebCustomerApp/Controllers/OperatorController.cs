@@ -15,6 +15,7 @@ using WebCustomerApp.Models.AccountViewModels;
 using WebCustomerApp.Services;
 using Model.Interfaces;
 using BAL.Managers;
+using Model.ViewModels.OperatorViewModels;
 
 namespace WebApp.Controllers
 {
@@ -39,51 +40,73 @@ namespace WebApp.Controllers
         [Route("~/Operator/GetOperatorsCount")]
         public int GetOperatorsCount()
         {
-            throw new NotImplementedException();
+            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
+            return operators.Count();
         }
 
         [HttpGet]
         [Route("~/Operator/GetOperatorsList")]
-        public int GetOperatorsList()
+        public IEnumerable<OperatorViewModel> GetOperatorsList(int NumberOfPage)
         {
-            throw new NotImplementedException();
+            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
+            return operators.Skip(NumberOfPage * 10 -10).Take(10).ToList();
+        }
+
+        [HttpGet("{id}")]
+        public OperatorViewModel Get(int id)
+        {
+            var result = operatorManager.GetById(id);
+            if (result != null)
+                return operatorManager.GetById(id);
+            else
+                return new OperatorViewModel();
         }
 
         [HttpPost]
         [Route("/Operator/AddOperator")]
-        public int AddOperator()
+        public IActionResult AddOperator(OperatorViewModel obj)
         {
-            throw new NotImplementedException();
+            bool result = operatorManager.Add(obj);
+            if (result)
+                return new ObjectResult("Operation succesfull");
+            else
+                return new ObjectResult("Error");
         }
 
         [HttpPut]
         [Route("/Operator/UpdateOperator/")]
-        public int UpdateOperator()
+        public IActionResult UpdateOperator(OperatorViewModel obj)
         {
-            throw new NotImplementedException();
+            bool result = operatorManager.Update(obj);
+            if (result)
+                return new ObjectResult("Operation succesfull");
+            else
+                return new ObjectResult("Error");
         }
 
         [HttpDelete]
         [Route("/Phone/DeleteOperator/")]
-        public int DeleteOperator()
+        public IActionResult DeleteOperator(int id)
         {
-            throw new NotImplementedException();
+            bool result = operatorManager.Remove(id);
+            if (result)
+                return new ObjectResult("Operation succesfull");
+            else
+                return new ObjectResult("Error");
         }
 
         [HttpGet]
         [Route("/Operator/Search/")]
-        public int Search()
+        public IEnumerable<OperatorViewModel> Search(string searchData, int numberOfPage)
         {
-            throw new NotImplementedException();
+            return operatorManager.FindByName(searchData);
         }
 
         [HttpGet]
         [Route("/Operator/GetNumberOfSearchOperators/")]
-        public int GetNumberOfSearchOperators()
+        public int GetNumberOfSearchOperators(string searchData)
         {
-            throw new NotImplementedException();
+            return operatorManager.FindByName(searchData).Count();
         }
-
-
     }
 }

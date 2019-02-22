@@ -7,8 +7,12 @@ namespace BAL.Managers
 {
     public interface IOperatorManager
     {
+        IEnumerable<OperatorViewModel> GetAll();
+        OperatorViewModel GetById(int Id);
+        bool Add(OperatorViewModel NewOperator);
+        bool Update(OperatorViewModel UpdatedOperator);
+        bool Remove(int Id);
+        IEnumerable<OperatorViewModel> FindByName(string Name);
 
-
-        IEnumerable<OperatorViewModel> GetAllOperators();
     }
 }
