@@ -14,6 +14,6 @@ namespace WebCustomerApp.Models
         public string Name { get; set; }
 
         // Contains logo (as reference right now)
-        public string Logo { get; set; }
+        public byte[] Logo { get; set; }
     }
 }
