@@ -191,6 +191,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OperatorCode")
+                        .IsUnique();
+
                     b.HasIndex("OperatorId");
 
                     b.ToTable("Codes");
@@ -263,6 +266,9 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Operators");
                 });

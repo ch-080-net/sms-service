@@ -371,6 +371,12 @@ namespace DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Codes_OperatorCode",
+                table: "Codes",
+                column: "OperatorCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Codes_OperatorId",
                 table: "Codes",
                 column: "OperatorId");
@@ -394,6 +400,12 @@ namespace DAL.Migrations
                 name: "IX_Contacts_PhoneId",
                 table: "Contacts",
                 column: "PhoneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Operators_Name",
+                table: "Operators",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipients_CompanyId",

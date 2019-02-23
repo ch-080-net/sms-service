@@ -146,9 +146,15 @@ namespace WebCustomerApp.Data
 
             #endregion
 
+            // Unique indexes
 
+            builder.Entity<Operator>()
+                .HasIndex(o => o.Name)
+                .IsUnique();
 
-
+            builder.Entity<Code>()
+                .HasIndex(i => i.OperatorCode)
+                .IsUnique();
         }
     }
 }
