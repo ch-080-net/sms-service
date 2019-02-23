@@ -13,8 +13,6 @@ namespace WebCustomerApp.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             Database.EnsureCreated();
-
-
         }
 
         public DbSet<Code> Codes { get; set; }

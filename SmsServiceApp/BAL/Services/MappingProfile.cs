@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Model.ViewModels.TariffViewModels;
 using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.RecipientViewModels;
 using Model.ViewModels.ContactViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Model.ViewModels.OperatorViewModels;
 using WebCustomerApp.Models;
 
 namespace BAL.Services
@@ -23,6 +25,14 @@ namespace BAL.Services
             // CreateMap<UserDto, User>();
             CreateMap<Contact, ContactViewModel>();
             CreateMap<ContactViewModel, Contact>();
+            // CreateMap<User, UserDto>();
+            // CreateMap<UserDto, User>();
+
+            CreateMap<Operator, OperatorViewModel>();
+            CreateMap<OperatorViewModel, Operator>();
+          
+            CreateMap<Tariff, TariffViewModel>();
+            CreateMap<TariffViewModel, Tariff>();
         }
     }
 }

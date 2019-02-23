@@ -87,6 +87,10 @@ namespace WebCustomerApp
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();
             services.AddScoped<IContactManager, ContactManager>();
+            services.AddScoped<ITariffManager, TariffManager>();
+            //services.AddScoped<IRecipientManager, RecipientManager>();
+
+            services.AddScoped<IOperatorManager, OperatorManager>();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
@@ -141,9 +145,10 @@ namespace WebCustomerApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            name: "default",
+            template: "{controller=Home}/{action=Index}/{id?}");    
             });
+
             CreateUserRoles(services).Wait();
         }
     }
