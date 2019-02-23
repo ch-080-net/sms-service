@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Model.ViewModels.OperatorViewModels;
-using WebCustomerApp.Services;
 using BAL.Managers;
 
 namespace WebApp.Controllers
 {
-    
-
+    // Make Model errors passing via TempData and AddModelError? Same for pagination and search?
     public class OperatorController : Controller
     {
         private IOperatorManager operatorManager;
@@ -56,7 +47,6 @@ namespace WebApp.Controllers
                 bool result = operatorManager.Add(newOper.Operator);
                 if (!result)
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid contact");
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
@@ -64,7 +54,7 @@ namespace WebApp.Controllers
                     return RedirectToAction("Operators", "Operator", new { newOper.Page, newOper.SearchQuerry });
                 }
             }
-            return View();
+            return RedirectToAction("Operators", "Operator");
         }
 
         public IActionResult Remove(int OperatorId, int Page = 1, string SearchQuerry = "")
@@ -72,8 +62,7 @@ namespace WebApp.Controllers
             bool result = operatorManager.Remove(OperatorId);
             if (!result)
             {
-                ModelState.AddModelError(string.Empty, "Delete failed");
-                return RedirectToAction("Operators", "Operator", new {SearchQuerry });
+                return RedirectToAction("Operators", "Operator");
             }
             else
             {
@@ -85,12 +74,11 @@ namespace WebApp.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Operator(OperatorWithNavigationViewModel editedOper)
         {
-            var result = operatorManager.Update(editedOper.Operator);
             if (ModelState.IsValid)
             {
+                var result = operatorManager.Update(editedOper.Operator);
                 if (!result)
                 {
-                    ModelState.AddModelError(string.Empty, "Modify failed");
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
@@ -104,17 +92,17 @@ namespace WebApp.Controllers
         public IActionResult NextPage(int CurrentPage, string SearchQuerry = "")
         {
             if (CurrentPage < operatorManager.GetNumberOfPages())
-                return RedirectToAction("Operators", "Operator", new { Page = ++CurrentPage });
+                return RedirectToAction("Operators", "Operator", new { Page = ++CurrentPage, SearchQuerry });
             else
-                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
+                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage, SearchQuerry });
         }
 
         public IActionResult PreviousPage(int CurrentPage, string SearchQuerry = "")
         {
             if (CurrentPage > 1)
-                return RedirectToAction("Operators", "Operator", new { Page = --CurrentPage });
+                return RedirectToAction("Operators", "Operator", new { Page = --CurrentPage, SearchQuerry });
             else
-                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage });
+                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage, SearchQuerry });
         }
 
 

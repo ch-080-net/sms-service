@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
+using Model.ViewModels.CodeViewModels;
 using WebCustomerApp.Models;
 
 namespace BAL.Services
@@ -17,6 +18,8 @@ namespace BAL.Services
 
             CreateMap<Operator, OperatorViewModel>();
             CreateMap<OperatorViewModel, Operator>();
+            CreateMap<Code, CodeViewModel>();
+            CreateMap<CodeViewModel, Code>();
         }
     }
 }
