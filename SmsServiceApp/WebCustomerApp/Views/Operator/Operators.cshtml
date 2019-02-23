@@ -15,7 +15,8 @@
                 <input asp-for="Operator.Name" class="form-control" placeholder="New operator name" />
                 <span asp-validation-for="Operator.Name" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Add</button>
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add</button>
         </form>
     </div>
 </div>
@@ -36,14 +37,16 @@
         {
             <li class="page-item disabled">
                 <a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
-                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a>
+                    asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
             </li>
         }
         else
         {
             <li class="page-item">
                 <a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
-                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Previous</a>
+                    asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
             </li>
         }
 
@@ -68,14 +71,16 @@
         {
             <li class="page-item disabled">
                 <a class="page-link" asp-action="NextPage" asp-controller="Operator"
-                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a>
+                    asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
             </li>
         }
         else
         {
             <li class="page-item">
                 <a class="page-link" asp-action="NextPage" asp-controller="Operator"
-                   asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">Next</a>
+                    asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
             </li>
         }
 

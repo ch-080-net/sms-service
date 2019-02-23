@@ -11,10 +11,13 @@
         </div>
         <div class="form-group col-md-4">
             <div class="btn-group">
-                <button type="submit" class="btn btn-default">Save</button>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save</button>
                 <a class="btn btn-default" role="button" asp-action="Remove" asp-controller="Operator"
- asp-route-OperatorId="@Model.Operator.Id" asp-route-Page="@Model.Page" asp-route-SearchQuerry="@Model.SearchQuerry">Remove</a>
-                <a class="btn btn-default" role="button" asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Operator.Id">Manage tariffs</a>
+ asp-route-OperatorId="@Model.Operator.Id" asp-route-Page="@Model.Page" asp-route-SearchQuerry="@Model.SearchQuerry">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove</a>
+                <a class="btn btn-default" role="button" asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Operator.Id">
+                    <span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Manage tariffs</a>
             </div>
         </div>
     </div>
