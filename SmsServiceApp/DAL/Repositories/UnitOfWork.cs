@@ -69,12 +69,6 @@ namespace DAL.Repositories
             }
         }
 
-        public UserManager<ApplicationUser> Users {
-            get {
-                return userManager;
-            }
-        }
-
         public IContactRepository Contacts {
             get {
                 if (contactRepo == null) { contactRepo = new ContactRepository(context); }

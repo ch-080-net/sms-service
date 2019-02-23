@@ -16,6 +16,7 @@ namespace WebApp.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyManager companyManager;
+        private readonly ITariffManager tariffManager;
 
         public CompanyController(ICompanyManager company)
         {
