@@ -17,6 +17,9 @@ namespace BAL.Managers
         }
         public bool Add(CodeViewModel NewCode)
         {
+            var check = unitOfWork.Codes.Get(o => o.OperatorCode == NewCode.OperatorCode).FirstOrDefault();
+            if (check != null)
+                return false;
             var result = mapper.Map<Code>(NewCode);
             try
             {
@@ -70,6 +73,9 @@ namespace BAL.Managers
 
         public bool Update(CodeViewModel UpdatedCode)
         {
+            var check = unitOfWork.Codes.Get(o => o.OperatorCode == UpdatedCode.OperatorCode).FirstOrDefault();
+            if (check != null)
+                return false;
             var result = mapper.Map<Code>(UpdatedCode);
             try
             {

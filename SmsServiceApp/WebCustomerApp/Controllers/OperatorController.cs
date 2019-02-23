@@ -20,7 +20,7 @@ namespace WebApp.Controllers
         public IActionResult Operators(int Page = 1, string SearchQuerry = "")
         {
             ViewBag.NumOfPages = operatorManager.GetNumberOfPages(20, SearchQuerry);
-            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages)? Page : --Page;
+            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages)? Page : ViewBag.NumOfPages;
             ViewBag.SearchQuerry = SearchQuerry;
 
             var operators = operatorManager.GetPage(Page, 20, SearchQuerry);

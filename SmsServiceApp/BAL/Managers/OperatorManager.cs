@@ -18,6 +18,9 @@ namespace BAL.Managers
 
         public bool Add(OperatorViewModel NewOperator)
         {
+            var check = unitOfWork.Operators.Get(o => o.Name == NewOperator.Name).FirstOrDefault();
+            if (check != null)
+                return false;
             var result = mapper.Map<Operator>(NewOperator);
             try
             {
@@ -70,6 +73,9 @@ namespace BAL.Managers
 
         public bool Update(OperatorViewModel UpdatedOperator)
         {
+            var check = unitOfWork.Operators.Get(o => o.Name == UpdatedOperator.Name).FirstOrDefault();
+            if (check != null)
+                return false;
             var result = mapper.Map<Operator>(UpdatedOperator);
             try
             {

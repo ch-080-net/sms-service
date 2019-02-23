@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         public IActionResult Codes(int OperatorId, int Page = 1)
         {
             ViewBag.NumOfPages = codeManager.GetNumberOfPages(OperatorId, 20);
-            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages) ? Page : --Page;
+            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages) ? Page : ViewBag.NumOfPages;
             ViewBag.OperatorName = operatorManager.GetById(OperatorId).Name;
             ViewBag.OperatorId = OperatorId;
             var codes = codeManager.GetPage(OperatorId, Page, 20);
