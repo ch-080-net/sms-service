@@ -48,7 +48,7 @@ namespace WebApp.Controllers
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             item.ApplicationUserId = userId;
             companyManager.Insert(item);
-            return new ObjectResult("Recipient added successfully!");
+            return RedirectToAction("Index");
         }
     }
 }

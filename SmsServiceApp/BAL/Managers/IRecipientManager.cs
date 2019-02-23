@@ -8,10 +8,9 @@ namespace BAL.Managers
 {
     public interface IRecipientManager
     {
-        IEnumerable<RecipientViewModel> GetRecipients();
-        void Insert(RecipientViewModel item);
-        void Update(RecipientViewModel item);
+        IEnumerable<RecipientViewModel> GetRecipients(int companyId);
+        void Insert(RecipientViewModel item, int companyId);
+        void Update(RecipientViewModel item, int companyId);
         void Delete(RecipientViewModel item);
-        void SetStateModified(RecipientViewModel item);
     }
 }

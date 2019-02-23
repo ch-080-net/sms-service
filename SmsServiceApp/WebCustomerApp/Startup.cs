@@ -87,7 +87,6 @@ namespace WebCustomerApp
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();
             services.AddScoped<IContactManager, ContactManager>();
-            //services.AddScoped<IRecipientManager, RecipientManager>();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
