@@ -11,7 +11,7 @@ using WebCustomerApp.Data;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190223160921_Init")]
+    [Migration("20190223175821_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
