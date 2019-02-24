@@ -39,15 +39,15 @@ namespace BAL.Managers
             return mapper.Map<CodeViewModel>(oper);
         }
 
-        public int GetNumberOfPages(int OperatorId, int NumOfElements = 20)
+        public int GetNumberOfPages(int OperatorId, int NumOfElements = 20, string SearchQuerry = "")
         {
-            return (unitOfWork.Codes.Get(o => o.OperatorId == OperatorId)
+            return (unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry))
                 .Count() / (NumOfElements + 1)) + 1;
         }
 
-        public IEnumerable<CodeViewModel> GetPage(int OperatorId, int Page = 1, int NumOfElements = 20)
+        public IEnumerable<CodeViewModel> GetPage(int OperatorId, int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
         {
-            var codes = unitOfWork.Codes.Get(o => o.OperatorId == OperatorId,
+            var codes = unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry),
                 o => o.OrderBy(s => s.OperatorCode));
             codes = codes.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
             var result = mapper.Map<IEnumerable<Code>, IEnumerable<CodeViewModel>>(codes);

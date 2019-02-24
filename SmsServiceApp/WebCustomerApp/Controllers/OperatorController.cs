@@ -3,12 +3,39 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
-    // Make Model errors passing via TempData and AddModelError? Same for pagination and search?
+    [Authorize(Roles = "Admin")]
     public class OperatorController : Controller
     {
+        private int CurrentPage
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("CurrentPageOperator") ?? 0;
+            }
+            set
+            {
+                HttpContext.Session.SetInt32("CurrentPageOperator", value);
+            }
+        }
+
+        private string SearchQuerry
+        {
+            get
+            {
+                return HttpContext.Session.GetString("SearchQuerryOperator");
+            }
+            set
+            {
+                HttpContext.Session.SetString("SearchQuerryOperator", value);
+            }
+        }
+
+
         private IOperatorManager operatorManager;
 
         public OperatorController(IOperatorManager oper)
@@ -17,47 +44,49 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Operators(int Page = 1, string SearchQuerry = "")
+        public IActionResult Operators()
         {
-            ViewBag.NumOfPages = operatorManager.GetNumberOfPages(20, SearchQuerry);
-            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages)? Page : ViewBag.NumOfPages;
-            ViewBag.SearchQuerry = SearchQuerry;
+            if (this.SearchQuerry == null)
+                this.SearchQuerry = "";
+            ViewBag.SearchQuerry = this.SearchQuerry;
+            
+            ViewBag.NumOfPages = operatorManager.GetNumberOfPages(20, this.SearchQuerry);
 
-            var operators = operatorManager.GetPage(Page, 20, SearchQuerry);
-            var navoperators = new List<OperatorWithNavigationViewModel>();
-            foreach (var iter in operators)
+            if (this.CurrentPage < 1)
+                this.CurrentPage = 1;
+            else if((ViewBag.NumOfPages - this.CurrentPage) == (-1))
+                --this.CurrentPage;
+            else if ((ViewBag.NumOfPages - this.CurrentPage) < (-1))
             {
-                navoperators.Add(new OperatorWithNavigationViewModel()
-                {
-                    Operator = iter,
-                    Page = Page,
-                    SearchQuerry = SearchQuerry
-                });
+                this.CurrentPage = 1;
             }
-            ViewBag.Operators = navoperators;
+            ViewBag.CurrentPage = this.CurrentPage;
+
+            ViewBag.Operators = operatorManager.GetPage(this.CurrentPage, 20
+                , this.SearchQuerry);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Operators(OperatorWithNavigationViewModel newOper)
+        public IActionResult Operators(OperatorViewModel newOper)
         {
             if (ModelState.IsValid)
             {
-                bool result = operatorManager.Add(newOper.Operator);
+                bool result = operatorManager.Add(newOper);
                 if (!result)
                 {
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
                 {
-                    return RedirectToAction("Operators", "Operator", new { newOper.Page, newOper.SearchQuerry });
+                    return RedirectToAction("Operators", "Operator");
                 }
             }
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult Remove(int OperatorId, int Page = 1, string SearchQuerry = "")
+        public IActionResult Remove(int OperatorId)
         {
             bool result = operatorManager.Remove(OperatorId);
             if (!result)
@@ -66,43 +95,58 @@ namespace WebApp.Controllers
             }
             else
             {
-                return RedirectToAction("Operators", "Operator", new {Page, SearchQuerry});
+                return RedirectToAction("Operators", "Operator");
             }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Operator(OperatorWithNavigationViewModel editedOper)
+        public IActionResult Operator(OperatorViewModel editedOper)
         {
             if (ModelState.IsValid)
             {
-                var result = operatorManager.Update(editedOper.Operator);
+                var result = operatorManager.Update(editedOper);
                 if (!result)
                 {
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
                 {
-                    return RedirectToAction("Operators", "Operator", new { editedOper.Page, editedOper.SearchQuerry });
+                    return RedirectToAction("Operators", "Operator");
                 }
             }
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage(int CurrentPage, string SearchQuerry = "")
+        public IActionResult NextPage()
         {
-            if (CurrentPage < operatorManager.GetNumberOfPages())
-                return RedirectToAction("Operators", "Operator", new { Page = ++CurrentPage, SearchQuerry });
+            if (this.CurrentPage < operatorManager.GetNumberOfPages(20, this.SearchQuerry))
+            {
+                this.CurrentPage++;
+                return RedirectToAction("Operators", "Operator");
+            }
             else
-                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage, SearchQuerry });
+            {
+                return RedirectToAction("Operators", "Operator");
+            }
+                
         }
 
-        public IActionResult PreviousPage(int CurrentPage, string SearchQuerry = "")
+        public IActionResult PreviousPage()
         {
             if (CurrentPage > 1)
-                return RedirectToAction("Operators", "Operator", new { Page = --CurrentPage, SearchQuerry });
+            {
+                this.CurrentPage--;
+                return RedirectToAction("Operators", "Operator");
+            }
             else
-                return RedirectToAction("Operators", "Operator", new { Page = CurrentPage, SearchQuerry });
+                return RedirectToAction("Operators", "Operator");
+        }
+
+        public IActionResult SelectPage(int Page)
+        {
+            this.CurrentPage = Page;
+            return RedirectToAction("Operators", "Operator");         
         }
 
 
@@ -111,7 +155,8 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Operators", "Operator", new {Search.SearchQuerry });
+                this.SearchQuerry = Search.SearchQuerry ?? "";
+                return RedirectToAction("Operators", "Operator");
             }
             else
             {
@@ -119,8 +164,11 @@ namespace WebApp.Controllers
             }
         }
 
-
-
-
+        public IActionResult EditCodes(int Id)
+        {
+            TempData["OperatorId"] = Id;
+            return RedirectToAction("Codes", "Code");
+        }
+                     
     }
 }

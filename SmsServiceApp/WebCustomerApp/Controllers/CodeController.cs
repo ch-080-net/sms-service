@@ -4,11 +4,50 @@ using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.CodeViewModels;
 using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CodeController : Controller
     {
+        private int CurrentPage
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("CurrentPageCode") ?? 0;
+            }
+            set
+            {
+                HttpContext.Session.SetInt32("CurrentPageCode", value);
+            }
+        }
+
+        private string SearchQuerry
+        {
+            get
+            {
+                return HttpContext.Session.GetString("SearchQuerryCode");
+            }
+            set
+            {
+                HttpContext.Session.SetString("SearchQuerryCode", value);
+            }
+        }
+
+        private int OperatorId
+        {
+            get
+            {
+                return HttpContext.Session.GetInt32("OperatorIdCode") ?? 0;
+            }
+            set
+            {
+                HttpContext.Session.SetInt32("OperatorIdCode", value);
+            }
+        }
+
         private ICodeManager codeManager;
         private IOperatorManager operatorManager;
 
@@ -19,93 +58,126 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Codes(int OperatorId, int Page = 1)
+        public IActionResult Codes()
         {
-            ViewBag.NumOfPages = codeManager.GetNumberOfPages(OperatorId, 20);
-            ViewBag.CurrentPage = (Page <= ViewBag.NumOfPages) ? Page : ViewBag.NumOfPages;
-            ViewBag.OperatorName = operatorManager.GetById(OperatorId).Name;
-            ViewBag.OperatorId = OperatorId;
-            var codes = codeManager.GetPage(OperatorId, Page, 20);
-            var navcodes = new List<CodeWithNavigationViewModel>();
-            foreach (var iter in codes)
+            if (TempData.ContainsKey("OperatorId"))
+                this.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
+
+            if (this.SearchQuerry == null)
+                this.SearchQuerry = "";
+            ViewBag.SearchQuerry = this.SearchQuerry;
+
+            ViewBag.NumOfPages = codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry);
+
+            if (this.CurrentPage < 1)
+                this.CurrentPage = 1;
+            else if ((ViewBag.NumOfPages - this.CurrentPage) == (-1))
+                --this.CurrentPage;
+            else if ((ViewBag.NumOfPages - this.CurrentPage) < (-1))
             {
-                navcodes.Add(new CodeWithNavigationViewModel()
-                {
-                    Code = iter,
-                    Page = Page,
-                });
+                this.CurrentPage = 1;
             }
-            ViewBag.Codes = navcodes;
+            ViewBag.CurrentPage = this.CurrentPage;
+
+            ViewBag.OperatorName = operatorManager.GetById(this.OperatorId).Name;
+
+            ViewBag.Codes = codeManager.GetPage(OperatorId, this.CurrentPage, 20, this.SearchQuerry);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Codes(CodeWithNavigationViewModel newCode)
+        public IActionResult Codes(CodeViewModel newCode)
         {
             if (ModelState.IsValid)
             {
-                bool result = codeManager.Add(newCode.Code);
+                newCode.OperatorId = this.OperatorId;
+                bool result = codeManager.Add(newCode);
                 if (!result)
                 {
-                    return RedirectToAction("Codes", "Code", new { newCode.Code.OperatorId });
+                    return RedirectToAction("Codes", "Code");
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code"
-                        , new {newCode.Code.OperatorId, newCode.Page});
+                    return RedirectToAction("Codes", "Code");
                 }
             }
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult Remove(int CodeId, int OperatorId, int Page = 1)
+        public IActionResult Remove(int CodeId)
         {
             bool result = codeManager.Remove(CodeId);
             if (!result)
             {
-                return RedirectToAction("Codes", "Code", new { OperatorId });
+                return RedirectToAction("Codes", "Code");
             }
             else
             {
-                return RedirectToAction("Codes", "Code", new {OperatorId, Page});
+                return RedirectToAction("Codes", "Code");
             }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Code(CodeWithNavigationViewModel editedCode)
+        public IActionResult Code(CodeViewModel editedCode)
         {
             if (ModelState.IsValid)
             {
-                var result = codeManager.Update(editedCode.Code);
+                editedCode.OperatorId = this.OperatorId;
+                var result = codeManager.Update(editedCode);
                 if (!result)
                 {
-                    return RedirectToAction("Codes", "Code", new { editedCode.Code.OperatorId });
+                    return RedirectToAction("Codes", "Code");
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code"
-                        , new { editedCode.Code.OperatorId, editedCode.Page});
+                    return RedirectToAction("Codes", "Code");
                 }
             }
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage(int OperatorId, int CurrentPage)
+        public IActionResult NextPage()
         {
-            if (CurrentPage < codeManager.GetNumberOfPages(OperatorId))
-                return RedirectToAction("Codes", "Code", new { Page = ++CurrentPage, OperatorId });
+            if (this.CurrentPage < codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry))
+            {
+                this.CurrentPage++;
+                return RedirectToAction("Codes", "Code");
+            }
             else
-                return RedirectToAction("Codes", "Code", new { Page = CurrentPage, OperatorId });
+                return RedirectToAction("Codes", "Code");
         }
 
-        public IActionResult PreviousPage(int OperatorId, int CurrentPage)
+        public IActionResult PreviousPage()
         {
-            if (CurrentPage > 1)
-                return RedirectToAction("Codes", "Code", new { Page = --CurrentPage, OperatorId});
+            if (this.CurrentPage > 1)
+            {
+                this.CurrentPage--;
+                return RedirectToAction("Codes", "Code");
+            }
             else
-                return RedirectToAction("Codes", "Code", new { Page = CurrentPage, OperatorId});
+                return RedirectToAction("Codes", "Code");
+        }
+
+        public IActionResult SelectPage(int Page)
+        {
+            this.CurrentPage = Page;
+            return RedirectToAction("Codes", "Code");
+        }
+
+        [HttpPost]
+        public IActionResult SearchCodes(CodeSearchViewModel Search)
+        {
+            if (ModelState.IsValid)
+            {
+                this.SearchQuerry = Search.SearchQuerry ?? "";
+                return RedirectToAction("Codes", "Code");
+            }
+            else
+            {
+                return RedirectToAction("Codes", "Code");
+            }
         }
 
     }

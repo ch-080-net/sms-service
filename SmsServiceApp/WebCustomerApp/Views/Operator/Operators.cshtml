@@ -1,5 +1,5 @@
 ﻿@using Model.ViewModels.OperatorViewModels
-@model OperatorWithNavigationViewModel
+@model OperatorViewModel
 <h2>Operators</h2>
 
 <hr />
@@ -8,11 +8,9 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Operators" asp-controller="Operator" method="post" asp-antiforgery="true">
-            <input asp-for="SearchQuerry" value="@ViewBag.SearchQuerry" hidden />
-            <input asp-for="Page" value="@ViewBag.CurrentPage" hidden />
             <div class="form-group">
-                <input asp-for="Operator.Name" class="form-control" placeholder="New operator name" />
-                <span asp-validation-for="Operator.Name" class="text-danger"></span>
+                <input asp-for="Name" class="form-control" placeholder="New operator name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
@@ -26,7 +24,7 @@
 
 @{await Html.RenderPartialAsync("SearchOperators", new OperatorSearchViewModel() { SearchQuerry = ViewBag.SearchQuerry });}
 
-@foreach (OperatorWithNavigationViewModel iter in ViewBag.Operators)
+@foreach (OperatorViewModel iter in ViewBag.Operators)
 {
     { await Html.RenderPartialAsync("Operator", iter); }
 }
@@ -46,8 +44,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="PreviousPage" asp-controller="Operator"
-                       asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <a class="page-link" asp-action="PreviousPage" asp-controller="Operator">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
                 </li>
@@ -58,15 +55,15 @@
                 if (i == ViewBag.CurrentPage)
                 {
                     <li class="page-item active">
-                        <a class="page-link" asp-action="Operators" asp-controller="Operator"
-                           asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a>
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
+                           asp-route-Page="@i">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-action="Operators" asp-controller="Operator"
-                           asp-route-Page="@i" asp-route-SearchQuerry="@ViewBag.SearchQuerry">@i</a>
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
+                           asp-route-Page="@i">@i</a>
                     </li>
                 }
             }
@@ -81,8 +78,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="NextPage" asp-controller="Operator"
-                       asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-SearchQuerry="@ViewBag.SearchQuerry">
+                    <a class="page-link" asp-action="NextPage" asp-controller="Operator">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </li>

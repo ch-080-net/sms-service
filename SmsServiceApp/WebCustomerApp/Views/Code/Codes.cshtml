@@ -1,5 +1,5 @@
 ﻿@using Model.ViewModels.CodeViewModels
-@model CodeWithNavigationViewModel
+@model CodeViewModel
 <h2>Codes for @ViewBag.OperatorName</h2>
 
 <hr />
@@ -7,11 +7,9 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Codes" asp-controller="Code" method="post" asp-antiforgery="true">
-            <input asp-for="Code.OperatorId" value="@ViewBag.OperatorId" hidden />
-            <input asp-for="Page" value="@ViewBag.CurrentPage" hidden />
             <div class="form-group">
-                <input asp-for="Code.OperatorCode" class="form-control code" placeholder="New operator code"/>
-                <span asp-validation-for="Code.OperatorCode" class="text-danger"></span>
+                <input asp-for="OperatorCode" class="form-control code" placeholder="Example: +38066" />
+                <span asp-validation-for="OperatorCode" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
@@ -26,7 +24,9 @@
 <hr />
 <h4>Operators list</h4>
 
-@foreach (CodeWithNavigationViewModel iter in ViewBag.Codes)
+@{await Html.RenderPartialAsync("SearchCodes", new CodeSearchViewModel() { SearchQuerry = ViewBag.SearchQuerry });}
+
+@foreach (CodeViewModel iter in ViewBag.Codes)
 {
     { await Html.RenderPartialAsync("Code", iter); }
 }
@@ -47,8 +47,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="PreviousPage" asp-controller="Code"
-                       asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-OperatorId="@ViewBag.OperatorId">
+                    <a class="page-link" asp-action="PreviousPage" asp-controller="Code">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
                 </li>
@@ -59,15 +58,15 @@
                 if (i == ViewBag.CurrentPage)
                 {
                     <li class="page-item active">
-                        <a class="page-link" asp-action="Codes" asp-controller="Code"
-                           asp-route-Page="@i" asp-route-OperatorId="@ViewBag.OperatorId">@i</a>
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Code"
+                           asp-route-Page="@i">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-action="Codes" asp-controller="Code"
-                           asp-route-Page="@i" asp-route-OperatorId="@ViewBag.OperatorId">@i</a>
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Code"
+                           asp-route-Page="@i">@i</a>
                     </li>
                 }
             }
@@ -82,8 +81,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="NextPage" asp-controller="Code"
-                       asp-route-CurrentPage="@ViewBag.CurrentPage" asp-route-OperatorId="@ViewBag.OperatorId">
+                    <a class="page-link" asp-action="NextPage" asp-controller="Code">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </li>
