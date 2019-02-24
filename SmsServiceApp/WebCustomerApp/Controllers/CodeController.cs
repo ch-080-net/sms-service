@@ -95,6 +95,7 @@ namespace WebApp.Controllers
                 bool result = codeManager.Add(newCode);
                 if (!result)
                 {
+                    TempData["ErrorMessage"] = "Error occurred while adding code";
                     return RedirectToAction("Codes", "Code");
                 }
                 else
@@ -102,6 +103,7 @@ namespace WebApp.Controllers
                     return RedirectToAction("Codes", "Code");
                 }
             }
+            TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
@@ -110,6 +112,7 @@ namespace WebApp.Controllers
             bool result = codeManager.Remove(CodeId);
             if (!result)
             {
+                TempData["ErrorMessage"] = "Error occurred while removing code";
                 return RedirectToAction("Codes", "Code");
             }
             else
@@ -128,6 +131,7 @@ namespace WebApp.Controllers
                 var result = codeManager.Update(editedCode);
                 if (!result)
                 {
+                    TempData["ErrorMessage"] = "Error occurred while editing code";
                     return RedirectToAction("Codes", "Code");
                 }
                 else
@@ -135,6 +139,7 @@ namespace WebApp.Controllers
                     return RedirectToAction("Codes", "Code");
                 }
             }
+            TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 

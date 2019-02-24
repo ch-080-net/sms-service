@@ -64,6 +64,7 @@ namespace WebApp.Controllers
 
             ViewBag.Operators = operatorManager.GetPage(this.CurrentPage, 20
                 , this.SearchQuerry);
+
             return View();
         }
 
@@ -76,6 +77,7 @@ namespace WebApp.Controllers
                 bool result = operatorManager.Add(newOper);
                 if (!result)
                 {
+                    TempData["ErrorMessage"] = "Error occured while adding new operator";
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
@@ -83,6 +85,7 @@ namespace WebApp.Controllers
                     return RedirectToAction("Operators", "Operator");
                 }
             }
+            TempData["ErrorMessage"] = "Internal error!";
             return RedirectToAction("Operators", "Operator");
         }
 
@@ -91,6 +94,7 @@ namespace WebApp.Controllers
             bool result = operatorManager.Remove(OperatorId);
             if (!result)
             {
+                TempData["ErrorMessage"] = "Error occured while removing operator";
                 return RedirectToAction("Operators", "Operator");
             }
             else
@@ -108,6 +112,7 @@ namespace WebApp.Controllers
                 var result = operatorManager.Update(editedOper);
                 if (!result)
                 {
+                    TempData["ErrorMessage"] = "Error occured while editing operator";
                     return RedirectToAction("Operators", "Operator");
                 }
                 else
@@ -115,6 +120,7 @@ namespace WebApp.Controllers
                     return RedirectToAction("Operators", "Operator");
                 }
             }
+            TempData["ErrorMessage"] = "Internal error!";
             return RedirectToAction("Operators", "Operator");
         }
 
@@ -158,10 +164,8 @@ namespace WebApp.Controllers
                 this.SearchQuerry = Search.SearchQuerry ?? "";
                 return RedirectToAction("Operators", "Operator");
             }
-            else
-            {
-                return RedirectToAction("Operators", "Operator");
-            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
         public IActionResult EditCodes(int Id)
