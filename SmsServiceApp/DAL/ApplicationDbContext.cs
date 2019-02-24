@@ -88,6 +88,8 @@ namespace WebCustomerApp.Data
 
             #endregion
 
+            // Optional FK
+
             // Configuring Many-To-Many relationship through Recipient and compound index
 
             builder.Entity<Company>()
@@ -155,6 +157,8 @@ namespace WebCustomerApp.Data
             builder.Entity<Code>()
                 .HasIndex(i => i.OperatorCode)
                 .IsUnique();
+
+            
         }
     }
 }

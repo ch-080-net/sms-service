@@ -279,7 +279,7 @@ namespace DAL.Migrations
                     Description = table.Column<string>(nullable: true),
                     Message = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    TariffId = table.Column<int>(nullable: false)
+                    TariffId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -305,7 +305,7 @@ namespace DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     BirthDate = table.Column<DateTime>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: true),
                     Gender = table.Column<byte>(nullable: false),
                     KeyWords = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
@@ -416,7 +416,8 @@ namespace DAL.Migrations
                 name: "IX_Recipients_PhoneId_CompanyId",
                 table: "Recipients",
                 columns: new[] { "PhoneId", "CompanyId" },
-                unique: true);
+                unique: true,
+                filter: "[CompanyId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tariffs_OperatorId",
