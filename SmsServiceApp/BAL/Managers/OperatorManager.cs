@@ -18,6 +18,8 @@ namespace BAL.Managers
 
         public bool Add(OperatorViewModel NewOperator)
         {
+            if (NewOperator.Name == null || NewOperator.Name == "")
+                return false;
             var check = unitOfWork.Operators.Get(o => o.Name == NewOperator.Name).FirstOrDefault();
             if (check != null)
                 return false;
@@ -42,11 +44,23 @@ namespace BAL.Managers
 
         public int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "")
         {
+            if (NumOfElements < 1)
+                NumOfElements = 20;
+            if (SearchQuerry == null)
+                SearchQuerry = "";
+
             return (unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry)).Count() / (NumOfElements + 1)) + 1;
         }
 
         public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
         {
+            if (Page < 1)
+                Page = 1;
+            if (NumOfElements < 1)
+                NumOfElements = 20;
+            if (SearchQuerry == null)
+                SearchQuerry = "";
+
             var operators = unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry),
                 o => o.OrderByDescending(s => s.Id));
             operators = operators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
@@ -73,6 +87,8 @@ namespace BAL.Managers
 
         public bool Update(OperatorViewModel UpdatedOperator)
         {
+            if (UpdatedOperator.Name == null || UpdatedOperator.Name == "")
+                return false;
             var check = unitOfWork.Operators.Get(o => o.Name == UpdatedOperator.Name).FirstOrDefault();
             if (check != null)
                 return false;

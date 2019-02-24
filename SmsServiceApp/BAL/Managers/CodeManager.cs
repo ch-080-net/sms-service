@@ -17,6 +17,8 @@ namespace BAL.Managers
         }
         public bool Add(CodeViewModel NewCode)
         {
+            if (NewCode.OperatorCode == null || NewCode.OperatorCode == "")
+                return false;
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == NewCode.OperatorCode).FirstOrDefault();
             if (check != null)
                 return false;
@@ -41,12 +43,24 @@ namespace BAL.Managers
 
         public int GetNumberOfPages(int OperatorId, int NumOfElements = 20, string SearchQuerry = "")
         {
+            if (NumOfElements < 1)
+                NumOfElements = 20;
+            if (SearchQuerry == null)
+                SearchQuerry = "";
+
             return (unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry))
                 .Count() / (NumOfElements + 1)) + 1;
         }
 
         public IEnumerable<CodeViewModel> GetPage(int OperatorId, int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
         {
+            if (Page < 1)
+                Page = 1;
+            if (NumOfElements < 1)
+                NumOfElements = 20;
+            if (SearchQuerry == null)
+                SearchQuerry = "";
+
             var codes = unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry),
                 o => o.OrderBy(s => s.OperatorCode));
             codes = codes.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
@@ -73,6 +87,9 @@ namespace BAL.Managers
 
         public bool Update(CodeViewModel UpdatedCode)
         {
+            if (UpdatedCode.OperatorCode == null || UpdatedCode.OperatorCode == "")
+                return false;
+
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == UpdatedCode.OperatorCode).FirstOrDefault();
             if (check != null)
                 return false;
