@@ -35,7 +35,7 @@
                     </td>
                     <td scope="row">
                         <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">Recipients</a> |
-                        <a class="btn btn-primary">Tariff</a> |
+                        <a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">Tariff</a> |
                         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
