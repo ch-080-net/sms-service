@@ -48,13 +48,9 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id, int companyId)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            RecipientViewModel recipient = recipientManager.GetRecipients(companyId).FirstOrDefault(r => r.Id == id);
+            RecipientViewModel recipient = recipientManager.GetRecipientById(id);
 
             if (recipient == null)
             {
@@ -65,30 +61,22 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]RecipientViewModel recipient, int companyId)
+        public IActionResult Edit(int id, [Bind]RecipientViewModel recipient)
         {
-            if (id != recipient.Id)
-            {
-                return NotFound();
-            }
+            RecipientViewModel recipientToEdit = recipientManager.GetRecipientById(id);
+            int companyId = recipientToEdit.CompanyId;
             if (ModelState.IsValid)
             {
-                recipientManager.Update(recipient, companyId);
-                return RedirectToAction("Index", "Recipient");
+                recipientManager.Update(recipientToEdit);
+                return RedirectToAction("Index", "Recipient", new { companyId });
             }
             return View(recipient);
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id, int companyId)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            RecipientViewModel recipient = recipientManager.GetRecipients(companyId).FirstOrDefault(r => r.Id == id);
-
+            RecipientViewModel recipient = recipientManager.GetRecipientById(id);
             if (recipient == null)
             {
                 return NotFound();
@@ -98,11 +86,12 @@ namespace WebApp.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int? id, int companyId)
+        public IActionResult DeleteConfirmed(int id)
         {
-            RecipientViewModel recipient = recipientManager.GetRecipients(companyId).FirstOrDefault(r => r.Id == id);
-            recipientManager.Delete(recipient);
-            return RedirectToAction("Index", "Recipient");
+            RecipientViewModel recipient = recipientManager.GetRecipientById(id);
+            int companyId = recipient.CompanyId;
+            recipientManager.Delete(id);
+            return RedirectToAction("Index", "Recipient", new { companyId });
         }
 
     }

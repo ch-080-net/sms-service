@@ -18,7 +18,7 @@ namespace BAL.Services
             // Add as many of these lines as you need to map your objects
             CreateMap<Company, CompanyViewModel>().ForMember(dest => dest.RecipientViewModels, opt => opt.MapFrom(src => src.Recipients));
             CreateMap<CompanyViewModel, Company>().ForMember(dest => dest.Recipients, opt => opt.MapFrom(src => src.RecipientViewModels));
-            CreateMap<Recipient, RecipientViewModel>();
+            CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>();
 
             CreateMap<Contact, ContactViewModel>();

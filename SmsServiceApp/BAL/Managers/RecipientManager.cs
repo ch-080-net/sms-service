@@ -15,11 +15,18 @@ namespace BAL.Managers
         {
         }
 
-        public void Delete(RecipientViewModel item)
+        public void Delete(int id)
         {
-            Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
+            Recipient recipient = unitOfWork.Recipients.GetById(id);
             unitOfWork.Recipients.Delete(recipient);
             unitOfWork.Save();
+        }
+
+        public RecipientViewModel GetRecipientById(int id)
+        {
+            Recipient recipient = unitOfWork.Recipients.GetById(id);
+            recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
+            return mapper.Map<Recipient, RecipientViewModel>(recipient);
         }
 
         public IEnumerable<RecipientViewModel> GetRecipients(int companyId)
@@ -53,10 +60,9 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void Update(RecipientViewModel item, int companyId)
+        public void Update(RecipientViewModel item)
         {
             Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
-            recipient.CompanyId = companyId;
             List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
             if (phone.Count == 0)
             {
@@ -66,12 +72,7 @@ namespace BAL.Managers
                 unitOfWork.Save();
                 recipient.Phone = newPhone;
             }
-            else
-            {
-                recipient.Phone = phone[0];
-            }
-            unitOfWork.Recipients.SetStateModified(recipient);
-            unitOfWork.Recipients.Insert(recipient);
+            unitOfWork.Recipients.Update(recipient);
             unitOfWork.Save();
         }
     }
