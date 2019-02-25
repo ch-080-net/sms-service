@@ -3,17 +3,23 @@ using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WebCustomerApp.Models;
 
 namespace BAL.Managers
 {
-    class PhoneManager : BaseManager/*, IPhoneManager*/
+    public class PhoneManager : BaseManager, IPhoneManager
     {
         public PhoneManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         { }
 
-        //IEnumerable<Phone> GetPhones()
-        //{
+        public Phone GetPhoneById(int Id)
+        {
+            return unitOfWork.Phones.GetById(Id);
+        }
 
-        //}
+        public IEnumerable<Phone> GetPhones()
+        {
+            return unitOfWork.Phones.GetAll();
+        }
     }
 }

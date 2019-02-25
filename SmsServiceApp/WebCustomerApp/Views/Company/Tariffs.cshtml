@@ -3,49 +3,51 @@
 
 <h2>Tariffs</h2>
 <hr />
-    <div class="container">
-        <table class="table">
+<div class="container">
+    <div class="col-lg-9">
+        <table class="table table-striped ">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" class="col-md-2">
+                    <th class="col-md-2">
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
-                    <th scope="col" class="col-md-2">
+                    <th class="col-md-4">
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
-                    <th scope="col" class="col-md-2">
+                    <th class="col-md-1">
                         @Html.DisplayNameFor(model => model.Price)
                     </th>
-                    <th scope="col" class="col-md-2">
+                    <th class="col-md-1">
                         @Html.DisplayNameFor(model => model.Limit)
                     </th>
-                    <th scope="col" class="col-md-4"></th>
+                    <th class="col-md-1"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in ViewBag.tariffs)
                 {
                     <tr>
-                        <td scope="row">
+                        <td class="col-md-2">
                             @item.Name
                         </td>
-                        <td scope="row">
+                        <td class="col-md-4">
                             @item.Description
                         </td>
-                        <td scope="row">
+                        <td class="col-md-1">
                             @item.Price
                         </td>
-                        <td scope="row">
+                        <td class="col-md-1">
                             @item.Limit
                         </td>
-                        <td scope="row">
-                            <a class="btn btn-primary" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
+                        <td class="col-md-1">
+                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Back to Operators</a>
+    </div>

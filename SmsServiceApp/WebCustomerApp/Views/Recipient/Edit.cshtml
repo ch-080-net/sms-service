@@ -9,9 +9,9 @@
 <h4>Recipient</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-5">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
@@ -36,36 +36,40 @@
                     $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
                 </script>
             </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label><br>
-                @Html.RadioButtonFor(m => m.Gender, "Male") <span>Male</span><br>
-                @Html.RadioButtonFor(m => m.Gender, "Female") <span>Female</span>
-                <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Gender" class="control-label"></label><br>
+                    @Html.RadioButtonFor(m => m.Gender, "Male") <span>Male</span><br>
+                    @Html.RadioButtonFor(m => m.Gender, "Female") <span>Female</span>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Priority" class="control-label"></label>
+                    @Html.DropDownListFor(model => model.Priority,
+                      new List<SelectListItem> {
+                           new SelectListItem { Value = "Low" , Text = "Low" },
+                           new SelectListItem { Value = "Medium" , Text = "Medium" },
+                           new SelectListItem { Value = "High" , Text = "High" }
+                        },
+                      new { @class="myselect"})
+                    <span asp-validation-for="Priority" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="KeyWords" class="control-label"></label>
+                    <textarea rows="7" style="resize:none" asp-for="KeyWords" class="form-control" id="message"></textarea>
+                    <span asp-validation-for="KeyWords" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Edit" class="btn btn-warning" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Priority" class="control-label"></label>
-                @Html.DropDownListFor(model => model.Priority,
-                  new List<SelectListItem> {
-                       new SelectListItem { Value = "Low" , Text = "Low" },
-                       new SelectListItem { Value = "Medium" , Text = "Medium" },
-                       new SelectListItem { Value = "High" , Text = "High" }
-                    },
-                  new { @class="myselect"})
-                <span asp-validation-for="Priority" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="KeyWords" class="control-label"></label>
-                <textarea rows="7" style="resize:none" asp-for="KeyWords" class="form-control" id="message"></textarea>
-                <span asp-validation-for="KeyWords" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+         
+</form>
     </div>
-</div>
+
 <div>
-    <a asp-action="Index" asp-route-companyId="@Model.CompanyId">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@Model.CompanyId">Back to List</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

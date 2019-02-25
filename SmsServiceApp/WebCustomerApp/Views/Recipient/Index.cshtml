@@ -11,64 +11,65 @@
     <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
 </p>
 <div class="container">
-    <table class="table table-bordered">
+    <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.PhoneNumber)
                 </th>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.Surname)
                 </th>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.BirthDate)
                 </th>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.Gender)
                 </th>
-                <th scope="col" >
+                <th>
                     @Html.DisplayNameFor(model => model.Priority)
                 </th>
-                <th scope="col">
+                <th>
                     @Html.DisplayNameFor(model => model.KeyWords)
                 </th>
-                <th scope="col"></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.Surname)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.BirthDate)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.Priority)
-                </td>
-                <td scope="row">
-                    @Html.DisplayFor(modelItem => item.KeyWords)
-                </td>
-                <td scope="row">
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BirthDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KeyWords)
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
-    </div>
+    <a class="btn btn-primary" asp-controller="Company" asp-action="Index">Back to Companies</a>
+</div>

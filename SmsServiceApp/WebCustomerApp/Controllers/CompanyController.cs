@@ -89,13 +89,17 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind]CompanyViewModel company)
         {
-            if (id != company.Id)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
-                companyManager.Update(company, userId);
+                var tariffId = companyManager.Get(id).TariffId;
+                if (tariffId == 0)
+                {
+                    companyManager.Update(company, userId, 0);
+                }
+                else
+                {
+                    companyManager.Update(company, userId, tariffId);
+                }
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -164,8 +168,7 @@ namespace WebApp.Controllers
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            currentCompany.TariffId = tariffId;
-            companyManager.Update(currentCompany, userId);
+            companyManager.Update(currentCompany, userId, currentCompany.TariffId);
             return RedirectToAction("Index","Company");
         }
     }
