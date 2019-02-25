@@ -192,6 +192,7 @@ function onAddContact(item) {
 function contactEditAllow(item) {
     document.getElementById("AddContactForm").style.display = "block";
 
+    $("#HideShowAddContact").val("Edit contact");
     $("#phoneNumber").val($(item).data("phonenumber"));
     $("#name").val($(item).data("name"));
     $("#surname").val($(item).data("surname"));
@@ -203,6 +204,7 @@ function contactEditAllow(item) {
         document.getElementById("genderFemale").checked = true;
     $("#notes").val($(item).data("notes"));
     $("#keywords").val($(item).data("keywords"));
+    document.getElementById("insert").textContent = "Save";
     document.getElementById("insert").setAttribute("onclick", "contactUpdate(" + $(item).data("id") + ")");
 
 }
@@ -251,6 +253,9 @@ function contactUpdate(idOfUpdatePhone) {
     document.getElementById("genderFemale").checked = false;
     $("#notes").val("");
     $("#keywords").val("");
+    $("#HideShowAddContact").val("Add new contact");
+    document.getElementById("insert").textContent = "ADD";
+
 }
 
 function contactDelete(item) {
