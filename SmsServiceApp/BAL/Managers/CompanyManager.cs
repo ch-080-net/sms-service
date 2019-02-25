@@ -30,6 +30,13 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+		public int GetTariffLimit(int companyId)
+		{
+			Company comp = unitOfWork.Companies.Get(filter: c => c.Id == companyId).FirstOrDefault();
+			Tariff tariff = unitOfWork.Tariffs.Get(c => c.Id == comp.TariffId).FirstOrDefault();
+			return tariff.Limit;
+		}
+
         public void Update(CompanyViewModel item, string userId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);

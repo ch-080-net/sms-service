@@ -7,9 +7,16 @@
 
 <h2>Recipients</h2>
 
+@if (ViewData["errorMessage"] == null)
+{
 <p>
     <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
 </p>
+}
+else
+{
+	<input value="@ViewData["errorMessage"]"/>
+}
 <div class="container">
     <table class="table table-bordered">
         <thead class="thead-dark">

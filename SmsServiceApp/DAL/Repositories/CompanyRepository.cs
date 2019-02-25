@@ -9,20 +9,5 @@ namespace DAL.Repositories
 		public CompanyRepository(ApplicationDbContext context) : base(context)
 		{
 		}
-
-		public bool IsLimitExceeded(int messageCount, Company currentCompany)
-		{
-			Tariff companyTariff = context.Tariffs.Find(currentCompany.TariffId);
-
-			if (messageCount > companyTariff.Limit)
-				return true;
-
-			return false;
-		}
-
-		public int GetTariffLimit(Company company)
-		{
-			return context.Tariffs.Find(company.TariffId).Limit;
-		}
 	}
 }

@@ -15,10 +15,12 @@ namespace WebApp.Controllers
     public class RecipientController : Controller
     {
         private IRecipientManager recipientManager;
+		private ICompanyManager companyManager;
 
-        public RecipientController (IRecipientManager recipient)
+        public RecipientController (IRecipientManager recipient, ICompanyManager company)
         {
             this.recipientManager = recipient;
+			this.companyManager = company;
         }
 
         [HttpGet]
@@ -31,8 +33,19 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create(int companyId)
         {
-            ViewData["CompanyId"] = companyId;
-            return View();
+			int limit = companyManager.GetTariffLimit(companyId);
+			int count = recipientManager.GetRecipients(companyId).Count();
+
+			if (limit > count)
+			{
+				ViewData["CompanyId"] = companyId;
+				return View();
+			}
+			else
+			{
+				ViewData["errorMessage"] = "Recipients limit is over";
+				return RedirectToAction("Index", "Recipient", new { companyId });
+			}
         }
 
         [HttpPost]
