@@ -19,7 +19,6 @@ namespace WebCustomerApp.Models
         public string Surname { get; set; }
         public DateTime BirthDate { get; set; }
         public byte Gender { get; set; }
-        public string Priority { get; set; }
         public string Notes { get; set; }
         public string KeyWords { get; set; }
     }

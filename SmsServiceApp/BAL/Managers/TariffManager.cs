@@ -3,6 +3,7 @@ using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebCustomerApp.Models;
 
@@ -13,7 +14,7 @@ namespace BAL.Managers
         public TariffManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
-        IEnumerable<TariffViewModel> ITariffManager.GetTariffs()
+        IEnumerable<TariffViewModel> ITariffManager.GetAll()
         {
             IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll();
             return mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffViewModel>>(tariffs);
@@ -26,20 +27,55 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void Update(TariffViewModel item)
+        
+        public bool Update(TariffViewModel item)
         {
-            Tariff tariffs = mapper.Map<TariffViewModel, Tariff>(item);
-            unitOfWork.Tariffs.Update(tariffs);
+            var result = mapper.Map<Tariff>(item);
+            try
+            {
+                unitOfWork.Tariffs.Update(result);
+            }
+            catch
+            {
+                return false;
+            }
             unitOfWork.Save();
+            return true;
         }
 
-        public void Delete(TariffViewModel item)
+        public bool Delete(int Id)
         {
-            Tariff tariffs = mapper.Map<TariffViewModel, Tariff>(item);
-            unitOfWork.Tariffs.Delete(tariffs);
-            unitOfWork.Save();
+            var oper = unitOfWork.Tariffs.GetById(Id);
+            if (oper == null)
+                return false;
+            try
+            {
+                unitOfWork.Tariffs.Delete(oper);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
-       
+        public IEnumerable<TariffViewModel> GetPage(int Page = 1, int NumOfElements = 20)
+        {
+            var allTariffs= unitOfWork.Tariffs.GetAll();
+            var operators = allTariffs.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
+            var result = new List<TariffViewModel>();
+            foreach (var o in operators)
+            {
+                result.Add(mapper.Map<TariffViewModel>(o));
+            }
+            return result;
+        }
+
+        public int GetNumberOfPages(int NumOfElements = 20)
+        {
+            return (unitOfWork.Operators.GetAll().Count() / NumOfElements) + 1;
+        }
+
     }
 }

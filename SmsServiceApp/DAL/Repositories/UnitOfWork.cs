@@ -11,15 +11,28 @@ namespace DAL.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext context;
-
         private IBaseRepository<Recipient> recipientRepo;
-        private IBaseRepository<Tariff> tariffRepo;
+        private IBaseRepository<Company> companyRepo;
         private UserManager<ApplicationUser> userManager;
+        private IContactRepository contactRepo;
+        private IBaseRepository<Phone> phoneRepo;
+        private IBaseRepository<Tariff> tariffRepo;
+
         private IBaseRepository<Operator> operatorRepo;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
+        }
+
+        public IBaseRepository<Company> Companies
+        {
+            get
+            {
+                if (companyRepo == null) { companyRepo = new BaseRepository<Company>(context); }
+                return companyRepo;
+            }
         }
 
         public IBaseRepository<Recipient> Recipients {
@@ -53,6 +66,20 @@ namespace DAL.Repositories
                     operatorRepo = new BaseRepository<Operator>(context);
                 }
                 return operatorRepo;
+            }
+        }
+
+        public IContactRepository Contacts {
+            get {
+                if (contactRepo == null) { contactRepo = new ContactRepository(context); }
+                return contactRepo;
+            }
+        }
+
+        public IBaseRepository<Phone> Phones {
+            get {
+                if (phoneRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
+                return phoneRepo;
             }
         }
 

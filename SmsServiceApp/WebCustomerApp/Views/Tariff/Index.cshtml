@@ -1,53 +1,34 @@
-﻿@using Model.ViewModels.TariffViewModels;
-@model IEnumerable<TariffViewModel>;
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@Url.RouteUrl(ViewContext.RouteData.Values)
+@using Model.ViewModels.TariffViewModels
+@model TariffViewModel
 
-<h2>Tariffs</h2>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Limit)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayNameFor(model => model.Name)
-            </td>
-            <td>
-                @Html.DisplayNameFor(model => model.Description)
-            </td>
-            <td>
-                @Html.DisplayNameFor(model => model.Price)
-            </td>
-            <td>
-                @Html.DisplayNameFor(model => model.Limit)
-            </td>
-            <td>
+<h2>Operators</h2>
 
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="GetTariffList" asp-controller="Tariff" method="post" asp-antiforgery="true">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="Limit"></label>
+                <input asp-for="Limit" class="form-control" />
+                <span asp-validation-for="Limit" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Add Operator</button>
+        </form>
+    </div>
+</div>

@@ -9,9 +9,12 @@ namespace Model.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IBaseRepository<Recipient> Recipients { get; }
+        IContactRepository Contacts { get; }
+        IBaseRepository<Phone> Phones { get; }
+        IBaseRepository<Company> Companies { get; }
+        UserManager<ApplicationUser> Users { get; }
         IBaseRepository<Operator> Operators { get; }
         IBaseRepository<Tariff> Tariffs { get; }
-        UserManager<ApplicationUser> Users { get; }
         int Save();
     }
 

@@ -1,4 +1,7 @@
-﻿<html>
+﻿@Url.RouteUrl(ViewContext.RouteData.Values)
+@using Model.ViewModels.TariffViewModels
+@model TariffViewModel
+<html>
 <head>
     <title>Tariff List</title>
     <meta charset="utf-8">
@@ -8,13 +11,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <script>
-        var Company = {
+        var Tariff = {
             id: 0,
             name: "",
             description: "",
             price: "",
-            limit: ""
-
+            limit: "",
+            operatorId:""
         }
         function onAddTariff(item) {
             var options = {};
@@ -25,6 +28,7 @@
             obj.description = $("#description").val();
             obj.price = $("#price").val();
             obj.limit = $("#limit").val();
+            obj.operatorId=@ViewData["OperatorId"];
             console.dir(obj);
             options.data = obj;
             options.success = function (msg) {
@@ -35,7 +39,7 @@
                 };
             $.ajax(options);
         }
-      
+
     </script>
 </head>
 <body>
@@ -53,7 +57,7 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price:</label>
-                    <input type ="text" class="form-control" id="price">
+                    <input type="text" class="form-control" id="price">
                 </div>
                 <div class="form-group">
                     <label for="limit">Limit:</label>
@@ -65,5 +69,6 @@
             </div>
         </div>
     </form>
+    
 </body>
 </html>
