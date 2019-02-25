@@ -29,31 +29,32 @@
 
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Limit)
-            </td>
-            <td>
-                <a asp-action="Update" class="btn btn-primary" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
-            </td>
-            <td>
-                <a class="btn alert-info" asp-action="Operators" asp-controller="Operator">Back To list </a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Limit)
+                </td>
+                <td>
+                    <a asp-action="Update" class="btn btn-primary" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
+                </td>
+
+            </tr>
 
 
         }
-   
+
+
+
+
     </tbody>
 
 </table>

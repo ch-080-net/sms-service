@@ -81,7 +81,7 @@ namespace WebApp.Controllers
             }
 
             TariffViewModel tariff = tariffManager.GetTariffById(id.Value);
-            tariffManager.Delete(tariff);
+            tariffManager.Delete(tariff, id.Value);
 
             if (tariff == null)
             {
@@ -95,7 +95,7 @@ namespace WebApp.Controllers
         public IActionResult DeleteConfirmed(int? id)
         {
             TariffViewModel tariff = tariffManager.GetTariffs(id.Value).FirstOrDefault(r => r.Id == id);
-            tariffManager.Delete(tariff);
+            tariffManager.Delete(tariff, id.Value);
             return RedirectToAction("Index");
         }
           
