@@ -2,10 +2,11 @@
 @model IEnumerable<TariffViewModel>;
 
 @{
-    ViewData["Title"] = "Tariffs";
+    ViewData["Title"] = "Tariffs List";
 }
+<a asp-action="Operators" asp-controller="Operator">Back To list</a>
 <h2>Tariffs:</h2>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -42,11 +43,12 @@
                 @Html.DisplayFor(modelItem => item.Limit)
             </td>
             <td>
-                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Update" class="btn btn-primary" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
             </td>
-          <a asp-action="Operators" asp-controller="Operator"></a>
+            
         </tr>
         }
+      
     </tbody>
 </table>
