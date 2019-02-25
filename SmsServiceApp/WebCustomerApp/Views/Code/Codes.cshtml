@@ -1,6 +1,6 @@
-﻿@using Model.ViewModels.OperatorViewModels
-@model OperatorViewModel
-<h2>Operators</h2>
+﻿@using Model.ViewModels.CodeViewModels
+@model CodeViewModel
+<h2>Codes for @ViewBag.OperatorName</h2>
 <hr />
 
 @if (TempData.ContainsKey("ErrorMessage"))
@@ -8,18 +8,20 @@
     <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
 }
 
-<h4>Add operator</h4>
-
+<h4>Add Code</h4>
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Operators" asp-controller="Operator" method="post" asp-antiforgery="true">
+        <form asp-action="Codes" asp-controller="Code" method="post" asp-antiforgery="true">
             <div class="form-group">
-                <input asp-for="Name" class="form-control" placeholder="New operator name" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <input asp-for="OperatorCode" class="form-control code" placeholder="Example: +38066" />
+                <span asp-validation-for="OperatorCode" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
             </button>
+            <a class="btn btn-default" role="button" asp-action="Operators" asp-controller="Operator">
+                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span> Back
+            </a>
         </form>
     </div>
 </div>
@@ -27,12 +29,13 @@
 <hr />
 <h4>Operators list</h4>
 
-@{await Html.RenderPartialAsync("SearchOperators", new OperatorSearchViewModel() { SearchQuerry = ViewBag.SearchQuerry });}
+@{await Html.RenderPartialAsync("SearchCodes", new CodeSearchViewModel() { SearchQuerry = ViewBag.SearchQuerry });}
 
-@foreach (OperatorViewModel iter in ViewBag.Operators)
+@foreach (CodeViewModel iter in ViewBag.Codes)
 {
-    { await Html.RenderPartialAsync("Operator", iter); }
+    { await Html.RenderPartialAsync("Code", iter); }
 }
+
 
 @if (ViewBag.NumOfpages > 1)
 {
@@ -49,7 +52,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="PreviousPage" asp-controller="Operator">
+                    <a class="page-link" asp-action="PreviousPage" asp-controller="Code">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
                 </li>
@@ -60,14 +63,14 @@
                 if (i == ViewBag.CurrentPage)
                 {
                     <li class="page-item active">
-                        <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Code"
                            asp-route-Page="@i">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
-                        <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
+                        <a class="page-link" asp-action="SelectPage" asp-controller="Code"
                            asp-route-Page="@i">@i</a>
                     </li>
                 }
@@ -83,7 +86,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="NextPage" asp-controller="Operator">
+                    <a class="page-link" asp-action="NextPage" asp-controller="Code">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </li>
@@ -96,3 +99,6 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+
+

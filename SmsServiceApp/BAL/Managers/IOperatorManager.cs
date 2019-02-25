@@ -7,12 +7,12 @@ namespace BAL.Managers
 {
     public interface IOperatorManager
     {
-        IEnumerable<OperatorViewModel> GetAll();
         OperatorViewModel GetById(int Id);
         bool Add(OperatorViewModel NewOperator);
         bool Update(OperatorViewModel UpdatedOperator);
         bool Remove(int Id);
-        IEnumerable<OperatorViewModel> FindByName(string Name);
-
+        IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
+        int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "");
     }
 }
+

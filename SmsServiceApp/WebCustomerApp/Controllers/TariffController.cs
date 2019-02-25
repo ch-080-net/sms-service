@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
@@ -13,27 +14,31 @@ using WebCustomerApp.Models;
 
 namespace WebApp.Controllers
 {
+    [Authorize (Roles = "Admin")]
     public class TariffController : Controller
     {
         private ITariffManager tariffManager;
+        private static int operatorId;
 
         public TariffController(ITariffManager tariff)
         {
             this.tariffManager = tariff;
         }
-        //// get: /<controller>/
-        public IActionResult index()
+       
+        [Route("~/Tariff/Index")]
+        public IActionResult Index( int OperatorId)
         {
-            return View();
+            ViewData["OperatorId"] = OperatorId;
+           
+            return View(tariffManager.GetTariffs(OperatorId).ToList());
         }
-        
+       
         [HttpGet]
         public IActionResult GetTariffList()
         {
             ViewBag.Tariff = tariffManager.GetAll();
             return View();
         }
-       
         
         [HttpGet]
         public IActionResult Create(int OperatorId)
@@ -41,62 +46,58 @@ namespace WebApp.Controllers
             ViewData["OperatorId"] = OperatorId;
             return View();
         }
+
         [Route("~/Tariff/Create")]
         [HttpPost]
-     
         public IActionResult Create(TariffViewModel item)
         {
             tariffManager.Insert(item);
             return new ObjectResult("Tariff added successfully!");
         }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {  
+          ViewData["id"] = id;
+          return View(tariffManager.GetTariffById(id));
+        }
+
         [HttpPost]
         [Route("~/Tariff/Update")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Update(TariffViewModel editedtariff)
+        public IActionResult Update(TariffViewModel item)
         {
-            var result = tariffManager.Update(editedtariff);
-            if (ModelState.IsValid)
-            {
-                if (result == false)
-                {
-                    ModelState.AddModelError(string.Empty, "Modify failed");
-                    return RedirectToAction("Index", "Tariff");
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Tariff");
-                }
-            }
-            return RedirectToAction("Index", "Tariff");
+            tariffManager.Update(item);
+            return View();
         }
-        public IActionResult Remove(int tariffId)
+      
+        [HttpGet]
+        [Route("~/Tariff/Delete/{id?}")]
+        public IActionResult Delete( int? id)
         {
-            bool result = tariffManager.Delete(tariffId);
-            if (!result)
+            if (id == null)
             {
-                ModelState.AddModelError(string.Empty, "Delete failed");
-                return RedirectToAction("Operators", "Operator");
+                return NotFound();
             }
-            else
+
+            TariffViewModel tariff = tariffManager.GetTariffById(id.Value);
+            tariffManager.Delete(tariff);
+
+            if (tariff == null)
             {
-                return RedirectToAction("Operators", "Operator");
+                return NotFound();
             }
-        }
-        public IActionResult NextPage(int CurrentPage)
-        {
-            if (CurrentPage < tariffManager.GetNumberOfPages())
-                return RedirectToAction("Index", "Tariff", new { Page = ++CurrentPage });
-            else
-                return RedirectToAction("Index", "Tariff", new { Page = CurrentPage });
+            return View();
         }
 
-        public IActionResult PreviousPage(int CurrentPage)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int? id)
         {
-            if (CurrentPage > 1)
-                return RedirectToAction("Index", "Tariff", new { Page = --CurrentPage });
-            else
-                return RedirectToAction("Index", "Tariff", new { Page = CurrentPage });
+            TariffViewModel tariff = tariffManager.GetTariffs(operatorId).FirstOrDefault(r => r.Id == id);
+            tariffManager.Delete(tariff);
+            return RedirectToAction("Index");
         }
-
+          
     }
 }

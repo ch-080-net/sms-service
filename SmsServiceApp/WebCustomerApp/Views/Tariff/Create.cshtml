@@ -1,6 +1,8 @@
-﻿@Url.RouteUrl(ViewContext.RouteData.Values)
-@using Model.ViewModels.TariffViewModels
+﻿@using Model.ViewModels.TariffViewModels
 @model TariffViewModel
+@{ 
+    var operatorId = @ViewData["OperatorId"];
+}
 <html>
 <head>
     <title>Tariff List</title>
@@ -17,8 +19,9 @@
             description: "",
             price: "",
             limit: "",
-            operatorId:""
-        }
+            operatorId: ""
+        };
+
         function onAddTariff(item) {
             var options = {};
             options.url = "/Tariff/Create";
@@ -28,7 +31,8 @@
             obj.description = $("#description").val();
             obj.price = $("#price").val();
             obj.limit = $("#limit").val();
-            obj.operatorId=@ViewData["OperatorId"];
+            console.log(obj);
+            obj.operatorId = '@ViewData["OperatorId"]';
             console.dir(obj);
             options.data = obj;
             options.success = function (msg) {
@@ -57,11 +61,11 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price:</label>
-                    <input type="text" class="form-control" id="price">
+                    <input type="number" class="form-control" id="price">
                 </div>
                 <div class="form-group">
                     <label for="limit">Limit:</label>
-                    <input type="text" class="form-control" id="limit">
+                    <input type="number" class="form-control" id="limit">
                 </div>
                 <button type="submit" class="btn btn-default" onclick='onAddTariff(this)'>Add Tariff</button>
                 <br />
@@ -69,6 +73,12 @@
             </div>
         </div>
     </form>
-    
+    <div>
+        <a asp-action="Operators" asp-controller="Operator">Back to List</a>
+    </div>
 </body>
 </html>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
