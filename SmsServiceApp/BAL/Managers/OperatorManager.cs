@@ -16,6 +16,14 @@ namespace BAL.Managers
 
         }
 
+        public IEnumerable<OperatorViewModel> GetAll()
+        {
+            var operators = unitOfWork.Operators.GetAll();
+
+            var result = mapper.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>(operators);
+            return result;
+        }
+
         public bool Add(OperatorViewModel NewOperator)
         {
             if (NewOperator.Name == null || NewOperator.Name == "")

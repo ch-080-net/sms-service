@@ -1,0 +1,42 @@
+﻿@using Model.ViewModels.OperatorViewModels
+@model OperatorViewModel
+
+<h2>Operators</h2>
+<hr />
+
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col" class="col-md-4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.operators)
+            {
+                <tr>
+                    <td scope="row">
+                        @item.Name
+                    </td>
+                    <td scope="row">
+                        <a class="btn btn-primary" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariff</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
