@@ -78,7 +78,7 @@ namespace DAL.Repositories
 
         public IBaseRepository<Phone> Phones {
             get {
-                if (recipientRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
+                if (phoneRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
                 return phoneRepo;
             }
         }

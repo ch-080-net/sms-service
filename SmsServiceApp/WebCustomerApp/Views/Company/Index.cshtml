@@ -8,34 +8,39 @@
 <h2>Companies</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td>
+                <th scope="col" class="col-md-2">
                     @Html.DisplayNameFor(model => model.Name)
-                </td>
-                <td>
+                </th>
+                <th scope="col" class="col-md-6">
                     @Html.DisplayNameFor(model => model.Description)
-                </td>
-                <td>
-                    <button class="btn btn-primary" asp-area="" asp-controller="Recipient" asp-action="Index" asp-route-id="@item.Id">Recipients</button>
-                </td>
+                </th>
+                <th scope="col" class="col-md-4"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td scope="row">
+                        <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">Recipients</a> |
+                        <a class="btn btn-primary">Tariff</a> |
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

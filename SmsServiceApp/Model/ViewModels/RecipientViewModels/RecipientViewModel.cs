@@ -10,6 +10,7 @@ namespace Model.ViewModels.RecipientViewModels
         public int Id { get; set; }
         public int CompanyId { get; set; }
         [Required]
+        [Display(Name = "Phone Number")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
         [Required]

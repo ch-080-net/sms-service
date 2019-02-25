@@ -9,47 +9,119 @@ using Model.ViewModels.CompanyViewModels;
 using Model.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyManager companyManager;
-        private readonly ITariffManager tariffManager;
+        private readonly IRecipientManager recipientManager;
+        private static string userId;
 
-        public CompanyController(ICompanyManager company)
+        public CompanyController(ICompanyManager company, IRecipientManager recipient)
         {
+            this.recipientManager = recipient;
             this.companyManager = company;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(GetAll());
+            userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return View(companyManager.GetCompanies(userId));
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        [Route("~/Company/GetAll")]
-        [HttpGet]
-        public IEnumerable<CompanyViewModel> GetAll()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind] CompanyViewModel item)
         {
-            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            IEnumerable<CompanyViewModel> companies = companyManager.GetCompanies().Where(com => com.ApplicationUserId == userId);
-            return companies;
+            if (ModelState.IsValid)
+            {
+                companyManager.Insert(item, userId);
+                return RedirectToAction("Index");
+            }
+            return View(item);
         }
 
-        [Route("~/Company/Create")]
-        [HttpPost]
-        public IActionResult Create(CompanyViewModel item)
+        [HttpGet]
+        public IActionResult Edit(int? id)
         {
-            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            item.ApplicationUserId = userId;
-            companyManager.Insert(item);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind]CompanyViewModel company)
+        {
+            if (id != company.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                companyManager.Update(company, userId);
+                return RedirectToAction("Index");
+            }
+            return View(company);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            companyManager.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace BAL.Managers
 
         public void Insert(RecipientViewModel item, int companyId)
         {
-            Recipient recipient = mapper.Map<Recipient>(item);
+            Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
             recipient.CompanyId = companyId;
             List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
             if (phone.Count == 0)
@@ -55,7 +55,7 @@ namespace BAL.Managers
 
         public void Update(RecipientViewModel item, int companyId)
         {
-            Recipient recipient = mapper.Map<Recipient>(item);
+            Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
             recipient.CompanyId = companyId;
             List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
             if (phone.Count == 0)

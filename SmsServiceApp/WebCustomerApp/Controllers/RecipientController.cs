@@ -6,45 +6,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Model.ViewModels.RecipientViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class RecipientController : Controller
     {
         private IRecipientManager recipientManager;
-        private static int companyId;
 
         public RecipientController (IRecipientManager recipient)
         {
             this.recipientManager = recipient;
         }
 
-       [Route("~/Recipient/Index/{id}")]
-        public IActionResult Index(int id)
+        [HttpGet]
+        public IActionResult Index(int companyId)
         {
-            companyId = id;
-            return View(recipientManager.GetRecipients(id).ToList());
+            ViewData["CompanyId"] = companyId;
+            return View(recipientManager.GetRecipients(companyId).ToList());
         }
 
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult Create(int companyId)
         {
+            ViewData["CompanyId"] = companyId;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] RecipientViewModel item)
+        public IActionResult Create([Bind] RecipientViewModel item, int companyId)
         {
             if (ModelState.IsValid)
             {
                 recipientManager.Insert(item, companyId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Recipient", new { companyId });
             }
             return View(item);
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int? id, int companyId)
         {
             if (id == null)
             {
@@ -61,7 +65,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]RecipientViewModel recipient)
+        public IActionResult Edit(int id, [Bind]RecipientViewModel recipient, int companyId)
         {
             if (id != recipient.Id)
             {
@@ -70,13 +74,13 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 recipientManager.Update(recipient, companyId);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Recipient");
             }
             return View(recipient);
         }
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id, int companyId)
         {
             if (id == null)
             {
@@ -94,11 +98,11 @@ namespace WebApp.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int? id)
+        public IActionResult DeleteConfirmed(int? id, int companyId)
         {
             RecipientViewModel recipient = recipientManager.GetRecipients(companyId).FirstOrDefault(r => r.Id == id);
             recipientManager.Delete(recipient);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Recipient");
         }
 
     }

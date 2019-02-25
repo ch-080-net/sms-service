@@ -16,17 +16,13 @@ namespace BAL.Services
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-            CreateMap<Company, CompanyViewModel>();
-            CreateMap<CompanyViewModel, Company>();
+            CreateMap<Company, CompanyViewModel>().ForMember(dest => dest.RecipientViewModels, opt => opt.MapFrom(src => src.Recipients));
+            CreateMap<CompanyViewModel, Company>().ForMember(dest => dest.Recipients, opt => opt.MapFrom(src => src.RecipientViewModels));
             CreateMap<Recipient, RecipientViewModel>();
             CreateMap<RecipientViewModel, Recipient>();
 
-            // CreateMap<User, UserDto>();
-            // CreateMap<UserDto, User>();
             CreateMap<Contact, ContactViewModel>();
             CreateMap<ContactViewModel, Contact>();
-            // CreateMap<User, UserDto>();
-            // CreateMap<UserDto, User>();
 
             CreateMap<Operator, OperatorViewModel>();
             CreateMap<OperatorViewModel, Operator>();
