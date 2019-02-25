@@ -39,7 +39,7 @@ namespace BAL.Managers
         }
         public bool Insert(TariffViewModel item)
         {
-            var check = unitOfWork.Tariffs.Get(o => o.Name == item.Name).FirstOrDefault();
+            var check = unitOfWork.Tariffs.Get(o => o.Id == item.Id).FirstOrDefault();
             if (check != null)
                 return false;
             var result = mapper.Map<Tariff>(item);
