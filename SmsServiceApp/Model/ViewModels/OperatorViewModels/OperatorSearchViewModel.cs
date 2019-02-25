@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Model.ViewModels.OperatorViewModels
 {
-    public class OperatorViewModel
+    public class OperatorSearchViewModel
     {
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+        public string SearchQuerry { get; set; }
     }
 }

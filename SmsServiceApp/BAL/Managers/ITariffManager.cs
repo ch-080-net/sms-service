@@ -8,12 +8,14 @@ namespace BAL.Managers
 {
    public interface ITariffManager
     {
-        void Insert(TariffViewModel item);
+        TariffViewModel GetById(int Id);
+        bool Insert(TariffViewModel item);
         bool Update(TariffViewModel item);
-        bool Delete(int id);
+        void Delete(TariffViewModel item);
         IEnumerable<TariffViewModel> GetAll();
-        IEnumerable<TariffViewModel> GetPage(int Page = 1, int NumOfElements = 20);
-        int GetNumberOfPages(int NumOfElements = 20);
-       
+        IEnumerable<TariffViewModel> GetTariffs(int operatorId);
+
+        TariffViewModel GetTariffById(int id);
+
     }
 }

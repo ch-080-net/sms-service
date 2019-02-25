@@ -1,34 +1,52 @@
-﻿@Url.RouteUrl(ViewContext.RouteData.Values)
-@using Model.ViewModels.TariffViewModels
-@model TariffViewModel
+﻿@using Model.ViewModels.TariffViewModels;
+@model IEnumerable<TariffViewModel>;
 
-<h2>Operators</h2>
+@{
+    ViewData["Title"] = "Tariffs";
+}
+<h2>Tariffs:</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Limit)
+            </th>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="GetTariffList" asp-controller="Tariff" method="post" asp-antiforgery="true">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div> 
-            <div class="form-group">
-                <label asp-for="Price"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div> 
-            <div class="form-group">
-                <label asp-for="Limit"></label>
-                <input asp-for="Limit" class="form-control" />
-                <span asp-validation-for="Limit" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Add Operator</button>
-        </form>
-    </div>
-</div>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Limit)
+            </td>
+            <td>
+                <a asp-action="Update" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+          <a asp-action="Operators" asp-controller="Operator"></a>
+        </tr>
+        }
+    </tbody>
+</table>
