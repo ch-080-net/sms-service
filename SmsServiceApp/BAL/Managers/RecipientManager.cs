@@ -36,7 +36,7 @@ namespace BAL.Managers
             {
                 rec.Phone = unitOfWork.Phones.GetById(rec.PhoneId);
             }
-            return mapper.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(recipients);
+            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(recipients);
         }
 
         public void Insert(RecipientViewModel item, int companyId)
@@ -71,6 +71,10 @@ namespace BAL.Managers
                 unitOfWork.Phones.Insert(newPhone);
                 unitOfWork.Save();
                 recipient.Phone = newPhone;
+            }
+            else
+            {
+                recipient.PhoneId = phone[0].Id;
             }
             unitOfWork.Recipients.Update(recipient);
             unitOfWork.Save();

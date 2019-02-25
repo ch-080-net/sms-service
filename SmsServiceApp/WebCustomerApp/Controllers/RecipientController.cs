@@ -65,9 +65,10 @@ namespace WebApp.Controllers
         {
             RecipientViewModel recipientToEdit = recipientManager.GetRecipientById(id);
             int companyId = recipientToEdit.CompanyId;
+            recipient.CompanyId = companyId;
             if (ModelState.IsValid)
             {
-                recipientManager.Update(recipientToEdit);
+                recipientManager.Update(recipient);
                 return RedirectToAction("Index", "Recipient", new { companyId });
             }
             return View(recipient);
