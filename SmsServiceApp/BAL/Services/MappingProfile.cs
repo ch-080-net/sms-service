@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Model.ViewModels.TariffViewModels;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.RecipientViewModels;
+using Model.ViewModels.ContactViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,15 +17,22 @@ namespace BAL.Services
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-            // CreateMap<User, UserDto>();
-            // CreateMap<UserDto, User>();
+            CreateMap<Company, CompanyViewModel>().ForMember(dest => dest.RecipientViewModels, opt => opt.MapFrom(src => src.Recipients));
+            CreateMap<CompanyViewModel, Company>().ForMember(dest => dest.Recipients, opt => opt.MapFrom(src => src.RecipientViewModels));
+            CreateMap<Recipient, RecipientViewModel>();
+            CreateMap<RecipientViewModel, Recipient>();
+
+            CreateMap<Contact, ContactViewModel>();
+            CreateMap<ContactViewModel, Contact>();
 
             CreateMap<Operator, OperatorViewModel>();
             CreateMap<OperatorViewModel, Operator>();
-            CreateMap<Company, CompanyViewModel>();
-            CreateMap<CompanyViewModel, Company>();
+           
             CreateMap<StopWord, StopWordViewModel>();
             CreateMap<StopWordViewModel, StopWord>();
+          
+            CreateMap<Tariff, TariffViewModel>();
+            CreateMap<TariffViewModel, Tariff>();
         }
     }
 }

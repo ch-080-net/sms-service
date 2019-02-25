@@ -15,38 +15,35 @@ namespace BAL.Managers
         {
         }
 
-        public IEnumerable<CompanyViewModel> GetCompanies()
+        public IEnumerable<CompanyViewModel> GetCompanies(string userId)
         {
-            IEnumerable<Company> companies = unitOfWork.Companies.GetAll();
+            IEnumerable<Company> companies = unitOfWork.Companies.GetAll().Where(c => c.ApplicationUserId == userId);
             return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
         }
 
-        public void Insert(CompanyViewModel item)
+        public void Insert(CompanyViewModel item, string userId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
+            company.ApplicationUserId = userId;
+            company.TariffId = null;
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();
         }
 
-        public void Update(CompanyViewModel item)
+        public void Update(CompanyViewModel item, string userId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
+            company.ApplicationUserId = userId;
+            company.TariffId = null;
+            unitOfWork.Companies.SetStateModified(company);
             unitOfWork.Companies.Update(company);
             unitOfWork.Save();
         }
 
-        public void Delete(CompanyViewModel item)
+        public void Delete(int id)
         {
-            Company company = mapper.Map<CompanyViewModel, Company>(item);
+            Company company = unitOfWork.Companies.GetById(id);
             unitOfWork.Companies.Delete(company);
-            unitOfWork.Save();
-        }
-
-
-        public void SetStateModified(CompanyViewModel item)
-        {
-            Company company = mapper.Map<CompanyViewModel, Company>(item);
-            unitOfWork.Companies.SetStateModified(company);
             unitOfWork.Save();
         }
     }

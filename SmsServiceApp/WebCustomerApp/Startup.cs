@@ -83,9 +83,11 @@ namespace WebCustomerApp
                 options.SlidingExpiration = true;
             });
             services.AddMvc();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICompanyManager, CompanyManager>();
+            services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IContactManager, ContactManager>();
+            services.AddScoped<ITariffManager, TariffManager>();
             //services.AddScoped<IRecipientManager, RecipientManager>();
             
             services.AddScoped<IStopWordManager, StopWordManager>();
@@ -145,9 +147,10 @@ namespace WebCustomerApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            name: "default",
+            template: "{controller=Home}/{action=Index}/{id?}");    
             });
+
             CreateUserRoles(services).Wait();
         }
     }

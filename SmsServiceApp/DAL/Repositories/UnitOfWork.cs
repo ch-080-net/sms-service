@@ -16,6 +16,11 @@ namespace DAL.Repositories
         private IBaseRepository<Company> companyRepo;
         private UserManager<ApplicationUser> userManager;
         private IBaseRepository<Operator> operatorRepo;
+        private IContactRepository contactRepo;
+        private IBaseRepository<Phone> phoneRepo;
+        private IBaseRepository<Tariff> tariffRepo;
+
+        private IBaseRepository<Operator> operatorRepo;
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -36,6 +41,21 @@ namespace DAL.Repositories
             get {
                 if (recipientRepo == null) { recipientRepo = new BaseRepository<Recipient>(context); }
                 return recipientRepo;
+            }
+        }
+        public IBaseRepository<Tariff> Tariffs
+        {
+            get
+            {
+                if (tariffRepo == null) { tariffRepo = new BaseRepository<Tariff>(context); }
+                return tariffRepo;
+            }
+        }
+        public UserManager<ApplicationUser> Users
+        {
+            get
+            {
+                return userManager;
             }
         }
 
@@ -63,6 +83,20 @@ namespace DAL.Repositories
                     operatorRepo = new BaseRepository<Operator>(context);
                 }
                 return operatorRepo;
+            }
+        }
+
+        public IContactRepository Contacts {
+            get {
+                if (contactRepo == null) { contactRepo = new ContactRepository(context); }
+                return contactRepo;
+            }
+        }
+
+        public IBaseRepository<Phone> Phones {
+            get {
+                if (phoneRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
+                return phoneRepo;
             }
         }
 

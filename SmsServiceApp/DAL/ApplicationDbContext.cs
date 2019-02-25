@@ -89,6 +89,16 @@ namespace WebCustomerApp.Data
 
             #endregion
 
+            // Optional FK
+
+            builder.Entity<Company>()
+                .Property(com => com.TariffId)
+                .IsRequired(false);
+
+            builder.Entity<Recipient>()
+                .Property(r => r.CompanyId)
+                .IsRequired(false);
+
             // Configuring Many-To-Many relationship through Recipient and compound index
 
             builder.Entity<Company>()
@@ -147,9 +157,17 @@ namespace WebCustomerApp.Data
 
             #endregion
 
+            // Unique indexes
 
+            builder.Entity<Operator>()
+                .HasIndex(o => o.Name)
+                .IsUnique();
 
+            builder.Entity<Code>()
+                .HasIndex(i => i.OperatorCode)
+                .IsUnique();
 
+            
         }
     }
 }

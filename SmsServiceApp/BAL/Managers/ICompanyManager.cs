@@ -8,10 +8,9 @@ namespace BAL.Managers
 {
     public interface ICompanyManager
     {
-        IEnumerable<CompanyViewModel> GetCompanies();
-        void Insert(CompanyViewModel item);
-        void Update(CompanyViewModel item);
-        void Delete(CompanyViewModel item);
-        void SetStateModified(CompanyViewModel item);
+        IEnumerable<CompanyViewModel> GetCompanies(string userId);
+        void Insert(CompanyViewModel item, string userId);
+        void Update(CompanyViewModel item, string userId);
+        void Delete(int id);
     }
 }

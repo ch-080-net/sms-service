@@ -1,27 +1,34 @@
-var delegateToCurrentGetListFunction = function () { getOperatorsList() }
-var delegateToCurrentCountFunction = function () { getOperatorsCount(); }
-var operatorsCount;
+﻿var delegateToCurrentGetListFunction = function () { getContactList() }
+var delegateToCurrentCountFunction = function () { getContactCount(); }
+var phonesCount;
 var currentPage = 1;
 var searchValue = "";
 
-$(document).ready(GetOperatorData());
+$(document).ready(GetContactData());
 
-function GetOperatorData() {
+function GetPhoneData() {
     delegateToCurrentCountFunction();
 }
 
-var Operator = {
+var Phone = {
     id: 0,
+    PhoneNumber: "",
     Name: "",
-    Logo: ""
+    Surname: "",
+    BirthDate: "",
+    Gender: "",
+    Priority: "",
+    Notes: "",
+    KeyWords: ""
 }
 
-function getOperatorsCount() {
+function getContactCount() {
     $.ajax({
-        url: '/Operator/GetOperatorsCount/',
+        url: '/Contact/GetPhoneCount/',
         type: 'GET',
+        data: { searchValue: searchValue },
         success: function (count) {
-            operatorsCount = count;
+            phonesCount = count;
             delegateToCurrentGetListFunction();
             buildNavigationButtons();
         },
@@ -31,15 +38,15 @@ function getOperatorsCount() {
     });
 }
 
-function nextOperatorPage() {
-    if (operatorsCount % 10 == 0) {
-        if (currentPage < operatorsCount / 10) {
+function nextPhonePage() {
+    if (phonesCount % 10 == 0) {
+        if (currentPage < phonesCount / 10) {
             currentPage++;
             delegateToCurrentGetListFunction();
         }
     }
     else
-        if (currentPage < (operatorsCount / 10) + 1) {
+        if (currentPage < (phonesCount / 10) + 1) {
             currentPage++;
             delegateToCurrentGetListFunction();
         }
@@ -52,24 +59,24 @@ function previousPhonePage() {
     }
 }
 
-function getOperatorPageByNumber(item) {
+function getPhonePageByNumber(item) {
     var numberOfPage = item.id;
     numberOfPage = numberOfPage.substr(4);
     currentPage = parseInt(numberOfPage, 10);
     delegateToCurrentGetListFunction();
 }
 
-// Get all Operators to display
-function getOperatorsList() {
+// Get all Phones to display
+function getPhoneList() {
     // Call Web API to get a list of Phones
     $.ajax({
-        url: '/Operator/GetOperatorsList/',
+        url: '/Phone/GetPhoneList/',
         type: 'GET',
         data: {
             numberOfPage: currentPage
         },
-        success: function (operators) {
-            operatorListSuccess(operators);
+        success: function (phones) {
+            phoneListSuccess(phones);
         },
         error: function (request, message, error) {
             handleException(request, message, error);
@@ -77,47 +84,47 @@ function getOperatorsList() {
     });
 }
 
-// Display Operators returned from Web API call
-function operatorListSuccess(operators) {
+// Display Phones returned from Web API call
+function phoneListSuccess(phones) {
     // Iterate over the collection of data
-    $("#operatorTable tbody").remove();
-    $.each(operators, function (index, operator) {
+    $("#phoneTable tbody").remove();
+    $.each(phones, function (index, phone) {
         // Add a row to the phone table
-        operatorAddRow(operator);
+        phoneAddRow(phone);
     });
 }
 
 // Add phone row to <table>
-function operatorAddRow(operator) {
+function phoneAddRow(phone) {
     // First check if a <tbody> tag exists, add one if not
-    if ($("#operatorTable tbody").length == 0) {
-        $("#operatorTable").append("<tbody></tbody>");
+    if ($("#phoneTable tbody").length == 0) {
+        $("#phoneTable").append("<tbody></tbody>");
     }
 
     // Append row to <table>
-    $("#operatorTable tbody").append(
-        operatorBuildTableRow(operator));
+    $("#phoneTable tbody").append(
+        phoneBuildTableRow(phone));
 }
 
 // Build a <tr> for a row of table data
-function operatorBuildTableRow(operator) {
+function phoneBuildTableRow(phone) {
     var newRow = "<tr>" +
-        "<td><input  class='input-phone' type='text' readonly='true' value='" + operator.phoneNumber + "'/></td>" +
-        "<td><input  class='input-fullname'  type='text' readonly='false' value='" + operator.fullName + "'/></td>" +
+        "<td><input  class='input-phone' type='text' readonly='true' value='" + phone.phoneNumber + "'/></td>" +
+        "<td><input  class='input-fullname'  type='text' readonly='false' value='" + phone.fullName + "'/></td>" +
         "<td>" +
         "<button type='button' " +
         "onclick='phoneEditAllow(this);' " +
         "class='btn btn-default' " +
-        "data-id='" + operator.phoneId + "' " +
-        "data-phonenumber='" + operator.phoneNumber + "' " +
-        "data-fullname='" + operator.fullName + "' " +
+        "data-id='" + phone.phoneId + "' " +
+        "data-phonenumber='" + phone.phoneNumber + "' " +
+        "data-fullname='" + phone.fullName + "' " +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
         "onclick='phoneDelete(this);'" +
         "class='btn btn-default' " +
-        "data-id='" + operator.phoneId + "'>" +
+        "data-id='" + phone.phoneId + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
         "</td>" +
@@ -126,44 +133,48 @@ function operatorBuildTableRow(operator) {
     return newRow;
 }
 
-function onAddOperator(item) {
+function onAddPhone(item) {
     var options = {};
-    options.url = "/Operator/AddOperator";
+    options.url = "/Phone/AddPhone";
     options.type = "POST";
-    var obj = Operator;
-    obj.Name = $("#name").val();
+    var obj = Phone;
+    obj.PhoneNumber = $("#phonenumber").val();
+    obj.FullName = $("#fullname").val();
     console.dir(obj);
     options.data = obj;
 
     options.success = function (msg) {
         $("#msg").html(msg);
-        GetOperatorData();
+        GetPhoneData();
     },
         options.error = function () {
             $("#msg").html("Error while calling the Web API!");
         };
     $.ajax(options);
-    $("#name").val("");
+    $("#phonenumber").val("");
+    $("#fullname").val("");
 }
 
-function operatorEditAllow(item) {
+function phoneEditAllow(item) {
     item.removeChild(item.firstChild);
     item.textContent = "";
     $(item).append("<span class='glyphicon glyphicon-floppy-disk' /> Save");
-    $(".input-name", $(item).parent().parent())[0].readOnly = false;
-    item.setAttribute("onclick", "operatorUpdate(this)");
+    $(".input-phone", $(item).parent().parent())[0].readOnly = false;
+    $(".input-fullname", $(item).parent().parent())[0].readOnly = false;
+    item.setAttribute("onclick", "phoneUpdate(this)");
 
 }
 
-function operatorUpdate(item) {
+function phoneUpdate(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/Operator/UpdateOperator/"
+    options.url = "/Phone/UpdatePhone/"
     options.type = "PUT";
 
-    var obj = Operator;
+    var obj = Phone;
     obj.id = $(item).data("id");
-    obj.Name = $(".input-name", $(item).parent().parent()).val();
+    obj.PhoneNumber = $(".input-phone", $(item).parent().parent()).val();
+    obj.FullName = $(".input-fullname", $(item).parent().parent()).val();
     console.dir(obj);
     options.data = obj;
     options.success = function (msg) {
@@ -176,22 +187,23 @@ function operatorUpdate(item) {
     item.removeChild(item.firstChild);
     item.textContent = "";
     $(item).append("<span class='glyphicon glyphicon-edit' /> Update");
-    $(".input-operator", $(item).parent().parent())[0].readOnly = true;
-    item.setAttribute("onclick", "operatorEditAllow(this)");
+    $(".input-phone", $(item).parent().parent())[0].readOnly = true;
+    $(".input-fullname", $(item).parent().parent())[0].readOnly = true;
+    item.setAttribute("onclick", "phoneEditAllow(this)");
 }
 
-function operatorDelete(item) {
+function phoneDelete(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/Phone/DeleteOperator/"
+    options.url = "/Phone/DeletePhone/"
         + id;
     options.type = "DELETE";
     options.success = function (msg) {
         console.log('msg= ' + msg);
         $("#msg").html(msg);
-        if ((operatorsCount - 1) % 10 == 0)
+        if ((phonesCount - 1) % 10 == 0)
             currentPage--;
-        GetOperatorData();
+        GetPhoneData();
     };
     options.error = function () {
         $("#msg").html("Error while calling the Web API!");
@@ -210,16 +222,16 @@ function handleException(request, message, error) {
     alert(msg);
 }
 
-function getSearchOperators() {
+function getSearchPhones() {
     $.ajax({
-        url: '/Operator/Search/',
+        url: '/Phone/Search/',
         type: 'GET',
         data: {
             searchData: searchValue,
             numberOfPage: currentPage
         },
-        success: function (operator) {
-            operatorListSuccess(operator);
+        success: function (phones) {
+            phoneListSuccess(phones);
         },
         error: function (request, message, error) {
             handleException(request, message, error);
@@ -227,15 +239,15 @@ function getSearchOperators() {
     });
 }
 
-function getNumberOfSearchOperators() {
+function getNumberOfSearchPhones() {
     $.ajax({
-        url: '/Operator/GetNumberOfSearchOperators/',
+        url: '/Phone/GetNumberOfSearchPhones/',
         type: 'GET',
         data: {
             searchData: searchValue,
         },
         success: function (count) {
-            operatorsCount = count;
+            phonesCount = count;
             delegateToCurrentGetListFunction();
             buildNavigationButtons();
         },
@@ -245,32 +257,32 @@ function getNumberOfSearchOperators() {
     });
 }
 
-function searchOperators() {
+function searchPhones() {
     searchValue = $("#searchField").val();
     if (searchValue == "") {
-        delegateToCurrentCountFunction = function () { getOperatorsCount(); }
-        delegateToCurrentGetListFunction = function () { getOperatorsList(); }
-        GetOperatorData();
+        delegateToCurrentCountFunction = function () { getPhonesCount(); }
+        delegateToCurrentGetListFunction = function () { getPhoneList(); }
+        GetPhoneData();
         return;
     }
-    delegateToCurrentCountFunction = function () { getNumberOfSearchOperators(); }
-    delegateToCurrentGetListFunction = function () { getSearchOperators(); }
+    delegateToCurrentCountFunction = function () { getNumberOfSearchPhones(); }
+    delegateToCurrentGetListFunction = function () { getSearchPhones(); }
     currentPage = 1;
-    GetOperatorData();
+    GetPhoneData();
 }
 
 function buildNavigationButtons() {
-    if (operatorsCount % 10 == 0)
-        pagesCount = operatorsCount / 10;
+    if (phonesCount % 10 == 0)
+        pagesCount = phonesCount / 10;
     else
-        var pagesCount = operatorsCount / 10 + 1;
+        var pagesCount = phonesCount / 10 + 1;
     $("#pageButtons button").remove();
-    var button = "<button type='button' class='btn btn -default ' onclick='previousOperatorPage()' id='previousPage'><span class='glyphicon glyphicon-triangle-left' /></button>"
+    var button = "<button type='button' class='btn btn -default ' onclick='previousPhonePage()' id='previousPage'><span class='glyphicon glyphicon-triangle-left' /></button>"
     $("#pageButtons").append(button);
     for (var i = 1; i <= pagesCount; i++) {
-        button = "<button type='button' class='btn btn -default' onclick='getOperatorPageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
+        button = "<button type='button' class='btn btn -default' onclick='getPhonePageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
         $("#pageButtons").append(button);
     }
-    button = "<button type='button' class='btn btn -default ' onclick='nextOperatorPage()' id='nextPage'><span class='glyphicon glyphicon-triangle-right' /></button>";
+    button = "<button type='button' class='btn btn -default ' onclick='nextPhonePage()' id='nextPage'><span class='glyphicon glyphicon-triangle-right' /></button>";
     $("#pageButtons").append(button);
 }
