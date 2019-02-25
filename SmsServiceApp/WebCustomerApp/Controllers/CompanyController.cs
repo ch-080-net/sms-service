@@ -134,24 +134,6 @@ namespace WebApp.Controllers
             }
             return View(company);
         }
-        //public IActionResult Create(CompanyViewModel item)
-        //{
-        //    string name = "{0}";
-
-        //    //change according to further requirement
-        //    item.Message = item.Message.Replace("#name", name).Replace("#company", item.Name);
-            
-        //    //then move to the send function to the SMPP 
-        //    //foreach (var res in item.RecipientViewModels)
-        //    //{
-        //    //    string outServisMessage = String.Format(item.Message, RecipientViewModel.name)
-        //    //}
-
-        //    string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    item.ApplicationUserId = userId;
-          
-        //    companyManager.Insert(item);
-        //    return new ObjectResult("Recipient added successfully!");
-        //}
+     
     }
 }

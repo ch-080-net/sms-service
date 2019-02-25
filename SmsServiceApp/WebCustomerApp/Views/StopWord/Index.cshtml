@@ -10,34 +10,40 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Word)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ViewBag.stopWords)
-        {
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
+</p>
+<div class="container">
+    <table class="table table-hover">
+        <thead class="thead-dark">
             <tr>
-                <td>
-                    @item.Id
-                </td>
-                <td>
-                    @item.Word
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th scope="col" class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th scope="col" class="col-md-6">
+                    @Html.DisplayNameFor(model => model.Word)
+                </th>
+                <th scope="col" class="col-md-4"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Word)
+                    </td>
+                 
+                        <td scope="row">
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+    </table>
+</div>

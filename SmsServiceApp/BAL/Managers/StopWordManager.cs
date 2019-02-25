@@ -35,9 +35,9 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void Delete(StopWordViewModel item)
+        public void Delete(int item)
         {
-            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+            StopWord word = unitOfWork.StopWords.GetById(item);
             unitOfWork.StopWords.Delete(word);
             unitOfWork.Save();
         }

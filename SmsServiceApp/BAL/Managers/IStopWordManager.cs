@@ -11,7 +11,7 @@ namespace BAL.Managers
         IEnumerable<StopWordViewModel> GetStopWords();
         void Insert(StopWordViewModel item);
         void Update(StopWordViewModel item);
-        void Delete(StopWordViewModel item);
+        void Delete(int item);
         void SetStateModified(StopWordViewModel item);
     }
 }

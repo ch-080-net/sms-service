@@ -1,4 +1,5 @@
 ﻿using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Model.Interfaces;
@@ -13,6 +14,8 @@ using WebCustomerApp.Models;
 
 namespace WebApp.Controllers
 {
+   
+    [Authorize(Roles = "Admin")]
     [Route("[controller]/[action]")]
     public class StopWordController : Controller
     {
@@ -25,9 +28,10 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<StopWordViewModel> stopWords = stopWordManager.GetStopWords();
-            ViewBag.stopWords = stopWords;
-            return View();
+           // IEnumerable<StopWordViewModel> stopWords = stopWordManager.GetStopWords();
+         //   ViewBag.stopWords = stopWords;
+         
+            return View(stopWordManager.GetStopWords());
         }
 
         public IActionResult Create()
@@ -35,15 +39,60 @@ namespace WebApp.Controllers
             return View();
         }
 
-        //[Route("~/StopWord/Edit")]
-        //[HttpGet]
-        //public IEnumerable<StopWordViewModel> Edit()
-        //{
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
 
-        //    return View();
-        //}
+            if (word == null)
+            {
+                return NotFound();
+            }
+            return View(word);
+        }
 
+        [HttpPost]
+        [Route("~/StopWord/Edit")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit( StopWordViewModel wordEdit)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                stopWordManager.Update(wordEdit);
+                return RedirectToAction("Index");
+            }
+            return View(wordEdit);
+        }
 
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            StopWordViewModel company = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            stopWordManager.Delete(id);
+            return RedirectToAction("Index");
+        }
 
         [Route("~/StopWord/GetAll")]
         [HttpGet]
@@ -73,6 +122,21 @@ namespace WebApp.Controllers
             {
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
+        }
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            StopWordViewModel company = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
         }
     }
 }
