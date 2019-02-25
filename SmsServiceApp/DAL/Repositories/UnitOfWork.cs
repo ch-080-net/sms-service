@@ -19,8 +19,6 @@ namespace DAL.Repositories
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
-
-        private IBaseRepository<Operator> operatorRepo;
         private IBaseRepository<Code> codeRepo;
 
 
