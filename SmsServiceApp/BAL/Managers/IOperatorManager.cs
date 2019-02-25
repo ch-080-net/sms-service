@@ -13,6 +13,7 @@ namespace BAL.Managers
         bool Remove(int Id);
         IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
         int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "");
+        bool AddLogo(LogoViewModel Logo);
     }
 }
 

@@ -6,6 +6,7 @@ using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using AutoMapper;
 using System.Linq;
+using System.IO;
 
 namespace BAL.Managers
 {
@@ -15,7 +16,7 @@ namespace BAL.Managers
         {
 
         }
-
+        
         public bool Add(OperatorViewModel NewOperator)
         {
             if (NewOperator.Name == null || NewOperator.Name == "")
@@ -96,6 +97,31 @@ namespace BAL.Managers
             try
             {
                 unitOfWork.Operators.Update(result);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool AddLogo(LogoViewModel Logo)
+        {
+            if (Logo.Logo == null)
+                return false;
+
+            var oper = unitOfWork.Operators.GetById(Logo.OperatorId);
+            if (oper == null)
+                return false;
+
+            byte[] imgData = null;
+            using (var binReader = new BinaryReader(Logo.Logo.OpenReadStream()))
+            {
+                imgData = binReader.ReadBytes((int)Logo.Logo.Length);
+            }
+            oper.Logo = imgData;
+            try
+            {
                 unitOfWork.Save();
             }
             catch

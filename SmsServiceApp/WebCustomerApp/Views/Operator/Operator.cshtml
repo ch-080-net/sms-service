@@ -3,7 +3,8 @@
 
 <form asp-action="Operator" asp-controller="Operator" method="post" asp-antiforgery="true">
     <div class="row">
-        <input type="hidden" class="form-control" asp-for="Id" />        
+        <input type="hidden" class="form-control" asp-for="Id" /> 
+        
         <div class="form-group col-md-4">
             <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
             <span asp-validation-for="Name" class="text-danger"></span>
@@ -29,6 +30,9 @@
                     </li>
                     <li>
                         <a asp-action="EditCodes" asp-controller="Operator" asp-route-Id="@Model.Id">Manage codes</a>
+                    </li>
+                    <li>
+                        <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">Add Logo</a>
                     </li>
 
                 </ul>
