@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
@@ -13,6 +14,7 @@ using WebCustomerApp.Models;
 
 namespace WebApp.Controllers
 {
+    [Authorize (Roles = "Admin")]
     public class TariffController : Controller
     {
         private ITariffManager tariffManager;
