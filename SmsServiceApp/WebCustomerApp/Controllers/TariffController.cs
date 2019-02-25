@@ -18,7 +18,7 @@ namespace WebApp.Controllers
     public class TariffController : Controller
     {
         private ITariffManager tariffManager;
-        private static int operatorId;
+       
 
         public TariffController(ITariffManager tariff)
         {
@@ -81,7 +81,7 @@ namespace WebApp.Controllers
             }
 
             TariffViewModel tariff = tariffManager.GetTariffById(id.Value);
-            tariffManager.Delete(tariff);
+            tariffManager.Delete(tariff, id.Value);
 
             if (tariff == null)
             {
@@ -94,8 +94,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int? id)
         {
-            TariffViewModel tariff = tariffManager.GetTariffs(operatorId).FirstOrDefault(r => r.Id == id);
-            tariffManager.Delete(tariff);
+            TariffViewModel tariff = tariffManager.GetTariffs(id.Value).FirstOrDefault(r => r.Id == id);
+            tariffManager.Delete(tariff, id.Value);
             return RedirectToAction("Index");
         }
           

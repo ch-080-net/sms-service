@@ -1,5 +1,10 @@
 ﻿@using Model.ViewModels.CodeViewModels
 @model CodeViewModel
+
+@{
+    ViewData["Title"] = ViewBag.OperatorName + " codes";
+}
+
 <h2>Codes for @ViewBag.OperatorName</h2>
 <hr />
 
@@ -16,10 +21,10 @@
                 <input asp-for="OperatorCode" class="form-control code" placeholder="Example: +38066" />
                 <span asp-validation-for="OperatorCode" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">
+            <button type="submit" class="btn btn-primary">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
             </button>
-            <a class="btn btn-default" role="button" asp-action="Operators" asp-controller="Operator">
+            <a class="btn btn-success" role="button" asp-action="Operators" asp-controller="Operator">
                 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span> Back
             </a>
         </form>
