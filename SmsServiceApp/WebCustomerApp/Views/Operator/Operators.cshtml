@@ -1,5 +1,9 @@
 ﻿@using Model.ViewModels.OperatorViewModels
 @model OperatorViewModel
+
+@{ 
+    ViewData["Title"] = "Operators";
+}
 <h2>Operators</h2>
 <hr />
 
@@ -17,7 +21,7 @@
                 <input asp-for="Name" class="form-control" placeholder="New operator name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">
+            <button type="submit" class="btn btn-primary">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
             </button>
         </form>
