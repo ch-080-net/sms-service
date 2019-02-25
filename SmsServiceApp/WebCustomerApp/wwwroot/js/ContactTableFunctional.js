@@ -1,35 +1,38 @@
-﻿var delegateToCurrentGetListFunction = function () { getContactList() }
-var delegateToCurrentCountFunction = function () { getContactCount(); }
-var phonesCount;
+﻿
+var contactCount;
+var pagesCount;
 var currentPage = 1;
+var pageSize = 5;
 var searchValue = "";
 
-$(document).ready(GetContactData());
+$(document).ready(function () {
+    $.getScript("https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js");
+    GetContactData()
+    });
 
-function GetPhoneData() {
-    delegateToCurrentCountFunction();
+function GetContactData() {
+    getContactCount();
 }
 
-var Phone = {
-    id: 0,
-    PhoneNumber: "",
+var Contact = {
+    Id: 0,
+    PhonePhoneNumber: "",
     Name: "",
     Surname: "",
     BirthDate: "",
     Gender: "",
-    Priority: "",
     Notes: "",
     KeyWords: ""
 }
 
 function getContactCount() {
     $.ajax({
-        url: '/Contact/GetPhoneCount/',
+        url: '/Contact/GetContactCount/',
         type: 'GET',
         data: { searchValue: searchValue },
         success: function (count) {
-            phonesCount = count;
-            delegateToCurrentGetListFunction();
+            contactCount = count;
+            getContactList();
             buildNavigationButtons();
         },
         error: function (request, message, error) {
@@ -38,45 +41,47 @@ function getContactCount() {
     });
 }
 
-function nextPhonePage() {
-    if (phonesCount % 10 == 0) {
-        if (currentPage < phonesCount / 10) {
+function nextPage() {
+    if (contactCount % pageSize == 0) {
+        if (currentPage < contactCount / pageSize) {
             currentPage++;
-            delegateToCurrentGetListFunction();
+            getContactList()
         }
     }
     else
-        if (currentPage < (phonesCount / 10) + 1) {
+        if (currentPage < parseInt((contactCount / pageSize) + 1)) {
             currentPage++;
-            delegateToCurrentGetListFunction();
+            getContactList();
         }
 }
 
-function previousPhonePage() {
+function previousPage() {
     if (currentPage > 1) {
         currentPage--;
-        delegateToCurrentGetListFunction();
+        getContactList();
     }
 }
 
-function getPhonePageByNumber(item) {
+function getPageByNumber(item) {
     var numberOfPage = item.id;
     numberOfPage = numberOfPage.substr(4);
     currentPage = parseInt(numberOfPage, 10);
-    delegateToCurrentGetListFunction();
+    getContactList();
 }
 
 // Get all Phones to display
-function getPhoneList() {
+function getContactList() {
     // Call Web API to get a list of Phones
     $.ajax({
-        url: '/Phone/GetPhoneList/',
+        url: '/Contact/GetContactList/',
         type: 'GET',
         data: {
-            numberOfPage: currentPage
+            pageNumber: currentPage,
+            pageSize: pageSize,
+            searchValue: searchValue
         },
-        success: function (phones) {
-            phoneListSuccess(phones);
+        success: function (contacts) {
+            contactListSuccess(contacts);
         },
         error: function (request, message, error) {
             handleException(request, message, error);
@@ -85,46 +90,56 @@ function getPhoneList() {
 }
 
 // Display Phones returned from Web API call
-function phoneListSuccess(phones) {
+function contactListSuccess(contacts) {
     // Iterate over the collection of data
-    $("#phoneTable tbody").remove();
-    $.each(phones, function (index, phone) {
+    $("#contactTable tbody").remove();
+    $.each(contacts, function (index, contact) {
         // Add a row to the phone table
-        phoneAddRow(phone);
+        contactAddRow(contact);
     });
 }
 
 // Add phone row to <table>
-function phoneAddRow(phone) {
+function contactAddRow(contact) {
     // First check if a <tbody> tag exists, add one if not
-    if ($("#phoneTable tbody").length == 0) {
-        $("#phoneTable").append("<tbody></tbody>");
+    if ($("#contactTable tbody").length == 0) {
+        $("#contactTable").append("<tbody></tbody>");
     }
 
     // Append row to <table>
-    $("#phoneTable tbody").append(
-        phoneBuildTableRow(phone));
+    $("#contactTable tbody").append(
+        contactBuildTableRow(contact));
 }
 
 // Build a <tr> for a row of table data
-function phoneBuildTableRow(phone) {
+function contactBuildTableRow(contact) {
     var newRow = "<tr>" +
-        "<td><input  class='input-phone' type='text' readonly='true' value='" + phone.phoneNumber + "'/></td>" +
-        "<td><input  class='input-fullname'  type='text' readonly='false' value='" + phone.fullName + "'/></td>" +
+        "<td>" + contact.phonePhoneNumber + "</td>" +
+        "<td>" + contact.name + "</td>" +
+        "<td>" + contact.surname + "</td>" +
+        "<td>" + contact.birthDate + "</td>" +
+        "<td>" + contact.gender + "</td>" +
+        "<td>" + contact.notes + "</td>" +
+        "<td>" + contact.keyWords + "</td>" +
         "<td>" +
-        "<button type='button' " +
-        "onclick='phoneEditAllow(this);' " +
-        "class='btn btn-default' " +
-        "data-id='" + phone.phoneId + "' " +
-        "data-phonenumber='" + phone.phoneNumber + "' " +
-        "data-fullname='" + phone.fullName + "' " +
+        "<button type='button'" +
+        "onclick='contactEditAllow(this);'" +
+        "class='btn btn-primary'" +
+        "data-id='" + contact.id + "'" +
+        "data-phonenumber='" + contact.phonePhoneNumber + "'" +
+        "data-name='" + contact.name + "'" +
+        "data-surname='" + contact.surname + "'" +
+        "data-birthdate='" + contact.birthDate + "'" +
+        "data-gender='" + contact.gender + "'" +
+        "data-notes='" + contact.notes + "'" +
+        "data-keywords='" + contact.keyWords + "'" +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
-        "onclick='phoneDelete(this);'" +
-        "class='btn btn-default' " +
-        "data-id='" + phone.phoneId + "'>" +
+        "onclick='contactDelete(this);'" +
+        "class='btn btn-danger' " +
+        "data-id='" + contact.id + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
         "</td>" +
@@ -133,77 +148,128 @@ function phoneBuildTableRow(phone) {
     return newRow;
 }
 
-function onAddPhone(item) {
+function onAddContact(item) {
     var options = {};
-    options.url = "/Phone/AddPhone";
+    options.url = "/Contact/AddContact";
     options.type = "POST";
-    var obj = Phone;
-    obj.PhoneNumber = $("#phonenumber").val();
-    obj.FullName = $("#fullname").val();
+    var obj = Contact;
+    obj.PhonePhoneNumber = $("#phoneNumber").val();
+    var regex = new RegExp("^[+][0-9]{12}");
+    if (!regex.test(obj.PhonePhoneNumber)) {
+        $("#msg").html("Valid phone number");
+        return;
+    }
+    obj.Name = $("#name").val();
+    obj.Surname = $("#surname").val();
+    obj.BirthDate = $("#birthDate").val();
+    if (obj.BirthDate == "")
+        obj.BirthDate = new Date(Date.now()).toLocaleString();
+    if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
+    if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
+    obj.Notes = $("#notes").val();
+    obj.KeyWords = $("#keywords").val();
     console.dir(obj);
     options.data = obj;
 
     options.success = function (msg) {
         $("#msg").html(msg);
-        GetPhoneData();
+        GetContactData();
     },
         options.error = function () {
             $("#msg").html("Error while calling the Web API!");
         };
     $.ajax(options);
-    $("#phonenumber").val("");
-    $("#fullname").val("");
+    $("#phoneNumber").val("");
+    $("#name").val("");
+    $("#surname").val("");
+    $("#birthDate").val("");
+    document.getElementById("genderMale").checked = true;
+    document.getElementById("genderFemale").checked = false;
+    $("#notes").val("");
+    $("#keywords").val("");
 }
 
-function phoneEditAllow(item) {
-    item.removeChild(item.firstChild);
-    item.textContent = "";
-    $(item).append("<span class='glyphicon glyphicon-floppy-disk' /> Save");
-    $(".input-phone", $(item).parent().parent())[0].readOnly = false;
-    $(".input-fullname", $(item).parent().parent())[0].readOnly = false;
-    item.setAttribute("onclick", "phoneUpdate(this)");
+function contactEditAllow(item) {
+    document.getElementById("AddContactForm").style.display = "block";
+
+    $("#HideShowAddContact").val("Edit contact");
+    $("#phoneNumber").val($(item).data("phonenumber"));
+    $("#name").val($(item).data("name"));
+    $("#surname").val($(item).data("surname"));
+    $("#birthDate").val($(item).data("birthdate"));
+    var text = $(item).data("gender");
+    if (text == "Male")
+        document.getElementById("genderMale").checked = true;
+    if (text == "Female")
+        document.getElementById("genderFemale").checked = true;
+    $("#notes").val($(item).data("notes"));
+    $("#keywords").val($(item).data("keywords"));
+    document.getElementById("insert").textContent = "Save";
+    document.getElementById("insert").setAttribute("onclick", "contactUpdate(" + $(item).data("id") + ")");
 
 }
 
-function phoneUpdate(item) {
-    var id = $(item).data("id");
+function contactUpdate(idOfUpdatePhone) {
+    var id = idOfUpdatePhone;
     var options = {};
-    options.url = "/Phone/UpdatePhone/"
+    options.url = "/Contact/UpdateContact/"
     options.type = "PUT";
 
-    var obj = Phone;
-    obj.id = $(item).data("id");
-    obj.PhoneNumber = $(".input-phone", $(item).parent().parent()).val();
-    obj.FullName = $(".input-fullname", $(item).parent().parent()).val();
+    var obj = Contact;
+    obj.Id = id;
+    obj.PhonePhoneNumber = $("#phoneNumber").val();
+    var regex = new RegExp("^[+][0-9]{12}");
+    if (!regex.test(obj.PhonePhoneNumber)) {
+        $("#msg").html("Valid phone number");
+        return;
+    }
+    obj.Name = $("#name").val();
+    obj.Surname = $("#surname").val();
+    obj.BirthDate = $("#birthDate").val();
+    if (obj.BirthDate == "")
+        obj.BirthDate = new Date(Date.now()).toLocaleString();
+    if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
+    if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
+    obj.Notes = $("#notes").val();
+    obj.KeyWords = $("#keywords").val();
     console.dir(obj);
     options.data = obj;
     options.success = function (msg) {
         $("#msg").html(msg);
+        obj.Id = 0;
+        getContactList();
     };
     options.error = function () {
         $("#msg").html("Error while calling the Web API!");
     };
     $.ajax(options);
-    item.removeChild(item.firstChild);
-    item.textContent = "";
-    $(item).append("<span class='glyphicon glyphicon-edit' /> Update");
-    $(".input-phone", $(item).parent().parent())[0].readOnly = true;
-    $(".input-fullname", $(item).parent().parent())[0].readOnly = true;
-    item.setAttribute("onclick", "phoneEditAllow(this)");
+    document.getElementById("insert").setAttribute("onclick", "onAddContact(this)");
+    document.getElementById("AddContactForm").style.display = "none";
+    $("#phoneNumber").val("");
+    $("#name").val("");
+    $("#surname").val("");
+    $("#birthDate").val("");
+    document.getElementById("genderMale").checked = false;
+    document.getElementById("genderFemale").checked = false;
+    $("#notes").val("");
+    $("#keywords").val("");
+    $("#HideShowAddContact").val("Add new contact");
+    document.getElementById("insert").textContent = "ADD";
+
 }
 
-function phoneDelete(item) {
+function contactDelete(item) {
     var id = $(item).data("id");
     var options = {};
-    options.url = "/Phone/DeletePhone/"
+    options.url = "/Contact/DeleteContact/"
         + id;
     options.type = "DELETE";
     options.success = function (msg) {
         console.log('msg= ' + msg);
         $("#msg").html(msg);
-        if ((phonesCount - 1) % 10 == 0)
+        if ((contactCount - 1) % 10 == 0)
             currentPage--;
-        GetPhoneData();
+        GetContactData();
     };
     options.error = function () {
         $("#msg").html("Error while calling the Web API!");
@@ -222,67 +288,41 @@ function handleException(request, message, error) {
     alert(msg);
 }
 
-function getSearchPhones() {
-    $.ajax({
-        url: '/Phone/Search/',
-        type: 'GET',
-        data: {
-            searchData: searchValue,
-            numberOfPage: currentPage
-        },
-        success: function (phones) {
-            phoneListSuccess(phones);
-        },
-        error: function (request, message, error) {
-            handleException(request, message, error);
-        }
-    });
-}
-
-function getNumberOfSearchPhones() {
-    $.ajax({
-        url: '/Phone/GetNumberOfSearchPhones/',
-        type: 'GET',
-        data: {
-            searchData: searchValue,
-        },
-        success: function (count) {
-            phonesCount = count;
-            delegateToCurrentGetListFunction();
-            buildNavigationButtons();
-        },
-        error: function (request, message, error) {
-            handleException(request, message, error);
-        }
-    });
-}
-
-function searchPhones() {
+function searchContacts() {
     searchValue = $("#searchField").val();
-    if (searchValue == "") {
-        delegateToCurrentCountFunction = function () { getPhonesCount(); }
-        delegateToCurrentGetListFunction = function () { getPhoneList(); }
-        GetPhoneData();
-        return;
-    }
-    delegateToCurrentCountFunction = function () { getNumberOfSearchPhones(); }
-    delegateToCurrentGetListFunction = function () { getSearchPhones(); }
     currentPage = 1;
-    GetPhoneData();
+    GetContactData();
 }
 
 function buildNavigationButtons() {
-    if (phonesCount % 10 == 0)
-        pagesCount = phonesCount / 10;
+    if (contactCount % pageSize == 0)
+        pagesCount = contactCount / pageSize;
     else
-        var pagesCount = phonesCount / 10 + 1;
+        pagesCount = contactCount / pageSize + 1;
     $("#pageButtons button").remove();
-    var button = "<button type='button' class='btn btn -default ' onclick='previousPhonePage()' id='previousPage'><span class='glyphicon glyphicon-triangle-left' /></button>"
+    var button = "<button type='button' class='btn btn -default ' onclick='previousPage()' id='previous'><span class='glyphicon glyphicon-triangle-left' /></button>"
     $("#pageButtons").append(button);
     for (var i = 1; i <= pagesCount; i++) {
-        button = "<button type='button' class='btn btn -default' onclick='getPhonePageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
+        button = "<button type='button' class='btn btn -default' onclick='getPageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
         $("#pageButtons").append(button);
     }
-    button = "<button type='button' class='btn btn -default ' onclick='nextPhonePage()' id='nextPage'><span class='glyphicon glyphicon-triangle-right' /></button>";
+    button = "<button type='button' class='btn btn -default ' onclick='nextPage()' id='next'><span class='glyphicon glyphicon-triangle-right' /></button>";
     $("#pageButtons").append(button);
+}
+
+function pageSizeChange(item) {
+    pageSize = parseInt(item[item.selectedIndex].text, 10);
+    buildNavigationButtons();
+    if (pagesCount < currentPage)
+        currentPage = pagesCount;
+    getContactList();
+}
+
+function HideShowFormForAddContact() {
+    var x = document.getElementById("AddContactForm");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }

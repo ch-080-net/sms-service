@@ -20,7 +20,7 @@ namespace Model.ViewModels.RecipientViewModels
         [StringLength(100)]
         public string Surname { get; set; }
         public DateTime BirthDate { get; set; }
-        public byte Gender { get; set; }
+        public string Gender { get; set; }
         public string Priority { get; set; }
         public string KeyWords { get; set; }
     }
