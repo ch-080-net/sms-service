@@ -45,11 +45,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                string name = "{0}";
-
+                //string name = "{0}";
+                //string surname = "{1}";
+                //string birthday = "{2}";
                 //change according to further requirement
-                item.Message = item.Message.Replace("#name", name).Replace("#company", item.Name);
-
+                //item.Message = item.Message.Replace("#name", name).Replace("#surname", surname).Replace("#birthday", birthday).Replace("#company", item.Name);
+                item.Message = item.Message.Replace("#company", item.Name);
                 //then move to the send function to the SMPP 
                 //foreach (var res in item.RecipientViewModels)
                 //{
