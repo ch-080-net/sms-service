@@ -1,0 +1,46 @@
+﻿@using Model.ViewModels.CompanyViewModels;
+@model IEnumerable<CompanyViewModel>;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Companies</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
+</p>
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col" class="col-md-6">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th scope="col" class="col-md-4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td scope="row">
+                        <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">Recipients</a> |
+                        <a class="btn btn-primary">Tariff</a> |
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
