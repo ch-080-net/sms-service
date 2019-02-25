@@ -9,6 +9,7 @@ using System.Text;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
 using WebCustomerApp.Models;
+using Model.ViewModels.StopWordViewModels;
 
 namespace BAL.Services
 {
@@ -27,6 +28,9 @@ namespace BAL.Services
 
             CreateMap<Operator, OperatorViewModel>();
             CreateMap<OperatorViewModel, Operator>();
+           
+            CreateMap<StopWord, StopWordViewModel>();
+            CreateMap<StopWordViewModel, StopWord>();
           
             CreateMap<Tariff, TariffViewModel>();
             CreateMap<TariffViewModel, Tariff>();
