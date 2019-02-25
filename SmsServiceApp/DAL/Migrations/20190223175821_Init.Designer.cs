@@ -11,7 +11,7 @@ using WebCustomerApp.Data;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190222114448_Init")]
+    [Migration("20190223175821_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -192,6 +192,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OperatorCode")
+                        .IsUnique();
+
                     b.HasIndex("OperatorId");
 
                     b.ToTable("Codes");
@@ -212,7 +215,7 @@ namespace DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<int>("TariffId");
+                    b.Property<int?>("TariffId");
 
                     b.HasKey("Id");
 
@@ -265,6 +268,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Operators");
                 });
 
@@ -288,7 +294,7 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("BirthDate");
 
-                    b.Property<int>("CompanyId");
+                    b.Property<int?>("CompanyId");
 
                     b.Property<byte>("Gender");
 
@@ -309,7 +315,8 @@ namespace DAL.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("PhoneId", "CompanyId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CompanyId] IS NOT NULL");
 
                     b.ToTable("Recipients");
                 });
