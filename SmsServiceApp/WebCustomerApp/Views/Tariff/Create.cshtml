@@ -61,21 +61,19 @@
                 </div>
                 <div class="form-group">
                     <label for="price">Price:</label>
-                    <input type="number" class="form-control" id="price">
+                    <input type="number" step="0.01" class="form-control" id="price">
                 </div>
                 <div class="form-group">
                     <label for="limit">Limit:</label>
                     <input type="number" class="form-control" id="limit">
                 </div>
-                <button type="submit" class="btn btn-default" onclick='onAddTariff(this)'>Add Tariff</button>
+                <button type="submit" class="btn btn-success" onclick='onAddTariff(this)'>Add Tariff</button>
+                <a class="btn btn-warning" asp-action="Operators" asp-controller="Operator">Back to List Of Operators</a>
                 <br />
                 <div id="msg"></div>
             </div>
         </div>
     </form>
-    <div>
-        <a asp-action="Operators" asp-controller="Operator">Back to List</a>
-    </div>
 </body>
 </html>
 

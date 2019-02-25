@@ -5,33 +5,35 @@
 <hr />
 
 <div class="container">
-    <table class="table table-bordered">
+    <div class="col-lg-4">
+    <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="col-md-2">
+                <th class="col-md-3">
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
-                <th scope="col" class="col-md-4"></th>
+                <th class="col-md-1"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in ViewBag.operators)
             {
                 <tr>
-                    <td scope="row">
+                    <td class="col-md-3">
                         @item.Name
                     </td>
-                    <td scope="row">
-                        <a class="btn btn-primary" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariff</a>
+                    <td class="col-md-1">
+                        <a class="btn btn-success" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariff</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">Back to Companies</a>
 </div>
 
 

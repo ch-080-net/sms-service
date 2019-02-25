@@ -69,11 +69,21 @@ namespace BAL.Managers
             unitOfWork.Save();
             return true;
         }
-        public void Delete(TariffViewModel item)
+        public bool Delete(TariffViewModel item, int id)
         {
-            Tariff tariff = mapper.Map<TariffViewModel, Tariff>(item);
-            unitOfWork.Tariffs.Delete(tariff);
-            unitOfWork.Save();
+            var tar = unitOfWork.Tariffs.GetById(id);
+            if (tar == null)
+                return false;
+            try
+            {
+                unitOfWork.Tariffs.Delete(tar);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

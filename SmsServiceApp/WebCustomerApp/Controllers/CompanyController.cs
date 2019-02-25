@@ -51,6 +51,18 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                //string name = "{0}";
+                //string surname = "{1}";
+                //string birthday = "{2}";
+                //change according to further requirement
+                //item.Message = item.Message.Replace("#name", name).Replace("#surname", surname).Replace("#birthday", birthday).Replace("#company", item.Name);
+                item.Message = item.Message.Replace("#company", item.Name);
+                //then move to the send function to the SMPP 
+                //foreach (var res in item.RecipientViewModels)
+                //{
+                //    string outServisMessage = String.Format(item.Message, RecipientViewModel.name)
+                //}
+
                 companyManager.Insert(item, userId);
                 return RedirectToAction("Index");
             }
@@ -77,13 +89,17 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind]CompanyViewModel company)
         {
-            if (id != company.Id)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
-                companyManager.Update(company, userId);
+                var tariffId = companyManager.Get(id).TariffId;
+                if (tariffId == 0)
+                {
+                    companyManager.Update(company, userId, 0);
+                }
+                else
+                {
+                    companyManager.Update(company, userId, tariffId);
+                }
                 return RedirectToAction("Index");
             }
             return View(company);
@@ -152,8 +168,7 @@ namespace WebApp.Controllers
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            currentCompany.TariffId = tariffId;
-            companyManager.Update(currentCompany, userId);
+            companyManager.Update(currentCompany, userId, currentCompany.TariffId);
             return RedirectToAction("Index","Company");
         }
     }

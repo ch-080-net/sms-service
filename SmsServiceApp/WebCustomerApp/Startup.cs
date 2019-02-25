@@ -94,7 +94,9 @@ namespace WebCustomerApp
             services.AddScoped<IRecipientManager, RecipientManager>();
             services.AddScoped<IContactManager, ContactManager>();
             services.AddScoped<ITariffManager, TariffManager>();
-            //services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IPhoneManager, PhoneManager>();
+            
+            services.AddScoped<IStopWordManager, StopWordManager>();
 
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();

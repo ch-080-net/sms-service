@@ -14,6 +14,7 @@ namespace BAL.Managers
         IEnumerable<OperatorViewModel> GetAll();
         IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
         int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "");
+        bool AddLogo(LogoViewModel Logo);
     }
 }
 

@@ -5,6 +5,8 @@ using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using WebCustomerApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -42,7 +44,7 @@ namespace WebApp.Controllers
         {
             this.operatorManager = oper;
         }
-
+        
         [HttpGet]
         public IActionResult Operators()
         {
@@ -173,6 +175,18 @@ namespace WebApp.Controllers
             TempData["OperatorId"] = Id;
             return RedirectToAction("Codes", "Code");
         }
-                     
+        [HttpGet]
+        public IActionResult AddLogo(int OperatorId)
+        {
+            return View(new LogoViewModel() { OperatorId = OperatorId });
+        }
+
+        [HttpPost]
+        public IActionResult AddLogo(LogoViewModel Logo)
+        {
+            operatorManager.AddLogo(Logo);
+            return RedirectToAction("Operators", "Operator");
+        }
+
     }
 }

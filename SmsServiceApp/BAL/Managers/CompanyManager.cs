@@ -41,6 +41,14 @@ namespace BAL.Managers
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
             company.ApplicationUserId = userId;
+            if (tariffId != 0)
+            {
+                company.TariffId = tariffId;
+            }
+            else
+            {
+                company.TariffId = null;
+            }
             unitOfWork.Companies.Update(company);
             unitOfWork.Save();
         }

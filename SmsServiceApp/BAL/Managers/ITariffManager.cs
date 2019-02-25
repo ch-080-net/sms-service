@@ -11,10 +11,9 @@ namespace BAL.Managers
         TariffViewModel GetById(int Id);
         bool Insert(TariffViewModel item);
         bool Update(TariffViewModel item);
-        void Delete(TariffViewModel item);
+        bool Delete(TariffViewModel item, int id);
         IEnumerable<TariffViewModel> GetAll();
         IEnumerable<TariffViewModel> GetTariffs(int operatorId);
-
         TariffViewModel GetTariffById(int id);
 
     }
