@@ -20,7 +20,7 @@
 <body>
     <h3>Contact Manager</h3>
     <form style="padding-left:0em;">
-        <input type="button" id="HideShowAddContact" onclick="HideShowFormForAddContact()" value="Add new contact" /> 
+        <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()" value="Add new contact" /> 
         <div id="AddContactForm" style="display: none">
             <table>
             <tr>
@@ -54,7 +54,7 @@
                 <td>
                     <input id="birthDate" width="175" />
                     <script>
-                        $('#birthDate').datetimepicker({ footer: true, modal: true, });
+                        $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM'});
                     </script>
                 </td>
             </tr>
@@ -86,10 +86,9 @@
                 </td>
             </tr>
             <tr>
-                <td></td>
                 <td>
-                    <button type='button' id='insert' onclick='onAddContact(this)' class='btn btn-default'>
-                        <span class='glyphicon glyphicon-plus' />Insert
+                    <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                        <span class='glyphicon glyphicon-plus' /> ADD
                     </button>
                 </td>
             </tr>
@@ -123,12 +122,12 @@
         </div>
         <div>
             <input id="searchField" type="text" />
-            <button type='button' id="search" onclick='searchContacts()' class='btn btn-default'>
-                <span class='glyphicon glyphicon-search' />Search
+            <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
+                <span class='glyphicon glyphicon-search' /> Search
             </button>
         </div>
 
-            <table class="table table-hover" id="contactTable" style="border: 1px solid #999; padding-left: 0em;" cellpadding="1">
+            <table class="table table-hover" id="contactTable" >
                 <thead class="thead-dark">
                     <tr>
                         <td ><label> Phone number </label></td>
@@ -139,19 +138,6 @@
                         <td ><label> Notes </label></td>
                         <td ><label> Keywords </label></td>
                         <td> </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
-
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                 </thead>
             </table>

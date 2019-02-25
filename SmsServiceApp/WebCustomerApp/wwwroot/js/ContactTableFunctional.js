@@ -124,7 +124,7 @@ function contactBuildTableRow(contact) {
         "<td>" +
         "<button type='button'" +
         "onclick='contactEditAllow(this);'" +
-        "class='btn btn-default'" +
+        "class='btn btn-primary'" +
         "data-id='" + contact.id + "'" +
         "data-phonenumber='" + contact.phonePhoneNumber + "'" +
         "data-name='" + contact.name + "'" +
@@ -138,7 +138,7 @@ function contactBuildTableRow(contact) {
         "</button> " +
         " <button type='button' " +
         "onclick='contactDelete(this);'" +
-        "class='btn btn-default' " +
+        "class='btn btn-danger' " +
         "data-id='" + contact.id + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
         "</button>" +
