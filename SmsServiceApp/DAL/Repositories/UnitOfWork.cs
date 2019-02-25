@@ -20,7 +20,7 @@ namespace DAL.Repositories
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
 
-        private IBaseRepository<Operator> operatorRepo;
+
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -51,13 +51,7 @@ namespace DAL.Repositories
                 return tariffRepo;
             }
         }
-        public UserManager<ApplicationUser> Users
-        {
-            get
-            {
-                return userManager;
-            }
-        }
+      
 
         public IBaseRepository<StopWord> StopWords
         {

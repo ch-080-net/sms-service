@@ -16,7 +16,7 @@ namespace Model.Interfaces
         IBaseRepository<Operator> Operators { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
-        IBaseRepository<Operator> Operators { get; }
+     
         int Save();
     }
 
