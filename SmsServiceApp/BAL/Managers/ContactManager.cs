@@ -23,111 +23,159 @@ namespace BAL.Managers
 
         public List<ContactViewModel> GetContact(string userId, int pageNumber, int pageSize)
         {
-            var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize, 
-                filter: item => item.ApplicationUserId == userId);
-            foreach (var contact in contacts)
+            try
             {
-                contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
+                var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,
+                    filter: item => item.ApplicationUserId == userId);
+                foreach (var contact in contacts)
+                {
+                    contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
+                }
+                return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
             }
-            return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public List<ContactViewModel> GetContactBySearchValue(string userId, int pageNumber, int pageSize,
             string searchValue)
         {
-
-            var contacts = unitOfWork.Contacts.GetAll();
-            foreach (var contact in contacts)
+            try
             {
-                contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
-            }
-            contacts = contacts.Where(item => item.ApplicationUserId == userId &&
-                    (item.Phone.PhoneNumber == searchValue ||
-                    item.Name == searchValue || item.Surname == searchValue ||
-                    item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)))
-                    .Skip((pageNumber - 1) * pageSize).Take(pageSize);
+                var contacts = unitOfWork.Contacts.GetAll();
+                foreach (var contact in contacts)
+                {
+                    contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
+                }
+                contacts = contacts.Where(item => item.ApplicationUserId == userId &&
+                        (item.Phone.PhoneNumber == searchValue ||
+                        item.Name == searchValue || item.Surname == searchValue ||
+                        item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)))
+                        .Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
-            return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
+                return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public int GetContactCount(string userId)
         {
-            List<Contact> contacts = unitOfWork.Contacts.Get(
-                filter: item => item.ApplicationUserId == userId).ToList();
-            return contacts.Count;
+            try
+            {
+                List<Contact> contacts = unitOfWork.Contacts.Get(
+                    filter: item => item.ApplicationUserId == userId).ToList();
+                return contacts.Count;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public int GetContactBySearchValueCount(string userId, string searchValue)
         {
-            List<Contact> contacts = unitOfWork.Contacts.Get(
-                    filter: item => item.ApplicationUserId == userId).ToList();
-            foreach (var contact in contacts)
+            try
             {
-                contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
-            }
-            contacts = contacts.Where(item => item.Phone.PhoneNumber == searchValue ||
-                    item.Name == searchValue || item.Surname == searchValue ||
-                    item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)).ToList();
+                List<Contact> contacts = unitOfWork.Contacts.Get(
+                        filter: item => item.ApplicationUserId == userId).ToList();
+                foreach (var contact in contacts)
+                {
+                    contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
+                }
+                contacts = contacts.Where(item => item.Phone.PhoneNumber == searchValue ||
+                        item.Name == searchValue || item.Surname == searchValue ||
+                        item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)).ToList();
 
-            return contacts.Count;
+                return contacts.Count;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool CreateContact(ContactViewModel contactModel, string userId)
         {
-            Contact newContact = mapper.Map<Contact>(contactModel);
-            newContact.ApplicationUserId = userId;
-            List<Phone> phone = unitOfWork.Phones.Get
-                (filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
-            if (phone.Count == 0)
+            try
             {
-                Phone newPhone = new Phone();
-                newPhone.PhoneNumber = contactModel.PhonePhoneNumber;
-                unitOfWork.Phones.Insert(newPhone);
-                unitOfWork.Save();
-                newContact.Phone = newPhone;
-            }
-            else
-            {
-                List<Contact> contact = unitOfWork.Contacts.Get(filter: item => item.PhoneId == phone[0].Id).ToList();
-                if (contact.Count != 0)
+                Contact newContact = mapper.Map<Contact>(contactModel);
+                newContact.ApplicationUserId = userId;
+                List<Phone> phone = unitOfWork.Phones.Get
+                    (filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
+                if (phone.Count == 0)
                 {
-                    return false;
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = contactModel.PhonePhoneNumber;
+                    unitOfWork.Phones.Insert(newPhone);
+                    unitOfWork.Save();
+                    newContact.Phone = newPhone;
                 }
-                newContact.Phone = phone[0];
+                else
+                {
+                    List<Contact> contact = unitOfWork.Contacts.Get(filter: item => item.PhoneId == phone[0].Id).ToList();
+                    if (contact.Count != 0)
+                    {
+                        return false;
+                    }
+                    newContact.Phone = phone[0];
+                }
+                unitOfWork.Contacts.Insert(newContact);
+                unitOfWork.Save();
+                return true;
             }
-            unitOfWork.Contacts.Insert(newContact);
-            unitOfWork.Save();
-            return true;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void DeleteContact(int id)
         {
-            Contact contact = unitOfWork.Contacts.GetById(id);
-            unitOfWork.Contacts.Delete(contact);
-            unitOfWork.Save();
+            try
+            {
+                Contact contact = unitOfWork.Contacts.GetById(id);
+                unitOfWork.Contacts.Delete(contact);
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool UpdateContact(ContactViewModel contactModel, string userId)
         {
-            Contact contact = mapper.Map<Contact>(contactModel);
-            contact.ApplicationUserId = userId;
-            List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
-            if (phone.Count == 0)
+            try
             {
-                Phone newPhone = new Phone();
-                newPhone.PhoneNumber = contactModel.PhonePhoneNumber;
-                unitOfWork.Phones.Insert(newPhone);
+                Contact contact = mapper.Map<Contact>(contactModel);
+                contact.ApplicationUserId = userId;
+                List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
+                if (phone.Count == 0)
+                {
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = contactModel.PhonePhoneNumber;
+                    unitOfWork.Phones.Insert(newPhone);
+                    unitOfWork.Save();
+                    contact.Phone = newPhone;
+                }
+                else
+                {
+                    contact.Phone = phone[0];
+                }
+                unitOfWork.Contacts.SetStateModified(contact);
+                unitOfWork.Contacts.Update(contact);
                 unitOfWork.Save();
-                contact.Phone = newPhone;
+                return true;
             }
-            else
+            catch(Exception ex)
             {
-                contact.Phone = phone[0];
+                throw ex;
             }
-            unitOfWork.Contacts.SetStateModified(contact);
-            unitOfWork.Contacts.Update(contact);
-            unitOfWork.Save();
-            return true;
         }
     }
 }
