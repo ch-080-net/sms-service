@@ -11,7 +11,7 @@ namespace BAL.Managers
 {
     public class RecipientManager : BaseManager, IRecipientManager
     {
-        public RecipientManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public RecipientManager(IUnitOfWork unitOfWork , IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 

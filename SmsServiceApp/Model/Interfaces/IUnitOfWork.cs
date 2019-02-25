@@ -15,6 +15,8 @@ namespace Model.Interfaces
         UserManager<ApplicationUser> Users { get; }
         IBaseRepository<Operator> Operators { get; }
         IBaseRepository<Tariff> Tariffs { get; }
+        IBaseRepository<StopWord> StopWords { get; }
+     
         int Save();
     }
 

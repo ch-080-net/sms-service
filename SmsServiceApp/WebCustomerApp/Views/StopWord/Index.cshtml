@@ -1,0 +1,49 @@
+﻿@using Model.ViewModels.StopWordViewModels;
+@model IEnumerable<StopWordViewModel>;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Stop Word</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Create New</a>
+</p>
+<div class="container">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="col-md-2">
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th scope="col" class="col-md-6">
+                    @Html.DisplayNameFor(model => model.Word)
+                </th>
+                <th scope="col" class="col-md-4"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.Word)
+                    </td>
+                 
+                        <td scope="row">
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+    </table>
+</div>

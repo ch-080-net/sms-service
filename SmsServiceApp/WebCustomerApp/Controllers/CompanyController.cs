@@ -45,6 +45,17 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                string name = "{0}";
+
+                //change according to further requirement
+                item.Message = item.Message.Replace("#name", name).Replace("#company", item.Name);
+
+                //then move to the send function to the SMPP 
+                //foreach (var res in item.RecipientViewModels)
+                //{
+                //    string outServisMessage = String.Format(item.Message, RecipientViewModel.name)
+                //}
+
                 companyManager.Insert(item, userId);
                 return RedirectToAction("Index");
             }
@@ -123,5 +134,6 @@ namespace WebApp.Controllers
             }
             return View(company);
         }
+     
     }
 }

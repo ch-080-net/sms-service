@@ -12,13 +12,15 @@ namespace DAL.Repositories
     {
         private readonly ApplicationDbContext context;
         private IBaseRepository<Recipient> recipientRepo;
+        private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
         private UserManager<ApplicationUser> userManager;
+        private IBaseRepository<Operator> operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
 
-        private IBaseRepository<Operator> operatorRepo;
+
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -49,10 +51,19 @@ namespace DAL.Repositories
                 return tariffRepo;
             }
         }
-        public UserManager<ApplicationUser> Users
+      
+
+        public IBaseRepository<StopWord> StopWords
         {
             get
             {
+                if (stopWordRepo == null) { stopWordRepo = new BaseRepository<StopWord>(context); }
+                return stopWordRepo;
+            }
+        }
+
+        public UserManager<ApplicationUser> Users {
+            get {
                 return userManager;
             }
         }
