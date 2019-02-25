@@ -168,7 +168,7 @@ namespace WebApp.Controllers
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            companyManager.Update(currentCompany, userId, currentCompany.TariffId);
+            companyManager.Update(currentCompany, userId, tariffId);
             return RedirectToAction("Index","Company");
         }
     }

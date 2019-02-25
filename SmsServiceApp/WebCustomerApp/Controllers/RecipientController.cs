@@ -57,7 +57,7 @@ namespace WebApp.Controllers
    
             if (IsPhoneNumberExist == true)
             {
-                ModelState.AddModelError("PhoneNumber", "This phone number already exists");
+                ModelState.AddModelError("PhoneNumber", "This phone number already exists"); //error, if this exception are thrown, we are lost company id
             }
             if (ModelState.IsValid)
             {

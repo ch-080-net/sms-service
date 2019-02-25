@@ -37,7 +37,7 @@ namespace BAL.Managers
 			return tariff.Limit;
 		}
 
-        public void Update(CompanyViewModel item, string userId)
+        public void Update(CompanyViewModel item, string userId, int tariffId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
             company.ApplicationUserId = userId;

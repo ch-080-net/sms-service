@@ -12,7 +12,7 @@ namespace BAL.Managers
         IEnumerable<CompanyViewModel> GetCompanies(string userId);
 		int GetTariffLimit(int companyId);
 		void Insert(CompanyViewModel item, string userId);
-        void Update(CompanyViewModel item, string userId);
-        void Delete(int id);
+		void Update(CompanyViewModel item, string userId, int tariffId);
+		void Delete(int id);
     }
 }
