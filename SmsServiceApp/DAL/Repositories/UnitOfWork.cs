@@ -19,7 +19,7 @@ namespace DAL.Repositories
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
-
+        private IBaseRepository<Code> codeRepo;
 
 
         public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
@@ -91,6 +91,18 @@ namespace DAL.Repositories
             get {
                 if (phoneRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
                 return phoneRepo;
+            }
+        }
+
+        public IBaseRepository<Code> Codes
+        {
+            get
+            {
+                if (codeRepo == null)
+                {
+                    codeRepo = new BaseRepository<Code>(context);
+                }
+                return codeRepo;
             }
         }
 

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebCustomerApp.Models;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.OperatorViewModels;
+using Model.ViewModels.TariffViewModels;
 using Model.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -18,12 +20,16 @@ namespace WebApp.Controllers
     {
         private readonly ICompanyManager companyManager;
         private readonly IRecipientManager recipientManager;
+        private readonly IOperatorManager operatorManager;
+        private readonly ITariffManager tariffManager;
         private static string userId;
 
-        public CompanyController(ICompanyManager company, IRecipientManager recipient)
+        public CompanyController(ICompanyManager company, IRecipientManager recipient, IOperatorManager _operator, ITariffManager tariff)
         {
             this.recipientManager = recipient;
             this.companyManager = company;
+            this.operatorManager = _operator;
+            this.tariffManager = tariff;
         }
 
         [HttpGet]
@@ -45,11 +51,12 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                string name = "{0}";
-
+                //string name = "{0}";
+                //string surname = "{1}";
+                //string birthday = "{2}";
                 //change according to further requirement
-                item.Message = item.Message.Replace("#name", name).Replace("#company", item.Name);
-
+                //item.Message = item.Message.Replace("#name", name).Replace("#surname", surname).Replace("#birthday", birthday).Replace("#company", item.Name);
+                item.Message = item.Message.Replace("#company", item.Name);
                 //then move to the send function to the SMPP 
                 //foreach (var res in item.RecipientViewModels)
                 //{
@@ -134,6 +141,32 @@ namespace WebApp.Controllers
             }
             return View(company);
         }
-     
+
+        [HttpGet]
+        public IActionResult Operators(int companyId)
+        {
+            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
+            ViewBag.operators = operators;
+            ViewData["companyId"] = companyId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Tariffs(int id, int companyId)
+        {
+            IEnumerable<TariffViewModel> tariffs = tariffManager.GetTariffs(id);
+            ViewBag.tariffs = tariffs;
+            ViewData["companyId"] = companyId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ChangeTariff(int companyId, int tariffId)
+        {
+            CompanyViewModel currentCompany = companyManager.Get(companyId);
+            currentCompany.TariffId = tariffId;
+            companyManager.Update(currentCompany, userId);
+            return RedirectToAction("Index","Company");
+        }
     }
 }

@@ -1,0 +1,27 @@
+﻿@using Model.ViewModels.CodeViewModels
+@model CodeViewModel
+
+<form asp-action="Code" asp-controller="Code" method="post" asp-antiforgery="true">
+    <div class="row">
+        <input type="hidden" class="form-control" asp-for="Id" />
+        <div class="form-group col-md-4">
+            <input type="text" class="form-control" placeholder="Operator code" asp-for="OperatorCode" />
+            <span asp-validation-for="OperatorCode" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save
+                </button>
+                <a class="btn btn-danger" role="button" asp-action="Remove" asp-controller="Code"
+                   asp-route-CodeId="@Model.Id">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

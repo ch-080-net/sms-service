@@ -34,10 +34,14 @@ namespace BAL.Managers
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
             company.ApplicationUserId = userId;
-            company.TariffId = null;
-            unitOfWork.Companies.SetStateModified(company);
             unitOfWork.Companies.Update(company);
             unitOfWork.Save();
+        }
+
+        public CompanyViewModel Get(int id)
+        {
+            Company company = unitOfWork.Companies.GetById(id);
+            return mapper.Map<Company, CompanyViewModel>(company);
         }
 
         public void Delete(int id)

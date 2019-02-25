@@ -14,20 +14,47 @@ namespace BAL.Managers
         public TariffManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
+        public IEnumerable<TariffViewModel> GetTariffs(int operatorId)
+        {
+            IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll().Where(op => op.OperatorId == operatorId);
+            
+            return mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffViewModel>>(tariffs);
+        }
+
+        public TariffViewModel GetTariffById(int id)
+        {
+            Tariff tariff = unitOfWork.Tariffs.GetById(id);
+            return mapper.Map<Tariff, TariffViewModel>(tariff);
+        }
+
         IEnumerable<TariffViewModel> ITariffManager.GetAll()
         {
             IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll();
             return mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffViewModel>>(tariffs);
         }
-
-        public void Insert(TariffViewModel item)
+        public TariffViewModel GetById(int Id)
         {
-            Tariff tariffs = mapper.Map<TariffViewModel, Tariff>(item);
-            unitOfWork.Tariffs.Insert(tariffs);
-            unitOfWork.Save();
+            var tar = unitOfWork.Tariffs.GetById(Id);
+            return mapper.Map<TariffViewModel>(tar);
         }
-
-        
+        public bool Insert(TariffViewModel item)
+        {
+            var check = unitOfWork.Tariffs.Get(o => o.Name == item.Name).FirstOrDefault();
+            if (check != null)
+                return false;
+            var result = mapper.Map<Tariff>(item);
+            try
+            {
+                unitOfWork.Tariffs.Insert(result);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+       
         public bool Update(TariffViewModel item)
         {
             var result = mapper.Map<Tariff>(item);
@@ -42,15 +69,14 @@ namespace BAL.Managers
             unitOfWork.Save();
             return true;
         }
-
-        public bool Delete(int Id)
+        public bool Delete(TariffViewModel item, int id)
         {
-            var oper = unitOfWork.Tariffs.GetById(Id);
-            if (oper == null)
+            var tar = unitOfWork.Tariffs.GetById(id);
+            if (tar == null)
                 return false;
             try
             {
-                unitOfWork.Tariffs.Delete(oper);
+                unitOfWork.Tariffs.Delete(tar);
                 unitOfWork.Save();
             }
             catch
@@ -59,23 +85,5 @@ namespace BAL.Managers
             }
             return true;
         }
-
-        public IEnumerable<TariffViewModel> GetPage(int Page = 1, int NumOfElements = 20)
-        {
-            var allTariffs= unitOfWork.Tariffs.GetAll();
-            var operators = allTariffs.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
-            var result = new List<TariffViewModel>();
-            foreach (var o in operators)
-            {
-                result.Add(mapper.Map<TariffViewModel>(o));
-            }
-            return result;
-        }
-
-        public int GetNumberOfPages(int NumOfElements = 20)
-        {
-            return (unitOfWork.Operators.GetAll().Count() / NumOfElements) + 1;
-        }
-
     }
 }

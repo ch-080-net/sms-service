@@ -93,6 +93,12 @@ namespace WebCustomerApp
             services.AddScoped<IStopWordManager, StopWordManager>();
 
             services.AddScoped<IOperatorManager, OperatorManager>();
+            services.AddScoped<ICodeManager, CodeManager>();
+
+            // Configure sessions
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
         private async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
@@ -143,6 +149,10 @@ namespace WebCustomerApp
 
             app.UseStaticFiles();
             app.UseAuthentication();
+
+            // Configure sessions
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

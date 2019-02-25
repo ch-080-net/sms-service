@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
+using Model.ViewModels.CodeViewModels;
 using WebCustomerApp.Models;
 using Model.ViewModels.StopWordViewModels;
 
@@ -31,12 +32,13 @@ namespace BAL.Services
           
             CreateMap<Tariff, TariffViewModel>();
             CreateMap<TariffViewModel, Tariff>();
-            // CreateMap<User, UserDto>();
-            // CreateMap<UserDto, User>();
+
             CreateMap<Contact, ContactViewModel>()
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
             CreateMap<ContactViewModel, Contact>()
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
+            CreateMap<Code, CodeViewModel>();
+            CreateMap<CodeViewModel, Code>();
         }
     }
 }

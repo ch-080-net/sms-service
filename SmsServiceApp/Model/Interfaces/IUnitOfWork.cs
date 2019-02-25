@@ -14,6 +14,7 @@ namespace Model.Interfaces
         IBaseRepository<Company> Companies { get; }
         UserManager<ApplicationUser> Users { get; }
         IBaseRepository<Operator> Operators { get; }
+        IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
      

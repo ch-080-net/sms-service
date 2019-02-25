@@ -1,0 +1,13 @@
+﻿@using Model.ViewModels.OperatorViewModels
+@model LogoViewModel
+
+<form asp-action="AddLogo" asp-controller="Operator" method="post" enctype="multipart/form-data">
+
+    <div align="center" style="margin-top: 50px" class="input-default-wrapper mt-3" >
+        <input type="hidden" class="form-control" asp-for="OperatorId" />
+        <input   type="file" placeholder="Logo" asp-for="Logo" class="control-fileupload" accept=".jpg, .jpeg, .png" data-min-file-count="1" style="margin-top: 50px"  />
+        <button type="submit" class="btn btn-primary active" style="margin-top: 25px" >
+            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>Add photo
+        </button>
+    </div>
+</form>

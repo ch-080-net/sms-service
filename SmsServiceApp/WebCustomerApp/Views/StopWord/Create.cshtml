@@ -8,21 +8,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
     <script>
-        
+
 
         function onAddWord() {
             var stModel = {};
             stModel.Word = $("#word").val();
             $.ajax(
                 {
-                    url : '/StopWord/Create',
-                    type : 'POST',
+                    url: '/StopWord/Create',
+                    type: 'POST',
                     data: stModel
                 });
         }
 
-   
-     
+
+
     </script>
 </head>
 <body>
@@ -34,12 +34,16 @@
                     <label for="word">Stop word :</label>
                     <input type="text" class="form-control" id="word">
                 </div>
-               
+
                 <input type="submit" value="Add new word" class="btn btn-default" onclick="onAddWord()">
                 <br />
                 <div id="msg"></div>
             </div>
         </div>
     </form>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 </body>
+
 </html>

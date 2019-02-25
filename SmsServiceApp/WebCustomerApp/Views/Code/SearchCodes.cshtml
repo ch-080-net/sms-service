@@ -1,0 +1,26 @@
+﻿@using Model.ViewModels.CodeViewModels
+@model CodeSearchViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchCodes" asp-controller="Code" method="post" asp-antiforgery="true">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <div class="input-group mb-4">
+                    <input asp-for="SearchQuerry" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-info">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                        </button>
+                    </span>
+                </div>
+                <span asp-validation-for="SearchQuerry" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
