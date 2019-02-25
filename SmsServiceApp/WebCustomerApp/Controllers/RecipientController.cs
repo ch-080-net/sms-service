@@ -26,26 +26,24 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Index(int companyId)
         {
-            ViewData["CompanyId"] = companyId;
-            return View(recipientManager.GetRecipients(companyId).ToList());
+			int limit = companyManager.GetTariffLimit(companyId);
+			int count = recipientManager.GetRecipients(companyId).Count();
+
+			ViewData["CompanyId"] = companyId;
+
+			if (limit == count)
+				ViewData["warningMessage"] = "Recipients limit is full";
+			else if (limit < count)
+				ViewData["warningMessage"] = "Recipients limit is overflowing";
+
+			return View(recipientManager.GetRecipients(companyId).ToList());
         }
 
         [HttpGet]
         public IActionResult Create(int companyId)
         {
-			int limit = companyManager.GetTariffLimit(companyId);
-			int count = recipientManager.GetRecipients(companyId).Count();
-
-			if (limit > count)
-			{
-				ViewData["CompanyId"] = companyId;
-				return View();
-			}
-			else
-			{
-				ViewData["errorMessage"] = "Recipients limit is over";
-				return RedirectToAction("Index", "Recipient", new { companyId });
-			}
+			ViewData["CompanyId"] = companyId;
+			return View();
         }
 
         [HttpPost]
