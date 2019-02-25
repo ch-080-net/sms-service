@@ -1,0 +1,58 @@
+﻿@using Model.ViewModels.TariffViewModels;
+@model TariffViewModel
+
+@{
+    ViewData["Title"] = "Edit Tariff";
+}
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <h4>Tariff</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.OperatorId)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger"  })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Limit, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+            @Html.ValidationMessageFor(model => model.Limit, "", new { @class = "text-danger" })
+        </div>
+    </div>
+   
+        <button type="submit" class="btn btn-default" asp-action="Update">Change Tariff</button>
+    
+</div>
+}
+
+<div>
+    <a asp-action="Operators" asp-controller="Operator">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
