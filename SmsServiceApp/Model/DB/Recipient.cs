@@ -8,7 +8,7 @@ namespace WebCustomerApp.Models
     {
         public int Id { get; set; }
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
 
         public int PhoneId { get; set; }

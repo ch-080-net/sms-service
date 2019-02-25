@@ -16,6 +16,7 @@ namespace DAL.Repositories
         private IBaseRepository<Tariff> tariffRepo;
         private UserManager<ApplicationUser> userManager;
         private IBaseRepository<Operator> operatorRepo;
+        private IBaseRepository<Code> codeRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -53,6 +54,18 @@ namespace DAL.Repositories
                     operatorRepo = new BaseRepository<Operator>(context);
                 }
                 return operatorRepo;
+            }
+        }
+
+        public IBaseRepository<Code> Codes
+        {
+            get
+            {
+                if (codeRepo == null)
+                {
+                    codeRepo = new BaseRepository<Code>(context);
+                }
+                return codeRepo;
             }
         }
 
