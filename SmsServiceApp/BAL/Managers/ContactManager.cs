@@ -16,6 +16,11 @@ namespace BAL.Managers
         {
         }
 
+        public ContactViewModel GetContact(int ContactId)
+        {
+            return mapper.Map<ContactViewModel>(unitOfWork.Contacts.GetById(ContactId));
+        }
+
         public List<ContactViewModel> GetContact(string userId, int pageNumber, int pageSize)
         {
             var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize, 
@@ -67,25 +72,32 @@ namespace BAL.Managers
             return contacts.Count;
         }
 
-        public void CreateContact(ContactViewModel contactModel, string userId)
+        public bool CreateContact(ContactViewModel contactModel, string userId)
         {
-            Contact contact = mapper.Map<Contact>(contactModel);
-            contact.ApplicationUserId = userId;
-            List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
+            Contact newContact = mapper.Map<Contact>(contactModel);
+            newContact.ApplicationUserId = userId;
+            List<Phone> phone = unitOfWork.Phones.Get
+                (filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
             if (phone.Count == 0)
             {
                 Phone newPhone = new Phone();
                 newPhone.PhoneNumber = contactModel.PhonePhoneNumber;
                 unitOfWork.Phones.Insert(newPhone);
                 unitOfWork.Save();
-                contact.Phone = newPhone;
+                newContact.Phone = newPhone;
             }
             else
             {
-                contact.Phone = phone[0];
+                List<Contact> contact = unitOfWork.Contacts.Get(filter: item => item.PhoneId == phone[0].Id).ToList();
+                if (contact.Count != 0)
+                {
+                    return false;
+                }
+                newContact.Phone = phone[0];
             }
-            unitOfWork.Contacts.Insert(contact);
+            unitOfWork.Contacts.Insert(newContact);
             unitOfWork.Save();
+            return true;
         }
 
         public void DeleteContact(int id)
@@ -95,7 +107,7 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void UpdateContact(ContactViewModel contactModel, string userId)
+        public bool UpdateContact(ContactViewModel contactModel, string userId)
         {
             Contact contact = mapper.Map<Contact>(contactModel);
             contact.ApplicationUserId = userId;
@@ -115,6 +127,7 @@ namespace BAL.Managers
             unitOfWork.Contacts.SetStateModified(contact);
             unitOfWork.Contacts.Update(contact);
             unitOfWork.Save();
+            return true;
         }
     }
 }

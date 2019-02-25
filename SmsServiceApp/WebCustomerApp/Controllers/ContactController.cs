@@ -29,6 +29,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<ContactViewModel> GetContactList(int pageNumber, int pageSize, string searchValue)
         {
+            if (!User.Identity.IsAuthenticated)
+                return null;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (searchValue == null)
                 return _contactManager.GetContact(userId, pageNumber, pageSize);
@@ -40,6 +42,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public int GetContactCount(string searchValue)
         {
+            if (!User.Identity.IsAuthenticated)
+                return 0;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (searchValue == null)
                 return _contactManager.GetContactCount(userId);
@@ -52,8 +56,10 @@ namespace WebApp.Controllers
         public IActionResult AddContact(ContactViewModel obj)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            _contactManager.CreateContact(obj, userId);
-            return new ObjectResult("Phone added successfully!");
+            if(_contactManager.CreateContact(obj, userId))
+                return new ObjectResult("Phone added successfully!");
+            else
+                return new ObjectResult("Contact with this phone number already exist!");
         }
 
         [Route("~/Contact/DeleteContact/{id}")]
@@ -71,6 +77,14 @@ namespace WebApp.Controllers
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             _contactManager.UpdateContact(obj, userId);
             return new ObjectResult("Phone modified successfully!");
+        }
+
+        [Route("~/Contact/GetContact/{id}")]
+        [HttpGet]
+        public ContactViewModel GetContact(int id)
+        {
+            ContactViewModel contact = _contactManager.GetContact (id);
+            return contact;
         }
     }
 }

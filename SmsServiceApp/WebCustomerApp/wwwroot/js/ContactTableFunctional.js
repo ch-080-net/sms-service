@@ -1,9 +1,14 @@
-﻿var contactCount;
+﻿
+var contactCount;
+var pagesCount;
 var currentPage = 1;
 var pageSize = 5;
 var searchValue = "";
 
-$(document).ready(GetContactData());
+$(document).ready(function () {
+    $.getScript("https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js");
+    GetContactData()
+    });
 
 function GetContactData() {
     getContactCount();
@@ -44,7 +49,7 @@ function nextPage() {
         }
     }
     else
-        if (currentPage < (contactCount / pageSize) + 1) {
+        if (currentPage < parseInt((contactCount / pageSize) + 1)) {
             currentPage++;
             getContactList();
         }
@@ -109,30 +114,30 @@ function contactAddRow(contact) {
 // Build a <tr> for a row of table data
 function contactBuildTableRow(contact) {
     var newRow = "<tr>" +
-        "<td><input  class='input-phone' type='text' readonly='true' value='" + contact.phonePhoneNumber + "'/></td>" +
-        "<td><input  class='input-name'  type='text' readonly='true' value='" + contact.name + "'/></td>" +
-        "<td><input  class='input-surname'  type='text' readonly='true' value='" + contact.surname + "'/></td>" +
-        "<td><input  class='input-birthdate'  type='text' readonly='true' value='" + contact.birthDate + "'/></td>" +
-        "<td><input  class='input-gender'  type='text' readonly='true' value='" + contact.gender + "'/></td>" +
-        "<td><input  class='input-notes'  type='text' readonly='true' value='" + contact.notes + "'/></td>" +
-        "<td><input  class='input-keywords'  type='text' readonly='true' value='" + contact.keyWords + "'/></td>" +
+        "<td>" + contact.phonePhoneNumber + "</td>" +
+        "<td>" + contact.name + "</td>" +
+        "<td>" + contact.surname + "</td>" +
+        "<td>" + contact.birthDate + "</td>" +
+        "<td>" + contact.gender + "</td>" +
+        "<td>" + contact.notes + "</td>" +
+        "<td>" + contact.keyWords + "</td>" +
         "<td>" +
-        "<button type='button' " +
-        "onclick='phoneEditAllow(this);' " +
-        "class='btn btn-default' " +
-        "data-id='" + contact.id + "' " +
-        "data-phonenumber='" + contact.phonePhoneNumber + "' " +
-        "data-name='" + contact.name + "' " +
-        "data-surname='" + contact.surname + "' " +
-        "data-birthdate='" + contact.birthDate + "' " +
-        "data-gender='" + contact.gender + "' " +
-        "data-notes='" + contact.notes + "' " +
-        "data-keywords='" + contact.keyWords + "' " +
+        "<button type='button'" +
+        "onclick='contactEditAllow(this);'" +
+        "class='btn btn-default'" +
+        "data-id='" + contact.id + "'" +
+        "data-phonenumber='" + contact.phonePhoneNumber + "'" +
+        "data-name='" + contact.name + "'" +
+        "data-surname='" + contact.surname + "'" +
+        "data-birthdate='" + contact.birthDate + "'" +
+        "data-gender='" + contact.gender + "'" +
+        "data-notes='" + contact.notes + "'" +
+        "data-keywords='" + contact.keyWords + "'" +
         ">" +
         "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
-        "onclick='phoneDelete(this);'" +
+        "onclick='contactDelete(this);'" +
         "class='btn btn-default' " +
         "data-id='" + contact.id + "'>" +
         "<span class='glyphicon glyphicon-remove' />Delete" +
@@ -149,9 +154,16 @@ function onAddContact(item) {
     options.type = "POST";
     var obj = Contact;
     obj.PhonePhoneNumber = $("#phoneNumber").val();
+    var regex = new RegExp("^[+][0-9]{12}");
+    if (!regex.test(obj.PhonePhoneNumber)) {
+        $("#msg").html("Valid phone number");
+        return;
+    }
     obj.Name = $("#name").val();
     obj.Surname = $("#surname").val();
     obj.BirthDate = $("#birthDate").val();
+    if (obj.BirthDate == "")
+        obj.BirthDate = new Date(Date.now()).toLocaleString();
     if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();
@@ -171,66 +183,77 @@ function onAddContact(item) {
     $("#name").val("");
     $("#surname").val("");
     $("#birthDate").val("");
+    document.getElementById("genderMale").checked = true;
+    document.getElementById("genderFemale").checked = false;
+    $("#notes").val("");
+    $("#keywords").val("");
+}
+
+function contactEditAllow(item) {
+    document.getElementById("AddContactForm").style.display = "block";
+
+    $("#phoneNumber").val($(item).data("phonenumber"));
+    $("#name").val($(item).data("name"));
+    $("#surname").val($(item).data("surname"));
+    $("#birthDate").val($(item).data("birthdate"));
+    var text = $(item).data("gender");
+    if (text == "Male")
+        document.getElementById("genderMale").checked = true;
+    if (text == "Female")
+        document.getElementById("genderFemale").checked = true;
+    $("#notes").val($(item).data("notes"));
+    $("#keywords").val($(item).data("keywords"));
+    document.getElementById("insert").setAttribute("onclick", "contactUpdate(" + $(item).data("id") + ")");
+
+}
+
+function contactUpdate(idOfUpdatePhone) {
+    var id = idOfUpdatePhone;
+    var options = {};
+    options.url = "/Contact/UpdateContact/"
+    options.type = "PUT";
+
+    var obj = Contact;
+    obj.Id = id;
+    obj.PhonePhoneNumber = $("#phoneNumber").val();
+    var regex = new RegExp("^[+][0-9]{12}");
+    if (!regex.test(obj.PhonePhoneNumber)) {
+        $("#msg").html("Valid phone number");
+        return;
+    }
+    obj.Name = $("#name").val();
+    obj.Surname = $("#surname").val();
+    obj.BirthDate = $("#birthDate").val();
+    if (obj.BirthDate == "")
+        obj.BirthDate = new Date(Date.now()).toLocaleString();
+    if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
+    if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
+    obj.Notes = $("#notes").val();
+    obj.KeyWords = $("#keywords").val();
+    console.dir(obj);
+    options.data = obj;
+    options.success = function (msg) {
+        $("#msg").html(msg);
+        obj.Id = 0;
+        getContactList();
+    };
+    options.error = function () {
+        $("#msg").html("Error while calling the Web API!");
+    };
+    $.ajax(options);
+    document.getElementById("insert").setAttribute("onclick", "onAddContact(this)");
+    document.getElementById("AddContactForm").style.display = "none";
+    $("#phoneNumber").val("");
+    $("#name").val("");
+    $("#surname").val("");
+    $("#birthDate").val("");
     document.getElementById("genderMale").checked = false;
     document.getElementById("genderFemale").checked = false;
     $("#notes").val("");
     $("#keywords").val("");
 }
 
-function phoneEditAllow(item) {
-    item.removeChild(item.firstChild);
-    item.textContent = "";
-    $(item).append("<span class='glyphicon glyphicon-floppy-disk' /> Save");
-    $(".input-phone", $(item).parent().parent())[0].readOnly = false;
-    $(".input-name", $(item).parent().parent())[0].readOnly = false;
-    $(".input-surname", $(item).parent().parent())[0].readOnly = false;
-    $(".input-birthdate", $(item).parent().parent())[0].readOnly = false;
-    $(".input-gender", $(item).parent().parent())[0].readOnly = false;
-    $(".input-notes", $(item).parent().parent())[0].readOnly = false;
-    $(".input-keywords", $(item).parent().parent())[0].readOnly = false;
-    item.setAttribute("onclick", "contactUpdate(this)");
-
-}
-
-function contactUpdate(item) {
-    var id = $(item).data("id");
-    var options = {};
-    options.url = "/Contact/UpdateContact/"
-    options.type = "PUT";
-
-    var obj = Contact;
-    obj.Id = $(item).data("id");
-    obj.PhonePhoneNumber = $(".input-phone", $(item).parent().parent()).val();
-    obj.Name = $(".input-name", $(item).parent().parent()).val();
-    obj.Surname = $(".input-surname", $(item).parent().parent()).val();
-    obj.BirthDate = $(".input-birthdate", $(item).parent().parent()).val();
-    obj.Gender = $(".input-notes", $(item).parent().parent()).val();
-    obj.Notes = $(".input-notes", $(item).parent().parent()).val();
-    obj.KeyWords = $(".input-keywords", $(item).parent().parent()).val();
-    console.dir(obj);
-    options.data = obj;
-    options.success = function (msg) {
-        $("#msg").html(msg);
-    };
-    options.error = function () {
-        $("#msg").html("Error while calling the Web API!");
-    };
-    $.ajax(options);
-    item.removeChild(item.firstChild);
-    item.textContent = "";
-    $(item).append("<span class='glyphicon glyphicon-edit' /> Update");
-    $(".input-phone", $(item).parent().parent())[0].readOnly = true;
-    $(".input-name", $(item).parent().parent())[0].readOnly = true;
-    $(".input-surname", $(item).parent().parent())[0].readOnly = true;
-    $(".input-birthdate", $(item).parent().parent())[0].readOnly = true;
-    $(".input-gender", $(item).parent().parent())[0].readOnly = true;
-    $(".input-notes", $(item).parent().parent())[0].readOnly = true;
-    $(".input-keywords", $(item).parent().parent())[0].readOnly = true;
-    obj.Id = 0;
-    item.setAttribute("onclick", "phoneEditAllow(this)");
-}
-
-function phoneDelete(item) {
+function contactDelete(item) {
     var id = $(item).data("id");
     var options = {};
     options.url = "/Contact/DeleteContact/"
@@ -239,7 +262,7 @@ function phoneDelete(item) {
     options.success = function (msg) {
         console.log('msg= ' + msg);
         $("#msg").html(msg);
-        if ((phonesCount - 1) % 10 == 0)
+        if ((contactCount - 1) % 10 == 0)
             currentPage--;
         GetContactData();
     };
@@ -270,7 +293,7 @@ function buildNavigationButtons() {
     if (contactCount % pageSize == 0)
         pagesCount = contactCount / pageSize;
     else
-        var pagesCount = contactCount / pageSize + 1;
+        pagesCount = contactCount / pageSize + 1;
     $("#pageButtons button").remove();
     var button = "<button type='button' class='btn btn -default ' onclick='previousPage()' id='previous'><span class='glyphicon glyphicon-triangle-left' /></button>"
     $("#pageButtons").append(button);
@@ -280,4 +303,21 @@ function buildNavigationButtons() {
     }
     button = "<button type='button' class='btn btn -default ' onclick='nextPage()' id='next'><span class='glyphicon glyphicon-triangle-right' /></button>";
     $("#pageButtons").append(button);
+}
+
+function pageSizeChange(item) {
+    pageSize = parseInt(item[item.selectedIndex].text, 10);
+    buildNavigationButtons();
+    if (pagesCount < currentPage)
+        currentPage = pagesCount;
+    getContactList();
+}
+
+function HideShowFormForAddContact() {
+    var x = document.getElementById("AddContactForm");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }

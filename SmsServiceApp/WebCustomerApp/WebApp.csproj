@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\ContactTableFunctional.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BAL\BAL.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
