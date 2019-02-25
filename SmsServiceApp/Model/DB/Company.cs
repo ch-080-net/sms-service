@@ -22,6 +22,5 @@ namespace WebCustomerApp.Models
         public Tariff Tariff { get; set; }
 
         public string Message { get; set; }
-
     }
 }

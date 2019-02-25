@@ -1,8 +1,8 @@
-﻿using Model.Interfaces;
+﻿using AutoMapper;
+using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using AutoMapper;
 
 namespace BAL.Managers
 {

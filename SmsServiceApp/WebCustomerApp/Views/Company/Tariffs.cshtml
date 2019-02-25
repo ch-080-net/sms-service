@@ -1,0 +1,51 @@
+﻿@using Model.ViewModels.TariffViewModels
+@model TariffViewModel
+
+<h2>Tariffs</h2>
+<hr />
+    <div class="container">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="col-md-2">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th scope="col" class="col-md-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th scope="col" class="col-md-2">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th scope="col" class="col-md-2">
+                        @Html.DisplayNameFor(model => model.Limit)
+                    </th>
+                    <th scope="col" class="col-md-4"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.tariffs)
+                {
+                    <tr>
+                        <td scope="row">
+                            @item.Name
+                        </td>
+                        <td scope="row">
+                            @item.Description
+                        </td>
+                        <td scope="row">
+                            @item.Price
+                        </td>
+                        <td scope="row">
+                            @item.Limit
+                        </td>
+                        <td scope="row">
+                            <a class="btn btn-primary" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,74 @@
+﻿@using Model.ViewModels.RecipientViewModels;
+@model IEnumerable<RecipientViewModel>;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Recipients</h2>
+
+<p>
+    <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
+</p>
+<div class="container">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Surname)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.BirthDate)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th scope="col" >
+                    @Html.DisplayNameFor(model => model.Priority)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.KeyWords)
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.KeyWords)
+                </td>
+                <td scope="row">
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    </div>
