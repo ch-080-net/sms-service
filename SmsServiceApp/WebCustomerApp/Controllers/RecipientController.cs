@@ -15,10 +15,12 @@ namespace WebApp.Controllers
     public class RecipientController : Controller
     {
         private IRecipientManager recipientManager;
+        private ICompanyManager companyManager;
 
-        public RecipientController (IRecipientManager recipient)
+        public RecipientController (IRecipientManager recipient, ICompanyManager companyManager)
         {
             this.recipientManager = recipient;
+            this.companyManager = companyManager;
         }
 
         [HttpGet]
