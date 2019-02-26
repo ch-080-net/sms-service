@@ -117,7 +117,7 @@ function contactBuildTableRow(contact) {
         "<td>" + contact.phonePhoneNumber + "</td>" +
         "<td>" + contact.name + "</td>" +
         "<td>" + contact.surname + "</td>" +
-        "<td>" + contact.birthDate + "</td>" +
+        "<td>" + new Date(contact.birthDate).toISOString().slice(0, 10) + "</td>" +
         "<td>" + contact.gender + "</td>" +
         "<td>" + contact.notes + "</td>" +
         "<td>" + contact.keyWords + "</td>" +
@@ -156,7 +156,7 @@ function onAddContact(item) {
     obj.PhonePhoneNumber = $("#phoneNumber").val();
     var regex = new RegExp("^[+][0-9]{12}");
     if (!regex.test(obj.PhonePhoneNumber)) {
-        $("#msg").html("Valid phone number");
+        $("#msg").html("Invalid phone number");
         return;
     }
     obj.Name = $("#name").val();
@@ -228,7 +228,7 @@ function contactUpdate(idOfUpdatePhone) {
     obj.PhonePhoneNumber = $("#phoneNumber").val();
     var regex = new RegExp("^[+][0-9]{12}");
     if (!regex.test(obj.PhonePhoneNumber)) {
-        $("#msg").html("Valid phone number");
+        $("#msg").html("Invalid phone number");
         return;
     }
     obj.Name = $("#name").val();
