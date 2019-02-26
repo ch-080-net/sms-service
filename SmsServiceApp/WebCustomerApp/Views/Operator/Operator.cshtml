@@ -3,12 +3,28 @@
 
 <form asp-action="Operator" asp-controller="Operator" method="post" asp-antiforgery="true">
     <div class="row">
-        <input type="hidden" class="form-control" asp-for="Id" />        
-        <div class="form-group col-md-4">
-            <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-8">
+        <input type="hidden" class="form-control" asp-for="Id" />            
+            <div class="form-group col-md-4">
+                <div class="media">
+                    <div class="media-left">
+                        <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">
+                            @if (Model.Logo.GetLength(0) != 0)
+                            {
+                                <img style='width:32px; height:32px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))" />
+                            }
+                            else
+                            {
+                                <img style='width:32px; height:32px;' src="~/images/32.png" />
+                            }
+                        </a>
+                    </div>                    
+                        <div class="media-body">
+                            <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+            </div>
+        <div class="form-group col-md-7">
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save
@@ -30,10 +46,6 @@
                     <li>
                         <a asp-action="EditCodes" asp-controller="Operator" asp-route-Id="@Model.Id">Manage codes</a>
                     </li>
-                    <li>
-                        <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">Add Logo</a>
-                    </li>
-
                 </ul>
             </div>
         </div>
