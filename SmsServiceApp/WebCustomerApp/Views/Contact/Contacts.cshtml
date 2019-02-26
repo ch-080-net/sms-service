@@ -1,0 +1,154 @@
+﻿@{
+}
+<html>
+<head>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="~/js/ContactTableFunctional.js"></script>
+
+</head>
+<body>
+    <h3>Contact Manager</h3>
+    <form style="padding-left:0em;">
+        <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()" 
+               value="Add new contact" /> 
+        <div id="AddContactForm" style="display: none">
+            <table>
+            <tr>
+                <td>
+                    <label> Phone number </label>
+                </td>
+                <td>
+                    <input id="phoneNumber" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Name </label>
+                </td>
+                <td>
+                    <input id="name" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Surname </label>
+                </td>
+                <td>
+                    <input id="surname" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Birth date </label>
+                </td>
+                <td>
+                    <input id="birthDate" width="175" />
+                    <script>
+                        $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM'});
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Gender </label>
+                </td>
+                <td>
+                    <input type="radio" name="gender" checked id="genderMale" value="Male">Male
+                    <br>
+                    <input type="radio" name="gender" id="genderFemale" value="Female">Female
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Notes </label>
+                </td>
+                <td>
+                    <input id="notes" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Keywords </label>
+                </td>
+                <td>
+                    <input id="keywords" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                        <span class='glyphicon glyphicon-plus' /> ADD
+                    </button>
+                </td>
+            </tr>
+            </table>
+        </div>
+
+        <div>
+            Page Size:
+            <select id="pageSizeSelector" onchange="pageSizeChange(this)">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option selected>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+            </select>
+        </div>
+        <div>
+            <input id="searchField" type="text" />
+            <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
+                <span class='glyphicon glyphicon-search' /> Search
+            </button>
+        </div>
+
+            <table class="table table-hover" id="contactTable" >
+                <thead class="thead-dark">
+                    <tr>
+                        <td ><label> Phone number </label></td>
+                        <td ><label> Name </label></td>
+                        <td ><label> Surname </label></td>
+                        <td ><label> Birth date </label></td>
+                        <td ><label> Gender </label></td>
+                        <td ><label> Notes </label></td>
+                        <td ><label> Keywords </label></td>
+                        <td> </td>
+                    </tr>
+                </thead>
+            </table>
+        <div style="padding:inherit" class="btn-group" id="pageButtons">
+        <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+        <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
+        <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+        </div>
+        <br />
+        <div id="msg"></div>
+    </form>
+</body>
+</html>

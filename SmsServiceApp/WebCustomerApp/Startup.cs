@@ -41,7 +41,12 @@ namespace WebCustomerApp
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+			services.AddTransient<ITariffRepository, TariffRepository>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
+			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
+			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
 
+			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -71,6 +76,7 @@ namespace WebCustomerApp
                 options.User.RequireUniqueEmail = true;
             });
 
+
             //Seting the Account Login page  
             services.ConfigureApplicationCookie(options =>
             {
@@ -83,10 +89,14 @@ namespace WebCustomerApp
                 options.SlidingExpiration = true;
             });
             services.AddMvc();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICompanyManager, CompanyManager>();
+            services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IContactManager, ContactManager>();
             services.AddScoped<ITariffManager, TariffManager>();
-            //services.AddScoped<IRecipientManager, RecipientManager>();
+            services.AddScoped<IPhoneManager, PhoneManager>();
+            
+            services.AddScoped<IStopWordManager, StopWordManager>();
 
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
@@ -144,7 +154,6 @@ namespace WebCustomerApp
             }
 
             app.UseStaticFiles();
-
             app.UseAuthentication();
 
             // Configure sessions
