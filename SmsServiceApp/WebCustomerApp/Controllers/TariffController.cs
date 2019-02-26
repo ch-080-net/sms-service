@@ -51,8 +51,14 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(TariffViewModel item)
         {
-            tariffManager.Insert(item);
+            if (ModelState.IsValid) { 
+                tariffManager.Insert(item);
             return new ObjectResult("Tariff added successfully!");
+            }
+            else
+            {
+                return new ObjectResult("Tariff not added");
+            }
         }
 
         [HttpGet]
