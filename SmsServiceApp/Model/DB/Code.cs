@@ -6,14 +6,14 @@ namespace WebCustomerApp.Models
 {
 
     /// <summary>
-    ///  Entity which reperesents phone code for cell servicess provider
-    ///  OperatorCode contains code of cell servicess provider such as "+38066"
+    ///  Entity which reperesents phone code for cell servicess provider  
     /// </summary>
 
     public class Code
     {
         public int Id { get; set; }
 
+        /// <value>Represents operator code such as +38066</value>
         public string OperatorCode { get; set; }
 
         public int OperatorId { get; set; }
