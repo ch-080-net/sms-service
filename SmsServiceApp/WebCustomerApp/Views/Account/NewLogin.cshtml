@@ -30,55 +30,55 @@
 </head>
 
 <body>
-	<h1>Sign In </h1>
-	<div class="w3ls-login box box--big">
+    <div class="back_image"></div>
+    <div class="w3ls-login box box--big">
+        <h1 class="title-page">Sign In </h1>
+        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="agile-field-txt">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" id="email" placeholder="Enter your login" />
+                <span asp-validation-for="Email" class="agile-right"></span>
+            </div>
+            <div class="agile-field-txt">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" id="pass" class="form-control" placeholder="Enter your password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+            </div>
+            <div class="agile-field-txt">
+                <div class="agile_label">
+                    <input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPassword()">
+                    <label class="check" for="check3">Show password</label>
+                </div>
+                <div class="agile-right">
+                    <a asp-action="ForgotPassword">Forgot your password?</a>
+                </div>
+            </div>
+            <div class="w3ls-bot">
+                <div class="switch-agileits">
+                    <label class="switch">
+                        <input asp-for="RememberMe">
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="agile-field-txt">
+                <p>
+                    <input type="submit" value="SIGN IN">
+                </p>
+            </div>
+            <div class="agile-right">
+                <a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">REGISTRATION</a>
+            </div>
+        </form>
+    </div>
 
-		<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-			<div class="agile-field-txt">
-				<label asp-for="Email"></label>
-				<input asp-for="Email" class="form-control" id="email" placeholder="Enter your login" />
-				<span asp-validation-for="Email" class="agile-right"></span>
-			</div>
-			<div class="agile-field-txt">
-				<label asp-for="Password"></label>
-				<input asp-for="Password" id="pass" class="form-control" placeholder="Enter your password" />
-				<span asp-validation-for="Password" class="text-danger"></span>
-				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
-			</div>
-			<div class="agile-field-txt">
-				<div class="agile_label">
-					<input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPassword()">
-					<label class="check" for="check3">Show password</label>
-				</div>
-				<div class="agile-right">
-					<a asp-action="ForgotPassword">Forgot your password?</a>
-				</div>
-			</div>
-			<div class="w3ls-bot">
-				<div class="switch-agileits">
-					<label class="switch">
-						<input asp-for="RememberMe">
-						@Html.DisplayNameFor(m => m.RememberMe)
-						<span class="slider round"></span>
-					</label>
-				</div>
-			</div>
-			<div class="agile-field-txt">
-				<p>
-					<input type="submit" value="SIGN IN">
-				</p>
-			</div>
-			<div class="agile-right">
-				<a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">REGISTRATION</a>
-			</div>
-		</form>
-	</div>
-
-	<div class="copy-wthree">
-		<p>
-			© 2019 | SMS-service
-		</p>
-	</div>
+    <div class="copy-wthree">
+        <p>
+            © 2019 | SMS-service
+        </p>
+    </div>
 
 </body>
 </html>

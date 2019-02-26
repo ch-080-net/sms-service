@@ -216,27 +216,30 @@ img {
 }
 
 /*--end reset--*/
+.back_image {
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(../images/b.jpg)no-repeat;
+}
 
 body {
 	height: 100vh;
 	font-family: 'Poiret One', cursive;
 	font-size: 100%;
-	background: url(../images/b.jpg)no-repeat;
-	-webkit-background-size: cover;
-	background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	-ms-background-size: cover;
 	text-align: center;
 	background-repeat: no-repeat;
 }
 .w3ls-login {
     display: -webkit-flex;
     display: -webkit-box;
-    display: -moz-flex;
     display: -moz-box;
     display: -ms-flexbox;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     -webkit-box-pack: center;
@@ -247,6 +250,7 @@ body {
 }
 
 h1 {
+    z-index: 2;
     font-size: 3.2em;
     font-weight: 300;
     text-transform: capitalize;
@@ -286,7 +290,6 @@ h1 {
 
 .agile-field-txt {
     flex-basis: 100%;
-    -webkit-flex-basis: 100%;
     margin-bottom: 1.5em;
     clear: both;
 }
@@ -351,7 +354,6 @@ label.check {
 .w3ls-login.w3l-sub {
     margin-top: 1em;
     flex-basis: 100%;
-    -webkit-flex-basis: 100%;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -386,7 +388,6 @@ label.check {
     -webkit-transition: 0.5s all ease;
     -moz-transition: 0.5s all ease;
     -o-transition: 0.5s all ease;
-    -ms-transition: 0.5s all ease;
 }
 
 .w3ls-login input[type=submit]:hover {
@@ -509,7 +510,6 @@ input:checked+.slider:before {
     -webkit-transition: 0.5s all ease;
     -moz-transition: 0.5s all ease;
     -o-transition: 0.5s all ease;
-    -ms-transition: 0.5s all ease;
 }
 
 .copy-wthree p a:hover {

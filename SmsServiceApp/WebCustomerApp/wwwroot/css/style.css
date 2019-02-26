@@ -17,7 +17,6 @@ body a{
 	-webkit-transition:0.5s all;
 	-moz-transition:0.5s all;
 	-o-transition:0.5s all;
-	-ms-transition:0.5s all;
 }
 a:hover{
 	text-decoration:none;
@@ -27,7 +26,6 @@ input[type="button"],input[type="submit"],.contact-form input[type="submit"]{
 	-webkit-transition:0.5s all;
 	-moz-transition:0.5s all;
 	-o-transition:0.5s all;
-	-ms-transition:0.5s all;
 }
 h1,h2,h3,h4,h5,h6{
 	margin:0;
@@ -45,9 +43,6 @@ ul{
 }
 label{
 	margin:0;
-}
-html {
-  scroll-behavior: smooth;
 }
 
 
@@ -121,9 +116,9 @@ nav ul {
 /* Positioning the navigation items inline */
 nav ul li {
 	margin: 0px;
-	display:inline-block;
+	display:block;
 	float: left;
-	}
+}
 
 /* Styling the links */
 nav a {	
@@ -414,8 +409,6 @@ li > a:only-child:after { content: ''; }
 	border-radius: 0px;
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
-	-ms-border-radius: 0px;
-	-o-border-radius: 0px;
     position: relative;
 }
 .button-style:hover {
@@ -538,8 +531,6 @@ li > a:only-child:after { content: ''; }
 	border-radius: 0px;
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
-	-ms-border-radius: 0px;
-	-o-border-radius: 0px;
 }
 .pricing-grid {
     background: #f6f6f6;
@@ -635,7 +626,7 @@ li > a:only-child:after { content: ''; }
     background: #333;
     padding: 10px 0px;
     margin-top: 0;
-    display: inline-block;
+    display: block;
     width: 18%;
     float: left;
 }
@@ -1055,8 +1046,6 @@ span.decription {
     border-radius: 0px;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
 }
 .map iframe {
     border: none;
