@@ -52,13 +52,6 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] RecipientViewModel item, int companyId)
         {
-            string phoneNumber = item.PhoneNumber;
-            bool IsPhoneNumberExist = phoneManager.GetPhones().Any(p => p.PhoneNumber == phoneNumber);
-   
-            if (IsPhoneNumberExist == true)
-            {
-                ModelState.AddModelError("PhoneNumber", "This phone number already exists"); //error, if this exception are thrown, we are lost company id
-            }
             if (ModelState.IsValid)
             {
                 recipientManager.Insert(item, companyId);
@@ -87,13 +80,6 @@ namespace WebApp.Controllers
             int companyId = recipientToEdit.CompanyId;
             recipient.CompanyId = companyId;
 
-            string phoneNumber = recipient.PhoneNumber;
-            bool IsPhoneNumberExist = phoneManager.GetPhones().Any(p => p.PhoneNumber == phoneNumber);
-
-            if (IsPhoneNumberExist == true)
-            {
-                ModelState.AddModelError("PhoneNumber", "This phone number already exists");
-            }
             if (ModelState.IsValid)
             {
                 recipientManager.Update(recipient);
