@@ -41,7 +41,7 @@ namespace WebApp.Controllers
                 else
                     return contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
             }
-            catch (Exception ex)
+            catch
             {
                 //throw ex;
                 return null;
@@ -62,7 +62,7 @@ namespace WebApp.Controllers
                 else
                     return contactManager.GetContactBySearchValueCount(userId, searchValue);
             }
-            catch (Exception ex)
+            catch
             {
                 //throw ex;
                 return 0;
@@ -146,7 +146,7 @@ namespace WebApp.Controllers
                 ContactViewModel contact = contactManager.GetContact(id);
                 return contact;
             }
-            catch (Exception ex)
+            catch
             {
                 //throw ex;
                 return null;
