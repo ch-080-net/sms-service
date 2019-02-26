@@ -20,82 +20,82 @@
 <body>
     <h3>Contact Manager</h3>
     <form style="padding-left:0em;">
-        <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()" 
-               value="Add new contact" /> 
+        <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()"
+               value="Add new contact" />
         <div id="AddContactForm" style="display: none">
             <table>
-            <tr>
-                <td>
-                    <label> Phone number </label>
-                </td>
-                <td>
-                    <input id="phoneNumber" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Name </label>
-                </td>
-                <td>
-                    <input id="name" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Surname </label>
-                </td>
-                <td>
-                    <input id="surname" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Birth date </label>
-                </td>
-                <td>
-                    <input id="birthDate" width="175" />
-                    <script>
-                        $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM'});
-                    </script>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Gender </label>
-                </td>
-                <td>
-                    <input type="radio" name="gender" checked id="genderMale" value="Male">Male
-                    <br>
-                    <input type="radio" name="gender" id="genderFemale" value="Female">Female
-                    <br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Notes </label>
-                </td>
-                <td>
-                    <input id="notes" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label> Keywords </label>
-                </td>
-                <td>
-                    <input id="keywords" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
-                        <span class='glyphicon glyphicon-plus' /> ADD
-                    </button>
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        <label> Phone number </label>
+                    </td>
+                    <td>
+                        <input id="phoneNumber" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Name </label>
+                    </td>
+                    <td>
+                        <input id="name" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Surname </label>
+                    </td>
+                    <td>
+                        <input id="surname" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Birth date </label>
+                    </td>
+                    <td>
+                        <input id="birthDate" width="175" />
+                        <script>
+                            $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                        </script>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Gender </label>
+                    </td>
+                    <td>
+                        <input type="radio" name="gender" checked id="genderMale" value="Male">Male
+                        <br>
+                        <input type="radio" name="gender" id="genderFemale" value="Female">Female
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Notes </label>
+                    </td>
+                    <td>
+                        <input id="notes" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Keywords </label>
+                    </td>
+                    <td>
+                        <input id="keywords" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                            <span class='glyphicon glyphicon-plus' /> ADD
+                        </button>
+                    </td>
+                </tr>
             </table>
         </div>
-
+        <div id="msg"></div>
         <div>
             Page Size:
             <select id="pageSizeSelector" onchange="pageSizeChange(this)">
@@ -128,27 +128,25 @@
             </button>
         </div>
 
-            <table class="table table-hover" id="contactTable" >
-                <thead class="thead-dark">
-                    <tr>
-                        <td ><label> Phone number </label></td>
-                        <td ><label> Name </label></td>
-                        <td ><label> Surname </label></td>
-                        <td ><label> Birth date </label></td>
-                        <td ><label> Gender </label></td>
-                        <td ><label> Notes </label></td>
-                        <td ><label> Keywords </label></td>
-                        <td> </td>
-                    </tr>
-                </thead>
-            </table>
+        <table class="table table-hover" id="contactTable">
+            <thead class="thead-dark">
+                <tr>
+                    <td><label> Phone number </label></td>
+                    <td><label> Name </label></td>
+                    <td><label> Surname </label></td>
+                    <td><label> Birth date </label></td>
+                    <td><label> Gender </label></td>
+                    <td><label> Notes </label></td>
+                    <td><label> Keywords </label></td>
+                    <td> </td>
+                </tr>
+            </thead>
+        </table>
         <div style="padding:inherit" class="btn-group" id="pageButtons">
-        <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
-        <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
-        <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+            <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+            <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
+            <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
         </div>
-        <br />
-        <div id="msg"></div>
     </form>
 </body>
 </html>

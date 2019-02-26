@@ -168,6 +168,14 @@ function onAddContact(item) {
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();
     obj.KeyWords = $("#keywords").val();
+    if (obj.Name == null)
+        obj.Name = "";
+    if (obj.Surname == null)
+        obj.Surname = "";
+    if (obj.Notes == null)
+        obj.Notes = "";
+    if (obj.KeyWords == null)
+        obj.KeyWords = "";
     console.dir(obj);
     options.data = obj;
 
@@ -281,8 +289,8 @@ function handleException(request, message, error) {
     var msg = "";
     msg += "Code: " + request.status + "\n";
     msg += "Text: " + request.statusText + "\n";
-    if (request != null) {
-        msg += "Message" + request.Message + "\n";
+    if (error != null) {
+        msg += "Message" + error.Message + "\n";
     }
 
     alert(msg);

@@ -41,7 +41,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return null;
             }
         }
 
@@ -61,7 +62,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return 0;
             }
         }
 
@@ -72,6 +74,14 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (obj.Name == null)
+                    obj.Name = "";
+                if (obj.Surname == null)
+                    obj.Surname = "";
+                if (obj.Notes == null)
+                    obj.Notes = "";
+                if (obj.KeyWords == null)
+                    obj.KeyWords = "";
                 if (_contactManager.CreateContact(obj, userId))
                     return new ObjectResult("Phone added successfully!");
                 else
@@ -79,7 +89,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -94,7 +105,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -105,12 +117,21 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                if (obj.Name == null)
+                    obj.Name = "";
+                if (obj.Surname == null)
+                    obj.Surname = "";
+                if (obj.Notes == null)
+                    obj.Notes = "";
+                if (obj.KeyWords == null)
+                    obj.KeyWords = "";
                 _contactManager.UpdateContact(obj, userId);
                 return new ObjectResult("Phone modified successfully!");
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -125,7 +146,8 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return null;
             }
         }
     }
