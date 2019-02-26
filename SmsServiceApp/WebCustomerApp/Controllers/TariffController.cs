@@ -51,8 +51,14 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(TariffViewModel item)
         {
-            tariffManager.Insert(item);
+            if (ModelState.IsValid) { 
+                tariffManager.Insert(item);
             return new ObjectResult("Tariff added successfully!");
+            }
+            else
+            {
+                return new ObjectResult("Fill in all fields");
+            }
         }
 
         [HttpGet]
@@ -67,8 +73,15 @@ namespace WebApp.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Update(TariffViewModel item)
         {
-            tariffManager.Update(item);
-            return View();
+            if (ModelState.IsValid)
+            {
+                tariffManager.Update(item);
+                return View();
+            }
+            else
+            {
+                return new ObjectResult("Fill in all fields");
+            }
         }
       
         [HttpGet]
