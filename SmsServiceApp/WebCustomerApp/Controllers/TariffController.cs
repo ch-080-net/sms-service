@@ -81,13 +81,12 @@ namespace WebApp.Controllers
             }
 
             TariffViewModel tariff = tariffManager.GetTariffById(id.Value);
-            tariffManager.Delete(tariff, id.Value);
 
             if (tariff == null)
             {
                 return NotFound();
             }
-            return View();
+            return View(tariff);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -96,7 +95,7 @@ namespace WebApp.Controllers
         {
             TariffViewModel tariff = tariffManager.GetTariffs(id.Value).FirstOrDefault(r => r.Id == id);
             tariffManager.Delete(tariff, id.Value);
-            return RedirectToAction("Index");
+            return RedirectToAction("Operators","Operator");
         }
           
     }

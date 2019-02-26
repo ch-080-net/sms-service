@@ -31,8 +31,8 @@
             obj.description = $("#description").val();
             obj.price = $("#price").val();
             obj.limit = $("#limit").val();
-            console.log(obj);
             obj.operatorId = '@ViewData["OperatorId"]';
+            console.log(obj); 
             console.dir(obj);
             options.data = obj;
             options.success = function (msg) {
