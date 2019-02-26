@@ -16,9 +16,7 @@
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="col-md-2">
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
+           
                 <th scope="col" class="col-md-6">
                     @Html.DisplayNameFor(model => model.Word)
                 </th>
@@ -29,9 +27,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td scope="row">
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
+                 
                     <td scope="row">
                         @Html.DisplayFor(modelItem => item.Word)
                     </td>
