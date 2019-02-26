@@ -270,12 +270,12 @@ namespace WebCustomerApp.Controllers
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(NewLogin));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(NewLogin));
             }
 
             // Sign in the user with this external login provider if the user already has a login.
