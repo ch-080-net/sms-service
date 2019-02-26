@@ -175,6 +175,7 @@ namespace WebApp.Controllers
             TempData["OperatorId"] = Id;
             return RedirectToAction("Codes", "Code");
         }
+
         [HttpGet]
         public IActionResult AddLogo(int OperatorId)
         {

@@ -107,8 +107,13 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(StopWordViewModel item)
         {
-            stopWordManager.Insert(item);
-            return new ObjectResult("Stop word added successfully!");
+            if (ModelState.IsValid)
+            {
+                stopWordManager.Insert(item);
+            }
+
+            
+            return RedirectToAction("Index", "StopWord");
         }
 
 

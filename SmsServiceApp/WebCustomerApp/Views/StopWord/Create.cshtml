@@ -1,4 +1,9 @@
-﻿<html>
+﻿@using Model.ViewModels.StopWordViewModels;
+@model StopWordViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<html>
 <head>
     <title>Contact List</title>
     <meta charset="utf-8">
@@ -26,24 +31,31 @@
     </script>
 </head>
 <body>
-    <form>
-        <h2>Create Stop Word</h2>
-        <div class="row">
-            <div class="col-sm-5">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+              
                 <div class="form-group">
-                    <label for="word">Stop word :</label>
-                    <input type="text" class="form-control" id="word">
+                    <label asp-for="Word" class="control-label"></label>
+                    <input asp-for="Word" class="form-control" />
+                    <span asp-validation-for="Word" class="text-danger"></span>
                 </div>
-
-                <input type="submit" value="Add new word" class="btn btn-default" onclick="onAddWord()">
-                <br />
-                <div id="msg"></div>
-            </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
     <div>
-        <a asp-action="Index">Back to List</a>
+    
+        <a class="btn btn-default" asp-action="Index">Back to List</a>
     </div>
 </body>
 
 </html>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
