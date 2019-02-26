@@ -15,11 +15,11 @@ namespace WebApp.Controllers
     [Authorize]
     public class ContactController : Controller
     {
-        private readonly IContactManager _contactManager;
+        private readonly IContactManager contactManager;
 
         public ContactController(IContactManager contactManager)
         {
-            _contactManager = contactManager;
+            this.contactManager = contactManager;
         }
 
         public IActionResult Contacts()
@@ -37,9 +37,9 @@ namespace WebApp.Controllers
                     return null;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (searchValue == null)
-                    return _contactManager.GetContact(userId, pageNumber, pageSize);
+                    return contactManager.GetContact(userId, pageNumber, pageSize);
                 else
-                    return _contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
+                    return contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
             }
             catch (Exception ex)
             {
@@ -58,9 +58,9 @@ namespace WebApp.Controllers
                     return 0;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (searchValue == null)
-                    return _contactManager.GetContactCount(userId);
+                    return contactManager.GetContactCount(userId);
                 else
-                    return _contactManager.GetContactBySearchValueCount(userId, searchValue);
+                    return contactManager.GetContactBySearchValueCount(userId, searchValue);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace WebApp.Controllers
                     obj.Notes = "";
                 if (obj.KeyWords == null)
                     obj.KeyWords = "";
-                if (_contactManager.CreateContact(obj, userId))
+                if (contactManager.CreateContact(obj, userId))
                     return new ObjectResult("Phone added successfully!");
                 else
                     return new ObjectResult("Contact with this phone number already exist!");
@@ -102,7 +102,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                _contactManager.DeleteContact(id);
+                contactManager.DeleteContact(id);
                 return new ObjectResult("Phone deleted successfully!");
             }
             catch (Exception ex)
@@ -127,7 +127,7 @@ namespace WebApp.Controllers
                     obj.Notes = "";
                 if (obj.KeyWords == null)
                     obj.KeyWords = "";
-                _contactManager.UpdateContact(obj, userId);
+                contactManager.UpdateContact(obj, userId);
                 return new ObjectResult("Phone modified successfully!");
             }
             catch (Exception ex)
@@ -143,7 +143,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                ContactViewModel contact = _contactManager.GetContact(id);
+                ContactViewModel contact = contactManager.GetContact(id);
                 return contact;
             }
             catch (Exception ex)
