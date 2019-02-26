@@ -36,7 +36,7 @@
 					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
 					{
 						<li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
-						<li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Word</a></li>
+						<li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
 					}
 				</ul>
                 @await Html.PartialAsync("_LoginPartial")
