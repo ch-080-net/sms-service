@@ -57,7 +57,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return new ObjectResult("Tariff not added");
+                return new ObjectResult("Fill in all fields");
             }
         }
 
@@ -73,8 +73,15 @@ namespace WebApp.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Update(TariffViewModel item)
         {
-            tariffManager.Update(item);
-            return View();
+            if (ModelState.IsValid)
+            {
+                tariffManager.Update(item);
+                return View();
+            }
+            else
+            {
+                return new ObjectResult("Fill in all fields");
+            }
         }
       
         [HttpGet]
