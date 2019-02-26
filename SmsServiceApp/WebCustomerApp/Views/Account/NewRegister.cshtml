@@ -1,0 +1,92 @@
+﻿@using System.Linq
+@model RegisterViewModel
+@{
+	Layout = null;
+}
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Registration</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+	<link rel="stylesheet" href="~/css/style_login.css" />
+
+	<link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
+
+</head>
+
+<body >
+	<h1>Registration</h1>
+	<div class="w3ls-login box box--big">
+		<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+			<div class="agile-field-txt">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" id="email" placeholder="Your e-mail adress"/>
+				@*<span asp-validation-for="Email" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Phone"></label>
+				<input asp-for="Phone" class="form-control" id="phone" placeholder="Your phone" />
+				@*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Password"></label>
+				<input asp-for="Password" id="confirm" class="form-control" placeholder="Enter your password" />
+				@*<span asp-validation-for="Password" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="ConfirmPassword">Confirm password</label>
+				<input asp-for="ConfirmPassword" id="pass" class="form-control" placeholder="Confirm password" />
+				@*<span asp-validation-for="ConfirmPassword" class="text-danger"></span>*@
+				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+			</div>
+			<div class="agile-field-txt">
+				<div class="agile_label">
+					<input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPassword()">
+					<label class="check" for="check3">Show password</label>
+				</div>
+			</div>
+			<div class="agile-field-txt">
+				<p>
+					<input type="submit" value="REGISTER">
+				</p>
+			</div>
+			<div class="agile-right">
+				<a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">LOGIN</a>
+			</div>
+		</form>
+	</div>
+
+</body>
+</html>
+
+<script>
+	function ShowPassword() {
+		var x = document.getElementById("pass");
+		var c = document.getElementById("confirm");
+		if (x.type === "password") {
+			x.type = "text";
+			c.type = "text";
+		} else {
+			x.type = "password";
+			c.type = "password";
+		}
+	}
+</script>
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

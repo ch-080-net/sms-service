@@ -29,19 +29,16 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmsService</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Word</a></li>
-                    <li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
-                
-                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
-                    }
-                </ul>
+				<ul class="nav navbar-nav">
+
+					<li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
+					<li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
+					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+					{
+						<li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
+						<li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Word</a></li>
+					}
+				</ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>
