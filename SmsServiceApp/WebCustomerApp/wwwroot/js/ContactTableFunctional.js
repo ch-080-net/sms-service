@@ -163,7 +163,7 @@ function onAddContact(item) {
     obj.Surname = $("#surname").val();
     obj.BirthDate = $("#birthDate").val();
     if (obj.BirthDate == "")
-        obj.BirthDate = new Date(Date.now()).toLocaleString();
+        obj.BirthDate = new Date(0).toLocaleString();
     if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();
@@ -235,7 +235,7 @@ function contactUpdate(idOfUpdatePhone) {
     obj.Surname = $("#surname").val();
     obj.BirthDate = $("#birthDate").val();
     if (obj.BirthDate == "")
-        obj.BirthDate = new Date(Date.now()).toLocaleString();
+        obj.BirthDate = new Date(0).toLocaleString();
     if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();

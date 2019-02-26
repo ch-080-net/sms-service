@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.ContactViewModels;
 
@@ -11,6 +12,7 @@ using Model.ViewModels.ContactViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class ContactController : Controller
     {
         private readonly IContactManager _contactManager;
