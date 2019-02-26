@@ -105,6 +105,7 @@ namespace BAL.Managers
             }
             return true;
         }
+
         public bool AddLogo(LogoViewModel Logo)
         {
             if (Logo.Logo == null)
