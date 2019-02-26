@@ -15,14 +15,10 @@ namespace WebApp.Controllers
     public class RecipientController : Controller
     {
         private IRecipientManager recipientManager;
-		private ICompanyManager companyManager;
-        private IPhoneManager phoneManager;
 
-        public RecipientController (IRecipientManager recipient, IPhoneManager phoneManager, ICompanyManager company)
+        public RecipientController (IRecipientManager recipient)
         {
             this.recipientManager = recipient;
-            this.phoneManager = phoneManager;
-			this.companyManager = company;
         }
 
         [HttpGet]
@@ -52,6 +48,11 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] RecipientViewModel item, int companyId)
         {
+            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
+            if (IsRecipientPhoneExist == true)
+            {
+                ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");
+            }
             if (ModelState.IsValid)
             {
                 recipientManager.Insert(item, companyId);
@@ -79,7 +80,6 @@ namespace WebApp.Controllers
             RecipientViewModel recipientToEdit = recipientManager.GetRecipientById(id);
             int companyId = recipientToEdit.CompanyId;
             recipient.CompanyId = companyId;
-
             if (ModelState.IsValid)
             {
                 recipientManager.Update(recipient);
