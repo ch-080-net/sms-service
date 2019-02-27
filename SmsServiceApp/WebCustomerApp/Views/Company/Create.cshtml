@@ -4,16 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-<head>
-    <script>
-
-        function AddWord(word) {
-            var info = document.getElementById("message")
-            info.textContent += word;
-        }
-    </script>
-</head>
-
 <h2>Create</h2>
 <h4>Company</h4>
 <hr />
@@ -35,12 +25,18 @@
                 <label asp-for="Message" class="control-label"></label>
                 <textarea rows="7" style="resize:none" asp-for="Message" class="form-control" id="message"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
+                <script>
+                    function AddWord(word) {
+                        var info = document.getElementById("message")
+                        info.textContent += word;
+                    }
+                </script>
                 <div>
                     <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
                     <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
                     <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
                     <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
-                    
+
                     @*add the required fields*@
                 </div>
             </div>
