@@ -7,6 +7,7 @@ using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using Model.Interfaces;
+using Newtonsoft.Json;
 
 namespace WebApp.Controllers
 {
@@ -28,109 +29,126 @@ namespace WebApp.Controllers
             if (TempData.ContainsKey("OperatorId"))
                 pageState.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
 
+            var page = codeManager.GetPage(pageState);
 
-            ViewBag.Codes = codeManager.GetPage(OperatorId, this.CurrentPage, 20, this.SearchQuerry);
+            ViewBag.Codes = page.CodeList;
+            ViewBag.PageState = page.PageState;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Codes(CodeViewModel newCode)
+        public IActionResult Codes(CodeViewModel newCode, string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                newCode.OperatorId = this.OperatorId;
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                newCode.OperatorId = pageState.OperatorId;
                 bool result = codeManager.Add(newCode);
                 if (!result)
                 {
                     TempData["ErrorMessage"] = "Error occurred while adding code";
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
             }
             TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult Remove(int CodeId)
+        public IActionResult Remove(int codeId, string pageStateJson)
         {
-            bool result = codeManager.Remove(CodeId);
-            if (!result)
+            if (ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Error occurred while removing code";
-                return RedirectToAction("Codes", "Code");
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                bool result = codeManager.Remove(codeId);
+                if (!result)
+                {
+                    TempData["ErrorMessage"] = "Error occurred while removing code";
+                    return Redirect(Url.Action("Codes", pageState));
+                }
+                else
+                {
+                    return Redirect(Url.Action("Codes", pageState));
+                }
             }
-            else
-            {
-                return RedirectToAction("Codes", "Code");
-            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Code(CodeViewModel editedCode)
+        public IActionResult Code(CodeViewModel editedCode, string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                editedCode.OperatorId = this.OperatorId;
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                editedCode.OperatorId = pageState.OperatorId;
                 var result = codeManager.Update(editedCode);
                 if (!result)
                 {
                     TempData["ErrorMessage"] = "Error occurred while editing code";
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
             }
             TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage()
-        {
-            if (this.CurrentPage < codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry))
-            {
-                this.CurrentPage++;
-                return RedirectToAction("Codes", "Code");
-            }
-            else
-                return RedirectToAction("Codes", "Code");
-        }
-
-        public IActionResult PreviousPage()
-        {
-            if (this.CurrentPage > 1)
-            {
-                this.CurrentPage--;
-                return RedirectToAction("Codes", "Code");
-            }
-            else
-                return RedirectToAction("Codes", "Code");
-        }
-
-        public IActionResult SelectPage(int Page)
-        {
-            this.CurrentPage = Page;
-            return RedirectToAction("Codes", "Code");
-        }
-
-        [HttpPost]
-        public IActionResult SearchCodes(CodeSearchViewModel Search)
+        public IActionResult NextPage(string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                this.SearchQuerry = Search.SearchQuerry ?? "";
-                return RedirectToAction("Codes", "Code");
-            }
-            else
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.Page++;
+                return Redirect(Url.Action("Codes", pageState));
+            }            
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        public IActionResult PreviousPage(string pageStateJson)
+        {
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Codes", "Code");
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.Page--;
+                return Redirect(Url.Action("Codes", pageState));
             }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        public IActionResult SelectPage(int page, string pageStateJson)
+        {
+            if (ModelState.IsValid)
+            {
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.Page = page;
+                return Redirect(Url.Action("Codes", pageState));
+            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        [HttpPost]
+        public IActionResult SearchCodes(CodeSearchViewModel search, string pageStateJson)
+        {
+            if (ModelState.IsValid)
+            {
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.SearchQuerry = search.SearchQuerry ?? "";
+                return Redirect(Url.Action("Codes", pageState));
+            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
     }

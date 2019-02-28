@@ -15,14 +15,14 @@ namespace BAL.Managers
         {
 
         }
-        public bool Add(CodeViewModel NewCode)
+        public bool Add(CodeViewModel newCode)
         {
-            if (NewCode.OperatorCode == null || NewCode.OperatorCode == "")
+            if (newCode.OperatorCode == null || newCode.OperatorCode == "")
                 return false;
-            var check = unitOfWork.Codes.Get(o => o.OperatorCode == NewCode.OperatorCode).FirstOrDefault();
+            var check = unitOfWork.Codes.Get(o => o.OperatorCode == newCode.OperatorCode).FirstOrDefault();
             if (check != null)
                 return false;
-            var result = mapper.Map<Code>(NewCode);
+            var result = mapper.Map<Code>(newCode);
             try
             {
                 unitOfWork.Codes.Insert(result);
@@ -35,37 +35,10 @@ namespace BAL.Managers
             return true;
         }
 
-        public CodeViewModel GetById(int Id)
+        public CodeViewModel GetById(int id)
         {
-            var oper = unitOfWork.Codes.GetById(Id);
+            var oper = unitOfWork.Codes.GetById(id);
             return mapper.Map<CodeViewModel>(oper);
-        }
-
-        public int GetNumberOfPages(int OperatorId, int NumOfElements = 20, string SearchQuerry = "")
-        {
-            if (NumOfElements < 1)
-                NumOfElements = 20;
-            if (SearchQuerry == null)
-                SearchQuerry = "";
-
-            return (unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry))
-                .Count() / (NumOfElements + 1)) + 1;
-        }
-
-        public IEnumerable<CodeViewModel> GetPage(int OperatorId, int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
-        {
-            if (Page < 1)
-                Page = 1;
-            if (NumOfElements < 1)
-                NumOfElements = 20;
-            if (SearchQuerry == null)
-                SearchQuerry = "";
-
-            var codes = unitOfWork.Codes.Get(o => o.OperatorId == OperatorId && o.OperatorCode.Contains(SearchQuerry),
-                o => o.OrderBy(s => s.OperatorCode));
-            codes = codes.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
-            var result = mapper.Map<IEnumerable<Code>, IEnumerable<CodeViewModel>>(codes);
-            return result;
         }
 
         public bool Remove(int Id)
@@ -85,15 +58,15 @@ namespace BAL.Managers
             return true;
         }
 
-        public bool Update(CodeViewModel UpdatedCode)
+        public bool Update(CodeViewModel updatedCode)
         {
-            if (UpdatedCode.OperatorCode == null || UpdatedCode.OperatorCode == "")
+            if (updatedCode.OperatorCode == null || updatedCode.OperatorCode == "")
                 return false;
 
-            var check = unitOfWork.Codes.Get(o => o.OperatorCode == UpdatedCode.OperatorCode).FirstOrDefault();
+            var check = unitOfWork.Codes.Get(o => o.OperatorCode == updatedCode.OperatorCode).FirstOrDefault();
             if (check != null)
                 return false;
-            var result = mapper.Map<Code>(UpdatedCode);
+            var result = mapper.Map<Code>(updatedCode);
             try
             {
                 unitOfWork.Codes.Update(result);
@@ -106,7 +79,7 @@ namespace BAL.Managers
             return true;
         }
 
-        public Page GetCurrentPage(PageState pageState)
+        public Page GetPage(PageState pageState)
         {
             if (pageState == null)
                 return null;
