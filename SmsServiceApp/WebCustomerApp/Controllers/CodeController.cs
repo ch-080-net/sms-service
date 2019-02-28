@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.CodeViewModels;
-using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
@@ -26,14 +25,19 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Codes(PageState pageState)
         {
-            if (TempData.ContainsKey("OperatorId"))
-                pageState.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
+            if (ModelState.IsValid)
+            {
+                if (TempData.ContainsKey("OperatorId"))
+                    pageState.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
 
-            var page = codeManager.GetPage(pageState);
+                var page = codeManager.GetPage(pageState);
 
-            ViewBag.Codes = page.CodeList;
-            ViewBag.PageState = page.PageState;
-            return View();
+                ViewBag.Codes = page.CodeList;
+                ViewBag.PageState = page.PageState;
+                return View();
+            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
         [HttpPost]
@@ -61,22 +65,17 @@ namespace WebApp.Controllers
 
         public IActionResult Remove(int codeId, string pageStateJson)
         {
-            if (ModelState.IsValid)
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            bool result = codeManager.Remove(codeId);
+            if (!result)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-                bool result = codeManager.Remove(codeId);
-                if (!result)
-                {
-                    TempData["ErrorMessage"] = "Error occurred while removing code";
-                    return Redirect(Url.Action("Codes", pageState));
-                }
-                else
-                {
-                    return Redirect(Url.Action("Codes", pageState));
-                }
+                TempData["ErrorMessage"] = "Error occurred while removing code";
+                return Redirect(Url.Action("Codes", pageState));
             }
-            TempData["ErrorMessage"] = "Internal error";
-            return RedirectToAction("Operators", "Operator");
+            else
+            {
+                return Redirect(Url.Action("Codes", pageState));
+            }
         }
 
         [HttpPost]
@@ -104,38 +103,23 @@ namespace WebApp.Controllers
 
         public IActionResult NextPage(string pageStateJson)
         {
-            if (ModelState.IsValid)
-            {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-                pageState.Page++;
-                return Redirect(Url.Action("Codes", pageState));
-            }            
-            TempData["ErrorMessage"] = "Internal error";
-            return RedirectToAction("Operators", "Operator");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page++;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
         public IActionResult PreviousPage(string pageStateJson)
         {
-            if (ModelState.IsValid)
-            {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-                pageState.Page--;
-                return Redirect(Url.Action("Codes", pageState));
-            }
-            TempData["ErrorMessage"] = "Internal error";
-            return RedirectToAction("Operators", "Operator");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page--;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
         public IActionResult SelectPage(int page, string pageStateJson)
         {
-            if (ModelState.IsValid)
-            {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-                pageState.Page = page;
-                return Redirect(Url.Action("Codes", pageState));
-            }
-            TempData["ErrorMessage"] = "Internal error";
-            return RedirectToAction("Operators", "Operator");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page = page;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
         [HttpPost]
