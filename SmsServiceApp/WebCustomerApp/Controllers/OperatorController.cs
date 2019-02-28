@@ -16,7 +16,7 @@ namespace WebApp.Controllers
     public class OperatorController : Controller
     {
 
-        private IOperatorManager operatorManager;
+        private readonly IOperatorManager operatorManager;
 
         public OperatorController(IOperatorManager oper)
         {

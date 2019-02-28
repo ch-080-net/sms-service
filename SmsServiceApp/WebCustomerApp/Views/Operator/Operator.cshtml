@@ -13,7 +13,9 @@
                     <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">
                         @if (Model.Logo.GetLength(0) != 0)
                         {
-                            <img style='width:32px; height:32px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))" />
+                            <img style='width:32px; height:32px;'
+                                 src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))"
+                                 alt="~/images/32.png"/>
                         }
                         else
                         {

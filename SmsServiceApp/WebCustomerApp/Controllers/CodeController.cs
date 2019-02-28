@@ -13,8 +13,8 @@ namespace WebApp.Controllers
     [Authorize(Roles = "Admin")]
     public class CodeController : Controller
     {
-        private ICodeManager codeManager;
-        private IOperatorManager operatorManager;
+        private readonly ICodeManager codeManager;
+        private readonly IOperatorManager operatorManager;
 
         public CodeController(ICodeManager codeManager, IOperatorManager operatorManager)
         {
