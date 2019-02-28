@@ -7,10 +7,10 @@ namespace Model.Interfaces
 {
     public interface ICodeManager
     {
-        CodeViewModel GetById(int Id);
-        bool Add(CodeViewModel NewCode);
-        bool Update(CodeViewModel UpdatedCode);
-        bool Remove(int Id);      
+        CodeViewModel GetById(int id);
+        bool Add(CodeViewModel newCode);
+        bool Update(CodeViewModel updatedCode);
+        bool Remove(int id);      
         Page GetPage(PageState pageState);
     }
 }

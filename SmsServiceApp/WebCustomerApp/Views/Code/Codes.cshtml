@@ -69,8 +69,7 @@
                 if (i == ViewBag.PageState.Page)
                 {
                     <li class="page-item active">
-                        <a class="page-link" asp-action="SelectPage" asp-controller="Code"
-                           asp-route-Page="@i" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">@i</a>
+                        <a class="page-link" href="#">@i</a>
                     </li>
                 }
                 else

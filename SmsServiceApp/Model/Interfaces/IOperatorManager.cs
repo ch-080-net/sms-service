@@ -7,14 +7,13 @@ namespace Model.Interfaces
 {
     public interface IOperatorManager
     {
-        OperatorViewModel GetById(int Id);
-        bool Add(OperatorViewModel NewOperator);
-        bool Update(OperatorViewModel UpdatedOperator);
-        bool Remove(int Id);
+        OperatorViewModel GetById(int id);
+        bool Add(OperatorViewModel newOperator);
+        bool Update(OperatorViewModel updatedOperator);
+        bool Remove(int id);
         IEnumerable<OperatorViewModel> GetAll();
-        IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
-        int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "");
-        bool AddLogo(LogoViewModel Logo);
+        bool AddLogo(LogoViewModel logo);
+        Page GetPage(PageState pageState);
     }
 }
 
