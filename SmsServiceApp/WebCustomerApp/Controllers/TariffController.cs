@@ -17,7 +17,7 @@ namespace WebApp.Controllers
     [Authorize (Roles = "Admin")]
     public class TariffController : Controller
     {
-        private ITariffManager tariffManager;
+        private readonly ITariffManager tariffManager;
        
 
         public TariffController(ITariffManager tariff)

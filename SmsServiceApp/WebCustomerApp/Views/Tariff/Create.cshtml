@@ -5,16 +5,17 @@
     ViewData["Title"] = "Create Tariff";
 
 }
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Tariff List</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <head>
+        <title>Tariff List</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
-    <script>
+        <script>
         var Tariff = {
             id: 0,
             name: "",
@@ -46,41 +47,41 @@
             $.ajax(options);
         }
 
-    </script>
-</head>
-<body>
-    <form>
-        <h2>Create Tariff</h2>
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="form-group">
-                    <label asp-for="Name">Tariff name:</label>
-                    <input asp-for="Name" type="text" class="form-control" id="name">
-                    <span asp-validation-for="Name" class="text-danger"></span>
+        </script>
+    </head>
+    <body>
+        <form>
+            <h2>Create Tariff</h2>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label asp-for="Name">Tariff name:</label>
+                        <input asp-for="Name" type="text" class="form-control" id="name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description:</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" id="description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price">Price:</label>
+                        <input asp-for="Price" type="number" step="0.01" class="form-control" id="price">
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Limit">Limit:</label>
+                        <input asp-for="Limit" type="number" class="form-control" id="limit">
+                        <span asp-validation-for="Limit" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success" onclick='onAddTariff(this)'>Add Tariff</button>
+                    <a class="btn btn-warning" asp-action="Operators" asp-controller="Operator">Back to List Of Operators</a>
+                    <br />
+                    <div id="msg"></div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Description">Description:</label>
-                    <textarea asp-for="Description" class="form-control" rows="3" id="description"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Price">Price:</label>
-                    <input asp-for="Price" type="number" step="0.01" class="form-control" id="price">
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Limit">Limit:</label>
-                    <input asp-for="Limit" type="number" class="form-control" id="limit">
-                    <span asp-validation-for="Limit" class="text-danger"></span>
-                </div>
-                <button type="submit" class="btn btn-success" onclick='onAddTariff(this)'>Add Tariff</button>
-                <a class="btn btn-warning" asp-action="Operators" asp-controller="Operator">Back to List Of Operators</a>
-                <br />
-                <div id="msg"></div>
             </div>
-        </div>
-    </form>
-</body>
+        </form>
+    </body>
 </html>
 
 @section Scripts {
