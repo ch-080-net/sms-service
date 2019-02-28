@@ -50,6 +50,11 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] RecipientViewModel item, int companyId)
         {
+            if(companyId != 0)
+            {
+                TempData["companyId"] = companyId;
+            }
+            TempData.Keep("companyId");
             bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
             if (IsRecipientPhoneExist == true)
             {
@@ -57,8 +62,8 @@ namespace WebApp.Controllers
             }
             if (ModelState.IsValid)
             {
-                recipientManager.Insert(item, companyId);
-                return RedirectToAction("Index", "Recipient", new { companyId });
+                recipientManager.Insert(item, (int)TempData.Peek("companyId"));
+                return RedirectToAction("Index", "Recipient", new { companyId = (int)TempData.Peek("companyId") });
             }
             return View(item);
         }

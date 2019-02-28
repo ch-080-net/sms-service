@@ -117,7 +117,7 @@ function contactBuildTableRow(contact) {
         "<td>" + contact.phonePhoneNumber + "</td>" +
         "<td>" + contact.name + "</td>" +
         "<td>" + contact.surname + "</td>" +
-        "<td>" + new Date(contact.birthDate).toISOString().slice(0, 10) + "</td>" +
+        "<td>" + contact.birthDate.slice(0, 10) + "</td>" +
         "<td>" + contact.gender + "</td>" +
         "<td>" + contact.notes + "</td>" +
         "<td>" + contact.keyWords + "</td>" +
@@ -129,7 +129,7 @@ function contactBuildTableRow(contact) {
         "data-phonenumber='" + contact.phonePhoneNumber + "'" +
         "data-name='" + contact.name + "'" +
         "data-surname='" + contact.surname + "'" +
-        "data-birthdate='" + contact.birthDate + "'" +
+        "data-birthdate='" + contact.birthDate.slice(0, 10) + "'" +
         "data-gender='" + contact.gender + "'" +
         "data-notes='" + contact.notes + "'" +
         "data-keywords='" + contact.keyWords + "'" +

@@ -6,6 +6,7 @@ using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Model.Interfaces;
 
 namespace WebApp.Controllers
 {
