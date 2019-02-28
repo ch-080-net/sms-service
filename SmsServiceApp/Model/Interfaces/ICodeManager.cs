@@ -13,5 +13,6 @@ namespace Model.Interfaces
         bool Remove(int Id);
         IEnumerable<CodeViewModel> GetPage(int OperatorId, int Page = 1, int NumOfElements = 20, string SearchQuerry = "");
         int GetNumberOfPages(int OperatorId, int NumOfElements = 20, string SearchQueery = "");
+        Page GetCurrentPage(PageState pageState);
     }
 }

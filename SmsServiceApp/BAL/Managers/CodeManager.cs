@@ -105,5 +105,41 @@ namespace BAL.Managers
             }
             return true;
         }
+
+        public Page GetCurrentPage(PageState pageState)
+        {
+            if (pageState == null)
+                return null;
+
+            if (pageState.SearchQuerry == null)
+                pageState.SearchQuerry = "";
+
+            if (pageState.OperatorName == null)
+                pageState.OperatorName = unitOfWork.Operators.GetById(pageState.OperatorId).Name;
+
+            var codes = unitOfWork.Codes.Get(c => c.OperatorId == pageState.OperatorId
+                && c.OperatorCode.Contains(pageState.SearchQuerry));
+
+            if (pageState.CodesOnPage < 1)
+                pageState.CodesOnPage = 10;
+
+            pageState.LastPage = codes.Count() / pageState.CodesOnPage
+                + (((codes.Count() % pageState.CodesOnPage) == 0) ? 0 : 1);
+
+            if (pageState.Page > pageState.LastPage)
+                pageState.Page = pageState.LastPage;
+
+            if (pageState.Page < 1)
+                pageState.Page = 1;
+
+            var result = new Page();
+
+            result.CodeList = mapper.Map<IEnumerable<Code>, IEnumerable<CodeViewModel>>
+                (codes.Skip((pageState.Page - 1) * pageState.CodesOnPage).Take(pageState.CodesOnPage));
+
+            result.PageState = pageState;
+
+            return result;
+        }
     }
 }

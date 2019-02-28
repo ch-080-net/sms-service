@@ -13,42 +13,6 @@ namespace WebApp.Controllers
     [Authorize(Roles = "Admin")]
     public class CodeController : Controller
     {
-        private int CurrentPage
-        {
-            get
-            {
-                return HttpContext.Session.GetInt32("CurrentPageCode") ?? 0;
-            }
-            set
-            {
-                HttpContext.Session.SetInt32("CurrentPageCode", value);
-            }
-        }
-
-        private string SearchQuerry
-        {
-            get
-            {
-                return HttpContext.Session.GetString("SearchQuerryCode");
-            }
-            set
-            {
-                HttpContext.Session.SetString("SearchQuerryCode", value);
-            }
-        }
-
-        private int OperatorId
-        {
-            get
-            {
-                return HttpContext.Session.GetInt32("OperatorIdCode") ?? 0;
-            }
-            set
-            {
-                HttpContext.Session.SetInt32("OperatorIdCode", value);
-            }
-        }
-
         private ICodeManager codeManager;
         private IOperatorManager operatorManager;
 
@@ -59,28 +23,11 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Codes()
+        public IActionResult Codes(PageState pageState)
         {
             if (TempData.ContainsKey("OperatorId"))
-                this.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
+                pageState.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
 
-            if (this.SearchQuerry == null)
-                this.SearchQuerry = "";
-            ViewBag.SearchQuerry = this.SearchQuerry;
-
-            ViewBag.NumOfPages = codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry);
-
-            if (this.CurrentPage < 1)
-                this.CurrentPage = 1;
-            else if ((ViewBag.NumOfPages - this.CurrentPage) == (-1))
-                --this.CurrentPage;
-            else if ((ViewBag.NumOfPages - this.CurrentPage) < (-1))
-            {
-                this.CurrentPage = 1;
-            }
-            ViewBag.CurrentPage = this.CurrentPage;
-
-            ViewBag.OperatorName = operatorManager.GetById(this.OperatorId).Name;
 
             ViewBag.Codes = codeManager.GetPage(OperatorId, this.CurrentPage, 20, this.SearchQuerry);
             return View();
