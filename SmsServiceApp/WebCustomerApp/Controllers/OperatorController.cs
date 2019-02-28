@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using WebCustomerApp.Models;
+using Model.Interfaces;
 
 namespace WebApp.Controllers
 {

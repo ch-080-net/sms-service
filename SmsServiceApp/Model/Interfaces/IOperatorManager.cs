@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
 
-namespace BAL.Managers
+namespace Model.Interfaces
 {
     public interface IOperatorManager
     {
