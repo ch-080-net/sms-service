@@ -13,7 +13,9 @@ namespace WebCustomerApp.Models
         public ICollection<Code> Codes { get; set; }
         public ICollection<Tariff> Tariffs { get; set; }
 
-        /// <value>Contains name, such as Vodafone</value>
+        /// <value>
+        /// Contains name, such as Vodafone
+        /// </value>
         public string Name { get; set; }
 
         /// <value>Contains logo as array of bites</value>
