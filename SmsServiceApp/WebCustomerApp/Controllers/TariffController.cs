@@ -53,11 +53,11 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid) { 
                 tariffManager.Insert(item);
-            return new ObjectResult("Tariff added successfully!");
+            return View();
             }
             else
             {
-                return new ObjectResult("Fill in all fields");
+                return View();
             }
         }
 
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return new ObjectResult("Fill in all fields");
+                return View();
             }
         }
       
