@@ -8,36 +8,13 @@ using Microsoft.AspNetCore.Authorization;
 using System.IO;
 using WebCustomerApp.Models;
 using Model.Interfaces;
+using Newtonsoft.Json;
 
 namespace WebApp.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class OperatorController : Controller
     {
-        private int CurrentPage
-        {
-            get
-            {
-                return HttpContext.Session.GetInt32("CurrentPageOperator") ?? 0;
-            }
-            set
-            {
-                HttpContext.Session.SetInt32("CurrentPageOperator", value);
-            }
-        }
-
-        private string SearchQuerry
-        {
-            get
-            {
-                return HttpContext.Session.GetString("SearchQuerryOperator");
-            }
-            set
-            {
-                HttpContext.Session.SetString("SearchQuerryOperator", value);
-            }
-        }
-
 
         private IOperatorManager operatorManager;
 
@@ -47,146 +24,128 @@ namespace WebApp.Controllers
         }
         
         [HttpGet]
-        public IActionResult Operators()
-        {
-            if (this.SearchQuerry == null)
-                this.SearchQuerry = "";
-            ViewBag.SearchQuerry = this.SearchQuerry;
-            
-            ViewBag.NumOfPages = operatorManager.GetNumberOfPages(20, this.SearchQuerry);
-
-            if (this.CurrentPage < 1)
-                this.CurrentPage = 1;
-            else if((ViewBag.NumOfPages - this.CurrentPage) == (-1))
-                --this.CurrentPage;
-            else if ((ViewBag.NumOfPages - this.CurrentPage) < (-1))
-            {
-                this.CurrentPage = 1;
-            }
-            ViewBag.CurrentPage = this.CurrentPage;
-
-            ViewBag.Operators = operatorManager.GetPage(this.CurrentPage, 20
-                , this.SearchQuerry);
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Operators(OperatorViewModel newOper)
+        public IActionResult Operators(PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                bool result = operatorManager.Add(newOper);
-                if (!result)
-                {
-                    TempData["ErrorMessage"] = "Error occured while adding new operator";
-                    return RedirectToAction("Operators", "Operator");
-                }
-                else
-                {
-                    return RedirectToAction("Operators", "Operator");
-                }
-            }
-            TempData["ErrorMessage"] = "Internal error!";
-            return RedirectToAction("Operators", "Operator");
-        }
+                var page = operatorManager.GetPage(pageState);
 
-        public IActionResult Remove(int OperatorId)
-        {
-            bool result = operatorManager.Remove(OperatorId);
-            if (!result)
-            {
-                TempData["ErrorMessage"] = "Error occured while removing operator";
-                return RedirectToAction("Operators", "Operator");
-            }
-            else
-            {
-                return RedirectToAction("Operators", "Operator");
-            }
-        }
-
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult Operator(OperatorViewModel editedOper)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = operatorManager.Update(editedOper);
-                if (!result)
-                {
-                    TempData["ErrorMessage"] = "Error occured while editing operator";
-                    return RedirectToAction("Operators", "Operator");
-                }
-                else
-                {
-                    return RedirectToAction("Operators", "Operator");
-                }
-            }
-            TempData["ErrorMessage"] = "Internal error!";
-            return RedirectToAction("Operators", "Operator");
-        }
-
-        public IActionResult NextPage()
-        {
-            if (this.CurrentPage < operatorManager.GetNumberOfPages(20, this.SearchQuerry))
-            {
-                this.CurrentPage++;
-                return RedirectToAction("Operators", "Operator");
-            }
-            else
-            {
-                return RedirectToAction("Operators", "Operator");
-            }
-                
-        }
-
-        public IActionResult PreviousPage()
-        {
-            if (CurrentPage > 1)
-            {
-                this.CurrentPage--;
-                return RedirectToAction("Operators", "Operator");
-            }
-            else
-                return RedirectToAction("Operators", "Operator");
-        }
-
-        public IActionResult SelectPage(int Page)
-        {
-            this.CurrentPage = Page;
-            return RedirectToAction("Operators", "Operator");         
-        }
-
-
-        [HttpPost]
-        public IActionResult SearchOperators(OperatorSearchViewModel Search)
-        {
-            if (ModelState.IsValid)
-            {
-                this.SearchQuerry = Search.SearchQuerry ?? "";
-                return RedirectToAction("Operators", "Operator");
+                ViewBag.Operators = page.OperatorList;
+                ViewBag.PageState = page.PageState;
+                return View();
             }
             TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult EditCodes(int Id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Operators(OperatorViewModel newOper, string pageStateJson)
         {
-            TempData["OperatorId"] = Id;
-            return RedirectToAction("Codes", "Code");
+            if (ModelState.IsValid)
+            {
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                bool result = operatorManager.Add(newOper);
+                if (!result)
+                {
+                    TempData["ErrorMessage"] = "Error occured while adding new operator";
+                }
+                else
+                {
+                    return Redirect(Url.Action("Operators", pageState));
+                }
+            }
+            TempData["ErrorMessage"] = "Internal error!";
+            return RedirectToAction("Operators", "Operator");
         }
 
-        [HttpGet]
-        public IActionResult AddLogo(int OperatorId)
+        public IActionResult Remove(int operatorId, string pageStateJson)
         {
-            return View(new LogoViewModel() { OperatorId = OperatorId });
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            bool result = operatorManager.Remove(operatorId);
+            if (!result)
+            {
+                TempData["ErrorMessage"] = "Error occured while removing operator";
+                return Redirect(Url.Action("Operators", pageState));
+            }
+            else
+            {
+                return Redirect(Url.Action("Operators", pageState));
+            }
         }
 
         [HttpPost]
-        public IActionResult AddLogo(LogoViewModel Logo)
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Operator(OperatorViewModel editedOper, string pageStateJson)
         {
-            operatorManager.AddLogo(Logo);
+            if (ModelState.IsValid)
+            {
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                var result = operatorManager.Update(editedOper);
+                if (!result)
+                {
+                    TempData["ErrorMessage"] = "Error occured while editing operator";
+                    return Redirect(Url.Action("Operators", pageState));
+                }
+                else
+                {
+                    return Redirect(Url.Action("Operators", pageState));
+                }
+            }
+            TempData["ErrorMessage"] = "Internal error!";
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        public IActionResult NextPage(string pageStateJson)
+        {
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page++;
+            return Redirect(Url.Action("Operators", pageState));
+        }
+
+        public IActionResult PreviousPage(string pageStateJson)
+        {
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page--;
+            return Redirect(Url.Action("Operators", pageState));
+        }
+
+        public IActionResult SelectPage(int page, string pageStateJson)
+        {
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page = page;
+            return Redirect(Url.Action("Operators", pageState));
+        }
+
+        [HttpPost]
+        public IActionResult SearchOperators(OperatorSearchViewModel search, string pageStateJson)
+        {
+            if (ModelState.IsValid)
+            {
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.SearchQuerry = search.SearchQuerry ?? "";
+                return Redirect(Url.Action("Operators", pageState));
+            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        public IActionResult EditCodes(int id)
+        {
+            TempData["OperatorId"] = id;
+            return RedirectToAction("Operators", "Operator");
+        }
+
+        [HttpGet]
+        public IActionResult AddLogo(int operatorId)
+        {
+            return View(new LogoViewModel() { OperatorId = operatorId });
+        }
+
+        [HttpPost]
+        public IActionResult AddLogo(LogoViewModel logo)
+        {
+            operatorManager.AddLogo(logo);
             return RedirectToAction("Operators", "Operator");
         }
 
