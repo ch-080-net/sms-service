@@ -22,7 +22,7 @@ namespace BAL.Managers
         /// <summary>
         /// Transform CodeViewModel <paramref name="newCode"/> to Code and insert it to Codes table of DB
         /// </summary>
-        /// <param name="newCode">Should contain OperatorCode and OperatorId</param>
+        /// <param name="newCode">Should contain not null or empty OperatorCode and OperatorId</param>
         /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Add(CodeViewModel newCode)
         {
@@ -55,9 +55,14 @@ namespace BAL.Managers
             return mapper.Map<CodeViewModel>(oper);
         }
 
-        public bool Remove(int Id)
+
+        /// <summary>
+        /// Remonve entry in Codes table with <paramref name="id"/>
+        /// </summary>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public bool Remove(int id)
         {
-            var code = unitOfWork.Codes.GetById(Id);
+            var code = unitOfWork.Codes.GetById(id);
             if (code == null)
                 return false;
             try
@@ -73,10 +78,13 @@ namespace BAL.Managers
         }
 
         /// <summary>
-        /// 
+        /// Transform CodeViewModel <paramref name="updatedCode"/> to Code and update corresponding row in Codes table of DB
         /// </summary>
-        /// <param name="updatedCode"></param>
-        /// <returns></returns>
+        /// <param name="updatedCode">
+        /// Should contain not null or empty OperatorCode; Id and OperatorId of existing entries in Codes and Operators tables
+        /// OperatorCode must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Update(CodeViewModel updatedCode)
         {
             if (updatedCode.OperatorCode == null || updatedCode.OperatorCode == "")
@@ -98,6 +106,11 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// Get Page, which corresponds to <paramref name="pageState"/> 
+        /// </summary>
+        /// <param name="pageState">Represents page state, including search querry, page, number of pages, entries on one page</param>
+        /// <returns>Object, which contains valid page state and corresponding enumeration of CodesViewModel</returns>
         public Page GetPage(PageState pageState)
         {
             if (pageState == null)
