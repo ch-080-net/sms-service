@@ -17,6 +17,7 @@ using DAL.Repositories;
 using BAL.Managers;
 using AutoMapper;
 using BAL.Services;
+using BAL.Jobs;
 
 namespace WebCustomerApp
 {
@@ -100,6 +101,11 @@ namespace WebCustomerApp
 
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
+
+            // Start scheduler
+
+            services.AddScoped<Mailing>();
+            MailingScheduler.Start(services.BuildServiceProvider());
 
             // Configure sessions
 

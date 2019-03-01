@@ -1,32 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Quartz;
 using Quartz.Impl;
-using System.Threading.Tasks;
-using Model.Interfaces;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
-    public class MailingScheduler
+    public static class MailingScheduler
     {
-        public static async void Start(IServiceScopeFactory scopeFactory)
+        public static async void Start(IServiceProvider serviceProvider)
         {
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
+            scheduler.JobFactory = new JobFactory(serviceProvider);
             await scheduler.Start();
 
-            IJobDetail job = JobBuilder.Create<Mailing>().Build();
+            IJobDetail jobDetail = JobBuilder.Create<Mailing>().Build();
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("MailingTrigger", "default")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                .WithIntervalInMinutes(5)
+                .WithIntervalInMinutes(1)
                 .RepeatForever())
                 .Build();
 
-            await scheduler.ScheduleJob(job, trigger);
+            await scheduler.ScheduleJob(jobDetail, trigger);
         }
     }
 }
