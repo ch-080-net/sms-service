@@ -123,6 +123,7 @@ namespace WebCustomerApp
                 //create the roles and seed them to the database  
                 roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
             }
+ 
             roleCheck = await RoleManager.RoleExistsAsync("User");
             if (!roleCheck)
             {
@@ -132,7 +133,6 @@ namespace WebCustomerApp
 
             //Assign Admin role to the main User here we have given our newly loregistered login id for Admin management  
             ApplicationUser user = await UserManager.FindByEmailAsync("Admin@gmail.com");
-            //var User = new ApplicationUser();
             await UserManager.AddToRoleAsync(user, "Admin");
 
             user = await UserManager.FindByEmailAsync("User@gmail.com");
@@ -140,7 +140,8 @@ namespace WebCustomerApp
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services, 
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {

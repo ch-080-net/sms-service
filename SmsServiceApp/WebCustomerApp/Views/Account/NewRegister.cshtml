@@ -8,23 +8,22 @@
 <html>
 
 <head>
-	<title>Registration</title>
+    <title>Registration</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
-	<script>
-		addEventListener("load", function () {
-			setTimeout(hideURLbar, 0);
-		}, false);
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	</script>
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
 
-	<link rel="stylesheet" href="~/css/style_login.css" />
-
-	<link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style_login.css" />
+    <link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
 
 </head>
 
@@ -41,6 +40,20 @@
             <div class="agile-field-txt">
                 <label asp-for="Phone"></label>
                 <input asp-for="Phone" class="form-control" id="phone" placeholder="Your phone" />
+                @*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
+            </div>
+            <div class="w3ls-bot">
+                <div class="switch-agileits">
+                    <label class="switch">
+                        <input type="checkbox" asp-for="CorporateUser" id="corporate" onclick="ShowCompany()">
+                        @Html.DisplayNameFor(m => m.CorporateUser)
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="agile-field-txt" id="company">
+                <label asp-for="CompanyName"></label>
+                <input asp-for="CompanyName" class="form-control" placeholder="Your company"/>
                 @*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
             </div>
             <div class="agile-field-txt">
@@ -85,7 +98,18 @@
 			x.type = "password";
 			c.type = "password";
 		}
-	}
+    }
+
+    document.getElementById("company").style.display = 'none';
+    function ShowCompany() {
+        var chboxs = document.getElementById("corporate");
+        if (chboxs.checked) {
+            document.getElementById("company").style.display = 'block';
+        }
+        if (!chboxs.checked) {
+            document.getElementById("company").style.display = 'none';
+        }
+    }
 </script>
 
 @section Scripts {

@@ -14,8 +14,8 @@ namespace WebApp.Controllers
     [Authorize]
     public class RecipientController : Controller
     {
-        private IRecipientManager recipientManager;
-        private ICompanyManager companyManager;
+        private readonly IRecipientManager recipientManager;
+        private readonly ICompanyManager companyManager;
 
         public RecipientController (IRecipientManager recipient, ICompanyManager companyManager)
         {
@@ -56,7 +56,7 @@ namespace WebApp.Controllers
             }
             TempData.Keep("companyId");
             bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
-            if (IsRecipientPhoneExist == true)
+            if (IsRecipientPhoneExist)
             {
                 ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");
             }

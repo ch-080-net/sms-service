@@ -10,6 +10,7 @@ namespace WebCustomerApp.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        // public int ApplicationGroupId { get; set; }
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<Company> Companies { get; set; }
     }

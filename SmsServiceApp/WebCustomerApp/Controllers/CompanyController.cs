@@ -19,14 +19,12 @@ namespace WebApp.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyManager companyManager;
-        private readonly IRecipientManager recipientManager;
         private readonly IOperatorManager operatorManager;
         private readonly ITariffManager tariffManager;
-        private static string userId;
+        private string userId;
 
-        public CompanyController(ICompanyManager company, IRecipientManager recipient, IOperatorManager _operator, ITariffManager tariff)
+        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff)
         {
-            this.recipientManager = recipient;
             this.companyManager = company;
             this.operatorManager = _operator;
             this.tariffManager = tariff;
@@ -51,18 +49,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                //string name = "{0}";
-                //string surname = "{1}";
-                //string birthday = "{2}";
-                //change according to further requirement
-                //item.Message = item.Message.Replace("#name", name).Replace("#surname", surname).Replace("#birthday", birthday).Replace("#company", item.Name);
                 item.Message = item.Message.Replace("#company", item.Name);
-                //then move to the send function to the SMPP 
-                //foreach (var res in item.RecipientViewModels)
-                //{
-                //    string outServisMessage = String.Format(item.Message, RecipientViewModel.name)
-                //}
-
                 companyManager.Insert(item, userId);
                 return RedirectToAction("Index");
             }
@@ -129,22 +116,6 @@ namespace WebApp.Controllers
         {
             companyManager.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        [HttpGet]
-        public IActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
-
-            if (company == null)
-            {
-                return NotFound();
-            }
-            return View(company);
         }
 
         [HttpGet]
