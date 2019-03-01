@@ -169,10 +169,7 @@ namespace WebCustomerApp
             }
         }
 
-        public void Configure(IApplicationBuilder app, 
-                              IHostingEnvironment env,
-                              UserManager<ApplicationUser> userManager,
-                              RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
