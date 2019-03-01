@@ -6,10 +6,17 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="smsccn">
+      <HintPath>..\..\..\..\SMPPTester\smscc-8.0.94\net\demo\clr2\smsccn.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
