@@ -9,12 +9,21 @@ using System.Linq;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manger for CRUD operations on Codes
+    /// </summary>
     public class CodeManager : BaseManager, ICodeManager
     {
         public CodeManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
 
         }
+
+        /// <summary>
+        /// Transform CodeViewModel <paramref name="newCode"/> to Code and insert it to Codes table of DB
+        /// </summary>
+        /// <param name="newCode">Should contain OperatorCode and OperatorId</param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Add(CodeViewModel newCode)
         {
             if (newCode.OperatorCode == null || newCode.OperatorCode == "")
@@ -35,6 +44,11 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// Get CodeViewModel by Id
+        /// </summary>
+        /// <param name="id">Id of Code in Codes table</param>
+        /// <returns>Provides empty CodeViewModel if provided null</returns>
         public CodeViewModel GetById(int id)
         {
             var oper = unitOfWork.Codes.GetById(id);
@@ -58,6 +72,11 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updatedCode"></param>
+        /// <returns></returns>
         public bool Update(CodeViewModel updatedCode)
         {
             if (updatedCode.OperatorCode == null || updatedCode.OperatorCode == "")

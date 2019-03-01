@@ -13,7 +13,9 @@ namespace WebCustomerApp.Models
     {
         public int Id { get; set; }
 
-        /// <value>Represents operator code such as +38066</value>
+        /// <value>
+        /// Represents operator code such as +38066
+        /// </value>
         public string OperatorCode { get; set; }
 
         public int OperatorId { get; set; }
