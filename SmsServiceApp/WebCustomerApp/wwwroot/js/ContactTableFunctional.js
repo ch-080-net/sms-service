@@ -117,7 +117,7 @@ function contactBuildTableRow(contact) {
         "<td>" + contact.phonePhoneNumber + "</td>" +
         "<td>" + contact.name + "</td>" +
         "<td>" + contact.surname + "</td>" +
-        "<td>" + contact.birthDate + "</td>" +
+        "<td>" + contact.birthDate.slice(0, 10) + "</td>" +
         "<td>" + contact.gender + "</td>" +
         "<td>" + contact.notes + "</td>" +
         "<td>" + contact.keyWords + "</td>" +
@@ -129,7 +129,7 @@ function contactBuildTableRow(contact) {
         "data-phonenumber='" + contact.phonePhoneNumber + "'" +
         "data-name='" + contact.name + "'" +
         "data-surname='" + contact.surname + "'" +
-        "data-birthdate='" + contact.birthDate + "'" +
+        "data-birthdate='" + contact.birthDate.slice(0, 10) + "'" +
         "data-gender='" + contact.gender + "'" +
         "data-notes='" + contact.notes + "'" +
         "data-keywords='" + contact.keyWords + "'" +
@@ -156,18 +156,26 @@ function onAddContact(item) {
     obj.PhonePhoneNumber = $("#phoneNumber").val();
     var regex = new RegExp("^[+][0-9]{12}");
     if (!regex.test(obj.PhonePhoneNumber)) {
-        $("#msg").html("Valid phone number");
+        $("#msg").html("Invalid phone number");
         return;
     }
     obj.Name = $("#name").val();
     obj.Surname = $("#surname").val();
     obj.BirthDate = $("#birthDate").val();
     if (obj.BirthDate == "")
-        obj.BirthDate = new Date(Date.now()).toLocaleString();
+        obj.BirthDate = new Date(0).toLocaleString();
     if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();
     obj.KeyWords = $("#keywords").val();
+    if (obj.Name == null)
+        obj.Name = "";
+    if (obj.Surname == null)
+        obj.Surname = "";
+    if (obj.Notes == null)
+        obj.Notes = "";
+    if (obj.KeyWords == null)
+        obj.KeyWords = "";
     console.dir(obj);
     options.data = obj;
 
@@ -220,14 +228,14 @@ function contactUpdate(idOfUpdatePhone) {
     obj.PhonePhoneNumber = $("#phoneNumber").val();
     var regex = new RegExp("^[+][0-9]{12}");
     if (!regex.test(obj.PhonePhoneNumber)) {
-        $("#msg").html("Valid phone number");
+        $("#msg").html("Invalid phone number");
         return;
     }
     obj.Name = $("#name").val();
     obj.Surname = $("#surname").val();
     obj.BirthDate = $("#birthDate").val();
     if (obj.BirthDate == "")
-        obj.BirthDate = new Date(Date.now()).toLocaleString();
+        obj.BirthDate = new Date(0).toLocaleString();
     if (document.getElementById("genderMale").checked) { obj.Gender = "Male"; }
     if (document.getElementById("genderFemale").checked) { obj.Gender = "Female"; }
     obj.Notes = $("#notes").val();
@@ -281,8 +289,8 @@ function handleException(request, message, error) {
     var msg = "";
     msg += "Code: " + request.status + "\n";
     msg += "Text: " + request.statusText + "\n";
-    if (request != null) {
-        msg += "Message" + request.Message + "\n";
+    if (error != null) {
+        msg += "Message" + error.Message + "\n";
     }
 
     alert(msg);

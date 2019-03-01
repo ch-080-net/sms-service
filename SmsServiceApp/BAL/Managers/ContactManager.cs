@@ -79,8 +79,6 @@ namespace BAL.Managers
 
         public int GetContactBySearchValueCount(string userId, string searchValue)
         {
-            try
-            {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
                         filter: item => item.ApplicationUserId == userId).ToList();
                 foreach (var contact in contacts)
@@ -92,11 +90,6 @@ namespace BAL.Managers
                         item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)).ToList();
 
                 return contacts.Count;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public bool CreateContact(ContactViewModel contactModel, string userId)

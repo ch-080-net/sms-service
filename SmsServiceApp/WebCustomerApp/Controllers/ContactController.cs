@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.ContactViewModels;
 
@@ -11,13 +12,14 @@ using Model.ViewModels.ContactViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class ContactController : Controller
     {
-        private readonly IContactManager _contactManager;
+        private readonly IContactManager contactManager;
 
         public ContactController(IContactManager contactManager)
         {
-            _contactManager = contactManager;
+            this.contactManager = contactManager;
         }
 
         public IActionResult Contacts()
@@ -35,13 +37,14 @@ namespace WebApp.Controllers
                     return null;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (searchValue == null)
-                    return _contactManager.GetContact(userId, pageNumber, pageSize);
+                    return contactManager.GetContact(userId, pageNumber, pageSize);
                 else
-                    return _contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
+                    return contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                //throw ex;
+                return null;
             }
         }
 
@@ -55,13 +58,14 @@ namespace WebApp.Controllers
                     return 0;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 if (searchValue == null)
-                    return _contactManager.GetContactCount(userId);
+                    return contactManager.GetContactCount(userId);
                 else
-                    return _contactManager.GetContactBySearchValueCount(userId, searchValue);
+                    return contactManager.GetContactBySearchValueCount(userId, searchValue);
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                //throw ex;
+                return 0;
             }
         }
 
@@ -72,14 +76,23 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                if (_contactManager.CreateContact(obj, userId))
+                if (obj.Name == null)
+                    obj.Name = "";
+                if (obj.Surname == null)
+                    obj.Surname = "";
+                if (obj.Notes == null)
+                    obj.Notes = "";
+                if (obj.KeyWords == null)
+                    obj.KeyWords = "";
+                if (contactManager.CreateContact(obj, userId))
                     return new ObjectResult("Phone added successfully!");
                 else
                     return new ObjectResult("Contact with this phone number already exist!");
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -89,12 +102,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                _contactManager.DeleteContact(id);
+                contactManager.DeleteContact(id);
                 return new ObjectResult("Phone deleted successfully!");
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -105,12 +119,21 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                _contactManager.UpdateContact(obj, userId);
+                if (obj.Name == null)
+                    obj.Name = "";
+                if (obj.Surname == null)
+                    obj.Surname = "";
+                if (obj.Notes == null)
+                    obj.Notes = "";
+                if (obj.KeyWords == null)
+                    obj.KeyWords = "";
+                contactManager.UpdateContact(obj, userId);
                 return new ObjectResult("Phone modified successfully!");
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return new ObjectResult(ex.Message);
             }
         }
 
@@ -120,12 +143,13 @@ namespace WebApp.Controllers
         {
             try
             {
-                ContactViewModel contact = _contactManager.GetContact(id);
+                ContactViewModel contact = contactManager.GetContact(id);
                 return contact;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                //throw ex;
+                return null;
             }
         }
     }

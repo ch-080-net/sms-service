@@ -9,20 +9,22 @@
 <div>
     <h4>Stop Word</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Word)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Word)
-        </dd>
-    
-    </dl>
+    <div class="col-md-4">
+        <dl class="dl-horizontal">
 
-        <form asp-action="Delete">
-            <input type="hidden" asp-for="Id" />
-            <input type="submit" value="Delete" class="btn btn-danger" /> 
-            <a class="btn btn-primary" asp-action="Index">Back to List</a>
-        </form>
-    
+            <dt>
+                @Html.DisplayNameFor(model => model.Word)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Word)
+            </dd>
+
+        </dl>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    </form>
+
 </div>

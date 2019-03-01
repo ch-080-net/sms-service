@@ -92,6 +92,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 var tariffId = companyManager.Get(id).TariffId;
+                company.Message = company.Message.Replace("#company", company.Name);
                 if (tariffId == 0)
                 {
                     companyManager.Update(company, userId, 0);

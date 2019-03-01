@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.CodeViewModels;
 
-namespace BAL.Managers
+namespace Model.Interfaces
 {
     public interface ICodeManager
     {
