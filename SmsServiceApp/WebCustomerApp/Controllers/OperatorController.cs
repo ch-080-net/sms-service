@@ -40,11 +40,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Operators(OperatorViewModel newOper, string pageStateJson)
+        public IActionResult Operators(OperatorViewModel newOper, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 bool result = operatorManager.Add(newOper);
                 if (!result)
                 {
@@ -76,11 +75,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Operator(OperatorViewModel editedOper, string pageStateJson)
+        public IActionResult Operator(OperatorViewModel editedOper, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 var result = operatorManager.Update(editedOper);
                 if (!result)
                 {
@@ -96,16 +94,14 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage(string pageStateJson)
+        public IActionResult NextPage(PageState pageState)
         {
-            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
             pageState.Page++;
             return Redirect(Url.Action("Operators", pageState));
         }
 
-        public IActionResult PreviousPage(string pageStateJson)
+        public IActionResult PreviousPage(PageState pageState)
         {
-            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
             pageState.Page--;
             return Redirect(Url.Action("Operators", pageState));
         }
@@ -118,11 +114,10 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchOperators(OperatorSearchViewModel search, string pageStateJson)
+        public IActionResult SearchOperators(OperatorSearchViewModel search, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 pageState.SearchQuerry = search.SearchQuerry ?? "";
                 return Redirect(Url.Action("Operators", pageState));
             }
@@ -133,7 +128,7 @@ namespace WebApp.Controllers
         public IActionResult EditCodes(int id)
         {
             TempData["OperatorId"] = id;
-            return RedirectToAction("Operators", "Operator");
+            return RedirectToAction("Codes", "Code");
         }
 
         [HttpGet]

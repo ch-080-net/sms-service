@@ -2,8 +2,7 @@
 @using static Newtonsoft.Json.JsonConvert
 @model OperatorViewModel
 
-<form asp-action="Operator" asp-controller="Operator" method="post" asp-antiforgery="true"
-    asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
+<form action="@Url.Action("Operator", "Operator", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
     <div class="row">
         <input type="hidden" class="form-control" asp-for="Id" />
         <input type="hidden" class="form-control" asp-for="Logo" />
