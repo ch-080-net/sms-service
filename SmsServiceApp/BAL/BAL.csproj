@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Reference Include="smsccn">
-      <HintPath>..\..\..\..\SMPPTester\smscc-8.0.94\net\demo\clr2\smsccn.dll</HintPath>
+      <HintPath>..\WebCustomerApp\bin\Debug\netcoreapp2.1\smsccn.dll</HintPath>
     </Reference>
   </ItemGroup>
 
