@@ -6,6 +6,11 @@ namespace BAL.Jobs
 {
     public static class MailingScheduler
     {
+        /// <summary>
+        /// Start scheduler for Mailing
+        /// </summary>
+        /// <param name="serviceProvider">Method calls custom implementation of IJobFactory which uses serviceProvider
+        /// to create instance of IJob</param>
         public static async void Start(IServiceProvider serviceProvider)
         {
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
