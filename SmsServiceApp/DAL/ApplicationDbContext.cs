@@ -155,7 +155,14 @@ namespace WebCustomerApp.Data
                 .HasIndex(i => i.OperatorCode)
                 .IsUnique();
 
-            
+            // Default values
+
+            builder.Entity<Recipient>()
+                .Property(r => r.BeenSent)
+                .HasDefaultValue(false);
+
+
+
         }
     }
 }
