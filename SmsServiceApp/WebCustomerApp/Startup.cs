@@ -106,41 +106,73 @@ namespace WebCustomerApp
             services.AddDistributedMemoryCache();
             services.AddSession();
         }
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+       
+        public static class MyIdentityDataInitializer
         {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            ApplicationUser applicationUser = new ApplicationUser() { UserName = "Admin@gmail.com", Email = "Admin@gmail.com" };
-            await UserManager.CreateAsync(applicationUser, "1234ABCD");
-            applicationUser = new ApplicationUser() { UserName = "User@gmail.com", Email = "User@gmail.com" };
-            await UserManager.CreateAsync(applicationUser, "1234ABCD");
-
-            IdentityResult roleResult;
-            //Adding Addmin Role  
-            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
-            if (!roleCheck)
+            public static void SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
             {
-                //create the roles and seed them to the database  
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+                SeedRoles(roleManager);
+                SeedUsers(userManager);
             }
-            roleCheck = await RoleManager.RoleExistsAsync("User");
-            if (!roleCheck)
+           
+            
+            public static void SeedUsers(UserManager<ApplicationUser> userManager)
             {
-                //create the roles and seed them to the database    
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("User"));
+                if (userManager.FindByNameAsync("User@gmail.com").Result == null)
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    user.UserName = "User@gmail.com";
+                    user.Email = "User@gmail.com";
+                   
+                   IdentityResult result = userManager.CreateAsync(user,"1234ABCD").Result;
+                    if (result.Succeeded)
+                    {
+                        userManager.AddToRoleAsync(user,"User").Wait();
+                    }
+                }
+
+
+                if (userManager.FindByNameAsync("Admin@gmail.com").Result == null)
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    user.UserName = "Admin@gmail.com";
+                    user.Email = "Admin@gmail.com";
+
+                    IdentityResult result;
+                        result = userManager.CreateAsync(user,"1234ABCD").Result;
+
+                    if (result.Succeeded)
+                    {
+                        userManager.AddToRoleAsync(user, "Admin").Wait();
+                    }
+                }
             }
 
-            //Assign Admin role to the main User here we have given our newly loregistered login id for Admin management  
-            ApplicationUser user = await UserManager.FindByEmailAsync("Admin@gmail.com");
-            //var User = new ApplicationUser();
-            await UserManager.AddToRoleAsync(user, "Admin");
+            public static void SeedRoles(RoleManager<IdentityRole> roleManager)
+            {
+                if (!roleManager.RoleExistsAsync("User").Result)
+                {
+                    IdentityRole role = new IdentityRole();
+                    role.Name = "User";
+                    IdentityResult roleResult = roleManager.
+                    CreateAsync(role).Result;
+                }
 
-            user = await UserManager.FindByEmailAsync("User@gmail.com");
-            await UserManager.AddToRoleAsync(user, "User");
 
+                if (!roleManager.RoleExistsAsync("Admin").Result)
+                {
+                    IdentityRole role = new IdentityRole();
+                    role.Name = "Admin";
+                    IdentityResult roleResult = roleManager.
+                    CreateAsync(role).Result;
+                }
+            }
         }
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider services)
+
+        public void Configure(IApplicationBuilder app, 
+                              IHostingEnvironment env,
+                              UserManager<ApplicationUser> userManager,
+                              RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -167,7 +199,6 @@ namespace WebCustomerApp
             template: "{controller=Home}/{action=Index}/{id?}");    
             });
 
-            CreateUserRoles(services).Wait();
         }
     }
 }
