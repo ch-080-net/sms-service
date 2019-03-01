@@ -59,8 +59,6 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(com => com.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-
             builder.Entity<Operator>()
                 .HasMany(o => o.Codes)
                 .WithOne(c => c.Operator)
@@ -78,7 +76,6 @@ namespace WebCustomerApp.Data
                 .WithOne(c => c.Phone)
                 .HasForeignKey(c => c.PhoneId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
 
             builder.Entity<Tariff>()
                 .HasMany(t => t.Companies)

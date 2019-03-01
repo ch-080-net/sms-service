@@ -6,6 +6,7 @@ using AutoMapper;
 
 namespace BAL.Jobs
 {
+
     public class Mailing : IJob, IDisposable
     {
         private readonly IUnitOfWork unitOfWork;

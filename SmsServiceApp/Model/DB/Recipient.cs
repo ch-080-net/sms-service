@@ -21,6 +21,7 @@ namespace WebCustomerApp.Models
         public string Priority { get; set; }
         public string Notes { get; set; }
         public string KeyWords { get; set; }
+        public bool BeenSent { get; set; }
 
     }
 }
