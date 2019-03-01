@@ -1316,6 +1316,10 @@ a.move-top span.fa{
 	.error-content h2 {
 		font-size: 80px;
 	}
+    .main {
+        background-image: url('../images/b.jpg');
+
+    }
 }
 @media(max-width:375px) {
 	.style-banner h2 {

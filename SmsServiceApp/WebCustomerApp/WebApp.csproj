@@ -4,6 +4,17 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-WebCustomerApp-85942A8D-8932-4A08-808C-60632CB8DAA4</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Views\LandingPage\b.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\LandingPage\b.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Views\LandingPage\style2.css" />
+  </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
@@ -18,10 +29,6 @@
     <ProjectReference Include="..\BAL\BAL.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\LandingPage\" />
   </ItemGroup>
 
 </Project>
