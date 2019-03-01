@@ -17,7 +17,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Operators" asp-controller="Operator" method="post" asp-antiforgery="true" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
+        <form action="@Url.Action("Operators", "Operator", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
             <div class="form-group">
                 <input asp-for="Name" class="form-control" placeholder="New operator name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -54,7 +54,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="PreviousPage" asp-controller="Operator" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
+                    <a class="page-link" href="@Url.Action("PreviousPage", "Operator", ViewBag.PageState as PageState)">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
                 </li>
@@ -87,7 +87,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="NextPage" asp-controller="Operator" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
+                    <a class="page-link" href="@Url.Action("NextPage", "Operator", ViewBag.PageState as PageState)">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </li>

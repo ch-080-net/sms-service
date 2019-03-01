@@ -10,6 +10,9 @@ using System.IO;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manger for CRUD operations on Operators
+    /// </summary>
     public class OperatorManager : BaseManager, IOperatorManager
     {
         public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -17,6 +20,9 @@ namespace BAL.Managers
 
         }
 
+        /// <summary>
+        /// Get all operators from DB and transform them to OperatorViewModel
+        /// </summary>
         public IEnumerable<OperatorViewModel> GetAll()
         {
             var operators = unitOfWork.Operators.GetAll();
@@ -25,6 +31,14 @@ namespace BAL.Managers
             return result;
         }
 
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="newOperator"/> to Code and insert it to Codes table of DB
+        /// </summary>
+        /// <param name="newOperator">
+        /// Should contain not null or empty Name.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Add(OperatorViewModel newOperator)
         {
             if (newOperator.Name == null || newOperator.Name == "")
@@ -45,12 +59,21 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// Get OperatorViewModel by Id
+        /// </summary>
+        /// <param name="id">Id of Operator in Operators table</param>
+        /// <returns>Provides empty OperatorViewModel if provided null</returns>
         public OperatorViewModel GetById(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
             return mapper.Map<OperatorViewModel>(oper);
         }
 
+        /// <summary>
+        /// Remove entry from Operators table with corresponding <paramref name="id"/>
+        /// </summary>
+        /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Remove(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
@@ -68,6 +91,14 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="updatedOperator"/> to Operator and update corresponding row in Operators table of DB
+        /// </summary>
+        /// <param name="updatedOperator">
+        /// Should contain not null or empty Name and Id of existing Operators table entry.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
         public bool Update(OperatorViewModel updatedOperator)
         {
             if (updatedOperator.Name == null || updatedOperator.Name == "")
@@ -88,6 +119,11 @@ namespace BAL.Managers
             return true;
         }
 
+        /// <summary>
+        /// Get Page, which corresponds to <paramref name="pageState"/> 
+        /// </summary>
+        /// <param name="pageState">Represents page state, including search querry, page, number of pages, entries on one page</param>
+        /// <returns>Object, which contains valid page state and corresponding enumeration of OperatorViewModel</returns>
         public Page GetPage(PageState pageState)
         {
             if (pageState == null)

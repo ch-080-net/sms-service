@@ -13,8 +13,8 @@ namespace WebApp.Controllers
     [Authorize(Roles = "Admin")]
     public class CodeController : Controller
     {
-        private ICodeManager codeManager;
-        private IOperatorManager operatorManager;
+        private readonly ICodeManager codeManager;
+        private readonly IOperatorManager operatorManager;
 
         public CodeController(ICodeManager codeManager, IOperatorManager operatorManager)
         {
@@ -42,11 +42,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Codes(CodeViewModel newCode, string pageStateJson)
+        public IActionResult Codes(CodeViewModel newCode, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 newCode.OperatorId = pageState.OperatorId;
                 bool result = codeManager.Add(newCode);
                 if (!result)
@@ -80,11 +79,10 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Code(CodeViewModel editedCode, string pageStateJson)
+        public IActionResult Code(CodeViewModel editedCode, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 editedCode.OperatorId = pageState.OperatorId;
                 var result = codeManager.Update(editedCode);
                 if (!result)
@@ -101,16 +99,14 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage(string pageStateJson)
+        public IActionResult NextPage(PageState pageState)
         {
-            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
             pageState.Page++;
             return Redirect(Url.Action("Codes", pageState));
         }
 
-        public IActionResult PreviousPage(string pageStateJson)
+        public IActionResult PreviousPage(PageState pageState)
         {
-            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
             pageState.Page--;
             return Redirect(Url.Action("Codes", pageState));
         }
@@ -123,11 +119,10 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchCodes(CodeSearchViewModel search, string pageStateJson)
+        public IActionResult SearchCodes(CodeSearchViewModel search, PageState pageState)
         {
             if (ModelState.IsValid)
             {
-                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
                 pageState.SearchQuerry = search.SearchQuerry ?? "";
                 return Redirect(Url.Action("Codes", pageState));
             }
