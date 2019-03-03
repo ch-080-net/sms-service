@@ -23,6 +23,12 @@ namespace WebApp.Controllers
             this.companyManager = companyManager;
         }
 
+		/// <summary>
+		/// Check tariff limitation according to current tariff for this company
+		/// If tariff limit is full or overflowing, returns warning message to view
+		/// </summary>
+		/// <param name="companyId">Current company id</param>
+		/// <returns>Recepients list for current company</returns>
         [HttpGet]
         public IActionResult Index(int companyId)
         {
