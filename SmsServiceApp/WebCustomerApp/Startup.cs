@@ -46,6 +46,7 @@ namespace WebCustomerApp
 			services.AddTransient<ICompanyRepository, CompanyRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
+            services.AddTransient<IMailingRepository, MailingRepository>();
 
 			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             // Auto Mapper Configurations
@@ -101,6 +102,7 @@ namespace WebCustomerApp
 
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
+            services.AddScoped<IMailingManager, MailingManager>();
 
             // Start scheduler
 

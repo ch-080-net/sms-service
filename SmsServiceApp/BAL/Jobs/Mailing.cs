@@ -6,20 +6,23 @@ using AutoMapper;
 
 namespace BAL.Jobs
 {
-
+    /// <summary>
+    /// IJob implementation for sending messages through SMPP
+    /// </summary>
     public class Mailing : IJob, IDisposable
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IMailingManager mailingManager;
         private readonly IMapper mapper;
 
-        public Mailing(IUnitOfWork unitOfWork, IMapper mapper)
+        public Mailing(IMailingManager mailingManager, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.mailingManager = mailingManager;
             this.mapper = mapper;
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            
+            var result = await mailingManager.GetUnsentMessages();
+            Console.WriteLine(result);
         }
 
         #region IDisposable Support
@@ -31,7 +34,7 @@ namespace BAL.Jobs
             {
                 if (disposing)
                 {
-                    unitOfWork.Dispose();
+                    mailingManager.Dispose();
                 }
                 disposedValue = true;
             }
