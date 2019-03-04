@@ -42,7 +42,8 @@ namespace BAL.Services
             CreateMap<Recipient, MessageDTO>()
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Phone.PhoneNumber))
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationUser.PhoneNumber))
-                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Company.Message));
+                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Company.Message))
+                .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
         }
     }
 }

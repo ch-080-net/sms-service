@@ -30,6 +30,18 @@ namespace BAL.Managers
             return result;
         }
 
+        public async Task MarkAsSent(IEnumerable<MessageDTO> messages)
+        {
+            var recipientIds = from m in messages
+            select m.RecipientId;
+
+            foreach(var id in recipientIds)
+            {
+                var tempRecipient = unitOfWork.Mailings.GetById(id);
+                unitOfWork.Mailings.Delete(tempRecipient);
+            }
+            unitOfWork.Save();
+        }
 
         #region IDisposable Support
         private bool disposedValue = false;
@@ -51,12 +63,6 @@ namespace BAL.Managers
         {
             Dispose(true);
         }
-
-        public Task MarkAsSent(IEnumerable<MessageDTO> messages)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

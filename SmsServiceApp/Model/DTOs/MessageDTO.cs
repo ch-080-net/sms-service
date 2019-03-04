@@ -6,7 +6,7 @@ namespace Model.DTOs
 {
     public class MessageDTO
     {
-        public int Id { get; set; }
+        public int RecipientId { get; set; }
         public string RecepientPhone { get; set; }
         public string SenderPhone { get; set; }
         public string MessageText { get; set; }
