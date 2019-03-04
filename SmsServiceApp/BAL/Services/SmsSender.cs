@@ -1,4 +1,4 @@
-﻿using SMPPTester.Models;
+﻿using Model.DTOs;
 using smscc;
 using smscc.SMPP;
 using System;
