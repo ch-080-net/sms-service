@@ -27,6 +27,8 @@ namespace BAL.Jobs
         public async Task Execute(IJobExecutionContext context)
         {
             var result = await mailingManager.GetUnsentMessages();
+            if (!result.Any())
+                return;
             try
             {
                 await SendMessages(result);
