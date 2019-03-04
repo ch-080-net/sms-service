@@ -14,18 +14,16 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
-        private UserManager<ApplicationUser> userManager;
         private IBaseRepository<Operator> operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
+        private IBaseRepository<ApplicationGroup> groupRepo;
 
-
-        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
-            this.userManager = userManager;
         }
 
         public IBaseRepository<Company> Companies
@@ -62,12 +60,6 @@ namespace DAL.Repositories
             }
         }
 
-        public UserManager<ApplicationUser> Users {
-            get {
-                return userManager;
-            }
-        }
-
         public IBaseRepository<Operator> Operators
         {
             get
@@ -91,6 +83,15 @@ namespace DAL.Repositories
             get {
                 if (phoneRepo == null) { phoneRepo = new BaseRepository<Phone>(context); }
                 return phoneRepo;
+            }
+        }
+
+        public IBaseRepository<ApplicationGroup> Groups
+        {
+            get
+            {
+                if (groupRepo == null) { groupRepo = new BaseRepository<ApplicationGroup>(context); }
+                return groupRepo;
             }
         }
 

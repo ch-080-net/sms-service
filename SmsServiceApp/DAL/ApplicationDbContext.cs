@@ -24,6 +24,7 @@ namespace WebCustomerApp.Data
         public DbSet<Recipient> Recipients { get; set; }
         public DbSet<StopWord> StopWords { get; set; }
         public DbSet<Tariff> Tariffs { get; set; }
+        public DbSet<ApplicationGroup> Groups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,6 +43,7 @@ namespace WebCustomerApp.Data
             builder.Entity<Phone>().HasKey(i => i.Id);
             builder.Entity<Tariff>().HasKey(i => i.Id);
             builder.Entity<StopWord>().HasKey(i => i.Id);
+            builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
 
             // Compound key for Many-To-Many joining table
 
@@ -54,13 +56,17 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(c => c.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<ApplicationUser>()
-                .HasMany(au => au.Companies)
-                .WithOne(com => com.ApplicationUser)
-                .HasForeignKey(com => com.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<ApplicationGroup>()
+              .HasMany(ag => ag.ApplicationUsers)
+              .WithOne(au => au.ApplicationGroup)
+              .HasForeignKey(au => au.ApplicationGroupId)
+              .OnDelete(DeleteBehavior.Cascade);
 
-
+            builder.Entity<ApplicationGroup>()
+              .HasMany(ag => ag.Companies)
+              .WithOne(c => c.ApplicationGroup)
+              .HasForeignKey(c => c.ApplicationGroupId)
+              .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Operator>()
                 .HasMany(o => o.Codes)
@@ -157,9 +163,7 @@ namespace WebCustomerApp.Data
 
             builder.Entity<Code>()
                 .HasIndex(i => i.OperatorCode)
-                .IsUnique();
-
-            
+                .IsUnique();           
         }
     }
 }

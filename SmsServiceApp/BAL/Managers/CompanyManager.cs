@@ -15,16 +15,16 @@ namespace BAL.Managers
         {
         }
 
-        public IEnumerable<CompanyViewModel> GetCompanies(string userId)
+        public IEnumerable<CompanyViewModel> GetCompanies(int groupId)
         {
-            IEnumerable<Company> companies = unitOfWork.Companies.GetAll().Where(c => c.ApplicationUserId == userId);
+            IEnumerable<Company> companies = unitOfWork.Companies.GetAll().Where(c => c.ApplicationGroupId == groupId);
             return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
         }
 
-        public void Insert(CompanyViewModel item, string userId)
+        public void Insert(CompanyViewModel item, int groupId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
-            company.ApplicationUserId = userId;
+            company.ApplicationGroupId = groupId;
             company.TariffId = null;
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();
@@ -37,10 +37,10 @@ namespace BAL.Managers
 			return tariff.Limit;
 		}
 
-        public void Update(CompanyViewModel item, string userId, int tariffId)
+        public void Update(CompanyViewModel item, int groupId, int tariffId)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
-            company.ApplicationUserId = userId;
+            company.ApplicationGroupId = groupId;
             if (tariffId != 0)
             {
                 company.TariffId = tariffId;

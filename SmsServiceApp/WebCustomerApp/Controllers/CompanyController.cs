@@ -21,20 +21,24 @@ namespace WebApp.Controllers
         private readonly ICompanyManager companyManager;
         private readonly IOperatorManager operatorManager;
         private readonly ITariffManager tariffManager;
-        private string userId;
+        private readonly UserManager<ApplicationUser> userManager;
+        private static int groupId;
 
-        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff)
+        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, UserManager<ApplicationUser> userManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
             this.tariffManager = tariff;
+            this.userManager = userManager;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(companyManager.GetCompanies(userId));
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            groupId = user.ApplicationGroupId;
+            return View(companyManager.GetCompanies(groupId));
         }
 
         [HttpGet]
@@ -50,7 +54,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 item.Message = item.Message.Replace("#company", item.Name);
-                companyManager.Insert(item, userId);
+                companyManager.Insert(item, groupId);
                 return RedirectToAction("Index");
             }
             return View(item);
@@ -63,7 +67,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
+            CompanyViewModel company = companyManager.GetCompanies(groupId).FirstOrDefault(c => c.Id == id);
 
             if (company == null)
             {
@@ -82,11 +86,11 @@ namespace WebApp.Controllers
                 company.Message = company.Message.Replace("#company", company.Name);
                 if (tariffId == 0)
                 {
-                    companyManager.Update(company, userId, 0);
+                    companyManager.Update(company, groupId, 0);
                 }
                 else
                 {
-                    companyManager.Update(company, userId, tariffId);
+                    companyManager.Update(company, groupId, tariffId);
                 }
                 return RedirectToAction("Index");
             }
@@ -101,7 +105,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            CompanyViewModel company = companyManager.GetCompanies(userId).FirstOrDefault(c => c.Id == id);
+            CompanyViewModel company = companyManager.GetCompanies(groupId).FirstOrDefault(c => c.Id == id);
 
             if (company == null)
             {
@@ -140,7 +144,7 @@ namespace WebApp.Controllers
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            companyManager.Update(currentCompany, userId, tariffId);
+            companyManager.Update(currentCompany, groupId, tariffId);
             return RedirectToAction("Index","Company");
         }
     }

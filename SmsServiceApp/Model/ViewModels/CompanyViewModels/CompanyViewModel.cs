@@ -15,7 +15,7 @@ namespace Model.ViewModels.CompanyViewModels
         [Required]
         [StringLength(500)]
         public string Description { get; set; }
-        public string ApplicationUserId { get; set; }
+        public string ApplicationGroupId { get; set; }
         public int TariffId { get; set; }
         [Required]
         [StringLength(500)]

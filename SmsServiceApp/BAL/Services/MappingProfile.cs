@@ -10,6 +10,8 @@ using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
 using WebCustomerApp.Models;
 using Model.ViewModels.StopWordViewModels;
+using Model.ViewModels.GroupViewModels;
+using Model.ViewModels.UserViewModels;
 
 namespace BAL.Services
 {
@@ -39,6 +41,12 @@ namespace BAL.Services
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
             CreateMap<Code, CodeViewModel>();
             CreateMap<CodeViewModel, Code>();
+
+            CreateMap<ApplicationGroup, GroupViewModel>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
+            CreateMap<GroupViewModel, ApplicationGroup>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
+
+            CreateMap<ApplicationUser, UserViewModel>();
+            CreateMap<UserViewModel, ApplicationUser>();
         }
     }
 }
