@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BAL.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
 using WebCustomerApp.Models;
@@ -18,7 +19,6 @@ namespace WebApp.Controllers
     public class TariffController : Controller
     {
         private readonly ITariffManager tariffManager;
-       
 
         public TariffController(ITariffManager tariff)
         {

@@ -18,6 +18,9 @@ using BAL.Managers;
 using AutoMapper;
 using BAL.Services;
 using BAL.Jobs;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace WebCustomerApp
 {
@@ -48,7 +51,21 @@ namespace WebCustomerApp
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
             services.AddTransient<IMailingRepository, MailingRepository>();
 
-			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("uk-UA")
+                    };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -90,7 +107,11 @@ namespace WebCustomerApp
                 options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied  
                 options.SlidingExpiration = true;
             });
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();
@@ -103,6 +124,8 @@ namespace WebCustomerApp
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
+
+           
 
             // Start scheduler
 
@@ -190,8 +213,27 @@ namespace WebCustomerApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("uk-UA"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
+
+            app.UseStaticFiles();
+
             app.UseStaticFiles();
             app.UseAuthentication();
+
 
             // Configure sessions
 
