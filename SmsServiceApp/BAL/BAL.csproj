@@ -6,11 +6,18 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
     <PackageReference Include="Quartz" Version="3.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="smsccn">
+      <HintPath>..\WebCustomerApp\bin\Debug\netcoreapp2.1\smsccn.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,8 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+[Dd]ebug
+!WebCustomerApp/bin/Debug/smsccn.dll
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
