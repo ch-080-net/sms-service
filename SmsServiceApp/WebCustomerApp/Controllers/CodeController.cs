@@ -2,52 +2,17 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.CodeViewModels;
-using Model.ViewModels.OperatorViewModels;
 using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using Model.Interfaces;
+using Newtonsoft.Json;
 
 namespace WebApp.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class CodeController : Controller
     {
-        private int CurrentPage
-        {
-            get
-            {
-                return HttpContext.Session.GetInt32("CurrentPageCode") ?? 0;
-            }
-            set
-            {
-                HttpContext.Session.SetInt32("CurrentPageCode", value);
-            }
-        }
-
-        private string SearchQuerry
-        {
-            get
-            {
-                return HttpContext.Session.GetString("SearchQuerryCode");
-            }
-            set
-            {
-                HttpContext.Session.SetString("SearchQuerryCode", value);
-            }
-        }
-
-        private int OperatorId
-        {
-            get
-            {
-                return HttpContext.Session.GetInt32("OperatorIdCode") ?? 0;
-            }
-            set
-            {
-                HttpContext.Session.SetInt32("OperatorIdCode", value);
-            }
-        }
-
         private ICodeManager codeManager;
         private IOperatorManager operatorManager;
 
@@ -58,131 +23,116 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Codes()
+        public IActionResult Codes(PageState pageState)
         {
-            if (TempData.ContainsKey("OperatorId"))
-                this.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
-
-            if (this.SearchQuerry == null)
-                this.SearchQuerry = "";
-            ViewBag.SearchQuerry = this.SearchQuerry;
-
-            ViewBag.NumOfPages = codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry);
-
-            if (this.CurrentPage < 1)
-                this.CurrentPage = 1;
-            else if ((ViewBag.NumOfPages - this.CurrentPage) == (-1))
-                --this.CurrentPage;
-            else if ((ViewBag.NumOfPages - this.CurrentPage) < (-1))
+            if (ModelState.IsValid)
             {
-                this.CurrentPage = 1;
+                if (TempData.ContainsKey("OperatorId"))
+                    pageState.OperatorId = Convert.ToInt32(TempData["OperatorId"]);
+
+                var page = codeManager.GetPage(pageState);
+
+                ViewBag.Codes = page.CodeList;
+                ViewBag.PageState = page.PageState;
+                return View();
             }
-            ViewBag.CurrentPage = this.CurrentPage;
-
-            ViewBag.OperatorName = operatorManager.GetById(this.OperatorId).Name;
-
-            ViewBag.Codes = codeManager.GetPage(OperatorId, this.CurrentPage, 20, this.SearchQuerry);
-            return View();
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Codes(CodeViewModel newCode)
+        public IActionResult Codes(CodeViewModel newCode, string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                newCode.OperatorId = this.OperatorId;
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                newCode.OperatorId = pageState.OperatorId;
                 bool result = codeManager.Add(newCode);
                 if (!result)
                 {
                     TempData["ErrorMessage"] = "Error occurred while adding code";
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
             }
             TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult Remove(int CodeId)
+        public IActionResult Remove(int codeId, string pageStateJson)
         {
-            bool result = codeManager.Remove(CodeId);
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            bool result = codeManager.Remove(codeId);
             if (!result)
             {
                 TempData["ErrorMessage"] = "Error occurred while removing code";
-                return RedirectToAction("Codes", "Code");
+                return Redirect(Url.Action("Codes", pageState));
             }
             else
             {
-                return RedirectToAction("Codes", "Code");
+                return Redirect(Url.Action("Codes", pageState));
             }
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Code(CodeViewModel editedCode)
+        public IActionResult Code(CodeViewModel editedCode, string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                editedCode.OperatorId = this.OperatorId;
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                editedCode.OperatorId = pageState.OperatorId;
                 var result = codeManager.Update(editedCode);
                 if (!result)
                 {
                     TempData["ErrorMessage"] = "Error occurred while editing code";
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
                 else
                 {
-                    return RedirectToAction("Codes", "Code");
+                    return Redirect(Url.Action("Codes", pageState));
                 }
             }
             TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 
-        public IActionResult NextPage()
+        public IActionResult NextPage(string pageStateJson)
         {
-            if (this.CurrentPage < codeManager.GetNumberOfPages(this.OperatorId, 20, this.SearchQuerry))
-            {
-                this.CurrentPage++;
-                return RedirectToAction("Codes", "Code");
-            }
-            else
-                return RedirectToAction("Codes", "Code");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page++;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
-        public IActionResult PreviousPage()
+        public IActionResult PreviousPage(string pageStateJson)
         {
-            if (this.CurrentPage > 1)
-            {
-                this.CurrentPage--;
-                return RedirectToAction("Codes", "Code");
-            }
-            else
-                return RedirectToAction("Codes", "Code");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page--;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
-        public IActionResult SelectPage(int Page)
+        public IActionResult SelectPage(int page, string pageStateJson)
         {
-            this.CurrentPage = Page;
-            return RedirectToAction("Codes", "Code");
+            PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+            pageState.Page = page;
+            return Redirect(Url.Action("Codes", pageState));
         }
 
         [HttpPost]
-        public IActionResult SearchCodes(CodeSearchViewModel Search)
+        public IActionResult SearchCodes(CodeSearchViewModel search, string pageStateJson)
         {
             if (ModelState.IsValid)
             {
-                this.SearchQuerry = Search.SearchQuerry ?? "";
-                return RedirectToAction("Codes", "Code");
+                PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
+                pageState.SearchQuerry = search.SearchQuerry ?? "";
+                return Redirect(Url.Action("Codes", pageState));
             }
-            else
-            {
-                return RedirectToAction("Codes", "Code");
-            }
+            TempData["ErrorMessage"] = "Internal error";
+            return RedirectToAction("Operators", "Operator");
         }
 
     }
