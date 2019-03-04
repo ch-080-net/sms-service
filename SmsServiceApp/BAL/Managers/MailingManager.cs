@@ -30,6 +30,10 @@ namespace BAL.Managers
             return result;
         }
 
+        /// <summary>
+        /// Find recipients of messages and mark them as sent
+        /// </summary>
+        /// <param name="messages">Should contain RecipientId</param>
         public async Task MarkAsSent(IEnumerable<MessageDTO> messages)
         {
             var recipientIds = from m in messages
@@ -38,7 +42,8 @@ namespace BAL.Managers
             foreach(var id in recipientIds)
             {
                 var tempRecipient = unitOfWork.Mailings.GetById(id);
-                unitOfWork.Mailings.Delete(tempRecipient);
+                if (tempRecipient != null)
+                    tempRecipient.BeenSent = true;
             }
             unitOfWork.Save();
         }

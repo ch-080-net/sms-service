@@ -6,6 +6,7 @@ using Model.Interfaces;
 using Model.ViewModels.CodeViewModels;
 using AutoMapper;
 using System.Linq;
+using Model.DTOs;
 
 namespace BAL.Managers
 {
@@ -23,14 +24,14 @@ namespace BAL.Managers
         /// Transform CodeViewModel <paramref name="newCode"/> to Code and insert it to Codes table of DB
         /// </summary>
         /// <param name="newCode">Should contain not null or empty OperatorCode and OperatorId</param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Add(CodeViewModel newCode)
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
+        public TransactionResultDTO Add(CodeViewModel newCode)
         {
             if (newCode.OperatorCode == null || newCode.OperatorCode == "")
-                return false;
+                return new TransactionResultDTO() {Success = false, Details = "Code cannot be empty" };
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == newCode.OperatorCode).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Code belongs to another operator" };
             var result = mapper.Map<Code>(newCode);
             try
             {
@@ -39,9 +40,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>
@@ -59,12 +60,12 @@ namespace BAL.Managers
         /// <summary>
         /// Remonve entry in Codes table with <paramref name="id"/>
         /// </summary>
-        /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Remove(int id)
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
+        public TransactionResultDTO Remove(int id)
         {
             var code = unitOfWork.Codes.GetById(id);
             if (code == null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Code already removed" };
             try
             {
                 unitOfWork.Codes.Delete(code);
@@ -72,9 +73,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>
@@ -84,15 +85,15 @@ namespace BAL.Managers
         /// Should contain not null or empty OperatorCode; Id and OperatorId of existing entries in Codes and Operators tables
         /// OperatorCode must be unique
         /// </param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Update(CodeViewModel updatedCode)
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
+        public TransactionResultDTO Update(CodeViewModel updatedCode)
         {
             if (updatedCode.OperatorCode == null || updatedCode.OperatorCode == "")
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Code cannot be empty" };
 
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == updatedCode.OperatorCode).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Code belongs to another operator" };
             var result = mapper.Map<Code>(updatedCode);
             try
             {
@@ -101,9 +102,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>

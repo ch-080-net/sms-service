@@ -148,6 +148,11 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+		/// <summary>
+		/// Return operators list, for choosing operator for current company
+		/// </summary>
+		/// <param name="companyId">Current company id</param>
+		/// <returns>Operatiors list</returns>
         [HttpGet]
         public IActionResult Operators(int companyId)
         {
@@ -157,7 +162,14 @@ namespace WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
+		/// <summary>
+		/// Return tariffs list, related to choosing operator,
+		/// for choosing tariff for current company
+		/// </summary>
+		/// <param name="id">Operator id</param>
+		/// <param name="companyId">Current company id</param>
+		/// <returns>Tariffs list, related to choosing operator</returns>
+		[HttpGet]
         public IActionResult Tariffs(int id, int companyId)
         {
             IEnumerable<TariffViewModel> tariffs = tariffManager.GetTariffs(id);
@@ -166,7 +178,13 @@ namespace WebApp.Controllers
             return View();
         }
 
-        [HttpGet]
+		/// <summary>
+		/// Change tariff for current company
+		/// </summary>
+		/// <param name="companyId">Current company id</param>
+		/// <param name="tariffId">Selected tariff</param>
+		/// <returns>Companies list</returns>
+		[HttpGet]
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
