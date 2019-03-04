@@ -1,0 +1,8 @@
+{    
+    "less.compile": {
+      "main": ["styles/index.less"],
+      "compress":  false,
+      "sourceMap": false,
+      "out": "style.css"
+    }
+  }

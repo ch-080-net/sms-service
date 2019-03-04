@@ -10,9 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Views\LandingPage\b.jpg">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Include="Views\LandingPage\style2.css" />
   </ItemGroup>
   <ItemGroup>

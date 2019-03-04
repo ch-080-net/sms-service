@@ -7,12 +7,14 @@
 	<meta http-equiv="X-UA-Compatible" content="ie-edge">
 	<title>Hello World</title>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-	<link rel="stylesheet" href="style2.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="style2.css"> -->
+	<link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
 <header class="header" >
    <a href="/" class="logo">
-  	<img src="" alt="logo unload" class="logo_img">
+  	<img src="logo.png" alt="logo unload" class="logo_img">
   </a>  
   <nav class="menu">
   	<ul class="menu_list">
@@ -20,18 +22,43 @@
   			<a href="#" class="menu_link">Log in</a>
   		</li>
   		<li class="menu_item">
-  			<a href="#" class="menu_link">Sing up</a>
-  		</li>
+				<a href="#" class="menu_link">Sing up</a>
+    	</li>
   		<li class="menu_item">
-  			<a href="#" class="menu_link">button</a>
+		  	<label for="checkbox-button-menu">☰</label>
+		  	<input id="checkbox-button-menu" type="checkbox" hidden/>
+			
+			  <ul class="button-menu"> 
+				  <li class="button-menu_item"><a href="#" class="button-menu_link">Edit</a></li>
+				  <li class="button-menu_item"><a href="#" class="button-menu_link">Company</a></li>
+				  <li class="button-menu_item"><a href="#" class="button-menu_link">Recipient</a></li>
+		  	</ul>	
   		</li>  
   	</ul>
-  </nav>
-</header><!--/.header-->
+	</nav>
+	<!--/.header-->
+</header>
 <section class="main">
-	<h1 class="main_title">Landing page</h1>
+	<h1 class="main_title">Landing page <span class="main_title-big">somesing</span></h1>
 	<a href="#" class="main_button">get started</a>
-	<p class="main_description">some text<a href="#">some link</a>!</p>
+	<p class="main_description">some text <a href="#">some link</a>!</p>
+</section>
+<!--/.main-->
+<section class="features">
+	<ul class="features_list">
+		<li class="features_item">
+			<h3 class="section_title">Get somesing</h3>
+			<p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+		</li>
+		<li class="features_item">
+			<h3 class="section_title">Get somesing</h3>
+			<p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+		</li>
+		<li class="features_item">
+			<h3 class="section_title">Get somesing</h3>
+			<p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+		</li>
+	</ul>
 </section>
 </body>
 </html>
