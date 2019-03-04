@@ -1,0 +1,47 @@
+.features{
+    padding: 100px 10px;
+
+  &_list{
+     margin: 0;
+     padding: 0;
+     display: flex;
+     justify-content: space-between;
+     list-style: none;
+    }
+
+&_item{
+    width:  360px;
+    padding: 0 10px;
+    text-align: center;
+
+    &:before{
+        content:"";
+        width: 107px;
+        height: 107px;
+        border: 1px solid #000;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-size: 50%;
+        background-position: center;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    &--messages:before{ 
+        background-image: url('messages.png');
+    }
+    &--phoneMessage:before{
+        background-image: url('images/phoneMessage.png');
+    }
+    &--iconMessage:before{
+        background-image: url('images/iconMessage.png');
+    }
+
+}
+&_description{
+margin: 0;
+font-size: 16px;
+font-weight: 300px;
+line-height: 18px;
+color: #8b8b8b;
+}
+}

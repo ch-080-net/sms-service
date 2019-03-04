@@ -8,10 +8,6 @@
   <ItemGroup>
     <None Remove="Views\LandingPage\b.jpg" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\LandingPage\style2.css" />
-  </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />

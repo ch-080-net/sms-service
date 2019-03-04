@@ -31,21 +31,25 @@ a:hover {
   width: 100%;
   height: auto;
 }
-.section {
+.section_title {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 700;
   line-height: 30px;
-}
-.section::after {
-  content: "";
-  width: 90;
-  height: 1;
-  margin-top: 10;
-  background-color: #f69679;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 0 19px;
+}
+.section_title:after {
+  content: "";
+  width: 88px;
+  height: 1px;
+  margin-top: 10px;
+  background-color: #f69679;
+}
+.section_title--left {
+  align-items: left;
 }
 /*menu*/
 .menu {
@@ -53,13 +57,13 @@ a:hover {
 }
 .menu_list {
   display: flex;
-  list-style: none;
+  align-items: center;
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
-  align-items: center;
 }
 .menu_item {
+  list-style: none;
   margin-right: 30px;
   color: rgba(255, 255, 255, 0.8);
   position: relative;
@@ -67,22 +71,26 @@ a:hover {
 .menu_link {
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
 }
 /*Button-menu*/
 .button-menu {
   display: none;
-  list-style: none;
-  margin: 0;
-  padding: 10px 0 0;
-  text-align: right;
   position: absolute;
   right: 0;
+  list-style: none;
+  text-align: right;
+  padding: 10px 0 0;
+  margin: 0;
+}
+.button-menu--open {
+  display: block;
 }
 .button-menu_link {
+  background-color: rgba(255, 255, 255, 0.4);
   padding: 10px 40px;
   display: block;
   text-decoration: none;
-  background-color: rgba(255, 255, 255, 0.3);
 }
 .button-menu_link:hover {
   background-color: #eee;
@@ -162,10 +170,44 @@ a:hover {
   padding: 0 10px;
   text-align: center;
 }
+.features_item:before {
+  content: "";
+  width: 107px;
+  height: 107px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+.features_item--messages:before {
+  background-image: url('images/messages.png');
+}
+.features_item--phoneMessage:before {
+  background-image: url('images/phoneMessage.png');
+}
+.features_item--iconMessage:before {
+  background-image: url('images/iconMessage.png');
+}
 .features_description {
   margin: 0;
   font-size: 16px;
   font-weight: 300px;
   line-height: 18px;
   color: #8b8b8b;
+}
+.app {
+  padding: 180px 10% 0;
+  background-color: #f7f7f7;
+  height: 700px;
+  display: flex;
+}
+.app_image {
+  width: 550px;
+  background-repeat: no-repeat;
+  background-image: url("images/phone.png");
+  background-size: contain;
+  background-position: top;
 }
