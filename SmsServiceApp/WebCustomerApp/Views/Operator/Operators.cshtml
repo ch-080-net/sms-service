@@ -1,4 +1,5 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using static Newtonsoft.Json.JsonConvert
 @model OperatorViewModel
 
 @{ 
@@ -16,7 +17,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Operators" asp-controller="Operator" method="post" asp-antiforgery="true">
+        <form action="@Url.Action("Operators", "Operator", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
             <div class="form-group">
                 <input asp-for="Name" class="form-control" placeholder="New operator name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -31,18 +32,18 @@
 <hr />
 <h4>Operators list</h4>
 
-@{await Html.RenderPartialAsync("SearchOperators", new OperatorSearchViewModel() { SearchQuerry = ViewBag.SearchQuerry });}
+@{await Html.RenderPartialAsync("SearchOperators", new OperatorSearchViewModel() { SearchQuerry = ViewBag.PageState.SearchQuerry });}
 
 @foreach (OperatorViewModel iter in ViewBag.Operators)
 {
     { await Html.RenderPartialAsync("Operator", iter); }
 }
 
-@if (ViewBag.NumOfpages > 1)
+@if (ViewBag.PageState.LastPage > 1)
 {
     <nav aria-label="Page navigation">
         <ul class="pagination">
-            @if (ViewBag.CurrentPage == 1)
+            @if (ViewBag.PageState.Page == 1)
             {
                 <li class="page-item disabled">
                     <a class="page-link" href="#">
@@ -53,30 +54,29 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="PreviousPage" asp-controller="Operator">
+                    <a class="page-link" href="@Url.Action("PreviousPage", "Operator", ViewBag.PageState as PageState)">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </a>
                 </li>
             }
 
-            @for (int i = 1; i <= ViewBag.NumOfpages; i++)
+            @for (int i = 1; i <= ViewBag.PageState.LastPage; i++)
             {
-                if (i == ViewBag.CurrentPage)
+                if (i == ViewBag.PageState.Page)
                 {
                     <li class="page-item active">
-                        <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
-                           asp-route-Page="@i">@i</a>
+                        <a class="page-link" href="#">@i</a>
                     </li>
                 }
                 else
                 {
                     <li class="page-item">
                         <a class="page-link" asp-action="SelectPage" asp-controller="Operator"
-                           asp-route-Page="@i">@i</a>
+                           asp-route-Page="@i" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">@i</a>
                     </li>
                 }
             }
-            @if (ViewBag.CurrentPage == ViewBag.NumOfPages)
+            @if (ViewBag.PageState.Page == ViewBag.PageState.LastPage)
             {
                 <li class="page-item disabled">
                     <a class="page-link" href="#">
@@ -87,7 +87,7 @@
             else
             {
                 <li class="page-item">
-                    <a class="page-link" asp-action="NextPage" asp-controller="Operator">
+                    <a class="page-link" href="@Url.Action("NextPage", "Operator", ViewBag.PageState as PageState)">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </a>
                 </li>

@@ -10,7 +10,6 @@ namespace DAL.Repositories
 {
 	public class TariffRepository : BaseRepository<Tariff> , ITariffRepository
 	{
-        internal DbSet<Tariff> dbSet;
 
         public TariffRepository(ApplicationDbContext context) :  base(context)
 		{

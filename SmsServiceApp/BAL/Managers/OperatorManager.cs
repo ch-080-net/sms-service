@@ -10,6 +10,9 @@ using System.IO;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manger for CRUD operations on Operators
+    /// </summary>
     public class OperatorManager : BaseManager, IOperatorManager
     {
         public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -17,6 +20,9 @@ namespace BAL.Managers
 
         }
 
+        /// <summary>
+        /// Get all operators from DB and transform them to OperatorViewModel
+        /// </summary>
         public IEnumerable<OperatorViewModel> GetAll()
         {
             var operators = unitOfWork.Operators.GetAll();
@@ -25,14 +31,22 @@ namespace BAL.Managers
             return result;
         }
 
-        public bool Add(OperatorViewModel NewOperator)
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="newOperator"/> to Code and insert it to Codes table of DB
+        /// </summary>
+        /// <param name="newOperator">
+        /// Should contain not null or empty Name.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public bool Add(OperatorViewModel newOperator)
         {
-            if (NewOperator.Name == null || NewOperator.Name == "")
+            if (newOperator.Name == null || newOperator.Name == "")
                 return false;
-            var check = unitOfWork.Operators.Get(o => o.Name == NewOperator.Name).FirstOrDefault();
+            var check = unitOfWork.Operators.Get(o => o.Name == newOperator.Name).FirstOrDefault();
             if (check != null)
                 return false;
-            var result = mapper.Map<Operator>(NewOperator);
+            var result = mapper.Map<Operator>(newOperator);
             try
             {
                 unitOfWork.Operators.Insert(result);
@@ -45,41 +59,24 @@ namespace BAL.Managers
             return true;
         }
 
-        public OperatorViewModel GetById(int Id)
+        /// <summary>
+        /// Get OperatorViewModel by Id
+        /// </summary>
+        /// <param name="id">Id of Operator in Operators table</param>
+        /// <returns>Provides empty OperatorViewModel if provided null</returns>
+        public OperatorViewModel GetById(int id)
         {
-            var oper = unitOfWork.Operators.GetById(Id);
+            var oper = unitOfWork.Operators.GetById(id);
             return mapper.Map<OperatorViewModel>(oper);
         }
 
-        public int GetNumberOfPages(int NumOfElements = 20, string SearchQuerry = "")
+        /// <summary>
+        /// Remove entry from Operators table with corresponding <paramref name="id"/>
+        /// </summary>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public bool Remove(int id)
         {
-            if (NumOfElements < 1)
-                NumOfElements = 20;
-            if (SearchQuerry == null)
-                SearchQuerry = "";
-
-            return (unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry)).Count() / (NumOfElements + 1)) + 1;
-        }
-
-        public IEnumerable<OperatorViewModel> GetPage(int Page = 1, int NumOfElements = 20, string SearchQuerry = "")
-        {
-            if (Page < 1)
-                Page = 1;
-            if (NumOfElements < 1)
-                NumOfElements = 20;
-            if (SearchQuerry == null)
-                SearchQuerry = "";
-
-            var operators = unitOfWork.Operators.Get(o => o.Name.Contains(SearchQuerry),
-                o => o.OrderByDescending(s => s.Id));
-            operators = operators.Skip(NumOfElements * (Page - 1)).Take(NumOfElements);
-            var result = mapper.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>(operators);
-            return result;
-        }
-
-        public bool Remove(int Id)
-        {
-            var oper = unitOfWork.Operators.GetById(Id);
+            var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
                 return false;
             try
@@ -94,14 +91,22 @@ namespace BAL.Managers
             return true;
         }
 
-        public bool Update(OperatorViewModel UpdatedOperator)
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="updatedOperator"/> to Operator and update corresponding row in Operators table of DB
+        /// </summary>
+        /// <param name="updatedOperator">
+        /// Should contain not null or empty Name and Id of existing Operators table entry.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public bool Update(OperatorViewModel updatedOperator)
         {
-            if (UpdatedOperator.Name == null || UpdatedOperator.Name == "")
+            if (updatedOperator.Name == null || updatedOperator.Name == "")
                 return false;
-            var check = unitOfWork.Operators.Get(o => o.Name == UpdatedOperator.Name).FirstOrDefault();
+            var check = unitOfWork.Operators.Get(o => o.Name == updatedOperator.Name).FirstOrDefault();
             if (check != null)
                 return false;
-            var result = mapper.Map<Operator>(UpdatedOperator);
+            var result = mapper.Map<Operator>(updatedOperator);
             try
             {
                 unitOfWork.Operators.Update(result);
@@ -114,19 +119,56 @@ namespace BAL.Managers
             return true;
         }
 
-        public bool AddLogo(LogoViewModel Logo)
+        /// <summary>
+        /// Get Page, which corresponds to <paramref name="pageState"/> 
+        /// </summary>
+        /// <param name="pageState">Represents page state, including search querry, page, number of pages, entries on one page</param>
+        /// <returns>Object, which contains valid page state and corresponding enumeration of OperatorViewModel</returns>
+        public Page GetPage(PageState pageState)
         {
-            if (Logo.Logo == null)
+            if (pageState == null)
+                return null;
+
+            if (pageState.SearchQuerry == null)
+                pageState.SearchQuerry = "";
+
+            var operators = unitOfWork.Operators.Get(o => o.Name.Contains(pageState.SearchQuerry));
+
+            if (pageState.OperatorsOnPage < 1)
+                pageState.OperatorsOnPage = 10;
+
+            pageState.LastPage = operators.Count() / pageState.OperatorsOnPage
+                + (((operators.Count() % pageState.OperatorsOnPage) == 0) ? 0 : 1);
+
+            if (pageState.Page > pageState.LastPage)
+                pageState.Page = pageState.LastPage;
+
+            if (pageState.Page < 1)
+                pageState.Page = 1;
+
+            var result = new Page();
+
+            result.OperatorList = mapper.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>
+                (operators.Skip((pageState.Page - 1) * pageState.OperatorsOnPage).Take(pageState.OperatorsOnPage));
+
+            result.PageState = pageState;
+
+            return result;
+        }
+
+        public bool AddLogo(LogoViewModel logo)
+        {
+            if (logo.Logo == null)
                 return false;
 
-            var oper = unitOfWork.Operators.GetById(Logo.OperatorId);
+            var oper = unitOfWork.Operators.GetById(logo.OperatorId);
             if (oper == null)
                 return false;
 
             byte[] imgData = null;
-            using (var binReader = new BinaryReader(Logo.Logo.OpenReadStream()))
+            using (var binReader = new BinaryReader(logo.Logo.OpenReadStream()))
             {
-                imgData = binReader.ReadBytes((int)Logo.Logo.Length);
+                imgData = binReader.ReadBytes((int)logo.Logo.Length);
             }
             oper.Logo = imgData;
             try

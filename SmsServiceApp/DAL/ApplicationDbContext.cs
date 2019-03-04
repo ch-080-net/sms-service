@@ -12,7 +12,6 @@ namespace WebCustomerApp.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-          //  Database.Migrate();
             Database.EnsureCreated();
         }
 
@@ -60,8 +59,6 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(com => com.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-
             builder.Entity<Operator>()
                 .HasMany(o => o.Codes)
                 .WithOne(c => c.Operator)
@@ -79,7 +76,6 @@ namespace WebCustomerApp.Data
                 .WithOne(c => c.Phone)
                 .HasForeignKey(c => c.PhoneId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-
 
             builder.Entity<Tariff>()
                 .HasMany(t => t.Companies)
@@ -159,7 +155,14 @@ namespace WebCustomerApp.Data
                 .HasIndex(i => i.OperatorCode)
                 .IsUnique();
 
-            
+            // Default values
+
+            builder.Entity<Recipient>()
+                .Property(r => r.BeenSent)
+                .HasDefaultValue(false);
+
+
+
         }
     }
 }

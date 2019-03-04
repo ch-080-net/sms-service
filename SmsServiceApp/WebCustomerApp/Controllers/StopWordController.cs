@@ -28,9 +28,6 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-           // IEnumerable<StopWordViewModel> stopWords = stopWordManager.GetStopWords();
-         //   ViewBag.stopWords = stopWords;
-         
             return View(stopWordManager.GetStopWords());
         }
 
@@ -116,32 +113,20 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "StopWord");
         }
 
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }
-        }
         [HttpGet]
-        public IActionResult Details(int? id)
+        public IActionResult StopWordDetails(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            StopWordViewModel company = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
 
-            if (company == null)
+            if (word == null)
             {
                 return NotFound();
             }
-            return View(company);
+            return View(word);
         }
     }
 }

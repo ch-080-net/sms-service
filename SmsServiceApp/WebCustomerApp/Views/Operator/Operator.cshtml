@@ -1,29 +1,33 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using static Newtonsoft.Json.JsonConvert
 @model OperatorViewModel
 
-<form asp-action="Operator" asp-controller="Operator" method="post" asp-antiforgery="true">
+<form action="@Url.Action("Operator", "Operator", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
     <div class="row">
-        <input type="hidden" class="form-control" asp-for="Id" />            
-            <div class="form-group col-md-4">
-                <div class="media">
-                    <div class="media-left">
-                        <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">
-                            @if (Model.Logo.GetLength(0) != 0)
-                            {
-                                <img style='width:32px; height:32px;' src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))" />
-                            }
-                            else
-                            {
-                                <img style='width:32px; height:32px;' src="~/images/32.png" />
-                            }
-                        </a>
-                    </div>                    
-                        <div class="media-body">
-                            <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                    </div>
+        <input type="hidden" class="form-control" asp-for="Id" />
+        <input type="hidden" class="form-control" asp-for="Logo" />
+        <div class="form-group col-md-4">
+            <div class="media">
+                <div class="media-left">
+                    <a asp-action="AddLogo" asp-controller="Operator" asp-route-OperatorId="@Model.Id">
+                        @if (Model.Logo.GetLength(0) != 0)
+                        {
+                            <img style='width:32px; height:32px;'
+                                 src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))"
+                                 alt="~/images/32.png"/>
+                        }
+                        else
+                        {
+                            <img style='width:32px; height:32px;' src="~/images/32.png" />
+                        }
+                    </a>
+                </div>
+                <div class="media-body">
+                    <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
             </div>
+        </div>
         <div class="form-group col-md-7">
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary">
@@ -35,7 +39,8 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a asp-action="Remove" asp-controller="Operator" asp-route-OperatorId="@Model.Id">Remove</a>
+                        <a asp-action="Remove" asp-controller="Operator" asp-route-OperatorId="@Model.Id"
+                           asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">Remove</a>
                     </li>
                     <li>
                         <a asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">Add tariff</a>

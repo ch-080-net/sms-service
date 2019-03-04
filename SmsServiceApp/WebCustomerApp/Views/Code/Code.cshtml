@@ -1,7 +1,8 @@
 ﻿@using Model.ViewModels.CodeViewModels
+@using static Newtonsoft.Json.JsonConvert;
 @model CodeViewModel
 
-<form asp-action="Code" asp-controller="Code" method="post" asp-antiforgery="true">
+<form action="@Url.Action("Code", "Code", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
     <div class="row">
         <input type="hidden" class="form-control" asp-for="Id" />
         <div class="form-group col-md-4">
@@ -14,7 +15,7 @@
                     <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save
                 </button>
                 <a class="btn btn-danger" role="button" asp-action="Remove" asp-controller="Code"
-                   asp-route-CodeId="@Model.Id">
+                   asp-route-CodeId="@Model.Id" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
                 </a>
             </div>
