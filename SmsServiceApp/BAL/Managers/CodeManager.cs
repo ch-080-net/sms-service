@@ -24,7 +24,7 @@ namespace BAL.Managers
         /// Transform CodeViewModel <paramref name="newCode"/> to Code and insert it to Codes table of DB
         /// </summary>
         /// <param name="newCode">Should contain not null or empty OperatorCode and OperatorId</param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Add(CodeViewModel newCode)
         {
             if (newCode.OperatorCode == null || newCode.OperatorCode == "")
@@ -60,7 +60,7 @@ namespace BAL.Managers
         /// <summary>
         /// Remonve entry in Codes table with <paramref name="id"/>
         /// </summary>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Remove(int id)
         {
             var code = unitOfWork.Codes.GetById(id);
@@ -85,7 +85,7 @@ namespace BAL.Managers
         /// Should contain not null or empty OperatorCode; Id and OperatorId of existing entries in Codes and Operators tables
         /// OperatorCode must be unique
         /// </param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Update(CodeViewModel updatedCode)
         {
             if (updatedCode.OperatorCode == null || updatedCode.OperatorCode == "")
