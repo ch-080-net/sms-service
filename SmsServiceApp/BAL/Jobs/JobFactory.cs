@@ -1,6 +1,7 @@
 ﻿using System;
 using Quartz;
 using Quartz.Spi;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
@@ -10,22 +11,23 @@ namespace BAL.Jobs
     /// </summary>
     public class JobFactory : IJobFactory
     {
-        protected readonly IServiceProvider serviceProvider;
+        protected readonly IServiceScope serviceScope;
 
         /// <param name="serviceProvider">Should contain entries to resolve instance of IJob</param>
         public JobFactory(IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+            this.serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
         }
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
-        {
-            return serviceProvider.GetService(bundle.JobDetail.JobType) as IJob;
+        {                        
+            var job = serviceScope.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
+            return job;
         }
 
         public void ReturnJob(IJob job)
         {
-            (job as IDisposable)?.Dispose();
+            serviceScope.Dispose();
         }
     }
 }
