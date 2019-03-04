@@ -88,6 +88,25 @@ namespace WebCustomerApp.Services
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
 
+		private void SMSCclientSMPP_OnTcpDisconnected(object sender,
+					smscc.tcpDisconnectedEventArgs e)
+		{
+			Console.WriteLine("Disconnected");
+		}
+
+		private void SMSCclientSMPP_OnSmppMessageReceived(object sender,
+		  smscc.SMPP.smppMessageReceivedEventArgs e)
+		{
+			Console.WriteLine("MessageReceivedEvent");
+		}
+
+		// Status Report (SR) received from SMSC
+		private void SMSCclientSMPP_OnSmppStatusReportReceived(object sender,
+		  smscc.SMPP.smppStatusReportReceivedEventArgs e)
+		{
+			Console.WriteLine($"StatusReportReceivedEvent: {e.MessageID}, {e.Destination}, {e.Originator}, {e.MessageState}, {e.NetworkErrorCode}");
+		}
+
 		/// <summary>
 		/// Close current session
 		/// </summary>
