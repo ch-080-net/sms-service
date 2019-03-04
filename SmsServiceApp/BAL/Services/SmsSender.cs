@@ -82,7 +82,7 @@ namespace WebCustomerApp.Services
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
 
 			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-							message.MessageText, EncodingEnum.etUCS2Text, userDataHeader, options, out messageIDs);
+							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
 			if (resultStatus != 0)
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
