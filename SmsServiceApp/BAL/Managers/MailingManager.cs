@@ -52,6 +52,11 @@ namespace BAL.Managers
             Dispose(true);
         }
 
+        public Task MarkAsSent(IEnumerable<MessageDTO> messages)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

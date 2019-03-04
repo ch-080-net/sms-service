@@ -9,5 +9,7 @@ namespace Model.Interfaces
     public interface IMailingManager : IDisposable
     {
         Task<IEnumerable<MessageDTO>> GetUnsentMessages();
+
+        Task MarkAsSent(IEnumerable<MessageDTO> messages);
     }
 }
