@@ -126,6 +126,9 @@
   <data name="Create Tariff" xml:space="preserve">
     <value>Створити Тариф</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
   <data name="Error while calling the Web API!" xml:space="preserve">
     <value>Помилка під час виклику веб-API</value>
   </data>

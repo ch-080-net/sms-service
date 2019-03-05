@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Model.ViewModels.ContactViewModels;
+@model ContactViewModel;
+@{
     ViewData["Title"] = "Contact manager";
 }
 <html>
@@ -28,7 +30,7 @@
             <table>
                 <tr>
                     <td>
-                        <label> Phone number </label>
+                        <label asp-for="PhonePhoneNumber"></label>
                     </td>
                     <td>
                         <input id="phoneNumber" type="text" />
@@ -36,7 +38,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Name </label>
+                        <label asp-for="Name"></label>
                     </td>
                     <td>
                         <input id="name" type="text" />
@@ -44,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Surname </label>
+                        <label asp-for="Surname"></label>
                     </td>
                     <td>
                         <input id="surname" type="text" />
@@ -52,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Birth date </label>
+                        <label asp-for="BirthDate"></label>
                     </td>
                     <td>
                         <input id="birthDate" width="175" />
@@ -63,7 +65,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Gender </label>
+                        <label asp-for="Gender"></label>
                     </td>
                     <td>
                         <input type="radio" name="gender" checked id="genderMale" value="Male">Male
@@ -74,15 +76,16 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Notes </label>
+                        <label asp-for="Notes"></label>
                     </td>
                     <td>
                         <input id="notes" type="text" />
+                       
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label> Keywords </label>
+                        <label asp-for="KeyWords"></label>
                     </td>
                     <td>
                         <input id="keywords" type="text" />
@@ -135,10 +138,10 @@
         <table class="table table-hover" id="contactTable">
             <thead class="thead-dark">
                 <tr>
-                    <td><label> Phone number </label></td>
-                    <td><label> Name </label></td>
-                    <td><label> Surname </label></td>
-                    <td><label> Birth date </label></td>
+                    <td><label asp-for="PhonePhoneNumber"></label></td>
+                    <td><label asp-for="Name"></label></td>
+                    <td><label asp-for="Surname"> </label></td>
+                    <td><label asp-for="BirthDate"> </label></td>
                     <td><label> Gender </label></td>
                     <td><label> Notes </label></td>
                     <td><label> Keywords </label></td>

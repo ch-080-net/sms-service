@@ -21,6 +21,10 @@ using BAL.Jobs;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using WebApp;
+using Microsoft.Extensions.Localization;
+using System.Reflection;
+
 
 namespace WebCustomerApp
 {
@@ -110,8 +114,12 @@ namespace WebCustomerApp
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+               .AddDataAnnotationsLocalization()   
+               .AddViewLocalization();
+                
+
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();

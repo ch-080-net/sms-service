@@ -117,16 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Опис</value>
+  <data name="BirthDate" xml:space="preserve">
+    <value>Дата Народження</value>
   </data>
-  <data name="Limit" xml:space="preserve">
-    <value>Ліміт</value>
+  <data name="Gender" xml:space="preserve">
+    <value>Стать</value>
+  </data>
+  <data name="KeyWords" xml:space="preserve">
+    <value>Ключові слова</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Назва</value>
+    <value>Ім'я</value>
   </data>
-  <data name="Price" xml:space="preserve">
-    <value>Ціна</value>
+  <data name="Notes" xml:space="preserve">
+    <value>Нотатки</value>
+  </data>
+  <data name="PhonePhoneNumber" xml:space="preserve">
+    <value>Мобільний Номер</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Прізвище</value>
   </data>
 </root>

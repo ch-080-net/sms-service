@@ -9,6 +9,7 @@ namespace Model.ViewModels.StopWordViewModels
     {
         public int Id { get; set; }
         [Required]
+        [Display(Name ="Word")]
         public string Word { get; set; }
 
     }
