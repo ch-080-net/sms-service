@@ -24,17 +24,19 @@ a:hover {
 }
 /*Logo*/
 .logo {
-  width: 129px;
-  height: 108px;
+  width: 100px;
+  height: 80px;
 }
 .logo_img {
   width: 100%;
   height: auto;
 }
+/*section_title*/
 .section_title {
   text-transform: uppercase;
   font-size: 18px;
-  font-weight: 700px;
+  font-weight: 700;
+  line-height: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,13 +58,13 @@ a:hover {
 }
 .menu_list {
   display: flex;
-  list-style: none;
+  align-items: center;
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
-  align-items: center;
 }
 .menu_item {
+  list-style: none;
   margin-right: 30px;
   color: rgba(255, 255, 255, 0.8);
   position: relative;
@@ -70,6 +72,7 @@ a:hover {
 .menu_link {
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
 }
 /*Button-menu*/
 .button-menu {
@@ -102,7 +105,7 @@ a:hover {
   background-image: url('bg.jpg');
   background-size: cover;
   height: 100vh;
-  color: #ffff;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,7 +207,7 @@ a:hover {
 }
 .app_image {
   width: 550px;
-  margin-top: -50;
+  margin-top: -50px;
   background-repeat: no-repeat;
   background-image: url("images/phone.png");
   background-size: contain;
@@ -213,4 +216,29 @@ a:hover {
 .app_content {
   width: 550px;
   margin-left: auto;
+}
+.app_description {
+  margin: 10px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 18px;
+  color: #8b8b8b;
+}
+.app_link {
+  display: inline-block;
+  margin-right: 10px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-decoration: none;
+  color: #000;
+}
+.app_link:hover {
+  color: rgba(0, 0, 0, 0.8);
+  text-decoration: underline;
+  transition: color 0.2s linear;
+}
+.app_link--iconMessage {
+  width: 100px;
+  height: 100px;
+  background-image: url('images/iconMessage.png');
 }
