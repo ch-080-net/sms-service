@@ -47,7 +47,7 @@ namespace BAL.Jobs
             {
                 if (sms.OpenSession())
                 {
-                    sms.SendMessages(messages);
+                    await sms.SendMessagesAsync(messages);
                     if (sms.CloseSession())
                     {
                         sms.Disconnect();

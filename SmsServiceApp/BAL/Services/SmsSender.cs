@@ -4,6 +4,8 @@ using smscc.SMPP;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.ServiceProcess;
 
 namespace WebCustomerApp.Services
 {
@@ -12,17 +14,25 @@ namespace WebCustomerApp.Services
 	/// You should connect with SMPP, open session, send message(s)
 	/// And after that close session and disconnect from service
 	/// </summary>
-	public class SmsSender : ISmsSender
+	public class SmsSender : ServiceBase, ISmsSender 
 	{
-		public static SMSCclientSMPP clientSMPP;
-		public static string userDataHeader;
-		public static List<string> messageIDs;
+		public SMSCclientSMPP clientSMPP;
+		public string userDataHeader;
+		public List<string> messageIDs;
 
 		public SmsSender()
 		{
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
 			messageIDs = new List<string>();
+			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
+			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
+			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
+		}
+
+		protected override void OnStart(string[] args)
+		{
+
 		}
 
 		/// <summary>
@@ -47,6 +57,8 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		public bool OpenSession()
 		{
+			//string concatCode = "smpp.long-messages=udh8";
+
 			int sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
 
 			if (sessionStatus == 0)
@@ -59,10 +71,10 @@ namespace WebCustomerApp.Services
 		/// Send collection of messages 
 		/// </summary>
 		/// <param name="messages">Collection of messages for send</param>
-		public void SendMessages(IEnumerable<MessageDTO> messages)
+		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
 		{
 			foreach (MessageDTO message in messages)
-				SendMessage(message);
+				await SendMessageAsync(message);
 		}
 
 		/// <summary>
@@ -71,7 +83,7 @@ namespace WebCustomerApp.Services
 		/// Throw exception with user and recepient phones if message aren`t sended
 		/// </summary>
 		/// <param name="message">Message for send</param>
-		public void SendMessage(MessageDTO message)
+		public async Task SendMessageAsync(MessageDTO message)
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -84,24 +96,27 @@ namespace WebCustomerApp.Services
 			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
+			//int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
+
 			if (resultStatus != 0)
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
 
-		private void SMSCclientSMPP_OnTcpDisconnected(object sender,
+		public void SMSCclientSMPP_OnTcpDisconnected(object sender,
 					smscc.tcpDisconnectedEventArgs e)
 		{
 			Console.WriteLine("Disconnected");
 		}
 
-		private void SMSCclientSMPP_OnSmppMessageReceived(object sender,
+		public void SMSCclientSMPP_OnSmppMessageReceived(object sender,
 		  smscc.SMPP.smppMessageReceivedEventArgs e)
 		{
 			Console.WriteLine("MessageReceivedEvent");
 		}
 
 		// Status Report (SR) received from SMSC
-		private void SMSCclientSMPP_OnSmppStatusReportReceived(object sender,
+		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender,
 		  smscc.SMPP.smppStatusReportReceivedEventArgs e)
 		{
 			Console.WriteLine($"StatusReportReceivedEvent: {e.MessageID}, {e.Destination}, {e.Originator}, {e.MessageState}, {e.NetworkErrorCode}");
