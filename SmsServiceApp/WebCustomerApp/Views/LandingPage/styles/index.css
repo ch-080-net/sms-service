@@ -34,8 +34,7 @@ a:hover {
 .section_title {
   text-transform: uppercase;
   font-size: 18px;
-  font-weight: 700;
-  line-height: 30px;
+  font-weight: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,13 +56,13 @@ a:hover {
 }
 .menu_list {
   display: flex;
-  align-items: center;
-  height: 100%;
+  list-style: none;
   margin: 0;
   padding: 0;
+  height: 100%;
+  align-items: center;
 }
 .menu_item {
-  list-style: none;
   margin-right: 30px;
   color: rgba(255, 255, 255, 0.8);
   position: relative;
@@ -113,7 +112,7 @@ a:hover {
 .main_title {
   font-family: 'Times New Roman', Times, serif;
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 700px;
   font-style: italic;
   letter-spacing: 1.8px;
   text-shadow: 0 1px 40px rgba(1, 1, 1, 0.55);
@@ -205,8 +204,13 @@ a:hover {
 }
 .app_image {
   width: 550px;
+  margin-top: -50;
   background-repeat: no-repeat;
   background-image: url("images/phone.png");
   background-size: contain;
   background-position: top;
+}
+.app_content {
+  width: 550px;
+  margin-left: auto;
 }
