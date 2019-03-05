@@ -7,6 +7,7 @@ using Model.ViewModels.OperatorViewModels;
 using AutoMapper;
 using System.Linq;
 using System.IO;
+using Model.DTOs;
 
 namespace BAL.Managers
 {
@@ -39,13 +40,13 @@ namespace BAL.Managers
         /// Name must be unique
         /// </param>
         /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Add(OperatorViewModel newOperator)
+        public TransactionResultDTO Add(OperatorViewModel newOperator)
         {
             if (newOperator.Name == null || newOperator.Name == "")
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty"};
             var check = unitOfWork.Operators.Get(o => o.Name == newOperator.Name).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator with this name already exist" };
             var result = mapper.Map<Operator>(newOperator);
             try
             {
@@ -54,9 +55,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>
@@ -74,11 +75,11 @@ namespace BAL.Managers
         /// Remove entry from Operators table with corresponding <paramref name="id"/>
         /// </summary>
         /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Remove(int id)
+        public TransactionResultDTO Remove(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
             try
             {
                 unitOfWork.Operators.Delete(oper);
@@ -86,9 +87,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>
@@ -99,13 +100,13 @@ namespace BAL.Managers
         /// Name must be unique
         /// </param>
         /// <returns>true, if transaction succesfull; false if not</returns>
-        public bool Update(OperatorViewModel updatedOperator)
+        public TransactionResultDTO Update(OperatorViewModel updatedOperator)
         {
             if (updatedOperator.Name == null || updatedOperator.Name == "")
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty" };
             var check = unitOfWork.Operators.Get(o => o.Name == updatedOperator.Name).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name already exist" };
             var result = mapper.Map<Operator>(updatedOperator);
             try
             {
@@ -114,9 +115,9 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
         /// <summary>

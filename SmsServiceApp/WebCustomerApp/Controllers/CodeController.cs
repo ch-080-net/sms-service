@@ -47,10 +47,10 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 newCode.OperatorId = pageState.OperatorId;
-                bool result = codeManager.Add(newCode);
-                if (!result)
+                var result = codeManager.Add(newCode);
+                if (!result.Success)
                 {
-                    TempData["ErrorMessage"] = "Error occurred while adding code";
+                    TempData["ErrorMessage"] = result.Details;
                     return Redirect(Url.Action("Codes", pageState));
                 }
                 else
@@ -65,10 +65,10 @@ namespace WebApp.Controllers
         public IActionResult Remove(int codeId, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-            bool result = codeManager.Remove(codeId);
-            if (!result)
+            var result = codeManager.Remove(codeId);
+            if (!result.Success)
             {
-                TempData["ErrorMessage"] = "Error occurred while removing code";
+                TempData["ErrorMessage"] = result.Details;
                 return Redirect(Url.Action("Codes", pageState));
             }
             else
@@ -85,9 +85,9 @@ namespace WebApp.Controllers
             {
                 editedCode.OperatorId = pageState.OperatorId;
                 var result = codeManager.Update(editedCode);
-                if (!result)
+                if (!result.Success)
                 {
-                    TempData["ErrorMessage"] = "Error occurred while editing code";
+                    TempData["ErrorMessage"] = result.Details;
                     return Redirect(Url.Action("Codes", pageState));
                 }
                 else
