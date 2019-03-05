@@ -19,20 +19,18 @@ namespace WebCustomerApp.Services
 		public SMSCclientSMPP clientSMPP;
 		public string userDataHeader;
 		public List<string> messageIDs;
+		public bool ImmediateResponse { get; set; }
 
 		public SmsSender()
 		{
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
 			messageIDs = new List<string>();
+			ImmediateResponse = false;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
-		}
-
-		protected override void OnStart(string[] args)
-		{
-
+			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
 		}
 
 		/// <summary>
@@ -103,25 +101,6 @@ namespace WebCustomerApp.Services
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
 
-		public void SMSCclientSMPP_OnTcpDisconnected(object sender,
-					smscc.tcpDisconnectedEventArgs e)
-		{
-			Console.WriteLine("Disconnected");
-		}
-
-		public void SMSCclientSMPP_OnSmppMessageReceived(object sender,
-		  smscc.SMPP.smppMessageReceivedEventArgs e)
-		{
-			Console.WriteLine("MessageReceivedEvent");
-		}
-
-		// Status Report (SR) received from SMSC
-		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender,
-		  smscc.SMPP.smppStatusReportReceivedEventArgs e)
-		{
-			Console.WriteLine($"StatusReportReceivedEvent: {e.MessageID}, {e.Destination}, {e.Originator}, {e.MessageState}, {e.NetworkErrorCode}");
-		}
-
 		/// <summary>
 		/// Close current session
 		/// </summary>
@@ -142,6 +121,28 @@ namespace WebCustomerApp.Services
 		public void Disconnect()
 		{
 			clientSMPP.tcpDisconnect();
+		}
+
+		public void SMSCclientSMPP_OnTcpDisconnected(object sender, tcpDisconnectedEventArgs e)
+		{
+			Console.WriteLine("Disconnected");
+		}
+
+		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
+		{
+			Console.WriteLine("You have new message");
+		}
+
+		// Status Report (SR) received from SMSC
+		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
+		{
+			Console.WriteLine($"StatusReportReceivedEvent: {e.MessageID}, {e.Destination}, {e.Originator}, {e.MessageState}, {e.NetworkErrorCode}");
+		}
+
+		// Multipart message completed
+		private void SMSCclientSMPP_OnSmppMessageCompleted(object Sender, smppMessageCompletedEventArgs e)
+		{
+			Console.WriteLine("Multipart message complete");
 		}
 	}
 }

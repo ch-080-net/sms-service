@@ -48,22 +48,22 @@ namespace BAL.Jobs
                 if (sms.OpenSession())
                 {
                     await sms.SendMessagesAsync(messages);
-                    if (sms.CloseSession())
-                    {
-                        sms.Disconnect();
-                        Console.WriteLine("Connection close");
-                    }
-                    else
-                        Console.WriteLine("Could not close session");
-                }
-                else
+					if (sms.CloseSession())
+					{
+						sms.Disconnect();
+						Console.WriteLine("Connection close");
+					}
+					else
+						Console.WriteLine("Could not close session");
+				}
+				else
                 {
-                    Console.WriteLine("Session error");
+					throw new Exception("Session error");
                 }
             }
             else
             {
-                Console.WriteLine("Connection error");
+				throw new Exception("Connection error");
             }
         }
 
