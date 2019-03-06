@@ -12,6 +12,6 @@ namespace WebCustomerApp.Models
     {
         public int ApplicationGroupId { get; set; }
         public ApplicationGroup ApplicationGroup { get; set; }
-        public ICollection<Contact> Contacts { get; set; }
+        public int InviteId { get; set; } = 0;
     }
 }

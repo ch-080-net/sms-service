@@ -86,7 +86,7 @@ namespace DAL.Repositories
             }
         }
 
-        public IBaseRepository<ApplicationGroup> Groups
+        public IBaseRepository<ApplicationGroup> ApplicationGroups
         {
             get
             {

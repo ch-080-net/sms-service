@@ -49,13 +49,6 @@ namespace WebCustomerApp.Data
 
             // Setting FK
             #region FK
-
-            builder.Entity<ApplicationUser>()
-                .HasMany(au => au.Contacts)
-                .WithOne(c => c.ApplicationUser)
-                .HasForeignKey(c => c.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<ApplicationGroup>()
               .HasMany(ag => ag.ApplicationUsers)
               .WithOne(au => au.ApplicationGroup)
@@ -64,6 +57,12 @@ namespace WebCustomerApp.Data
 
             builder.Entity<ApplicationGroup>()
               .HasMany(ag => ag.Companies)
+              .WithOne(c => c.ApplicationGroup)
+              .HasForeignKey(c => c.ApplicationGroupId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ApplicationGroup>()
+              .HasMany(ag => ag.Contacts)
               .WithOne(c => c.ApplicationGroup)
               .HasForeignKey(c => c.ApplicationGroupId)
               .OnDelete(DeleteBehavior.Cascade);

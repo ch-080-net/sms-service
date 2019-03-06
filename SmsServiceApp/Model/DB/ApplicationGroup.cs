@@ -10,5 +10,6 @@ namespace WebCustomerApp.Models
         public string Name { get; set; }
         public ICollection<ApplicationUser> ApplicationUsers { get; set; }
         public ICollection<Company> Companies { get; set; }
+        public ICollection<Contact> Contacts { get; set; }
     }
 }

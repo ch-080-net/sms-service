@@ -12,6 +12,7 @@ using WebCustomerApp.Models;
 using Model.ViewModels.StopWordViewModels;
 using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
+using BAL.Managers;
 
 namespace BAL.Services
 {

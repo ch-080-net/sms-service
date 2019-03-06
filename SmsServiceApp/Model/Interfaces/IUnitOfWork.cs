@@ -16,7 +16,7 @@ namespace Model.Interfaces
         IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
-        IBaseRepository<ApplicationGroup> Groups { get; }
+        IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
      
         int Save();
     }

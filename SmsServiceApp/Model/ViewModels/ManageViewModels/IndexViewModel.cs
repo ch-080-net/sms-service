@@ -21,6 +21,12 @@ namespace WebCustomerApp.Models.ManageViewModels
 		[RegularExpression(@"^\+[0-9]{11,12}$", ErrorMessage = "Wrong phone number")]
 		public string PhoneNumber { get; set; }
 
+        [Display(Name = "Group member")]
+        public string GroupName { get; set; }
+
+        public string IviteConfirm { get; set; }
+        public bool IsIvited { get; set; }
+
         public string StatusMessage { get; set; }
     }
 }

@@ -42,7 +42,6 @@ namespace WebCustomerApp
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
-			services.AddTransient<ICompanyRepository, CompanyRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
@@ -96,9 +95,8 @@ namespace WebCustomerApp
             services.AddScoped<IContactManager, ContactManager>();
             services.AddScoped<ITariffManager, TariffManager>();
             services.AddScoped<IPhoneManager, PhoneManager>();
-            services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IStopWordManager, StopWordManager>();
-
+            services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
 

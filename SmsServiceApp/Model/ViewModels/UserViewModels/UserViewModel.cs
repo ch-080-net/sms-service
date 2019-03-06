@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.ViewModels.GroupViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Model.ViewModels.UserViewModels
         [Phone]
         [Display(Name = "Phone")]
         public string PhoneNumber { get; set; }
+        public string GroupName { get; set; }
     }
 }

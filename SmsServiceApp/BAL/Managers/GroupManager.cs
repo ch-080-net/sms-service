@@ -16,34 +16,34 @@ namespace BAL.Managers
 
         public GroupViewModel Get(int id)
         {
-            ApplicationGroup group = unitOfWork.Groups.GetById(id);
+            ApplicationGroup group = unitOfWork.ApplicationGroups.GetById(id);
             return mapper.Map<ApplicationGroup, GroupViewModel>(group);
         }
 
         public IEnumerable<GroupViewModel> GetGroups()
         {
-            IEnumerable<ApplicationGroup> groups = unitOfWork.Groups.GetAll();
+            IEnumerable<ApplicationGroup> groups = unitOfWork.ApplicationGroups.GetAll();
             return mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<GroupViewModel>>(groups);
         }
 
         public void Insert(GroupViewModel item)
         {
             ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
-            unitOfWork.Groups.Insert(group);
+            unitOfWork.ApplicationGroups.Insert(group);
             unitOfWork.Save();
         }
 
         public void Update(GroupViewModel item)
         {
             ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
-            unitOfWork.Groups.Update(group);
+            unitOfWork.ApplicationGroups.Update(group);
             unitOfWork.Save();
         }
 
         public void Delete(int id)
         {
-            ApplicationGroup group = unitOfWork.Groups.GetById(id);
-            unitOfWork.Groups.Delete(group);
+            ApplicationGroup group = unitOfWork.ApplicationGroups.GetById(id);
+            unitOfWork.ApplicationGroups.Delete(group);
             unitOfWork.Save();
         }
     }

@@ -31,7 +31,7 @@
     <div class="back_image"></div>
     <div class="w3ls-login box box--big">
         <h1 class="title-page">Registration</h1>
-        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+        <form asp-route-returnurl="@ViewData["ReturnUrl"]" asp-route-groupId="@ViewData["GroupId"]" method="post">
             <div class="agile-field-txt">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" id="email" placeholder="Your e-mail adress" />
