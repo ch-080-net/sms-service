@@ -105,7 +105,7 @@ a:hover {
   background-image: url('bg.jpg');
   background-size: cover;
   height: 100vh;
-  color: #fff;
+  color: #ffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,4 +241,32 @@ a:hover {
   width: 100px;
   height: 100px;
   background-image: url('images/iconMessage.png');
+}
+.start {
+  image-rendering: 100%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 100vh;
+  left: 100vh;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.preview {
+  position: fixed;
+  background: black;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.loader {
+  color: #2b2828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50vh;
+  font-size: 100px;
 }
