@@ -14,7 +14,5 @@ namespace WebCustomerApp.Models
         public ICollection<ApplicationUser> ApplicationUsers { get; set; }
         public ICollection<Company> Companies { get; set; }
         public ICollection<Contact> Contacts { get; set; }
-        public int PhoneId { get; set; }
-        public Phone Phone { get; set; }
     }
 }

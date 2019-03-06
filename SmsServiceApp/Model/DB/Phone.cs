@@ -9,7 +9,6 @@ namespace WebCustomerApp.Models
         public int Id { get; set; }
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<Recipient> Recipients { get; set; }
-        public ApplicationGroup ApplicationGroup { get; set; }
 
         public string PhoneNumber { get; set; }
     }
