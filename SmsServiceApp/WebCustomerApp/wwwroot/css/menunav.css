@@ -1,5 +1,6 @@
 ﻿body {
     font-family: 'Lato', sans-serif;
+
 }
 .overlay {
     height: 100%;
@@ -15,6 +16,7 @@
 }
 
 .overlay-content {
+    animation-fill-mode: forwards;
     position: relative;
     top: 25%;
     width: 100%;
