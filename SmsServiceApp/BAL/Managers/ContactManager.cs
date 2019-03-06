@@ -21,12 +21,12 @@ namespace BAL.Managers
             return mapper.Map<ContactViewModel>(unitOfWork.Contacts.GetById(ContactId));
         }
 
-        public List<ContactViewModel> GetContact(string userId, int pageNumber, int pageSize)
+        public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
             try
             {
                 var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,
-                    filter: item => item.ApplicationUserId == userId);
+                    filter: item => item.ApplicationGroupId == groupId);
                 foreach (var contact in contacts)
                 {
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
@@ -39,7 +39,7 @@ namespace BAL.Managers
             }
         }
 
-        public List<ContactViewModel> GetContactBySearchValue(string userId, int pageNumber, int pageSize,
+        public List<ContactViewModel> GetContactBySearchValue(int groupId, int pageNumber, int pageSize,
             string searchValue)
         {
             try
@@ -49,7 +49,7 @@ namespace BAL.Managers
                 {
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
                 }
-                contacts = contacts.Where(item => item.ApplicationUserId == userId &&
+                contacts = contacts.Where(item => item.ApplicationGroupId == groupId &&
                         (item.Phone.PhoneNumber == searchValue ||
                         item.Name == searchValue || item.Surname == searchValue ||
                         item.Name + " " + item.Surname == searchValue || item.KeyWords.Contains(searchValue)))
@@ -63,12 +63,12 @@ namespace BAL.Managers
             }
         }
 
-        public int GetContactCount(string userId)
+        public int GetContactCount(int groupId)
         {
             try
             {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
-                    filter: item => item.ApplicationUserId == userId).ToList();
+                    filter: item => item.ApplicationGroupId == groupId).ToList();
                 return contacts.Count;
             }
             catch(Exception ex)
@@ -77,10 +77,10 @@ namespace BAL.Managers
             }
         }
 
-        public int GetContactBySearchValueCount(string userId, string searchValue)
+        public int GetContactBySearchValueCount(int groupId, string searchValue)
         {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
-                        filter: item => item.ApplicationUserId == userId).ToList();
+                        filter: item => item.ApplicationGroupId == groupId).ToList();
                 foreach (var contact in contacts)
                 {
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
@@ -92,12 +92,12 @@ namespace BAL.Managers
                 return contacts.Count;
         }
 
-        public bool CreateContact(ContactViewModel contactModel, string userId)
+        public bool CreateContact(ContactViewModel contactModel, int groupId)
         {
             try
             {
                 Contact newContact = mapper.Map<Contact>(contactModel);
-                newContact.ApplicationUserId = userId;
+                newContact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get
                     (filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
                 if (phone.Count == 0)
@@ -141,12 +141,12 @@ namespace BAL.Managers
             }
         }
 
-        public bool UpdateContact(ContactViewModel contactModel, string userId)
+        public bool UpdateContact(ContactViewModel contactModel, int groupId)
         {
             try
             {
                 Contact contact = mapper.Map<Contact>(contactModel);
-                contact.ApplicationUserId = userId;
+                contact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
                 if (phone.Count == 0)
                 {

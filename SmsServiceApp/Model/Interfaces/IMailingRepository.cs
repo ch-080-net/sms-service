@@ -5,7 +5,8 @@ using WebCustomerApp.Models;
 
 namespace Model.Interfaces
 {
-	public interface ICompanyRepository : IBaseRepository<Company>
-	{
-	}
+    public interface IMailingRepository : IBaseRepository<Recipient>
+    {
+        
+    }
 }

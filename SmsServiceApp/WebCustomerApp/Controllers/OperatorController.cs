@@ -44,10 +44,11 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool result = operatorManager.Add(newOper);
-                if (!result)
+                var result = operatorManager.Add(newOper);
+                if (!result.Success)
                 {
-                    TempData["ErrorMessage"] = "Error occured while adding new operator";
+                    TempData["ErrorMessage"] = result.Details;
+                    return Redirect(Url.Action("Operators", pageState));
                 }
                 else
                 {
@@ -61,10 +62,10 @@ namespace WebApp.Controllers
         public IActionResult Remove(int operatorId, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
-            bool result = operatorManager.Remove(operatorId);
-            if (!result)
+            var result = operatorManager.Remove(operatorId);
+            if (!result.Success)
             {
-                TempData["ErrorMessage"] = "Error occured while removing operator";
+                TempData["ErrorMessage"] = result.Details;
                 return Redirect(Url.Action("Operators", pageState));
             }
             else
@@ -80,9 +81,9 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 var result = operatorManager.Update(editedOper);
-                if (!result)
+                if (!result.Success)
                 {
-                    TempData["ErrorMessage"] = "Error occured while editing operator";
+                    TempData["ErrorMessage"] = result.Details;
                     return Redirect(Url.Action("Operators", pageState));
                 }
                 else

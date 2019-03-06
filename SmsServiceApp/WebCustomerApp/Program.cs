@@ -29,8 +29,7 @@ namespace WebCustomerApp
 
                     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    MyIdentityDataInitializer.SeedData
-        (userManager, roleManager);
+                    MyIdentityDataInitializer.SeedData(userManager, roleManager);
                 }
                 catch
                 {
