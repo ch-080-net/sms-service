@@ -4,6 +4,9 @@ using smscc.SMPP;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.ServiceProcess;
+using System.IO;
 
 namespace WebCustomerApp.Services
 {
@@ -12,17 +15,23 @@ namespace WebCustomerApp.Services
 	/// You should connect with SMPP, open session, send message(s)
 	/// And after that close session and disconnect from service
 	/// </summary>
-	public class SmsSender : ISmsSender
+	public class SmsSender : ISmsSender 
 	{
-		public static SMSCclientSMPP clientSMPP;
-		public static string userDataHeader;
-		public static List<string> messageIDs;
+		public SMSCclientSMPP clientSMPP;
+		public string userDataHeader;
+		public List<string> messageIDs;
+		public bool ImmediateResponse { get; protected set; }
 
 		public SmsSender()
 		{
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
 			messageIDs = new List<string>();
+			ImmediateResponse = false;
+			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
+			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
+			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
+			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
 		}
 
 		/// <summary>
@@ -47,6 +56,8 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		public bool OpenSession()
 		{
+			//string concatCode = "smpp.long-messages=udh8";
+
 			int sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
 
 			if (sessionStatus == 0)
@@ -59,10 +70,10 @@ namespace WebCustomerApp.Services
 		/// Send collection of messages 
 		/// </summary>
 		/// <param name="messages">Collection of messages for send</param>
-		public void SendMessages(IEnumerable<MessageDTO> messages)
+		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
 		{
 			foreach (MessageDTO message in messages)
-				SendMessage(message);
+				await SendMessageAsync(message);
 		}
 
 		/// <summary>
@@ -71,7 +82,7 @@ namespace WebCustomerApp.Services
 		/// Throw exception with user and recepient phones if message aren`t sended
 		/// </summary>
 		/// <param name="message">Message for send</param>
-		public void SendMessage(MessageDTO message)
+		public async Task SendMessageAsync(MessageDTO message)
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -82,12 +93,15 @@ namespace WebCustomerApp.Services
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
 
 			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-							message.MessageText, EncodingEnum.etUCS2Text, userDataHeader, options, out messageIDs);
+							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
+
+			//int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
 
 			if (resultStatus != 0)
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
-
+		
 		/// <summary>
 		/// Close current session
 		/// </summary>
@@ -108,6 +122,39 @@ namespace WebCustomerApp.Services
 		public void Disconnect()
 		{
 			clientSMPP.tcpDisconnect();
+		}
+
+		public void SMSCclientSMPP_OnTcpDisconnected(object sender, tcpDisconnectedEventArgs e)
+		{
+			Console.WriteLine("Disconnected");
+		}
+
+		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
+		{
+			Console.WriteLine("You have new message");
+		}
+
+		// Status Report (SR) received from SMSC
+		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
+		{
+			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
+			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
+
+			using (StreamWriter sw = new StreamWriter(@"C:\Users\pivastc\Source\Repos\Messages report.txt", true, Encoding.UTF8))
+			{
+				sw.WriteLine(report);
+			}
+
+			if (e.MessageState == 2 && e.NetworkErrorCode == 0)
+			{
+				//await mailingManager.MarkAsSent(result);
+			}
+		}
+
+		// Multipart message completed
+		private void SMSCclientSMPP_OnSmppMessageCompleted(object Sender, smppMessageCompletedEventArgs e)
+		{
+			Console.WriteLine("Multipart message complete");
 		}
 	}
 }

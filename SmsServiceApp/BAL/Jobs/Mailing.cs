@@ -42,28 +42,28 @@ namespace BAL.Jobs
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-            SmsSender sms = new SmsSender();
+			SmsSender sms = new SmsSender();
             if (sms.Connect())
             {
                 if (sms.OpenSession())
                 {
-                    sms.SendMessages(messages);
-                    if (sms.CloseSession())
-                    {
-                        sms.Disconnect();
-                        Console.WriteLine("Connection close");
-                    }
-                    else
-                        Console.WriteLine("Could not close session");
-                }
-                else
+                    await sms.SendMessagesAsync(messages);
+					if (sms.CloseSession())
+					{
+						sms.Disconnect();
+						Console.WriteLine("Connection close");
+					}
+					else
+						Console.WriteLine("Could not close session");
+				}
+				else
                 {
-                    Console.WriteLine("Session error");
+					throw new Exception("Session error");
                 }
             }
             else
             {
-                Console.WriteLine("Connection error");
+				throw new Exception("Connection error");
             }
         }
 
