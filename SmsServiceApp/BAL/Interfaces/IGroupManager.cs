@@ -5,6 +5,9 @@ using System.Text;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Interface with CRUD operation for Groups
+    /// </summary>
     public interface IGroupManager
     {
         GroupViewModel Get(int id);

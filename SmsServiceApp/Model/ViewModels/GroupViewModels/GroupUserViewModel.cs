@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Model.ViewModels.GroupViewModels
 {
+    /// <summary>
+    /// ViewModel of ApplicationUser for inviting to Group
+    /// </summary>
     public class GroupUserViewModel
     {
         [EmailAddress]

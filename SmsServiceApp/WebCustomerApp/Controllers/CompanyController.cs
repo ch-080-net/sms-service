@@ -32,6 +32,10 @@ namespace WebApp.Controllers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Get view with Companies which belongs to this user ApplicationGroup
+        /// </summary>
+        /// <returns>View with companies</returns>
         [HttpGet]
         public IActionResult Index()
         {
@@ -41,12 +45,21 @@ namespace WebApp.Controllers
             return View(companyManager.GetCompanies(groupId));
         }
 
+        /// <summary>
+        /// View for creation new Company
+        /// </summary>
+        /// <returns>Create Company View</returns>
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        /// <summary>
+        /// Send new Company fron view to db
+        /// </summary>
+        /// <param name="item">ViewModel of Company from View</param>
+        /// <returns>Company index View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] CompanyViewModel item)
@@ -60,6 +73,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Gets EditView with Company info from db
+        /// </summary>
+        /// <param name="id">Id of company which need to edit</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -76,6 +94,12 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        /// <summary>
+        /// Send updated Company to db
+        /// </summary>
+        /// <param name="id">Id of company which need to edit</param>
+        /// <param name="company">ViewModel of Company from View</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind]CompanyViewModel company)
@@ -97,6 +121,11 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        /// <summary>
+        /// Get Delete Confirmation View with company information
+        /// </summary>
+        /// <param name="id">Id of selected item</param>
+        /// <returns>View with selected company info</returns>
         [HttpGet]
         public IActionResult Delete(int? id)
         {
@@ -114,6 +143,11 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        /// <summary>
+        /// Delete selected item from db
+        /// </summary>
+        /// <param name="id">Id of Company which select to delete</param>
+        /// <returns>Company Index View</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

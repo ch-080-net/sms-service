@@ -6,6 +6,9 @@ using WebCustomerApp.Models;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Interface with CRUD operation for Companies
+    /// </summary>
     public interface ICompanyManager
     {
         CompanyViewModel Get(int id);

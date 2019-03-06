@@ -12,6 +12,6 @@ namespace WebCustomerApp.Models
     {
         public int ApplicationGroupId { get; set; }
         public ApplicationGroup ApplicationGroup { get; set; }
-        public int InviteId { get; set; } = 0;
+        public int InviteId { get; set; } = 0; // this field filled up when user has inviting to group
     }
 }

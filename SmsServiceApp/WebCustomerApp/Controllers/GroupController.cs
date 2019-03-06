@@ -32,6 +32,10 @@ namespace WebApp.Controllers
             this.emailSender = emailSender;
         }
 
+        /// <summary>
+        /// Gets View of users that in current user ApplicationGroup
+        /// </summary>
+        /// <returns>List of Users ViewModels</returns>
         public IActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -46,12 +50,22 @@ namespace WebApp.Controllers
             return View(userModels);
         }
 
+        /// <summary>
+        /// Gets View for sending invite to current ApplicationGroup
+        /// </summary>
+        /// <returns>View for sending invitings</returns>
         [HttpGet]
         public IActionResult AddUsers()
         {
             return View();
         }
 
+        /// <summary>
+        /// Takes email from view and send inviting to user, if user not exist - send a link to registration whith group id.
+        /// If user exist - add to his property invite group id, and he has a link to his profile
+        /// </summary>
+        /// <param name="item">Info from view</param>
+        /// <returns>View with group members</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddUsers([Bind] GroupUserViewModel item)
@@ -90,6 +104,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Delete user from Application
+        /// </summary>
+        /// <param name="id">Id of User which need to delete</param>
+        /// <returns>View with group users</returns>
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)

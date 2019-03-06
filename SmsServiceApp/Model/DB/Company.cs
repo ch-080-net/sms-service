@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebCustomerApp.Models
 {
+    /// <summary>
+    /// Company entity, which iclude message, recipients and chosen tariff
+    /// </summary>
     public class Company
     {
         public int Id { get; set; } //PRIMARY KEY

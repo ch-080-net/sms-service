@@ -16,8 +16,14 @@ using BAL.Managers;
 
 namespace BAL.Services
 {
+    /// <summary>
+    ///  Mapper class for each mapping that is performed, inherited from Automapper Profile class
+    /// </summary>
     public class MappingProfile : Profile
     {
+        /// <summary>
+        /// Constructor with all mappings
+        /// </summary>
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects

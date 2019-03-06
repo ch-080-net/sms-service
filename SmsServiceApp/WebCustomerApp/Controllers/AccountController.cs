@@ -210,6 +210,12 @@ namespace WebCustomerApp.Controllers
 			return View(model);
 		}
 
+        /// <summary>
+        /// Get registration view
+        /// </summary>
+        /// <param name="groupId">If user is ivited he had a link with group Id to registration in that ApplicationGroup</param>
+        /// <param name="returnUrl"></param>
+        /// <returns>Registration view</returns>
 		[HttpGet]
 		[AllowAnonymous]
 		public IActionResult NewRegister(int groupId = 0, string returnUrl = null)
@@ -219,6 +225,13 @@ namespace WebCustomerApp.Controllers
 			return View();
 		}
 
+        /// <summary>
+        /// Post method to registration new user
+        /// </summary>
+        /// <param name="model">ViewModel of Application user from View</param>
+        /// <param name="groupId">If user is ivited he had a link with group Id to registration in that ApplicationGroup</param>
+        /// <param name="returnUrl"></param>
+        /// <returns>Home page if successfully</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

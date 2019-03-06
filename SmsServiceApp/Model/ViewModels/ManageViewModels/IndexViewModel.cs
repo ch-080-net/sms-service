@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebCustomerApp.Models.ManageViewModels
 {
+    /// <summary>
+    /// ViewModel of ApplicationUser for profile
+    /// </summary>
     public class IndexViewModel
     {
         public string Username { get; set; }
@@ -22,10 +25,10 @@ namespace WebCustomerApp.Models.ManageViewModels
 		public string PhoneNumber { get; set; }
 
         [Display(Name = "Group member")]
-        public string GroupName { get; set; }
+        public string GroupName { get; set; } //ApplicationGroup name wich it belongs
 
-        public string IviteConfirm { get; set; }
-        public bool IsIvited { get; set; }
+        public string IviteConfirm { get; set; } //Confirmation inviting from User
+        public bool IsIvited { get; set; } //Checks is user had an invite
 
         public string StatusMessage { get; set; }
     }

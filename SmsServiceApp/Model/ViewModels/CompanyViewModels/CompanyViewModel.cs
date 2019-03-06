@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Model.ViewModels.CompanyViewModels
 {
+    /// <summary>
+    /// ViewModel of Company
+    /// </summary>
     public class CompanyViewModel
     {
         public int Id { get; set; }

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Model.ViewModels.UserViewModels
 {
+    /// <summary>
+    /// ViewModel of Application user for manager of ApplicationGroup
+    /// </summary>
     public class UserViewModel
     {
         public string Id { get; set; }

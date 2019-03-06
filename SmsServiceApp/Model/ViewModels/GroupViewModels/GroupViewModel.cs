@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Model.ViewModels.GroupViewModels
 {
+    /// <summary>
+    /// ViewModel of ApplicationGroup
+    /// </summary>
     public class GroupViewModel
     {
         public int Id { get; set; }

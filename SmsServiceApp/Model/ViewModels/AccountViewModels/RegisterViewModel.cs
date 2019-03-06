@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebCustomerApp.Models.AccountViewModels
 {
+    /// <summary>
+    /// ViewModel of ApplicationUser for registration
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]
@@ -31,10 +34,10 @@ namespace WebCustomerApp.Models.AccountViewModels
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Corporation")]
-        public bool CorporateUser { get; set; }
+        public bool CorporateUser { get; set; } //if selected User Role will be CorporateUser
 
         [StringLength(100)]
         [Display(Name = "Company name")]
-        public string CompanyName { get; set; }
+        public string CompanyName { get; set; } //name of ApplicationGroup
     }
 }
