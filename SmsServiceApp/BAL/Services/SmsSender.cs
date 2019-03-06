@@ -27,7 +27,7 @@ namespace WebCustomerApp.Services
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
 			messageIDs = new List<string>();
-			ImmediateResponse = true;
+			ImmediateResponse = false;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
