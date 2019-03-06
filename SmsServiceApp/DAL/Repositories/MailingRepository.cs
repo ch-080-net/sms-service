@@ -20,7 +20,7 @@ namespace DAL.Repositories
         {
         }
 
-        public override IEnumerable<Recipient> GetAll()
+        /*public override IEnumerable<Recipient> GetAll()
         {
             var result = from r in context.Recipients
                          .Include(r => r.Company)
@@ -28,8 +28,9 @@ namespace DAL.Repositories
                          .Include(r => r.Phone)
                          select r;
             return result;
-        }
+        }*/
 
+            /*
         public override IEnumerable<Recipient> Get(
             Expression<Func<Recipient, bool>> filter = null,
             Func<IQueryable<Recipient>,
@@ -60,7 +61,7 @@ namespace DAL.Repositories
             {
                 return query.ToList();
             }
-        }
+        }*/
 
 
     }
