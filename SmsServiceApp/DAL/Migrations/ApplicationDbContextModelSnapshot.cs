@@ -128,12 +128,31 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebCustomerApp.Models.ApplicationGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("PhoneId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhoneId")
+                        .IsUnique();
+
+                    b.ToTable("Groups");
+                });
+
             modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<int>("ApplicationGroupId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -142,6 +161,8 @@ namespace DAL.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<int>("InviteId");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -167,6 +188,8 @@ namespace DAL.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationGroupId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -204,7 +227,7 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<int>("ApplicationGroupId");
 
                     b.Property<string>("Description");
 
@@ -218,7 +241,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("ApplicationGroupId");
 
                     b.HasIndex("TariffId");
 
@@ -230,7 +253,7 @@ namespace DAL.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<int>("ApplicationGroupId");
 
                     b.Property<DateTime>("BirthDate");
 
@@ -248,7 +271,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("ApplicationGroupId");
 
                     b.HasIndex("PhoneId");
 
@@ -405,6 +428,21 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("WebCustomerApp.Models.ApplicationGroup", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                        .WithOne("ApplicationGroup")
+                        .HasForeignKey("WebCustomerApp.Models.ApplicationGroup", "PhoneId");
+                });
+
+            modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("ApplicationGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("WebCustomerApp.Models.Code", b =>
                 {
                     b.HasOne("WebCustomerApp.Models.Operator", "Operator")
@@ -415,9 +453,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("WebCustomerApp.Models.Company", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
                         .WithMany("Companies")
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("ApplicationGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebCustomerApp.Models.Tariff", "Tariff")
@@ -427,9 +465,9 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
                         .WithMany("Contacts")
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("ApplicationGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("WebCustomerApp.Models.Phone", "Phone")
