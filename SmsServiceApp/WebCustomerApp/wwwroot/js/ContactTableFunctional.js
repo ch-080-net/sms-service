@@ -1,4 +1,5 @@
 ﻿
+
 var contactCount;
 var pagesCount;
 var currentPage = 1;
@@ -140,7 +141,7 @@ function contactBuildTableRow(contact) {
         "onclick='contactDelete(this);'" +
         "class='btn btn-danger' " +
         "data-id='" + contact.id + "'>" +
-        "<span class='glyphicon glyphicon-remove' />Delete" +
+        "<span class='glyphicon glyphicon-remove' />@Localizer['Delete']" +
         "</button>" +
         "</td>" +
         "</tr>";

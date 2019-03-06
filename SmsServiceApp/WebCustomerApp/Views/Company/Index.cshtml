@@ -1,14 +1,16 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model IEnumerable<CompanyViewModel>;
 
 @{
-    ViewData["Title"] = "Index";
+        ViewData["Title"] = Localizer["Index"];
 }
 
-<h2>Companies</h2>
+<h2>@Localizer["Companies"]</h2>
 
 <p>
-    <a class="btn btn-success" asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
 </p>
 <div class="container">
     <table class="table table-striped table-bordered">
@@ -17,7 +19,7 @@
                 <th scope="col" class="col-md-2">
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
-                <th scope="col" class="col-md-6">
+                <th scope="col" class="col-md-4">
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
                 <th scope="col" class="col-md-4"></th>
@@ -33,15 +35,15 @@
                     <td scope="row">
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
-					<td scope="row">
-						<a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">Tariff</a> |
-						<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-						@if (item.TariffId != 0)
-						{
-							<a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">Add recipients</a>
-						}
-					</td>
+                    <td scope="row">
+                        <a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">@Localizer["Tariff"]</a> |
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a> |
+                        @if (item.TariffId != 0)
+                        {
+                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">@Localizer["Add recipients"]</a>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>

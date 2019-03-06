@@ -1,59 +1,60 @@
 ﻿@using Model.ViewModels.TariffViewModels;
 @model TariffViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Edit Tariff";
+    ViewData["Title"] = Localizer["Edit Tariff"];
 }
-<h2>Edit</h2>
+<h2>@Localizer["Edit Tariff"]</h2>
 
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <h4>Tariff</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.OperatorId)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.OperatorId)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Limit, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
-            @Html.ValidationMessageFor(model => model.Limit, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Limit, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Limit, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                @Html.ValidationMessageFor(model => model.Limit, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group" style="display:inline-block; position:relative; left: 40%;">
-        <button type="submit" class="btn btn-default col-md-2" style="width: 120px;" asp-action="Update">Change Tariff</button>
-        <a class="btn btn-info col-md-2" style="width: 120px; margin-left: 10px;" asp-action="Operators" asp-controller="Operator">Back to List</a>
-    </div>
-    <div id="msg"></div>
+        <div class="form-group" style="display:inline-block; position:relative; left: 40%;">
+            <button type="submit" class="btn btn-default col-md-2" style="width: 120px;" asp-action="Update">@Localizer["Change Tariff"]</button>
+            <a class="btn btn-info col-md-2" style="width: 140px; margin-left: 10px;" asp-action="Operators" asp-controller="Operator">@Localizer["Back to List"]</a>
+        </div>
+        <div id="msg"></div>
 
 
-</div>
+    </div>
 }
 
 @section Scripts {

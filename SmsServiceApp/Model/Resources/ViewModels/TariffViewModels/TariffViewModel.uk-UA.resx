@@ -129,4 +129,16 @@
   <data name="Price" xml:space="preserve">
     <value>Ціна</value>
   </data>
+  <data name="The Description field is required." xml:space="preserve">
+    <value>Поле Опис є обов'язковим</value>
+  </data>
+  <data name="The Limit field is required." xml:space="preserve">
+    <value>Поле Ліміт є обов'язковим</value>
+  </data>
+  <data name="The Name field is required." xml:space="preserve">
+    <value>Поле Ім'я є обов'язковим</value>
+  </data>
+  <data name="The Price field is required." xml:space="preserve">
+    <value>Поле Ціна є обов'язковим</value>
+  </data>
 </root>

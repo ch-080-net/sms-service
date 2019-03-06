@@ -132,7 +132,7 @@
   <data name="Notes" xml:space="preserve">
     <value>Нотатки</value>
   </data>
-  <data name="PhonePhoneNumber" xml:space="preserve">
+  <data name="PhoneNumber" xml:space="preserve">
     <value>Мобільний Номер</value>
   </data>
   <data name="Surname" xml:space="preserve">

@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
-@using Model.ViewModels.StopWordViewModels;
+﻿@using Model.ViewModels.StopWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model StopWordViewModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Localizer["Create"];
 }
 
-
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Stop Word</title>
+    <title>@Localizer["Stop Word"]</title>
     <script>
 
 
@@ -30,8 +31,8 @@
 </head>
 
 <body>
-    <h2>Create</h2>
-    <h4>Stop Word</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Stop Word"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -44,8 +45,8 @@
                     <span asp-validation-for="Word" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-success" />
-                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                    <input type="submit" value="@Localizer["Create"]" class="btn btn-success" />
+                    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
 
                 </div>
             </form>

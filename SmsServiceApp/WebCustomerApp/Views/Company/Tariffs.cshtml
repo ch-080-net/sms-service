@@ -1,7 +1,13 @@
 ﻿@using Model.ViewModels.TariffViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model TariffViewModel
 
-<h2>Tariffs</h2>
+@{
+    ViewData["Title"] = Localizer["Tariffs"];
+}
+
+<h2>@Localizer["Tariffs"]</h2>
 <hr />
 <div class="container">
     <div class="col-lg-9">
@@ -40,14 +46,14 @@
                             @item.Limit
                         </td>
                         <td class="col-md-1">
-                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
+                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">@Localizer["Choose"]</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    </div>
-    <div>
-        <a class="btn btn-primary" asp-action="Index">Back to Operators</a>
-    </div>
+</div>
+<div>
+    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Operators"]</a>
+</div>

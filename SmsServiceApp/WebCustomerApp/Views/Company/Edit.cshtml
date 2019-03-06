@@ -1,15 +1,17 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model CompanyViewModel;
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Localizer["Edit"];
 }
-<h2>Edit</h2>
-<h4>Company</h4>
+<h2>@Localizer["Edit"]</h2>
+<h4>@Localizer["Company"]</h4>
 <hr />
 
 <script>
     var TextAreaCursorPlace;
-    </script>
+</script>
 
 <div class="row">
     <div class="col-md-4">
@@ -28,13 +30,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message" class="control-label"></label>
-                <textarea rows="7" style="resize:none" asp-for="Message" class="form-control" id="message" ></textarea>
+                <textarea rows="7" style="resize:none" asp-for="Message" class="form-control" id="message"></textarea>
                 <span asp-validation-for="Message" class="text-danger"></span>
                 <script>
                     function AddWord(word) {
                         var info = document.getElementById("message")
                         info.value += word;
-                  
+
                     }
 
                 </script>
@@ -48,13 +50,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

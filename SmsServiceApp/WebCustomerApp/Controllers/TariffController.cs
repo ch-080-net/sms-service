@@ -52,7 +52,9 @@ namespace WebApp.Controllers
         public IActionResult Create(TariffViewModel item)
         {
             if (ModelState.IsValid) { 
-                tariffManager.Insert(item);
+            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Tariff tariff = new Tariff();
+            tariffManager.Insert(item);
             return View();
             }
             else

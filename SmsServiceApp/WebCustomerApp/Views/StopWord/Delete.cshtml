@@ -1,13 +1,15 @@
 ﻿@using Model.ViewModels.StopWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model StopWordViewModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = Localizer["Delete"];
 }
-<h2>Delete</h2>
-<h3>Are you sure you want to delete this?</h3>
+<h2>@Localizer["Delete"]</h2>
+<h3>@Localizer["Are you sure you want to delete this?"]</h3>
 <div>
-    <h4>Stop Word</h4>
+    <h4>@Localizer["Stop Word"]</h4>
     <hr />
     <div class="col-md-4">
         <dl class="dl-horizontal">
@@ -23,8 +25,8 @@
     </div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
     </form>
 
 </div>

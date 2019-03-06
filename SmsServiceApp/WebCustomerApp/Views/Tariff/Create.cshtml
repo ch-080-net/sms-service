@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tariff List</title>
+    <title>@Localizer["Tariff List"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -26,7 +26,6 @@
             limit: "",
             operatorId: ""
         };
-
         function onAddTariff(item) {
             var options = {};
             options.url = "/Tariff/Create";
@@ -44,11 +43,10 @@
                 $("#msg").html(msg);
             },
                 options.error = function () {
-                    $("#msg").html(@Localizer["Error while calling the Web API!"]);
+                    $("#msg").html("Error while calling the Web API!");
                 };
             $.ajax(options);
         }
-
     </script>
 </head>
 <body>
@@ -58,12 +56,11 @@
             <div class="col-sm-5">
                 <div class="form-group">
                     <label asp-for="Name"></label>
-
                     <input asp-for="Name" type="text" class="form-control" id="name">
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Description">@Localizer["Description"]</label>
+                    <label asp-for="Description"></label>
                     <textarea asp-for="Description" class="form-control" rows="3" id="description"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>

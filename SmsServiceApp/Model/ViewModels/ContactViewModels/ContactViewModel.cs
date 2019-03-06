@@ -8,7 +8,7 @@ namespace Model.ViewModels.ContactViewModels
     public class ContactViewModel
     {
         public int Id { get; set; }
-        [Display(Name="PhonePhoneNumber")]
+        [Display(Name="PhoneNumber")]
         public string PhonePhoneNumber { get; set; }
         [Display(Name = "Name")]
         public string Name { get; set; }

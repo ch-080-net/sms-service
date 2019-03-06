@@ -1,16 +1,18 @@
-﻿<!DOCTYPE html>
-
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @using Model.ViewModels.CompanyViewModels;
 @model CompanyViewModel;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Localizer["Create"];
 }
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Company</title>
+    <title>@Localizer["Company"]</title>
 </head>
 <body>
-    <h2>Create</h2>
-    <h4>Company</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Company"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -46,15 +48,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-success" />
+                    <input type="submit" value="@Localizer["Create"]" class="btn btn-success" />
                 </div>
             </form>
         </div>
     </div>
     <div>
-        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
     </div>
 </body>
+</html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

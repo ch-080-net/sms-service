@@ -1,4 +1,6 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @using static Newtonsoft.Json.JsonConvert
 @model OperatorViewModel
 
@@ -14,7 +16,7 @@
                         {
                             <img style='width:32px; height:32px;'
                                  src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.Logo))"
-                                 alt="~/images/32.png"/>
+                                 alt="~/images/32.png" />
                         }
                         else
                         {
@@ -23,7 +25,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <input type="text" class="form-control" placeholder="Operator name" asp-for="Name" />
+                    <input type="text" class="form-control" placeholder="@Localizer["Operator name"]" asp-for="Name" />
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
@@ -31,7 +33,7 @@
         <div class="form-group col-md-7">
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Save
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> @Localizer["Save"]
                 </button>
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="caret"></span>
@@ -40,17 +42,17 @@
                 <ul class="dropdown-menu">
                     <li>
                         <a asp-action="Remove" asp-controller="Operator" asp-route-OperatorId="@Model.Id"
-                           asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">Remove</a>
+                           asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">@Localizer["Remove"]</a>
                     </li>
                     <li>
-                        <a asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">Add tariff</a>
+                        <a asp-action="Create" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">@Localizer["Add tariff"]</a>
                     </li>
                     <li>
-                        <a asp-action="Index" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">Manage tariffs</a>
-                    </li>
+                        <a asp-action="Index" asp-controller="Tariff" asp-route-OperatorId="@Model.Id">@Localizer["Manage tariffs"]</a>
+</li>
                     <li>
-                        <a asp-action="EditCodes" asp-controller="Operator" asp-route-Id="@Model.Id">Manage codes</a>
-                    </li>
+                        <a asp-action="EditCodes" asp-controller="Operator" asp-route-Id="@Model.Id">@Localizer["Manage codes"]</a>
+</li>
                 </ul>
             </div>
         </div>

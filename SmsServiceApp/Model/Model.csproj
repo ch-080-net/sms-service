@@ -22,4 +22,28 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\ViewModels\AccountViewModels\RegisterViewModel.uk-UA.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RegisterViewModel.uk-UA.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ViewModels\CompanyViewModels\CompanyViewModel.uk-UA.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CompanyViewModel.uk-UA.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ViewModels\AccountViewModels\RegisterViewModel.uk-UA.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RegisterViewModel.uk-UA.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ViewModels\CompanyViewModels\CompanyViewModel.uk-UA.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CompanyViewModel.uk-UA.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

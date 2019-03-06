@@ -14,6 +14,7 @@ namespace Model.ViewModels.CodeViewModels
 
         [Required]
         [RegularExpression(@"^\+[0-9]{5,6}$", ErrorMessage = "Wrong operator code")]
+        [Display(Name ="OperatorCode")]
         public string OperatorCode { get; set; }
 
     }

@@ -1,22 +1,24 @@
 ﻿@using Model.ViewModels.StopWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model IEnumerable<StopWordViewModel>;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Create"];
 }
 
-<h2>Stop Word</h2>
+<h2>@Localizer["Stop Word"]</h2>
 
 
 
 <p>
-    <a class="btn btn-success" asp-action="Create">Create New</a>
+    <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
 </p>
 <div class="container">
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
-           
+
                 <th scope="col" class="col-md-4">
                     @Html.DisplayNameFor(model => model.Word)
                 </th>
@@ -27,17 +29,17 @@
             @foreach (var item in Model)
             {
                 <tr>
-                 
-                    <td scope="row" >
+
+                    <td scope="row">
                         @Html.DisplayFor(modelItem => item.Word)
                     </td>
-                 
-                        <td scope="row">
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
+
+                    <td scope="row">
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>

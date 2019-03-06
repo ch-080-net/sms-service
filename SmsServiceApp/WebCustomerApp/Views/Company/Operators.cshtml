@@ -1,39 +1,45 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model OperatorViewModel
 
-<h2>Operators</h2>
+@{
+    ViewData["Title"] = Localizer["Operators"];
+}
+
+<h2>@Localizer["Operators"]</h2>
 <hr />
 
 <div class="container">
     <div class="col-lg-4">
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th class="col-md-3">
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th class="col-md-1"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.operators)
-            {
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td class="col-md-3">
-                        @item.Name
-                    </td>
-                    <td class="col-md-1">
-                        <a class="btn btn-success" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariff</a>
-                    </td>
+                    <th class="col-md-3">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th class="col-md-1"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.operators)
+                {
+                    <tr>
+                        <td class="col-md-3">
+                            @item.Name
+                        </td>
+                        <td class="col-md-1">
+                            <a class="btn btn-success" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">@Localizer["Tariff"]</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-primary" asp-action="Index">Back to Companies</a>
+    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Companies"]</a>
 </div>
 
 

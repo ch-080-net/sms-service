@@ -129,7 +129,7 @@
   <data name="Description" xml:space="preserve">
     <value>Опис</value>
   </data>
-  <data name="Error while calling the Web API!" xml:space="preserve">
-    <value>Помилка під час виклику веб-API</value>
+  <data name="Tariff List" xml:space="preserve">
+    <value>Список Тарифів</value>
   </data>
 </root>
