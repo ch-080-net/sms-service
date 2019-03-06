@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceProcess;
 using System.IO;
+using Model.Interfaces;
+using System.Linq;
 
 namespace WebCustomerApp.Services
 {
@@ -22,7 +24,11 @@ namespace WebCustomerApp.Services
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
-		public SmsSender()
+        private IMailingManager mailingManager;
+        private IEnumerable<MessageDTO> messageDTOs;
+
+
+        public SmsSender(IMailingManager mailingManager)
 		{
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
@@ -32,6 +38,7 @@ namespace WebCustomerApp.Services
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
+            this.mailingManager = mailingManager;
 		}
 
 		/// <summary>
@@ -72,7 +79,9 @@ namespace WebCustomerApp.Services
 		/// <param name="messages">Collection of messages for send</param>
 		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
 		{
-			foreach (MessageDTO message in messages)
+            messageDTOs = messages;
+
+            foreach (MessageDTO message in messages)
 				await SendMessageAsync(message);
 		}
 
@@ -84,6 +93,11 @@ namespace WebCustomerApp.Services
 		/// <param name="message">Message for send</param>
 		public async Task SendMessageAsync(MessageDTO message)
 		{
+            if (messageDTOs == null)
+            {
+                messageDTOs = new List<MessageDTO>() { message };
+            }
+
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			var estEncoding = Encoding.GetEncoding(1252);
@@ -95,10 +109,12 @@ namespace WebCustomerApp.Services
 			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
-			//int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
+            message.ServerId = messageIDs.FirstOrDefault();
 
-			if (resultStatus != 0)
+            //int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+            //				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
+
+            if (resultStatus != 0)
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
 		
@@ -147,7 +163,9 @@ namespace WebCustomerApp.Services
 
 			if (e.MessageState == 2 && e.NetworkErrorCode == 0)
 			{
-				//await mailingManager.MarkAsSent(result);
+                var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+                if (temp != null)
+				mailingManager.MarkAsSent(temp);
 			}
 		}
 

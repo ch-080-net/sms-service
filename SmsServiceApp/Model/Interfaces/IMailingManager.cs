@@ -11,5 +11,6 @@ namespace Model.Interfaces
         Task<IEnumerable<MessageDTO>> GetUnsentMessages();
 
         Task MarkAsSent(IEnumerable<MessageDTO> messages);
+        Task MarkAsSent(MessageDTO messages);
     }
 }

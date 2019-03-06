@@ -10,5 +10,6 @@ namespace Model.DTOs
         public string RecepientPhone { get; set; }
         public string SenderPhone { get; set; }
         public string MessageText { get; set; }
+        public string ServerId { get; set; }
     }
 }

@@ -35,14 +35,13 @@ namespace BAL.Jobs
             }
             catch
             {
-                return;
+
             }
-            await mailingManager.MarkAsSent(result);
         }
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-			SmsSender sms = new SmsSender();
+			SmsSender sms = new SmsSender(mailingManager);
             if (sms.Connect())
             {
                 if (sms.OpenSession())

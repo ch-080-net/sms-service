@@ -45,7 +45,30 @@ namespace BAL.Managers
                 if (tempRecipient != null)
                     tempRecipient.BeenSent = true;
             }
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+
+            }
+        }
+
+
+        public async Task MarkAsSent(MessageDTO messages)
+        {
+            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
+            if (tempRecipient != null)
+                tempRecipient.BeenSent = true;
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+
+            }
         }
 
         #region IDisposable Support
