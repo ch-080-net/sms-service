@@ -44,29 +44,33 @@
 							<label for="drop" class="toggle mt-lg-0 mt-2"><span class="fa fa-bars" aria-hidden="true"></span></label>
 						}
 							<input type="checkbox" id="drop" />
-							<ul class="menu" style="width: 70vw;">
-								@if (SignInManager.IsSignedIn(User))
-								{
-									<li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
-									<li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
-									@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-									{
-										<li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
-										<li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
-									}
-									<li class="p-0" style="float: right;">
-										<label for="drop-2" class="toggle">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span> </label>
-										<a href="#">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span></a>
-										<input type="checkbox" id="drop-2" />
-										<ul class="inner-dropdown" style="position: sticky">
-											<li><a asp-controller="Manage" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" class="active">Profile manager</a></li>
-											<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-												<button style="color:black" type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-											</form>
-										</ul>
-									</li>
-								}
-							</ul>
+                            <ul class="menu" style="width: 70vw;">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    <li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
+                                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                    {
+                                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
+                                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
+                                    }
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                                    {
+                                        <li><a asp-area="" asp-controller="Group" asp-action="Index">Users Group</a></li>
+                                    }
+                                    <li class="p-0" style="float: right;">
+                                        <label for="drop-2" class="toggle">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span> </label>
+                                        <a href="#">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+                                        <input type="checkbox" id="drop-2" />
+                                        <ul class="inner-dropdown" style="position: sticky">
+                                            <li><a asp-controller="Manage" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" class="active">Profile manager</a></li>
+                                            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                                                <button style="color:black" type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                                            </form>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
 						</nav>
 				</div>
 			</div>

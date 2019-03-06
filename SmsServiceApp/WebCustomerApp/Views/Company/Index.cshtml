@@ -14,26 +14,26 @@
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="col-md-2">
+                <th class="col-md-2">
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
-                <th scope="col" class="col-md-6">
+                <th class="col-md-6">
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
-                <th scope="col" class="col-md-4"></th>
+                <th class="col-md-4"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td scope="row">
+                    <td class="col-md-2">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td scope="row">
+                    <td class="col-md-6">
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
-					<td scope="row">
+					<td class="col-md-4">
 						<a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">Tariff</a> |
 						<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
 						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |

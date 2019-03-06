@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BAL.Managers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Model.ViewModels.GroupViewModels;
 using WebCustomerApp.Models;
 using WebCustomerApp.Models.AccountViewModels;
 using WebCustomerApp.Services;
@@ -22,17 +25,20 @@ namespace WebCustomerApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IGroupManager _groupManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            IGroupManager groupManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _groupManager = groupManager;
             _emailSender = emailSender;
             _logger = logger;
         }
@@ -204,43 +210,80 @@ namespace WebCustomerApp.Controllers
 			return View(model);
 		}
 
+        /// <summary>
+        /// Get registration view
+        /// </summary>
+        /// <param name="groupId">If user is ivited he had a link with group Id to registration in that ApplicationGroup</param>
+        /// <param name="returnUrl"></param>
+        /// <returns>Registration view</returns>
 		[HttpGet]
 		[AllowAnonymous]
-		public IActionResult NewRegister(string returnUrl = null)
+		public IActionResult NewRegister(int groupId = 0, string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
+            ViewData["GroupId"] = groupId;
 			return View();
 		}
 
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> NewRegister(RegisterViewModel model, string returnUrl = null)
-		{
-			ViewData["ReturnUrl"] = returnUrl;
-			if (ModelState.IsValid)
-			{
-				var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.Phone };
-				var result = await _userManager.CreateAsync(user, model.Password);
+        /// <summary>
+        /// Post method to registration new user
+        /// </summary>
+        /// <param name="model">ViewModel of Application user from View</param>
+        /// <param name="groupId">If user is ivited he had a link with group Id to registration in that ApplicationGroup</param>
+        /// <param name="returnUrl"></param>
+        /// <returns>Home page if successfully</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> NewRegister(RegisterViewModel model, int groupId = 0, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    PhoneNumber = model.Phone,
+                };
 
-				if (result.Succeeded)
-				{
-					_logger.LogInformation("User created a new account with password.");
+                if (groupId == 0)
+                {
+                    ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName };
+                    user.ApplicationGroup = group;
+                }
+                else
+                {
+                    user.ApplicationGroupId = groupId;
+                }
 
-					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-					await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-					await _signInManager.SignInAsync(user, isPersistent: false);
-					_logger.LogInformation("User created a new account with password.");
-					return RedirectToLocal(returnUrl);
-				}
-				AddErrors(result);
-			}
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    if (model.CorporateUser)
+                    {
+                        await _userManager.AddToRoleAsync(user, "CorporateUser");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "User");
+                    }
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
 
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
 
 		[HttpPost]

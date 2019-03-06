@@ -15,7 +15,6 @@ namespace BAL.Managers
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            //unitOfWork.Recipients;
         }
     }
 }
