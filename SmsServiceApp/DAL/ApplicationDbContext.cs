@@ -90,6 +90,12 @@ namespace WebCustomerApp.Data
                 .HasForeignKey(com => com.TariffId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+            builder.Entity<Phone>()
+                .HasOne(p => p.ApplicationGroup)
+                .WithOne(ag => ag.Phone)
+                .HasForeignKey<ApplicationGroup>(ag => ag.PhoneId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             #endregion
 
             // Optional FK

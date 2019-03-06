@@ -54,12 +54,12 @@ namespace BAL.Services
             CreateMap<GroupViewModel, ApplicationGroup>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
 
             CreateMap<ApplicationUser, UserViewModel>();
-            CreateMap<UserViewModel, ApplicationUser>();        
+            CreateMap<UserViewModel, ApplicationUser>();
 
-            /*CreateMap<Recipient, MessageDTO>()
+            CreateMap<Recipient, MessageDTO>()
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Phone.PhoneNumber))
-                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationUser.PhoneNumber))
-                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Company.Message));*/
+                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Company.Message));
         }
     }
 }
