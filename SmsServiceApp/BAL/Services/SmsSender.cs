@@ -138,11 +138,16 @@ namespace WebCustomerApp.Services
 		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
 		{
 			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
-			string report = $"StatusReportReceivedEvent: Message id:{e.MessageID}, Destination: {e.Destination}, Originator: {e.Originator}, Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
+			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
 
 			using (StreamWriter sw = new StreamWriter(@"C:\Users\pivastc\Source\Repos\Messages report.txt", true, Encoding.UTF8))
 			{
 				sw.WriteLine(report);
+			}
+
+			if (e.MessageState == 2 && e.NetworkErrorCode == 0)
+			{
+				//await mailingManager.MarkAsSent(result);
 			}
 		}
 

@@ -37,7 +37,7 @@ namespace BAL.Jobs
             {
                 return;
             }
-            await mailingManager.MarkAsSent(result);
+            //await mailingManager.MarkAsSent(result);
         }
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
