@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
-using WebCustomerApp.Services;
+using WebApp.Data;
+using WebApp.Models;
+using WebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Model.Interfaces;
 using DAL.Repositories;
@@ -26,7 +26,7 @@ using Microsoft.Extensions.Localization;
 using System.Reflection;
 
 
-namespace WebCustomerApp
+namespace WebApp
 {
     public class Startup
     {

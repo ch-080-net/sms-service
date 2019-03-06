@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Model.Interfaces;
 using System;
 using System.Collections.Generic;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
+using WebApp.Data;
+using WebApp.Models;
 
 namespace DAL.Repositories
 {

@@ -4,7 +4,7 @@ using Model.ViewModels.StopWordViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
 namespace BAL.Managers
 {

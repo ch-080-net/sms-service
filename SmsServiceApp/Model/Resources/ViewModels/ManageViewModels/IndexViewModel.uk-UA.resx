@@ -123,7 +123,7 @@
   <data name="IsEmailConfirmed" xml:space="preserve">
     <value>Підтвердження ел. адреси</value>
   </data>
-  <data name="PhoneNumber" xml:space="preserve">
+  <data name="Phone number" xml:space="preserve">
     <value>Мобільний Номер</value>
   </data>
   <data name="StatusMessage" xml:space="preserve">

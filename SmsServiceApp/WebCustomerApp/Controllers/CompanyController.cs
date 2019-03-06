@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.TariffViewModels;

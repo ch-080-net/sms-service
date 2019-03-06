@@ -8,7 +8,7 @@
         ViewData["Title"] = ViewBag.PageState.OperatorName + "codes";
 }
 
-<h2>Codes for @ViewBag.PageState.OperatorName</h2>
+<h2>@Localizer["Codes for"] @ViewBag.PageState.OperatorName</h2>
 <hr />
 
 @if (TempData.ContainsKey("ErrorMessage"))

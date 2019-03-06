@@ -1,6 +1,6 @@
 ﻿using Model.Interfaces;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
+using WebApp.Data;
+using WebApp.Models;
 
 namespace DAL.Repositories
 {

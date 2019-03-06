@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using AutoMapper;
 using Model.ViewModels.RecipientViewModels;

@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
-namespace WebCustomerApp.Controllers
+namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {

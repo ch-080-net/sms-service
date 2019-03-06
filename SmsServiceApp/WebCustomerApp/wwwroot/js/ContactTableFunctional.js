@@ -141,7 +141,7 @@ function contactBuildTableRow(contact) {
         "onclick='contactDelete(this);'" +
         "class='btn btn-danger' " +
         "data-id='" + contact.id + "'>" +
-        "<span class='glyphicon glyphicon-remove' />@Localizer['Delete']" +
+        "<span class='glyphicon glyphicon-remove' /> Delete" +
         "</button>" +
         "</td>" +
         "</tr>";

@@ -4,7 +4,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     public class Company
     {

@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WebCustomerApp.Controllers;
-using WebCustomerApp.Models;
+using WebApp.Controllers;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {

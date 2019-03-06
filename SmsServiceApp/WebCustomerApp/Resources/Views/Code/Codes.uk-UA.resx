@@ -126,6 +126,12 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="codes" xml:space="preserve">
+    <value>Коди</value>
+  </data>
+  <data name="Codes for" xml:space="preserve">
+    <value>Коди для</value>
+  </data>
   <data name="Codes list" xml:space="preserve">
     <value>Список Кодів</value>
   </data>

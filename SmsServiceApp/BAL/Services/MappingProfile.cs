@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.ViewModels.StopWordViewModels;
 using Model.DTOs;
 

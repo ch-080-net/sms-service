@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     public class Tariff
     {

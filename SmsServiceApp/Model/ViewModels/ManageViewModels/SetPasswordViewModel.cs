@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebCustomerApp.Models.ManageViewModels
+namespace Model.ViewModels.ManageViewModels
 {
     public class SetPasswordViewModel
     {
