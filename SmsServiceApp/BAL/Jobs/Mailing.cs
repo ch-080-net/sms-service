@@ -42,7 +42,7 @@ namespace BAL.Jobs
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-            SmsSender sms = new SmsSender();
+			SmsSender sms = new SmsSender();
             if (sms.Connect())
             {
                 if (sms.OpenSession())

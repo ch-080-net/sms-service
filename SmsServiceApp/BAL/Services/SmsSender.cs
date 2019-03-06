@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.ServiceProcess;
+using System.IO;
 
 namespace WebCustomerApp.Services
 {
@@ -14,19 +15,19 @@ namespace WebCustomerApp.Services
 	/// You should connect with SMPP, open session, send message(s)
 	/// And after that close session and disconnect from service
 	/// </summary>
-	public class SmsSender : ServiceBase, ISmsSender 
+	public class SmsSender : ISmsSender 
 	{
 		public SMSCclientSMPP clientSMPP;
 		public string userDataHeader;
 		public List<string> messageIDs;
-		public bool ImmediateResponse { get; set; }
+		public bool ImmediateResponse { get; protected set; }
 
 		public SmsSender()
 		{
 			clientSMPP = new SMSCclientSMPP();
 			userDataHeader = "00";
 			messageIDs = new List<string>();
-			ImmediateResponse = false;
+			ImmediateResponse = true;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
@@ -100,7 +101,7 @@ namespace WebCustomerApp.Services
 			if (resultStatus != 0)
 				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
-
+		
 		/// <summary>
 		/// Close current session
 		/// </summary>
@@ -136,7 +137,13 @@ namespace WebCustomerApp.Services
 		// Status Report (SR) received from SMSC
 		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
 		{
-			Console.WriteLine($"StatusReportReceivedEvent: {e.MessageID}, {e.Destination}, {e.Originator}, {e.MessageState}, {e.NetworkErrorCode}");
+			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
+			string report = $"StatusReportReceivedEvent: Message id:{e.MessageID}, Destination: {e.Destination}, Originator: {e.Originator}, Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
+
+			using (StreamWriter sw = new StreamWriter(@"C:\Users\pivastc\Source\Repos\Messages report.txt", true, Encoding.UTF8))
+			{
+				sw.WriteLine(report);
+			}
 		}
 
 		// Multipart message completed
