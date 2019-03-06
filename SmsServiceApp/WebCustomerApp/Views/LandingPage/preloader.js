@@ -1,5 +1,5 @@
 
-var arr=["Sms service","The Best","Great Performance","Optimized","Quick Access","Protection Of Personal Data","на правах реклами 579 з мобільного","Тут може бути ваша реклама   :D"];
+var arr=["Sms service","The Best","Great Performance","Optimized","Quick Access","Protection Of Personal Data"];
 
 document.body.onload=function(){
     var preloader=document.getElementById('page_preloader');
