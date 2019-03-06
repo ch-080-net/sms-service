@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Model.ViewModels.RecipientViewModels
 {
+    /// <summary>
+    /// ViewModel of Recipient
+    /// </summary>
     public class RecipientViewModel
     {
         public int Id { get; set; }

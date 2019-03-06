@@ -10,12 +10,21 @@ using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
 using WebCustomerApp.Models;
 using Model.ViewModels.StopWordViewModels;
+using Model.ViewModels.GroupViewModels;
+using Model.ViewModels.UserViewModels;
+using BAL.Managers;
 using Model.DTOs;
 
 namespace BAL.Services
 {
+    /// <summary>
+    ///  Mapper class for each mapping that is performed, inherited from Automapper Profile class
+    /// </summary>
     public class MappingProfile : Profile
     {
+        /// <summary>
+        /// Constructor with all mappings
+        /// </summary>
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
@@ -37,6 +46,15 @@ namespace BAL.Services
             CreateMap<Contact, ContactViewModel>()
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
             CreateMap<ContactViewModel, Contact>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
+            CreateMap<Code, CodeViewModel>();
+            CreateMap<CodeViewModel, Code>();
+
+            CreateMap<ApplicationGroup, GroupViewModel>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
+            CreateMap<GroupViewModel, ApplicationGroup>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
+
+            CreateMap<ApplicationUser, UserViewModel>();
+            CreateMap<UserViewModel, ApplicationUser>();
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));            
 
             CreateMap<Recipient, MessageDTO>()
