@@ -5,18 +5,22 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie-edge">
-	<title>Hello World</title>
+	<title>SmS Service</title>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	
 	<!-- <link rel="stylesheet" href="style2.css"> -->
 	<link rel="stylesheet" href="styles/index.css">
+	<link rel="stylesheet" href="style.min.css">
+
 
 
 </head>
 <body>
-<div class="preview">
-	<h1 class="loader">Sms service</h1>
-	<a class="skip_button" id="skip_button" href="#">Skip</button>
+<div class="preview" id="page_preloader" >
+
+	<h1 class="loader" onload='StartPage()' id="text_preloader" >Sms service</h1>
+	<!-- <a class="skip_button" id="skip_button" href="#">Skip</button> -->
 </div>
 <header class="header" >
    <a href="#" class="logo">
@@ -46,7 +50,7 @@
 </header>
 <section class="main">
 	<h1 class="main_title">Landing page <span class="main_title-big">something</span></h1>
-	<a href="#app" class="main_button">get started</a>
+	<a href="#app" class="main_button anchor">get started</a>
 	<p class="main_description">some text <a href="#">some link</a>!</p>
 </section>
 <!--/.main-->
@@ -88,6 +92,7 @@
 		</p>
  	</div>
 </section>
+<script src="preloader.js"></script>
 </body>
 </html>
 
