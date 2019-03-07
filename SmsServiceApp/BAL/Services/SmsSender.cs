@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.IO;
 using Model.Interfaces;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebCustomerApp.Services
 {
@@ -19,40 +20,68 @@ namespace WebCustomerApp.Services
 	/// </summary>
 	public class SmsSender : ISmsSender 
 	{
+        private static SmsSender instance;
+
 		public SMSCclientSMPP clientSMPP;
 		public string userDataHeader;
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
-        private IMailingManager mailingManager;
-        private static ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
+        private ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
+        private IServiceScope serviceScope;
 
-        public SmsSender(IMailingManager mailingManager)
+        public static SmsSender getInstance(IServiceScopeFactory serviceScopeFactory)
+        {
+            if (instance == null)
+            {                
+                instance = new SmsSender(serviceScopeFactory);
+            }
+            return instance;
+        }
+
+        private SmsSender(IServiceScopeFactory serviceScopeFactory)
 		{
+            this.serviceScope = serviceScopeFactory.CreateScope();
 			clientSMPP = new SMSCclientSMPP();
-			userDataHeader = "00";
+            userDataHeader = "00";
 			messageIDs = new List<string>();
 			ImmediateResponse = false;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
-            this.mailingManager = mailingManager;
-		}
 
-		/// <summary>
-		/// Sets the connection with emulator,
-		/// If you want connect to server, you should change remote host
-		/// </summary>
-		/// <returns>True - if the connection is established</returns>
-		public bool Connect()
+            try
+            {
+                Connect();
+                OpenSession();
+            }
+            finally
+            {
+
+            }
+        }
+
+        ~SmsSender()
+        {
+            CloseSession();
+            Disconnect();
+            serviceScope.Dispose();
+        }
+
+        /// <summary>
+        /// Sets the connection with emulator,
+        /// If you want connect to server, you should change remote host
+        /// </summary>
+        /// <returns>True - if the connection is established</returns>
+        private void Connect()
 		{
-			int connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, "");
+            int connectionStatus;
+            do
+            {
+                connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, "");
+            } while (connectionStatus != 0);
 
-			if (connectionStatus == 0)
-				return true;
-			else
-				return false;
 		}
 
 		/// <summary>
@@ -60,17 +89,16 @@ namespace WebCustomerApp.Services
 		/// You should add another user in smppsim.props file
 		/// </summary>
 		/// <returns>True - if the session are opened</returns>
-		public bool OpenSession()
+		private void OpenSession()
 		{
 			//string concatCode = "smpp.long-messages=udh8";
 
-			int sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
-
-			if (sessionStatus == 0)
-				return true;
-			else
-				return false;
-		}
+            int sessionStatus;
+            do
+            {
+                sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
+            } while (sessionStatus != 0);
+        }
 
 		/// <summary>
 		/// Send collection of messages 
