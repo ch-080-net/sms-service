@@ -64,9 +64,16 @@ namespace WebCustomerApp.Services
 
         ~SmsSender()
         {
-            CloseSession();
-            Disconnect();
-            serviceScope.Dispose();
+            try
+            {
+                CloseSession();
+                Disconnect();
+                
+            }
+            finally
+            {
+                serviceScope.Dispose();
+            }
         }
 
         /// <summary>
@@ -190,7 +197,10 @@ namespace WebCustomerApp.Services
 			{
                 var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
-                serviceScope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
+                {
+                    using (var mailingManager = serviceScope.ServiceProvider.GetService<IMailingManager>())
+                        mailingManager.MarkAsSent(temp);
+                }
                 messageDTOs.Remove(temp);
             }
 		}
