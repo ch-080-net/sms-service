@@ -28,11 +28,19 @@ namespace WebApp.Controllers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Get Contact View 
+        /// </summary>
+        /// <returns>Contact View</returns>
         public IActionResult Contacts()
         {
             return View();
         }
 
+        /// <summary>
+        /// Get List with contacts on current page with search value
+        /// </summary>
+        /// <returns>List with contacts</returns>
         [Route("~/Contact/GetContactList")]
         [HttpGet]
         public List<ContactViewModel> GetContactList(int pageNumber, int pageSize, string searchValue)
@@ -50,11 +58,14 @@ namespace WebApp.Controllers
             }
             catch
             {
-                //throw ex;
                 return null;
             }
         }
 
+        /// <summary>
+        /// Get count of contacts with searchValue
+        /// </summary>
+        /// <returns>Count of contacts</returns>
         [Route("~/Contact/GetContactCount")]
         [HttpGet]
         public int GetContactCount(string searchValue)
@@ -68,15 +79,19 @@ namespace WebApp.Controllers
                 if (searchValue == null)
                     return contactManager.GetContactCount(groupId);
                 else
-                    return contactManager.GetContactBySearchValueCount(groupId, searchValue);
+                    return contactManager.GetContactCountBySearchValue(groupId, searchValue);
             }
             catch
             {
-                //throw ex;
                 return 0;
             }
         }
 
+        /// <summary>
+        /// Send new Contact from view to db
+        /// </summary>
+        /// <param name="obj">ViewModel of Contact from View</param>
+        /// <returns>String with infromation of action success</returns>
         [Route("~/Contact/AddContact")]
         [HttpPost]
         public IActionResult AddContact(ContactViewModel obj)
@@ -100,11 +115,15 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                //throw ex;
                 return new ObjectResult(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Delete selected item from db
+        /// </summary>
+        /// <param name="id">Id of Contact which select to delete</param>
+        /// <returns>String with infromation of action success</returns>
         [Route("~/Contact/DeleteContact/{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
@@ -116,11 +135,15 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                //throw ex;
                 return new ObjectResult(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Send updated Contact to db
+        /// </summary>
+        /// <param name="obj">ViewModel of Contact from View</param>
+        /// <returns>String with infromation of action success</returns>
         [Route("~/Contact/UpdateContact")]
         [HttpPut]
         public IActionResult UpdateContact(ContactViewModel obj)
@@ -142,11 +165,15 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-                //throw ex;
                 return new ObjectResult(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Get Contact by id
+        /// </summary>
+        /// <param name="id">Id of contact</param>
+        /// <returns>Contact by id</returns>
         [Route("~/Contact/GetContact/{id}")]
         [HttpGet]
         public ContactViewModel GetContact(int id)
@@ -158,7 +185,6 @@ namespace WebApp.Controllers
             }
             catch
             {
-                //throw ex;
                 return null;
             }
         }
