@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebCustomerApp.Models
 {
+    /// <summary>
+    /// Contact entity, which include Group to which belong contact, phone and additional info
+    /// </summary>
     public class Contact
     {
         public int Id { get; set; } //PRIMARY KEY

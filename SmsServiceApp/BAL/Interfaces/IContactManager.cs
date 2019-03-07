@@ -6,6 +6,9 @@ using WebCustomerApp.Models;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Interface with CRUD operation for Contacts
+    /// </summary>
     public interface IContactManager
     {
         ContactViewModel GetContact(int ContactId);
@@ -13,7 +16,7 @@ namespace BAL.Managers
         List<ContactViewModel> GetContactBySearchValue(int groupId ,int pageNumber, int pageSize, 
             string searchValue);
         int GetContactCount(int groupId);
-        int GetContactBySearchValueCount(int groupId, string searchValue);
+        int GetContactCountBySearchValue(int groupId, string searchValue);
         bool CreateContact(ContactViewModel contactModel, int groupId);
         void DeleteContact(int id);
         bool UpdateContact(ContactViewModel contactModel, int groupId);

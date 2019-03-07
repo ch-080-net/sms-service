@@ -10,17 +10,33 @@ using Model.ViewModels.ContactViewModels;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manager for Contacts, include all methods needed to work with Contact storage.
+    /// Inherited from BaseManager and have additional methods.
+    /// </summary>
     public class ContactManager : BaseManager, IContactManager
     {
         public ContactManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 
+        /// <summary>
+        /// Method for getting Contact by id
+        /// </summary>
+        /// <param name="ContactId">Id of contact</param>
+        /// <returns>View model of Contact</returns>
         public ContactViewModel GetContact(int ContactId)
         {
             return mapper.Map<ContactViewModel>(unitOfWork.Contacts.GetById(ContactId));
         }
 
+        /// <summary>
+        /// Method for getting all Contacts which belong to specified group on current page
+        /// </summary>
+        /// <param name="groupId">Id of group</param>
+        /// <param name="pageNumber">Number of current page</param>
+        /// <param name="pageSize">Size of page</param>
+        /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
             try
@@ -39,6 +55,14 @@ namespace BAL.Managers
             }
         }
 
+        /// <summary>
+        /// Method for getting all Contacts which belong to specified group on current page with search value
+        /// </summary>
+        /// <param name="groupId">Id of group</param>
+        /// <param name="pageNumber">Number of current page</param>
+        /// <param name="pageSize">Size of page</param>
+        /// <param name="searchValue">Search value</param>
+        /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContactBySearchValue(int groupId, int pageNumber, int pageSize,
             string searchValue)
         {
@@ -63,6 +87,11 @@ namespace BAL.Managers
             }
         }
 
+        /// <summary>
+        /// Method for getting count of contacts that belong to group
+        /// </summary>
+        /// <param name="groupId">Id of group</param>
+        /// <returns></returns>
         public int GetContactCount(int groupId)
         {
             try
@@ -77,7 +106,13 @@ namespace BAL.Managers
             }
         }
 
-        public int GetContactBySearchValueCount(int groupId, string searchValue)
+        /// <summary>
+        /// Method for getting count of contacts that belong to group with search value
+        /// </summary>
+        /// <param name="groupId">Id of group</param>
+        /// <param name="searchValue">Search value</param>
+        /// <returns></returns>
+        public int GetContactCountBySearchValue(int groupId, string searchValue)
         {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
                         filter: item => item.ApplicationGroupId == groupId).ToList();
@@ -92,6 +127,12 @@ namespace BAL.Managers
                 return contacts.Count;
         }
 
+        /// <summary>
+        /// Method for inserting new company to db
+        /// </summary>
+        /// <param name="contactModel">View model of contact</param>
+        /// <param name="groupId">Id of Group wich create this contact</param>
+        /// <returns></returns>
         public bool CreateContact(ContactViewModel contactModel, int groupId)
         {
             try
@@ -127,6 +168,10 @@ namespace BAL.Managers
             }
         }
 
+        /// <summary>
+        /// Delete Contact by Id
+        /// </summary>
+        /// <param name="id">Id of contact</param>
         public void DeleteContact(int id)
         {
             try
@@ -141,6 +186,12 @@ namespace BAL.Managers
             }
         }
 
+        /// <summary>
+        /// Update Company in db
+        /// </summary>
+        /// <param name="contactModel">View model of contact</param>
+        /// <param name="groupId">Id of Group wich update this contact</param>
+        /// <returns></returns>
         public bool UpdateContact(ContactViewModel contactModel, int groupId)
         {
             try
