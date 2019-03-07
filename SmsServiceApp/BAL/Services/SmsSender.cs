@@ -28,20 +28,22 @@ namespace WebCustomerApp.Services
 		public bool ImmediateResponse { get; protected set; }
 
         private ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
-        private IServiceScope serviceScope;
+        private IServiceScopeFactory serviceScopeFactory;
 
-        public static SmsSender getInstance(IServiceScopeFactory serviceScopeFactory)
+        public static async Task<SmsSender> GetInstance(IServiceScopeFactory serviceScopeFactory)
         {
             if (instance == null)
             {                
                 instance = new SmsSender(serviceScopeFactory);
+                await instance.Connect();
+                await instance.OpenSession();
             }
             return instance;
         }
 
         private SmsSender(IServiceScopeFactory serviceScopeFactory)
 		{
-            this.serviceScope = serviceScopeFactory.CreateScope();
+            this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
             userDataHeader = "00";
 			messageIDs = new List<string>();
@@ -50,30 +52,12 @@ namespace WebCustomerApp.Services
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
-
-            try
-            {
-                Connect();
-                OpenSession();
-            }
-            finally
-            {
-
-            }
         }
 
         ~SmsSender()
         {
-            try
-            {
-                CloseSession();
-                Disconnect();
-                
-            }
-            finally
-            {
-                serviceScope.Dispose();
-            }
+            CloseSession();
+            Disconnect();
         }
 
         /// <summary>
@@ -81,12 +65,13 @@ namespace WebCustomerApp.Services
         /// If you want connect to server, you should change remote host
         /// </summary>
         /// <returns>True - if the connection is established</returns>
-        private void Connect()
+        private async Task Connect()
 		{
-            int connectionStatus;
+            int connectionStatus = -1;
             do
             {
-                connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, "");
+                try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
+                finally { await Task.Delay(5000); }
             } while (connectionStatus != 0);
 
 		}
@@ -96,14 +81,15 @@ namespace WebCustomerApp.Services
 		/// You should add another user in smppsim.props file
 		/// </summary>
 		/// <returns>True - if the session are opened</returns>
-		private void OpenSession()
+		private async Task OpenSession()
 		{
 			//string concatCode = "smpp.long-messages=udh8";
 
-            int sessionStatus;
+            int sessionStatus = -1;
             do
             {
-                sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
+                try { sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, ""); }
+                finally { await Task.Delay(5000); }
             } while (sessionStatus != 0);
         }
 
@@ -154,22 +140,19 @@ namespace WebCustomerApp.Services
 		/// Close current session
 		/// </summary>
 		/// <returns>True - if session are closet correctly</returns>
-		public bool CloseSession()
+		private void CloseSession()
 		{
-			int result = clientSMPP.smppFinalizeSession();
-
-			if (result == 0)
-				return true;
-			else
-				return false;
+            try { int result = clientSMPP.smppFinalizeSession(); }
+            finally { }
 		}
 
 		/// <summary>
 		/// Close connection with service
 		/// </summary>
-		public void Disconnect()
+		private void Disconnect()
 		{
-			clientSMPP.tcpDisconnect();
+            try { clientSMPP.tcpDisconnect(); }
+            finally { }
 		}
 
 		public void SMSCclientSMPP_OnTcpDisconnected(object sender, tcpDisconnectedEventArgs e)
@@ -198,10 +181,12 @@ namespace WebCustomerApp.Services
                 var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
-                    using (var mailingManager = serviceScope.ServiceProvider.GetService<IMailingManager>())
-                        mailingManager.MarkAsSent(temp);
+                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    {
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
+                    }
+                    messageDTOs.Remove(temp);
                 }
-                messageDTOs.Remove(temp);
             }
 		}
 

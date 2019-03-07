@@ -14,7 +14,7 @@ namespace BAL.Jobs
     /// <summary>
     /// IJob implementation for sending messages through SMPP
     /// </summary>
-    public class Mailing : IJob, IDisposable
+    public class Mailing : IJob
     {
         private readonly IMapper mapper;
         private readonly IMailingManager mailingManager;
@@ -30,43 +30,15 @@ namespace BAL.Jobs
         public async Task Execute(IJobExecutionContext context)
         {
             var result = await mailingManager.GetUnsentMessages();
-            if (!result.Any())
-                return;
-            try
-            {
+            if (result.Any())
                 await SendMessages(result);
-            }
-            catch
-            {
-
-            }
         }
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-			SmsSender sms = SmsSender.getInstance(serviceProvider.GetService<IServiceScopeFactory>());
-            await sms.SendMessagesAsync(messages);
+			SmsSender sms = await SmsSender.GetInstance(serviceProvider.GetService<IServiceScopeFactory>());
+            try { await sms.SendMessagesAsync(messages); }
+            finally { };
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    mailingManager.Dispose();
-                }
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-        #endregion
     }
 }

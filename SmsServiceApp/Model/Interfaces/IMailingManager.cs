@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.Interfaces
 {
-    public interface IMailingManager : IDisposable
+    public interface IMailingManager
     {
         Task<IEnumerable<MessageDTO>> GetUnsentMessages();
 
