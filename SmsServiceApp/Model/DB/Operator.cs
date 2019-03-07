@@ -13,11 +13,17 @@ namespace WebCustomerApp.Models
         public ICollection<Code> Codes { get; set; }
         public ICollection<Tariff> Tariffs { get; set; }
 
+        /// <summary>
+        /// Name of operator
+        /// </summary>
         /// <value>
-        /// Contains name, such as Vodafone
+        /// Contains operator name, such as Vodafone
         /// </value>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Logo of operator
+        /// </summary>
         /// <value>Contains logo as array of bites</value>
         /// <example>
         /// <code>
