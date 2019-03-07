@@ -25,8 +25,7 @@ namespace WebCustomerApp.Services
 		public bool ImmediateResponse { get; protected set; }
 
         private IMailingManager mailingManager;
-        private IEnumerable<MessageDTO> messageDTOs;
-
+        private static ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
 
         public SmsSender(IMailingManager mailingManager)
 		{
@@ -79,8 +78,6 @@ namespace WebCustomerApp.Services
 		/// <param name="messages">Collection of messages for send</param>
 		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
 		{
-            messageDTOs = messages;
-
             foreach (MessageDTO message in messages)
 				await SendMessageAsync(message);
 		}
@@ -93,12 +90,12 @@ namespace WebCustomerApp.Services
 		/// <param name="message">Message for send</param>
 		public async Task SendMessageAsync(MessageDTO message)
 		{
-            if (messageDTOs == null)
-            {
-                messageDTOs = new List<MessageDTO>() { message };
-            }
+            if (messageDTOs.Any(m => m.RecipientId == message.RecipientId))
+                return;
+            else
+                messageDTOs.Add(message);
 
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			var estEncoding = Encoding.GetEncoding(1252);
 			var utf = Encoding.UTF8;
@@ -156,7 +153,7 @@ namespace WebCustomerApp.Services
 			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
 			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
 
-			using (StreamWriter sw = new StreamWriter(@"C:\Users\pivastc\Source\Repos\Messages report.txt", true, Encoding.UTF8))
+			using (StreamWriter sw = new StreamWriter(@"C:\Users\Autum\Desktop\Log.txt", true, Encoding.UTF8))
 			{
 				sw.WriteLine(report);
 			}
@@ -166,7 +163,8 @@ namespace WebCustomerApp.Services
                 var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
 				mailingManager.MarkAsSent(temp);
-			}
+                messageDTOs.Remove(temp);
+            }
 		}
 
 		// Multipart message completed
