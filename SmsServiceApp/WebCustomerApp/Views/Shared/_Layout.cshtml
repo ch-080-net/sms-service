@@ -17,6 +17,7 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -33,16 +34,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    <li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
-                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
+                    <li><a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Company"]</a></li>
+                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a></li>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
-                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
+                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a></li>
+                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a></li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
                     {
-                        <li><a asp-area="" asp-controller="Group" asp-action="Index">Users Group</a></li>
+                        <li><a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Users Group"]</a></li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
@@ -53,13 +54,17 @@
         @RenderBody()
         <hr />
         <footer id="footer">
-            <div >
+            <div class="bottom-menu">
                 <div class="col-md-2">
                     <p>&copy Localization</p>
                 </div>
-                <div class="col-md-2" >
-                    @await Html.PartialAsync("_SelectLanguagePartial")
-                </div>
+
+
+                <ul class="language-switcher">
+                    <li><a href="?culture=en-US"><span>EN</span></a></li>
+                    <li><a href="?culture=uk-UA"><span>UA</span></a></li>
+                </ul>
+
             </div>
         </footer>
     </div>

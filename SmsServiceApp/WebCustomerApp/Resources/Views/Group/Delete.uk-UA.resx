@@ -117,22 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Company" xml:space="preserve">
-    <value>Компанія</value>
+  <data name="Are you sure you want to delete this user?" xml:space="preserve">
+    <value>Дійсно видалити цього користувача?</value>
   </data>
-  <data name="Contacts" xml:space="preserve">
-    <value>Контакти</value>
+  <data name="Back to List" xml:space="preserve">
+    <value>Назад до списку</value>
   </data>
-  <data name="Operators" xml:space="preserve">
-    <value>Оператор</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Видалити</value>
   </data>
-  <data name="Stop Words" xml:space="preserve">
-    <value>Слова зупинки</value>
-  </data>
-  <data name="Toggle navigation" xml:space="preserve">
-    <value>Перемикання навігації</value>
-  </data>
-  <data name="Users Group" xml:space="preserve">
-    <value>Групи користувача</value>
+  <data name="User" xml:space="preserve">
+    <value>Користувач</value>
   </data>
 </root>

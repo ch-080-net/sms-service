@@ -20,9 +20,9 @@ namespace DAL.Repositories
             return base.Get(filter: item => item.OperatorId == operatorId);
         }
 
-		public void ChangeTariffPricing(Tariff currentPrice, decimal newPrice, string userRole)
+		public void ChangeTariffPricing(Tariff currentTariff, decimal newPrice, string userRole)
 		{
-            Tariff p = context.Tariffs.Find(currentPrice.Price);
+            Tariff p = context.Tariffs.Find(currentTariff.Price);
             p.Price = newPrice;
             context.SaveChanges();
 		}

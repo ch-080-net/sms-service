@@ -1,15 +1,17 @@
 ﻿@using Model.ViewModels.UserViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model IEnumerable<UserViewModel>;
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Localizer["Index"];
     var group = Model.FirstOrDefault().GroupName;
 }
 
-<h2>Users in @group</h2>
+<h2>@Localizer["Users in"] @group</h2>
 
 <p>
-    <a class="btn btn-success" asp-action="AddUsers">Add users</a>
+    <a class="btn btn-success" asp-action="AddUsers">@Localizer["Add users"]</a>
 </p>
 <div class="container col-lg-6">
     <table class="table table-striped table-bordered">
@@ -35,7 +37,7 @@
                         @Html.DisplayFor(modelItem => item.PhoneNumber)
                     </td>
                     <td class="col-md-1">
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                     </td>
                 </tr>
             }

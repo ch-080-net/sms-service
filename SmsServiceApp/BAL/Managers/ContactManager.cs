@@ -11,7 +11,8 @@ using Model.ViewModels.ContactViewModels;
 namespace BAL.Managers
 {
     public class ContactManager : BaseManager, IContactManager
-    {
+    {   
+
         public ContactManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
