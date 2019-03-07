@@ -129,7 +129,7 @@ namespace WebApp
             services.AddScoped<IStopWordManager, StopWordManager>();
             services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
-            services.AddScoped<ICodeManager, CodeManager>();
+            services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 
            

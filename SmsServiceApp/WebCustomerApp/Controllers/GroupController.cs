@@ -11,8 +11,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using WebCustomerApp.Models;
-using WebCustomerApp.Services;
+using WebApp.Models;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {

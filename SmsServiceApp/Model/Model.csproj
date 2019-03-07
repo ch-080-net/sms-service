@@ -46,4 +46,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\ViewModels\GroupViewModels\" />
+  </ItemGroup>
+
 </Project>
