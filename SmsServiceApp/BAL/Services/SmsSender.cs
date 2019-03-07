@@ -153,18 +153,16 @@ namespace WebCustomerApp.Services
 			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
 			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
 
-			using (StreamWriter sw = new StreamWriter(@"C:\Users\Autum\Desktop\Log.txt", true, Encoding.UTF8))
+			using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
 			{
 				sw.WriteLine(report);
 			}
 
-			if (e.MessageState == 2 && e.NetworkErrorCode == 0)
-			{
-                var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-				mailingManager.MarkAsSent(temp);
-                messageDTOs.Remove(temp);
-            }
+			var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+			messageDTOs.Remove(temp);
+
+			if (e.MessageState == 2 && e.NetworkErrorCode == 0 && temp != null)
+					mailingManager.MarkAsSent(temp);
 		}
 
 		// Multipart message completed
