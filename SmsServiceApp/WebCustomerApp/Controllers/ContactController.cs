@@ -91,7 +91,7 @@ namespace WebApp.Controllers
         /// Send new Contact from view to db
         /// </summary>
         /// <param name="obj">ViewModel of Contact from View</param>
-        /// <returns>String with infromation of action success</returns>
+        /// <returns>String with information of action success</returns>
         [Route("~/Contact/AddContact")]
         [HttpPost]
         public IActionResult AddContact(ContactViewModel obj)
@@ -123,7 +123,7 @@ namespace WebApp.Controllers
         /// Delete selected item from db
         /// </summary>
         /// <param name="id">Id of Contact which select to delete</param>
-        /// <returns>String with infromation of action success</returns>
+        /// <returns>String with information of action success</returns>
         [Route("~/Contact/DeleteContact/{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
@@ -143,7 +143,7 @@ namespace WebApp.Controllers
         /// Send updated Contact to db
         /// </summary>
         /// <param name="obj">ViewModel of Contact from View</param>
-        /// <returns>String with infromation of action success</returns>
+        /// <returns>String with information of action success</returns>
         [Route("~/Contact/UpdateContact")]
         [HttpPut]
         public IActionResult UpdateContact(ContactViewModel obj)
