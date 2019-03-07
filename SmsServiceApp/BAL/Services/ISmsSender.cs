@@ -8,10 +8,6 @@ namespace WebCustomerApp.Services
 {
 	public interface ISmsSender
 	{
-		bool Connect();
-		void Disconnect();
-		bool OpenSession();
-		bool CloseSession();
 		Task SendMessageAsync(MessageDTO message);
 		Task SendMessagesAsync(IEnumerable<MessageDTO> messages);
 		void SMSCclientSMPP_OnTcpDisconnected(object sender, smscc.tcpDisconnectedEventArgs e);

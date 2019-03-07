@@ -7,6 +7,7 @@ using WebCustomerApp.Services;
 using Model.DTOs;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
@@ -15,13 +16,15 @@ namespace BAL.Jobs
     /// </summary>
     public class Mailing : IJob, IDisposable
     {
-        private readonly IMailingManager mailingManager;
         private readonly IMapper mapper;
+        private readonly IMailingManager mailingManager;
+        private readonly IServiceProvider serviceProvider;
 
-        public Mailing(IMailingManager mailingManager, IMapper mapper)
+        public Mailing(IServiceProvider serviceProvider)
         {
-            this.mailingManager = mailingManager;
-            this.mapper = mapper;
+            this.mapper = serviceProvider.GetService<IMapper>();
+            this.mailingManager = serviceProvider.GetService<IMailingManager>();
+            this.serviceProvider = serviceProvider;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -41,29 +44,8 @@ namespace BAL.Jobs
 
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-			SmsSender sms = new SmsSender(mailingManager);
-            if (sms.Connect())
-            {
-                if (sms.OpenSession())
-                {
-                    await sms.SendMessagesAsync(messages);
-					if (sms.CloseSession())
-					{
-						sms.Disconnect();
-						Console.WriteLine("Connection close");
-					}
-					else
-						Console.WriteLine("Could not close session");
-				}
-				else
-                {
-					throw new Exception("Session error");
-                }
-            }
-            else
-            {
-				throw new Exception("Connection error");
-            }
+			SmsSender sms = SmsSender.getInstance(serviceProvider.GetService<IServiceScopeFactory>());
+            await sms.SendMessagesAsync(messages);
         }
 
         #region IDisposable Support
