@@ -1,5 +1,5 @@
 /*global*/
-* {
+   * {
     box-sizing: border-box;
   }
   body {
@@ -103,21 +103,21 @@
     display: block;
   }
   /*section main*/
-  .main {
-    background-image: url('bg.jpg');
+.main {
+    background-image: url('../images/b.jpg');
     background-size: cover;
     height: 100vh;
-    color: #ffff;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-  }
+}
   /* main__title */
   .main_title {
     font-family: 'Times New Roman', Times, serif;
     font-size: 36px;
-    font-weight: 700px;
+    font-weight: 700;
     font-style: italic;
     letter-spacing: 1.8px;
     text-shadow: 0 1px 40px rgba(1, 1, 1, 0.55);
@@ -185,19 +185,22 @@
     display: inline-block;
     margin-bottom: 20px;
   }
-  .features_item--messages:before {
-    background-image: url('images/messages.png');
-  }
-  .features_item--phoneMessage:before {
-    background-image: url('images/phoneMessage.png');
-  }
-  .features_item--iconMessage:before {
-    background-image: url('images/iconMessage.png');
-  }
+.features_item--messages:before {
+
+    background-image: url('../images/landing/messages.png');
+}
+.features_item--phoneMessage:before {
+  
+    background-image: url('../images/landing/phonemessage.png');
+}
+.features_item--iconMessage:before {
+  
+    background-image: url('../images/landing/iconmessage.png');
+}
   .features_description {
     margin: 0;
     font-size: 16px;
-    font-weight: 300px;
+    font-weight: 300;
     line-height: 18px;
     color: #8b8b8b;
   }
@@ -207,14 +210,14 @@
     height: 700px auto;
     display: flex;
   }
-  .app_image {
+.app_image {
     width: 550px;
     margin-top: -50px;
     background-repeat: no-repeat;
-    background-image: url("images/phone.png");
+    background-image: url('../images/landing/phone.png');
     background-size: contain;
     background-position: top;
-  }
+}
   .app_content {
     width: 550px;
     margin-left: auto;
@@ -240,13 +243,13 @@
     text-decoration: underline;
     transition: color 0.2s linear;
   }
-  .app_link--iconMessage {
+.app_link--iconMessage {
     width: 100px;
     height: 100px;
-    background-image: url('images/iconMessage.png');
-  }
+    background-image: url('../images/landing/iconMessage.png');
+}
   .start {
-    image-rendering: 100%;
+    /*image-rendering: 100%;*/
     height: 100%;
     width: 100%;
     display: flex;

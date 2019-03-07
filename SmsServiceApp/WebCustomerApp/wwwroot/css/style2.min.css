@@ -2,7 +2,7 @@
   position: fixed;
   background: #000;
   transition: 4s all;
-  opacity: 2;
+  opacity: 1;
   visibility: visible;
   z-index: 3;
   left: 0;

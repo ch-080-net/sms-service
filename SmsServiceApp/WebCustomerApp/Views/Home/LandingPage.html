@@ -1,13 +1,4 @@
-﻿@{
-    ViewData["Title"] = "SMS-service";
-    Layout = null;
-}
-@using WebCustomerApp.Models
-
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -15,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <title>SmS Service</title>
-    <link rel="stylesheet" href="~/css/style2.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
-    <link rel="stylesheet" href="~/css/style2.css">
+    <link rel="stylesheet" asp-fallback-href="~/wwwroot/css/style2.css">
+    <link rel="stylesheet" href="~/wwwroot/css/style2e.min.css">
+
+
 
 </head>
 <body>
@@ -30,15 +23,15 @@
     </div>
     <header class="header">
         <a href="#" class="logo">
-            <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
+            <img src="logo.svg" alt="logo unload" class="logo_img">
         </a>
         <nav class="menu">
             <ul class="menu_list">
                 <li class="menu_item">
-                    <a href="Account/NewLogin" class="menu_link">Log in</a>
+                    <a href="#" class="menu_link">Log in</a>
                 </li>
                 <li class="menu_item">
-                    <a href="Account/NewRegister" class="menu_link">Sign up</a>
+                    <a href="#" class="menu_link">Sign up</a>
                 </li>
                 <li class="menu_item">
                     <label for="checkbox-button-menu">☰</label>
@@ -55,7 +48,7 @@
         <!--/.header-->
     </header>
     <section class="main">
-        <h1 class="main_title">Landing page <span class="main_title-big">sms service</span></h1>
+        <h1 class="main_title">Landing page <span class="main_title-big">something</span></h1>
         <a href="#app" class="main_button anchor">get started</a>
         <p class="main_description">some text <a href="#">some link</a>!</p>
     </section>
@@ -107,6 +100,7 @@
         </div>
     </footer>
 
-    <script src="~/js/preloader.js"></script>
+    <script src="preloader.js"></script>
 </body>
 </html>
+
