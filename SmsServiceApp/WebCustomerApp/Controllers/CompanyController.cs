@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         private readonly IOperatorManager operatorManager;
         private readonly ITariffManager tariffManager;
         private readonly UserManager<ApplicationUser> userManager;
-        private static int groupId;
+        private int groupId;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, UserManager<ApplicationUser> userManager)
         {
