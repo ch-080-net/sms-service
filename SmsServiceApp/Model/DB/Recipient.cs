@@ -4,6 +4,9 @@ using System.Text;
 
 namespace WebCustomerApp.Models
 {
+    /// <summary>
+    /// Recipient entity, which belongs to company and include phone
+    /// </summary>
     public class Recipient
     {
         public int Id { get; set; }

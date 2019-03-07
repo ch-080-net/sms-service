@@ -24,11 +24,13 @@ namespace DAL.Repositories
         {
             var result = from r in context.Recipients
                          .Include(r => r.Company)
-                         .ThenInclude(c => c.ApplicationUser)
+                         .ThenInclude(c => c.ApplicationGroup)
+                         .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone)
                          select r;
             return result;
         }
+
 
         public override IEnumerable<Recipient> Get(
             Expression<Func<Recipient, bool>> filter = null,
@@ -38,7 +40,8 @@ namespace DAL.Repositories
         {
             IQueryable<Recipient> query = context.Recipients
                          .Include(r => r.Company)
-                         .ThenInclude(c => c.ApplicationUser)
+                         .ThenInclude(c => c.ApplicationGroup)
+                         .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone);
 
             if (filter != null)

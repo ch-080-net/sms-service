@@ -45,6 +45,11 @@ namespace WebApp.Controllers
 			return View(recipientManager.GetRecipients(companyId).ToList());
         }
 
+        /// <summary>
+        /// Create recipient View
+        /// </summary>
+        /// <param name="companyId">Company which we creating</param>
+        /// <returns>Create View</returns>
         [HttpGet]
         public IActionResult Create(int companyId)
         {
@@ -52,6 +57,12 @@ namespace WebApp.Controllers
 			return View();
         }
 
+        /// <summary>
+        /// Create recipients and send them to db
+        /// </summary>
+        /// <param name="item">Model from View</param>
+        /// <param name="companyId">Company Id</param>
+        /// <returns>Recipients list</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] RecipientViewModel item, int companyId)

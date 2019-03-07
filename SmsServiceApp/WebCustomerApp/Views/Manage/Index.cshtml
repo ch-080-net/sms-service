@@ -35,10 +35,28 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Save</button>
+            <div class="form-group">
+                <label asp-for="GroupName"></label>
+                <input asp-for="GroupName" class="form-control" readonly />
+                <span asp-validation-for="GroupName" class="text-danger"></span>
+            </div>
+            @if (Model.IsIvited)
+            {
+            <div class="form-group" id="invite">
+                <button class="btn btn-success" name="IviteConfirm" value="true" onclick="ShowIvite()">Accept</button>
+                <button class="btn btn-danger" name="IviteConfirm" value="false" onclick="ShowIvite()">Decline</button>
+            </div>
+            }
+                <button type="submit" class="btn btn-default">Save</button>
         </form>
     </div>
 </div>
+
+<script>
+    function ShowIvite() {
+            document.getElementById("invite").style.display = 'none';
+    }
+</script>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")

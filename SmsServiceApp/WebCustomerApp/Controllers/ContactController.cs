@@ -5,8 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.ContactViewModels;
+using WebCustomerApp.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +18,14 @@ namespace WebApp.Controllers
     public class ContactController : Controller
     {
         private readonly IContactManager contactManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IGroupManager groupManager;
 
-        public ContactController(IContactManager contactManager)
+        public ContactController(IContactManager contactManager, UserManager<ApplicationUser> userManager, IGroupManager groupManager)
         {
             this.contactManager = contactManager;
+            this.groupManager = groupManager;
+            this.userManager = userManager;
         }
 
         public IActionResult Contacts()
@@ -36,10 +42,11 @@ namespace WebApp.Controllers
                 if (!User.Identity.IsAuthenticated)
                     return null;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                int groupId = userManager.Users.FirstOrDefault(u => u.Id == userId).ApplicationGroupId;
                 if (searchValue == null)
-                    return contactManager.GetContact(userId, pageNumber, pageSize);
+                    return contactManager.GetContact(groupId, pageNumber, pageSize);
                 else
-                    return contactManager.GetContactBySearchValue(userId, pageNumber, pageSize, searchValue);
+                    return contactManager.GetContactBySearchValue(groupId, pageNumber, pageSize, searchValue);
             }
             catch
             {
@@ -57,10 +64,11 @@ namespace WebApp.Controllers
                 if (!User.Identity.IsAuthenticated)
                     return 0;
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                int groupId = userManager.Users.FirstOrDefault(u => u.Id == userId).ApplicationGroupId;
                 if (searchValue == null)
-                    return contactManager.GetContactCount(userId);
+                    return contactManager.GetContactCount(groupId);
                 else
-                    return contactManager.GetContactBySearchValueCount(userId, searchValue);
+                    return contactManager.GetContactBySearchValueCount(groupId, searchValue);
             }
             catch
             {
@@ -76,6 +84,7 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                int groupId = userManager.Users.FirstOrDefault(u => u.Id == userId).ApplicationGroupId;
                 if (obj.Name == null)
                     obj.Name = "";
                 if (obj.Surname == null)
@@ -84,7 +93,7 @@ namespace WebApp.Controllers
                     obj.Notes = "";
                 if (obj.KeyWords == null)
                     obj.KeyWords = "";
-                if (contactManager.CreateContact(obj, userId))
+                if (contactManager.CreateContact(obj, groupId))
                     return new ObjectResult("Phone added successfully!");
                 else
                     return new ObjectResult("Contact with this phone number already exist!");
@@ -119,6 +128,7 @@ namespace WebApp.Controllers
             try
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                int groupId = userManager.Users.FirstOrDefault(u => u.Id == userId).ApplicationGroupId;
                 if (obj.Name == null)
                     obj.Name = "";
                 if (obj.Surname == null)
@@ -127,7 +137,7 @@ namespace WebApp.Controllers
                     obj.Notes = "";
                 if (obj.KeyWords == null)
                     obj.KeyWords = "";
-                contactManager.UpdateContact(obj, userId);
+                contactManager.UpdateContact(obj, groupId);
                 return new ObjectResult("Phone modified successfully!");
             }
             catch (Exception ex)

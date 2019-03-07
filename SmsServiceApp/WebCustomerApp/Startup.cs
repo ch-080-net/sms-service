@@ -43,10 +43,10 @@ namespace WebCustomerApp
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
-			services.AddTransient<ICompanyRepository, CompanyRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
             services.AddTransient<IMailingRepository, MailingRepository>();
+            services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 
 			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             // Auto Mapper Configurations
@@ -97,9 +97,8 @@ namespace WebCustomerApp
             services.AddScoped<IContactManager, ContactManager>();
             services.AddScoped<ITariffManager, TariffManager>();
             services.AddScoped<IPhoneManager, PhoneManager>();
-            
             services.AddScoped<IStopWordManager, StopWordManager>();
-
+            services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
@@ -129,8 +128,10 @@ namespace WebCustomerApp
                 if (userManager.FindByNameAsync("User@gmail.com").Result == null)
                 {
                     ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup();
                     user.UserName = "User@gmail.com";
                     user.Email = "User@gmail.com";
+                    user.ApplicationGroup = group;
                    
                    IdentityResult result = userManager.CreateAsync(user,"1234ABCD").Result;
                     if (result.Succeeded)
@@ -143,8 +144,10 @@ namespace WebCustomerApp
                 if (userManager.FindByNameAsync("Admin@gmail.com").Result == null)
                 {
                     ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup();
                     user.UserName = "Admin@gmail.com";
                     user.Email = "Admin@gmail.com";
+                    user.ApplicationGroup = group;
 
                     IdentityResult result;
                         result = userManager.CreateAsync(user,"1234ABCD").Result;
@@ -152,6 +155,23 @@ namespace WebCustomerApp
                     if (result.Succeeded)
                     {
                         userManager.AddToRoleAsync(user, "Admin").Wait();
+                    }
+                }
+
+                if (userManager.FindByNameAsync("CorporateUser@gmail.com").Result == null)
+                {
+                    ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup();
+                    user.UserName = "CorporateUser@gmail.com";
+                    user.Email = "CorporateUser@gmail.com";
+                    user.ApplicationGroup = group;
+
+                    IdentityResult result;
+                    result = userManager.CreateAsync(user, "1234ABCD").Result;
+
+                    if (result.Succeeded)
+                    {
+                        userManager.AddToRoleAsync(user, "CorporateUser").Wait();
                     }
                 }
             }
@@ -174,10 +194,19 @@ namespace WebCustomerApp
                     IdentityResult roleResult = roleManager.
                     CreateAsync(role).Result;
                 }
+
+                if (!roleManager.RoleExistsAsync("CorporateUser").Result)
+                {
+                    IdentityRole role = new IdentityRole();
+                    role.Name = "CorporateUser";
+                    IdentityResult roleResult = roleManager.
+                    CreateAsync(role).Result;
+                }
             }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+                              IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

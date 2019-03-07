@@ -7,10 +7,20 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebCustomerApp.Models
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
+    /// <summary>
+    /// Application user, inherited from IdentityUser
+    /// </summary>
     public class ApplicationUser : IdentityUser
     {
-        public ICollection<Contact> Contacts { get; set; }
-        public ICollection<Company> Companies { get; set; }
+        public int ApplicationGroupId { get; set; }
+        public ApplicationGroup ApplicationGroup { get; set; }
+
+        /// <summary>
+        /// Invite ID
+        /// </summary>
+        /// <value>
+        /// Filled up when user has invite to group
+        /// </value>
+        public int InviteId { get; set; } = 0;
     }
 }
