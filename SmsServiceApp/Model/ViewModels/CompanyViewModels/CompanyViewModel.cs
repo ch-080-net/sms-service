@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Model.ViewModels.CompanyViewModels
 {
+    /// <summary>
+    /// ViewModel of Company
+    /// </summary>
     public class CompanyViewModel
     {
         public int Id { get; set; }
@@ -17,7 +20,7 @@ namespace Model.ViewModels.CompanyViewModels
         [StringLength(500)]
         [Display(Name = "Description")]
         public string Description { get; set; }
-        public string ApplicationUserId { get; set; }
+        public string ApplicationGroupId { get; set; }
         public int TariffId { get; set; }
         [Required]
         [StringLength(500)]

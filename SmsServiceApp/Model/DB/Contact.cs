@@ -10,8 +10,8 @@ namespace WebApp.Models
     {
         public int Id { get; set; } //PRIMARY KEY
 
-        public string ApplicationUserId { get; set; } //FOREIGN KEY (Company)
-        public ApplicationUser ApplicationUser { get; set; }
+        public int ApplicationGroupId { get; set; } //FOREIGN KEY (Company)
+        public ApplicationGroup ApplicationGroup { get; set; }
         public int PhoneId { get; set; } //FOREIGN KEY (Phone)
         public Phone Phone { get; set; }
 

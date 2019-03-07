@@ -33,12 +33,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
 
-                    <li><a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Company"]</a></li>
-                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a></li>
-                   @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    <li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
+                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a></li>
-                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a></li>
+                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
+                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                    {
+                        <li><a asp-area="" asp-controller="Group" asp-action="Index">Users Group</a></li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

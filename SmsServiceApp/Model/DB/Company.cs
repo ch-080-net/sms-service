@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
+    /// <summary>
+    /// Company entity, which iclude message, recipients and chosen tariff
+    /// </summary>
     public class Company
     {
         public int Id { get; set; } //PRIMARY KEY
@@ -15,8 +18,8 @@ namespace WebApp.Models
 
         public string Description { get; set; }
 
-        public string ApplicationUserId { get; set; } //FOREIGN KEY (User)
-        public ApplicationUser ApplicationUser { get; set; }
+        public int ApplicationGroupId { get; set; } //FOREIGN KEY (User)
+        public ApplicationGroup ApplicationGroup { get; set; }
 
         public int? TariffId { get; set; }
         public Tariff Tariff { get; set; }

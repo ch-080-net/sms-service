@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models.AccountViewModels
 {
+    /// <summary>
+    /// ViewModel of ApplicationUser for registration
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]
@@ -29,5 +32,12 @@ namespace WebApp.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Corporation")]
+        public bool CorporateUser { get; set; } //if selected User Role will be CorporateUser
+
+        [StringLength(100)]
+        [Display(Name = "Company name")]
+        public string CompanyName { get; set; } //name of ApplicationGroup
     }
 }

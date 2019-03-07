@@ -6,6 +6,9 @@ using Model.ViewModels.RecipientViewModels;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Interface with CRUD operation for Recipients
+    /// </summary>
     public interface IRecipientManager
     {
         IEnumerable<RecipientViewModel> GetRecipients(int companyId);
