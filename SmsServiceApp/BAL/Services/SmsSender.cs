@@ -80,7 +80,8 @@ namespace WebCustomerApp.Services
             do
             {
                 connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, "");
-            } while (connectionStatus != 0);
+            } 
+			while (connectionStatus != 0);
 
 		}
 
@@ -97,7 +98,8 @@ namespace WebCustomerApp.Services
             do
             {
                 sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, "");
-            } while (sessionStatus != 0);
+            } 
+			while (sessionStatus != 0);
         }
 
 		/// <summary>
@@ -139,8 +141,8 @@ namespace WebCustomerApp.Services
             //int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
             //				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
 
-            if (resultStatus != 0)
-				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
+			//if (resultStatus != 0)
+				//throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
 		}
 		
 		/// <summary>
@@ -186,11 +188,22 @@ namespace WebCustomerApp.Services
 				sw.WriteLine(report);
 			}
 
-			var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
-			messageDTOs.Remove(temp);
+			IEnumerable<MessageDTO> invalidMessages = messageDTOs.Where(m => m.ServerId == "");
+			if (invalidMessages != null)
+			{
+				foreach (var mes in invalidMessages)
+					messageDTOs.Remove(mes);
+			}
 
-			if (e.MessageState == 2 && e.NetworkErrorCode == 0 && temp != null)
-					mailingManager.MarkAsSent(temp);
+			var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+
+			if (temp != null)
+			{
+				messageDTOs.Remove(temp);
+
+				if (e.MessageState == 2 && e.NetworkErrorCode == 0)
+					serviceScope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
+			}
 		}
 
 		// Multipart message completed
