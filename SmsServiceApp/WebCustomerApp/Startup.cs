@@ -127,8 +127,9 @@ namespace WebCustomerApp
             {
                 if (userManager.FindByNameAsync("User@gmail.com").Result == null)
                 {
+                    Phone phone = new Phone() { PhoneNumber = "+380111111111" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
                     user.UserName = "User@gmail.com";
                     user.Email = "User@gmail.com";
                     user.ApplicationGroup = group;
@@ -143,8 +144,9 @@ namespace WebCustomerApp
 
                 if (userManager.FindByNameAsync("Admin@gmail.com").Result == null)
                 {
+                    Phone phone = new Phone() { PhoneNumber = "+380777777777" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
                     user.UserName = "Admin@gmail.com";
                     user.Email = "Admin@gmail.com";
                     user.ApplicationGroup = group;
@@ -160,8 +162,9 @@ namespace WebCustomerApp
 
                 if (userManager.FindByNameAsync("CorporateUser@gmail.com").Result == null)
                 {
+                    Phone phone = new Phone() { PhoneNumber = "+380666666666" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
                     user.UserName = "CorporateUser@gmail.com";
                     user.Email = "CorporateUser@gmail.com";
                     user.ApplicationGroup = group;
