@@ -1,5 +1,5 @@
 
-var arr=["Sms service","The Best","Great Performance","Optimized","Quick Access","Protection Of Personal Data"];
+var arr=["Sms service","The Best","Great Performance","Optimized","Quick Access","Protection Data"];
 
 document.body.onload=function(){
     var preloader=document.getElementById('page_preloader');

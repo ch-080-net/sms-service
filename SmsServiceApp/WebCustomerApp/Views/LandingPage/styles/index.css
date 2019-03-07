@@ -5,6 +5,8 @@
 body {
   font-family: 'Lato', sans-serif;
   position: relative;
+  box-sizing: border-box;
+  padding-bottom: 1%;
 }
 a {
   color: rgba(255, 255, 255, 0.8);
@@ -200,9 +202,9 @@ a:hover {
   color: #8b8b8b;
 }
 .app {
-  padding: 180px 10% 0;
+  padding: 180px 10% 50px;
   background-color: #f7f7f7;
-  height: 700px;
+  height: 700px auto;
   display: flex;
 }
 .app_image {
@@ -216,6 +218,7 @@ a:hover {
 .app_content {
   width: 550px;
   margin-left: auto;
+  text-align: right;
 }
 .app_description {
   margin: 10px;
@@ -252,4 +255,32 @@ a:hover {
   left: 100vh;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+footer {
+  width: 100%;
+  float: left;
+  padding: 1%;
+  background: #141414;
+  color: #fff;
+  border-top: 2px solid silver;
+  margin-top: 50px;
+}
+footer #social {
+  float: left;
+  width: 50%;
+  text-align: right;
+  font-size: 1.1em;
+}
+footer #rights {
+  font-family: 'Lato', sans-serif;
+  float: left;
+  width: 50%;
+  text-align: right;
+  font-size: 1.1em;
+}
+footer #social img {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 5px;
 }
