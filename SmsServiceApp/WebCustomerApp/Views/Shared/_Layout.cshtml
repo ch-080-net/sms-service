@@ -19,20 +19,6 @@
     </environment>
 </head>
 <body>
-    <!--<style>
-        body {
-            padding-top: 50px;
-            padding-bottom: 20px;
-            background: #221E21;
-            background: -webkit-linear-gradient(bottom, #221E21, #FFF9FF);
-            background: -moz-linear-gradient(bottom, #221E21, #FFF9FF);
-            background: linear-gradient(to top, #221E21, #FFF9FF);
-            background-size: cover;
-            height: 100vh;
-            display: flex;
-        }
-    </style>-->
-
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
 
@@ -47,8 +33,12 @@
                             <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
                             <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
                         }
-                        @await Html.PartialAsync("_LoginPartial")
-                    </div>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                        {
+                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                        }
+                            @await Html.PartialAsync("_LoginPartial")
+                        </div>
                 </div>
                 <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
             </div>
@@ -56,10 +46,11 @@
         </nav>
         <div class="container body-content">
             @RenderBody()
-            
-                <footer id="footer">
-                    <p align="center">&copy; Copyright 2019</p>
-                </footer>
+
+            <link href="~/css/site.css" rel="stylesheet" />
+            <footer id="footer">
+                <p align="center">&copy; Copyright 2019</p>
+            </footer>
         </div>
 
     <environment include="Development">
