@@ -97,10 +97,10 @@ namespace WebCustomerApp.Services
 		/// Send collection of messages 
 		/// </summary>
 		/// <param name="messages">Collection of messages for send</param>
-		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
+		public void SendMessages(IEnumerable<MessageDTO> messages)
 		{
             foreach (MessageDTO message in messages)
-				await SendMessageAsync(message);
+				SendMessage(message);
 		}
 
 		/// <summary>
@@ -109,7 +109,7 @@ namespace WebCustomerApp.Services
 		/// Throw exception with user and recepient phones if message aren`t sended
 		/// </summary>
 		/// <param name="message">Message for send</param>
-		public async Task SendMessageAsync(MessageDTO message)
+		public void SendMessage(MessageDTO message)
 		{
             if (messageDTOs.Any(m => m.RecipientId == message.RecipientId))
                 return;
@@ -142,7 +142,7 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if session are closet correctly</returns>
 		private void CloseSession()
 		{
-            try { int result = clientSMPP.smppFinalizeSession(); }
+            try { clientSMPP.smppFinalizeSession(); }
             finally { }
 		}
 
@@ -176,15 +176,28 @@ namespace WebCustomerApp.Services
 				sw.WriteLine(report);
 			}
 
-			if (e.MessageState == 2 && e.NetworkErrorCode == 0)
+            // Message delivered or accepted
+            // Mark message in DB as sent and remove from messageDTOs
+            if ((e.MessageState == 2 || e.MessageState == 6) && e.NetworkErrorCode == 0)
 			{
                 var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
-                    using (var scope = this.serviceScopeFactory.CreateScope())
+                    using (var scope = serviceScopeFactory.CreateScope())
                     {
                         scope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
                     }
+                    messageDTOs.Remove(temp);
+                }
+            }
+
+            // Message undeliverable or rejected
+            // Remove message from messageDTOs and try again on next SendMessageAsync call
+            if (e.MessageState == 5 || e.MessageState == 8 && e.NetworkErrorCode == 0)
+            {
+                var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+                if (temp != null)
+                {
                     messageDTOs.Remove(temp);
                 }
             }

@@ -23,7 +23,7 @@ namespace BAL.Managers
         /// <summary>
         /// Get messages wich was not been sent
         /// </summary>
-        public async Task<IEnumerable<MessageDTO>> GetUnsentMessages()
+        public IEnumerable<MessageDTO> GetUnsentMessages()
         {
             var recipients = unitOfWork.Mailings.Get(r => !r.BeenSent);
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
@@ -34,7 +34,7 @@ namespace BAL.Managers
         /// Find recipients of messages and mark them as sent
         /// </summary>
         /// <param name="messages">Should contain RecipientId</param>
-        public async Task MarkAsSent(IEnumerable<MessageDTO> messages)
+        public void MarkAsSent(IEnumerable<MessageDTO> messages)
         {
             var recipientIds = from m in messages
             select m.RecipientId;
@@ -56,7 +56,7 @@ namespace BAL.Managers
         }
 
 
-        public async Task MarkAsSent(MessageDTO messages)
+        public void MarkAsSent(MessageDTO messages)
         {
             var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
             if (tempRecipient != null)

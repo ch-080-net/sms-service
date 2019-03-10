@@ -16,20 +16,16 @@ namespace BAL.Jobs
     /// </summary>
     public class Mailing : IJob
     {
-        private readonly IMapper mapper;
-        private readonly IMailingManager mailingManager;
         private readonly IServiceProvider serviceProvider;
 
         public Mailing(IServiceProvider serviceProvider)
         {
-            this.mapper = serviceProvider.GetService<IMapper>();
-            this.mailingManager = serviceProvider.GetService<IMailingManager>();
             this.serviceProvider = serviceProvider;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await mailingManager.GetUnsentMessages();
+            var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
             if (result.Any())
                 await SendMessages(result);
         }
@@ -37,7 +33,7 @@ namespace BAL.Jobs
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
 			SmsSender sms = await SmsSender.GetInstance(serviceProvider.GetService<IServiceScopeFactory>());
-            try { await sms.SendMessagesAsync(messages); }
+            try { sms.SendMessages(messages); }
             finally { };
         }
     }
