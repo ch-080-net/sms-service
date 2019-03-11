@@ -24,10 +24,10 @@ namespace WebCustomerApp.Services
 
 		public SMSCclientSMPP clientSMPP;
 		public string userDataHeader;
-		public List<string> messageIDs;
+		public List<uint> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
-        private ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
+        private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScope serviceScope;
 
         public static SmsSender getInstance(IServiceScopeFactory serviceScopeFactory)
@@ -44,11 +44,12 @@ namespace WebCustomerApp.Services
             this.serviceScope = serviceScopeFactory.CreateScope();
 			clientSMPP = new SMSCclientSMPP();
             userDataHeader = "00";
-			messageIDs = new List<string>();
+			messageIDs = new List<uint>();
 			ImmediateResponse = false;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
+			clientSMPP.OnSmppSubmitResponseAsyncReceived += SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
 
             try
@@ -120,10 +121,10 @@ namespace WebCustomerApp.Services
 		/// <param name="message">Message for send</param>
 		public async Task SendMessageAsync(MessageDTO message)
 		{
-            if (messageDTOs.Any(m => m.RecipientId == message.RecipientId))
+            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId && m.ServerId != ""))
                 return;
-            else
-                messageDTOs.Add(message);
+            else if (!messagesForSend.Any(m => m.RecipientId == message.RecipientId))
+				messagesForSend.Add(message);
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -132,17 +133,16 @@ namespace WebCustomerApp.Services
 			message.MessageText = utf.GetString(Encoding.Convert(estEncoding, utf, estEncoding.GetBytes(message.MessageText)));
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
+			string exParameters = "mesId=11";
 
-			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
+			//int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
-            message.ServerId = messageIDs.FirstOrDefault();
+			int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, 
+							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
-            //int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-            //				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
-
-			//if (resultStatus != 0)
-				//throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
+			message.ServerId = Convert.ToString(messageIDs.FirstOrDefault());
 		}
 		
 		/// <summary>
@@ -177,6 +177,11 @@ namespace WebCustomerApp.Services
 			Console.WriteLine("You have new message");
 		}
 
+		public void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(Object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
+		{
+			Console.WriteLine("Feedback from async message ");
+		}
+
 		// Status Report (SR) received from SMSC
 		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
 		{
@@ -188,18 +193,11 @@ namespace WebCustomerApp.Services
 				sw.WriteLine(report);
 			}
 
-			IEnumerable<MessageDTO> invalidMessages = messageDTOs.Where(m => m.ServerId == "");
-			if (invalidMessages != null)
-			{
-				foreach (var mes in invalidMessages)
-					messageDTOs.Remove(mes);
-			}
-
-			var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+			var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
 
 			if (temp != null)
 			{
-				messageDTOs.Remove(temp);
+				messagesForSend.Remove(temp);
 
 				if (e.MessageState == 2 && e.NetworkErrorCode == 0)
 					serviceScope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
