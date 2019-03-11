@@ -133,7 +133,7 @@ namespace WebCustomerApp.Services
 			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
 			int resultStatus = clientSMPP.smppSubmitMessageEx(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, 
+							message.MessageText, EncodingEnum.et7BitText, "", options, 
 							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
 			message.ServerId = messageIDs.FirstOrDefault();
