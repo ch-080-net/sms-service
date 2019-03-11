@@ -38,6 +38,11 @@ namespace WebCustomerApp.Services
                 await instance.Connect();
                 await instance.OpenSession();
             }
+            else if (instance.clientSMPP.Connected == false)
+            {
+                await instance.Connect();
+                await instance.OpenSession();
+            }
             return instance;
         }
 
