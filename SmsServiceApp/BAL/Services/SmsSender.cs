@@ -186,25 +186,51 @@ namespace WebCustomerApp.Services
                 sw.WriteLine(report);
             }
 
-            // Message delivered or accepted
-            // Mark message in DB as sent and remove from messageDTOs
-            if ((e.MessageState == 2 || e.MessageState == 6) && e.NetworkErrorCode == 0)
+            if ((e.MessageState == 2) && e.NetworkErrorCode == 0)
             {
                 var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
                     using (var scope = serviceScopeFactory.CreateScope())
                     {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsDelivered(temp);
                     }
                     messagesForSend.Remove(temp);
                 }
             }
-            else if (e.MessageState == 5 || e.MessageState == 8 && e.NetworkErrorCode == 0)
+            else if ((e.MessageState == 6) && e.NetworkErrorCode == 0)
             {
                 var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
+                    using (var scope = serviceScopeFactory.CreateScope())
+                    {
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsAccepted(temp);
+                    }
+                    messagesForSend.Remove(temp);
+                }
+            }
+            else if ((e.MessageState == 5) && e.NetworkErrorCode == 0)
+            {
+                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
+                if (temp != null)
+                {
+                    using (var scope = serviceScopeFactory.CreateScope())
+                    {
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsUndeliverable(temp);
+                    }
+                    messagesForSend.Remove(temp);
+                }
+            }
+            else if ((e.MessageState == 8) && e.NetworkErrorCode == 0)
+            {
+                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
+                if (temp != null)
+                {
+                    using (var scope = serviceScopeFactory.CreateScope())
+                    {
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsRejected(temp);
+                    }
                     messagesForSend.Remove(temp);
                 }
             }

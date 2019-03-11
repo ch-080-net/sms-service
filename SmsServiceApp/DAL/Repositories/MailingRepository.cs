@@ -26,6 +26,8 @@ namespace DAL.Repositories
                          .Include(r => r.Company)
                          .ThenInclude(c => c.ApplicationGroup)
                          .ThenInclude(ag => ag.Phone)
+                         .Include(r => r.Company)
+                         .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone)
                          select r;
             return result;
@@ -41,6 +43,8 @@ namespace DAL.Repositories
             IQueryable<Recipient> query = context.Recipients
                          .Include(r => r.Company)
                          .ThenInclude(c => c.ApplicationGroup)
+                         .ThenInclude(ag => ag.Phone)
+                         .Include(r => r.Company)
                          .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone);
 

@@ -10,7 +10,13 @@ namespace Model.Interfaces
     {
         IEnumerable<MessageDTO> GetUnsentMessages();
 
-        void MarkAsSent(IEnumerable<MessageDTO> messages);
-        void MarkAsSent(MessageDTO messages);
+        void MarkAsDelivered(IEnumerable<MessageDTO> messages);
+        void MarkAsDelivered(MessageDTO messages);
+        void MarkAsAccepted(IEnumerable<MessageDTO> messages);
+        void MarkAsAccepted(MessageDTO messages);
+        void MarkAsUndeliverable(IEnumerable<MessageDTO> messages);
+        void MarkAsUndeliverable(MessageDTO messages);
+        void MarkAsRejected(IEnumerable<MessageDTO> messages);
+        void MarkAsRejected(MessageDTO messages);
     }
 }

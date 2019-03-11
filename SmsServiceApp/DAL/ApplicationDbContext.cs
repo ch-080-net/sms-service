@@ -196,9 +196,7 @@ namespace WebCustomerApp.Data
 
             builder.Entity<Recipient>()
                 .Property(r => r.MessageState)
-                .HasDefaultValue(0);
-
-
+                .HasDefaultValue(MessageState.NotSent);
 
         }
     }
