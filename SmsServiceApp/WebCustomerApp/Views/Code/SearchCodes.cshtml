@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="SearchCodes" asp-controller="Code" method="post" asp-antiforgery="true" asp-route-pageStateJson="@SerializeObject(ViewBag.PageState)">
+        <form action="@Url.Action("SearchCodes", "Code", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true" >
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <div class="input-group mb-4">

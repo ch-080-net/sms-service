@@ -14,18 +14,17 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private IBaseRepository<Company> companyRepo;
-        private UserManager<ApplicationUser> userManager;
         private IBaseRepository<Operator> operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
+        private IBaseRepository<ApplicationGroup> groupRepo;
+        private IMailingRepository mailingRepo;
 
-
-        public UnitOfWork(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
-            this.userManager = userManager;
         }
 
         public IBaseRepository<Company> Companies
@@ -62,12 +61,6 @@ namespace DAL.Repositories
             }
         }
 
-        public UserManager<ApplicationUser> Users {
-            get {
-                return userManager;
-            }
-        }
-
         public IBaseRepository<Operator> Operators
         {
             get
@@ -94,6 +87,15 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<ApplicationGroup> ApplicationGroups
+        {
+            get
+            {
+                if (groupRepo == null) { groupRepo = new BaseRepository<ApplicationGroup>(context); }
+                return groupRepo;
+            }
+        }
+
         public IBaseRepository<Code> Codes
         {
             get
@@ -103,6 +105,18 @@ namespace DAL.Repositories
                     codeRepo = new BaseRepository<Code>(context);
                 }
                 return codeRepo;
+            }
+        }
+
+        public IMailingRepository Mailings
+        {
+            get
+            {
+                if (mailingRepo == null)
+                {
+                    mailingRepo = new MailingRepository(context);
+                }
+                return mailingRepo;
             }
         }
 

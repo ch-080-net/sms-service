@@ -9,8 +9,21 @@
 
 <script>
     var TextAreaCursorPlace;
-    </script>
 
+<head>
+    <title>Edit</title>
+    <script>
+
+        function AddWord(word) {
+            var info = document.getElementById("message")
+            info.value += word;
+        }
+
+    </script>
+</head>
+<h2>Edit</h2>
+<h4>Company</h4>
+<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">

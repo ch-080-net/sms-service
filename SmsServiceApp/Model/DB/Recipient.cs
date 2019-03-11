@@ -4,6 +4,9 @@ using System.Text;
 
 namespace WebCustomerApp.Models
 {
+    /// <summary>
+    /// Recipient entity, which belongs to company and include phone
+    /// </summary>
     public class Recipient
     {
         public int Id { get; set; }
@@ -21,6 +24,7 @@ namespace WebCustomerApp.Models
         public string Priority { get; set; }
         public string Notes { get; set; }
         public string KeyWords { get; set; }
+        public bool BeenSent { get; set; }
 
     }
 }

@@ -7,9 +7,13 @@ using Model.ViewModels.OperatorViewModels;
 using AutoMapper;
 using System.Linq;
 using System.IO;
+using Model.DTOs;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manger for CRUD operations on Operators
+    /// </summary>
     public class OperatorManager : BaseManager, IOperatorManager
     {
         public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -17,6 +21,9 @@ namespace BAL.Managers
 
         }
 
+        /// <summary>
+        /// Get all operators from DB and transform them to OperatorViewModel
+        /// </summary>
         public IEnumerable<OperatorViewModel> GetAll()
         {
             var operators = unitOfWork.Operators.GetAll();
@@ -25,13 +32,21 @@ namespace BAL.Managers
             return result;
         }
 
-        public bool Add(OperatorViewModel newOperator)
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="newOperator"/> to Code and insert it to Codes table of DB
+        /// </summary>
+        /// <param name="newOperator">
+        /// Should contain not null or empty Name.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public TransactionResultDTO Add(OperatorViewModel newOperator)
         {
             if (newOperator.Name == null || newOperator.Name == "")
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty"};
             var check = unitOfWork.Operators.Get(o => o.Name == newOperator.Name).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator with this name already exist" };
             var result = mapper.Map<Operator>(newOperator);
             try
             {
@@ -40,22 +55,31 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
+        /// <summary>
+        /// Get OperatorViewModel by Id
+        /// </summary>
+        /// <param name="id">Id of Operator in Operators table</param>
+        /// <returns>Provides empty OperatorViewModel if provided null</returns>
         public OperatorViewModel GetById(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
             return mapper.Map<OperatorViewModel>(oper);
         }
 
-        public bool Remove(int id)
+        /// <summary>
+        /// Remove entry from Operators table with corresponding <paramref name="id"/>
+        /// </summary>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public TransactionResultDTO Remove(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
             try
             {
                 unitOfWork.Operators.Delete(oper);
@@ -63,18 +87,26 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
-        public bool Update(OperatorViewModel updatedOperator)
+        /// <summary>
+        /// Transform OperatorViewModel <paramref name="updatedOperator"/> to Operator and update corresponding row in Operators table of DB
+        /// </summary>
+        /// <param name="updatedOperator">
+        /// Should contain not null or empty Name and Id of existing Operators table entry.
+        /// Name must be unique
+        /// </param>
+        /// <returns>true, if transaction succesfull; false if not</returns>
+        public TransactionResultDTO Update(OperatorViewModel updatedOperator)
         {
             if (updatedOperator.Name == null || updatedOperator.Name == "")
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty" };
             var check = unitOfWork.Operators.Get(o => o.Name == updatedOperator.Name).FirstOrDefault();
             if (check != null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Operator name already exist" };
             var result = mapper.Map<Operator>(updatedOperator);
             try
             {
@@ -83,11 +115,16 @@ namespace BAL.Managers
             }
             catch
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+            return new TransactionResultDTO() { Success = true };
         }
 
+        /// <summary>
+        /// Get Page, which corresponds to <paramref name="pageState"/> 
+        /// </summary>
+        /// <param name="pageState">Represents page state, including search querry, page, number of pages, entries on one page</param>
+        /// <returns>Object, which contains valid page state and corresponding enumeration of OperatorViewModel</returns>
         public Page GetPage(PageState pageState)
         {
             if (pageState == null)
