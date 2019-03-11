@@ -15,13 +15,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <title>SmS Service</title>
+
+
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/menunav.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="~/css/style2.min.css">
+
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 
     <link rel="stylesheet" href="~/css/style2.css">
-
-
 </head>
 <body>
     <div class="preview" id="page_preloader">
@@ -33,27 +47,61 @@
         <a href="#" class="logo">
             <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
         </a>
+
         <nav class="menu">
             <ul class="menu_list">
                 <li class="menu_item">
-                    <a href="Account/NewLogin" class="menu_link">Log in</a>
-                </li>
-                <li class="menu_item">
-                    <a href="Account/NewRegister" class="menu_link">Sign up</a>
-                </li>
-                <li class="menu_item">
-                    <label for="checkbox-button-menu">☰</label>
-                    <input id="checkbox-button-menu" type="checkbox" hidden />
+                    <div class="container">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
 
-                    <ul class="button-menu">
-                        <li class="button-menu_item"><a href="/Company" class="button-menu_link">Company</a></li>
-                        <li class="button-menu_item"><a href="#" class="button-menu_link">Contacts</a></li>
-                        <li class="button-menu_item"><a href="#" class="button-menu_link">Operators</a></li>
-                        <li class="button-menu_item"><a href="#" class="button-menu_link">Stop Words</a></li>
-                    </ul>
+                        </a>
+                        <div id="myNav" class="overlay">
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                            <div class="overlay-content">
+                                <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
+                                    <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
+                                }
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                                {
+                                    <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                                }
+                                @await Html.PartialAsync("_LoginPartial")
+                            </div>
+                        </div>
+                        <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                        </div>
                 </li>
             </ul>
         </nav>
+       
+        @*<nav class="menu">
+
+        @*<ul class="menu_list">
+            <li class="menu_item">
+                <a href="Account/NewLogin" class="menu_link">Log in</a>
+            </li>
+            <li class="menu_item">
+                <a href="Account/NewRegister" class="menu_link">Sign up</a>
+            </li>
+            @*<li class="menu_item">*@
+        @*<label for="checkbox-button-menu">☰</label>
+        <input id="checkbox-button-menu" type="checkbox" hidden />
+
+        <ul class="button-menu">
+            <li class="button-menu_item"><a href="/Company" class="button-menu_link">Company</a></li>
+            <li class="button-menu_item"><a href="#" class="button-menu_link">Contacts</a></li>
+            <li class="button-menu_item"><a href="#" class="button-menu_link">Operators</a></li>
+            <li class="button-menu_item"><a href="#" class="button-menu_link">Stop Words</a></li>
+        </ul>*@
+
+
+        @*</li>*
+        </ul>*@
+        @*</nav>*@
         <!--/.header-->
     </header>
     <section class="main">
@@ -67,16 +115,22 @@
         <!-- <img src="styles/images/text1.svg" class="start"> -->
         <ul class="features_list">
             <li class="features_item features_item--iconMessage">
-                <h3 class="section_title">Get something</h3>
-                <p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+                <h3 class="section_title">Sender name</h3>
+                <p class="features_description">
+                    Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
+                </p>
             </li>
             <li class="features_item features_item--messages">
-                <h3 class="section_title">Get something</h3>
-                <p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+                <h3 class="section_title">Easy-to-setup automation</h3>
+                <p class="features_description">
+                    Bulk SMS sending can be scheduled for a particular time and date. You can also set up gradual sending of SMS over specific time frames.
+                </p>
             </li>
             <li class="features_item features_item--phoneMessage">
-                <h3 class="section_title">Get something</h3>
-                <p class="features_description">Necessity is the mother of invention.No man is born wise or learned.One cannot put back the clock.Promise little, but do much.</p>
+                <h3 class="section_title">Personalized SMS</h3>
+                <p class="features_description">
+                    Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
+                </p>
             </li>
         </ul>
     </section>
@@ -86,14 +140,12 @@
         <div class="app_content">
             <h1 class="section_title ">Sender name</h1>
             <p class="app_description">
-              
+
                 Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries
             </p>
-            <h1 class="section_title ">Easy-to-setup automation</h1>
             <p class="app_description">
                 Bulk SMS sending can be scheduled for a particular time and date. You can also set up gradual sending of SMS over specific time frames.
             </p>
-            <h1 class="section_title ">Personalized SMS</h1>
             <p class="app_description">
                 Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
             </p>
@@ -113,5 +165,6 @@
     </footer>
 
     <script src="~/js/preloader.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>
