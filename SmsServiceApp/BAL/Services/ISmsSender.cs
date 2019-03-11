@@ -10,7 +10,6 @@ namespace WebCustomerApp.Services
 	{
 		void SendMessage(MessageDTO message);
 		void SendMessages(IEnumerable<MessageDTO> messages);
-		void SMSCclientSMPP_OnTcpDisconnected(object sender, smscc.tcpDisconnectedEventArgs e);
 		void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smscc.SMPP.smppStatusReportReceivedEventArgs e);
 		void SMSCclientSMPP_OnSmppMessageReceived(object sender, smscc.SMPP.smppMessageReceivedEventArgs e);
 	}

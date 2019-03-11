@@ -50,13 +50,11 @@ namespace WebCustomerApp.Services
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
-            userDataHeader = "00";
+            userDataHeader = "050003010101";
 			messageIDs = new List<string>();
 			ImmediateResponse = false;
-			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
-			clientSMPP.OnSmppSubmitResponseAsyncReceived += SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
         }
 
@@ -89,12 +87,12 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		private async Task OpenSession()
 		{
-			//string concatCode = "smpp.long-messages=udh8";
+			string concatCode = "smpp.long-messages=udh8";
 
             int sessionStatus = -1;
             do
             {
-                try { sessionStatus = clientSMPP.smppInitializeSession("smppclient1", "password", 1, 1, ""); }
+                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, ""); }
                 catch { await Task.Delay(5000); }
             } while (sessionStatus != 0);
         }
@@ -129,7 +127,7 @@ namespace WebCustomerApp.Services
 			message.MessageText = utf.GetString(Encoding.Convert(estEncoding, utf, estEncoding.GetBytes(message.MessageText)));
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
-			string exParameters = "smpp.esm_class = 04;smpp.tlvs = 1403000A34343132333435363738;smpp.mesId=11";
+			string exParameters = "smpp.esm_class = 04;smpp.tlvs = 1403000A34343132333435363738;smpp.mes_id=11";
 
 			//int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
@@ -160,26 +158,15 @@ namespace WebCustomerApp.Services
             finally { }
 		}
 
-		public void SMSCclientSMPP_OnTcpDisconnected(object sender, tcpDisconnectedEventArgs e)
-		{
-			Console.WriteLine("Disconnected");
-		}
-
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
 			Console.WriteLine("You have new message");
 		}
 
-		public void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(Object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
-		{
-			Console.WriteLine("Feedback from async message ");
-		}
-
         // Status Report (SR) received from SMSC
         public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
         {
-            //FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
-            string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
+            string report = $"Message From: {e.Originator}, To: {e.Destination}, Content: {e.Content}";
 
             using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
             {
