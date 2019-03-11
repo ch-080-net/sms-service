@@ -25,7 +25,7 @@ namespace BAL.Managers
         /// </summary>
         public IEnumerable<MessageDTO> GetUnsentMessages()
         {
-            var recipients = unitOfWork.Mailings.Get(r => !r.BeenSent);
+            var recipients = unitOfWork.Mailings.Get(r => r.MessageState == 0);
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
             return result;
         }
@@ -43,7 +43,7 @@ namespace BAL.Managers
             {
                 var tempRecipient = unitOfWork.Mailings.GetById(id);
                 if (tempRecipient != null)
-                    tempRecipient.BeenSent = true;
+                    tempRecipient.MessageState = 0;
             }
             try
             {
@@ -60,7 +60,7 @@ namespace BAL.Managers
         {
             var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
             if (tempRecipient != null)
-                tempRecipient.BeenSent = true;
+                tempRecipient.MessageState = 0;
             try
             {
                 unitOfWork.Save();

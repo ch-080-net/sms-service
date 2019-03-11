@@ -24,6 +24,8 @@ namespace WebCustomerApp.Data
         public DbSet<StopWord> StopWords { get; set; }
         public DbSet<Tariff> Tariffs { get; set; }
         public DbSet<ApplicationGroup> Groups { get; set; }
+        public DbSet<RecievedMessage> RecievedMessages { get; set; }
+        public DbSet<AnswersCode> AnswersCodes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -39,6 +41,8 @@ namespace WebCustomerApp.Data
             builder.Entity<Tariff>().HasKey(i => i.Id);
             builder.Entity<StopWord>().HasKey(i => i.Id);
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
+            builder.Entity<RecievedMessage>().HasKey(i => i.Id);
+            builder.Entity<AnswersCode>().HasKey(i => i.Id);
 
             // Compound key for Many-To-Many joining table
 
@@ -92,6 +96,24 @@ namespace WebCustomerApp.Data
                 .HasForeignKey<ApplicationGroup>(ag => ag.PhoneId)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            builder.Entity<Phone>()
+                .HasMany(c => c.RecievedMessages)
+                .WithOne(rm => rm.Phone)
+                .HasForeignKey(rm => rm.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany(c => c.AnswersCodes)
+                .WithOne(ac => ac.Company)
+                .HasForeignKey(ac => ac.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany(c => c.RecievedMessages)
+                .WithOne(rm => rm.Company)
+                .HasForeignKey(rm => rm.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion
 
             // Optional FK
@@ -103,6 +125,12 @@ namespace WebCustomerApp.Data
                 .WithOne(r => r.Company)
                 .HasForeignKey(r => r.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasOne(c => c.Phone)
+                .WithMany(p => p.Companies)
+                .HasForeignKey(c => c.PhoneId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<Phone>()
                 .HasMany(p => p.Recipients)
@@ -167,8 +195,8 @@ namespace WebCustomerApp.Data
             // Default values
 
             builder.Entity<Recipient>()
-                .Property(r => r.BeenSent)
-                .HasDefaultValue(false);
+                .Property(r => r.MessageState)
+                .HasDefaultValue(0);
 
 
 
