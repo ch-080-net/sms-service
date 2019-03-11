@@ -8,9 +8,8 @@ namespace WebCustomerApp.Services
 {
 	public interface ISmsSender
 	{
-		Task SendMessageAsync(MessageDTO message);
-		Task SendMessagesAsync(IEnumerable<MessageDTO> messages);
-		void SMSCclientSMPP_OnTcpDisconnected(object sender, smscc.tcpDisconnectedEventArgs e);
+		void SendMessage(MessageDTO message);
+		void SendMessages(IEnumerable<MessageDTO> messages);
 		void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smscc.SMPP.smppStatusReportReceivedEventArgs e);
 		void SMSCclientSMPP_OnSmppMessageReceived(object sender, smscc.SMPP.smppMessageReceivedEventArgs e);
 	}
