@@ -1,0 +1,294 @@
+/*global*/
+   * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    box-sizing: border-box;
+    padding-bottom: 1%;
+  }
+  a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: underline;
+    transition: color 0.2s linear;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #fff;
+  }
+  /*header*/
+  .header {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    padding: 0 10%;
+  }
+  /*Logo*/
+  .logo {
+    width: 100px;
+    height: 80px;
+  }
+  .logo_img {
+    width: 100%;
+    height: auto;
+  }
+  /*section_title*/
+  .section_title {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 19px;
+  }
+  .section_title:after {
+    content: "";
+    width: 88px;
+    height: 1px;
+    margin-top: 10px;
+    background-color: #f69679;
+  }
+  .section_title--left {
+    align-items: left;
+  }
+  /*menu*/
+  .menu {
+    margin-left: auto;
+  }
+  .menu_list {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .menu_item {
+    list-style: none;
+    margin-right: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    position: relative;
+  }
+  .menu_link {
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  /*Button-menu*/
+  .button-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    list-style: none;
+    text-align: right;
+    padding: 10px 0 0;
+    margin: 0;
+  }
+  .button-menu--open {
+    display: block;
+  }
+  .button-menu_link {
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 10px 40px;
+    display: block;
+    text-decoration: none;
+  }
+  .button-menu_link:hover {
+    background-color: #eee;
+    color: #333;
+  }
+  #checkbox-button-menu:checked + .button-menu {
+    display: block;
+  }
+  /*section main*/
+.main {
+    background-image: url('../images/b.jpg');
+    background-size: cover;
+    height: 100vh;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+  /* main__title */
+  .main_title {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 36px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 1.8px;
+    text-shadow: 0 1px 40px rgba(1, 1, 1, 0.55);
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 40px;
+    text-align: center;
+    margin-bottom: 40pt;
+  }
+  .main_title-big {
+    display: block;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 100px;
+    font-style: normal;
+    text-transform: uppercase;
+  }
+  .main_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 3px solid #fff;
+    width: 280px;
+    height: 68px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+  /* main__description */
+  .main_description {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-size: 14px;
+    line-height: 30px;
+    text-transform: uppercase;
+  }
+  .features {
+    padding: 100px 10px;
+  }
+  .features_list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .features_item {
+    width: 360px;
+    padding: 0 10px;
+    text-align: center;
+  }
+  .features_item:before {
+    content: "";
+    width: 107px;
+    height: 107px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+.features_item--messages:before {
+
+    background-image: url('../images/landing/messages.png');
+}
+.features_item--phoneMessage:before {
+  
+    background-image: url('../images/landing/phonemessage.png');
+}
+.features_item--iconMessage:before {
+  
+    background-image: url('../images/landing/iconmessage.png');
+}
+  .features_description {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 18px;
+    color: #8b8b8b;
+  }
+  .app {
+    padding: 180px 10% 50px;
+    background-color: #f7f7f7;
+    height: 700px auto;
+    display: flex;
+  }
+.app_image {
+    width: 550px;
+    margin-top: -50px;
+    background-repeat: no-repeat;
+    background-image: url('../images/landing/phone.png');
+    background-size: contain;
+    background-position: top;
+}
+  .app_content {
+    width: 550px;
+    margin-left: auto;
+    text-align: right;
+  }
+.app_description {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #8b8b8b;
+    font-size: 30px;
+}
+  .app_link {
+    display: inline-block;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-decoration: none;
+    color: #000;
+  }
+  .app_link:hover {
+    color: rgba(0, 0, 0, 0.8);
+    text-decoration: underline;
+    transition: color 0.2s linear;
+  }
+.app_link--iconMessage {
+    width: 100px;
+    height: 100px;
+    background-image: url('../images/landing/iconMessage.png');
+}
+  .start {
+    /*image-rendering: 100%;*/
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: absolute;
+    top: 100vh;
+    left: 100vh;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  footer {
+    width: 100%;
+    float: left;
+    padding: 1%;
+    background: #141414;
+    color: #fff;
+    border-top: 2px solid silver;
+    margin-top: 50px;
+  }
+  footer #social {
+    float: left;
+    width: 50%;
+    text-align: right;
+    font-size: 1.1em;
+  }
+  footer #rights {
+    font-family: 'Lato', sans-serif;
+    float: left;
+    width: 50%;
+    text-align: right;
+    font-size: 1.1em;
+  }
+  footer #social img {
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin-right: 5px;
+  }
+.main__menu{
+    position: center;
+}
+  
