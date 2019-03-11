@@ -33,7 +33,7 @@ namespace BAL.Jobs
         private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
 			SmsSender sms = await SmsSender.GetInstance(serviceProvider.GetService<IServiceScopeFactory>());
-            try { sms.SendMessages(messages); }
+            try { await sms.SendMessagesAsync(messages); }
             finally { };
         }
     }

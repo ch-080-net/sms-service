@@ -27,7 +27,7 @@ namespace WebCustomerApp.Services
 		public List<uint> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
-        private ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
+        private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScopeFactory serviceScopeFactory;
 
         public static async Task<SmsSender> GetInstance(IServiceScopeFactory serviceScopeFactory)
@@ -175,31 +175,40 @@ namespace WebCustomerApp.Services
 			Console.WriteLine("Feedback from async message ");
 		}
 
-		// Status Report (SR) received from SMSC
-		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
-		{
-			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
-			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
+        // Status Report (SR) received from SMSC
+        public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
+        {
+            //FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
+            string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
 
-			using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
-			{
-				sw.WriteLine(report);
-			}
+            using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
+            {
+                sw.WriteLine(report);
+            }
 
             // Message delivered or accepted
             // Mark message in DB as sent and remove from messageDTOs
             if ((e.MessageState == 2 || e.MessageState == 6) && e.NetworkErrorCode == 0)
-			{
-                var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
+            {
+                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
                     using (var scope = serviceScopeFactory.CreateScope())
                     {
                         scope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
                     }
-                    messageDTOs.Remove(temp);
+                    messagesForSend.Remove(temp);
                 }
             }
+            else if (e.MessageState == 5 || e.MessageState == 8 && e.NetworkErrorCode == 0)
+            {
+                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
+                if (temp != null)
+                {
+                    messagesForSend.Remove(temp);
+                }
+            }
+        }
 
 
 		// Multipart message completed
