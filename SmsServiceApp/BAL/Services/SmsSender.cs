@@ -24,7 +24,7 @@ namespace WebCustomerApp.Services
 
 		public SMSCclientSMPP clientSMPP;
 		public string userDataHeader;
-		public List<string> messageIDs;
+		public List<uint> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
         private ICollection<MessageDTO> messageDTOs = new List<MessageDTO>();
@@ -51,11 +51,12 @@ namespace WebCustomerApp.Services
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
             userDataHeader = "00";
-			messageIDs = new List<string>();
+			messageIDs = new List<uint>();
 			ImmediateResponse = false;
 			clientSMPP.OnTcpDisconnected += SMSCclientSMPP_OnTcpDisconnected;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
+			clientSMPP.OnSmppSubmitResponseAsyncReceived += SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
         }
 
@@ -102,10 +103,10 @@ namespace WebCustomerApp.Services
 		/// Send collection of messages 
 		/// </summary>
 		/// <param name="messages">Collection of messages for send</param>
-		public void SendMessages(IEnumerable<MessageDTO> messages)
+		public async Task SendMessagesAsync(IEnumerable<MessageDTO> messages)
 		{
             foreach (MessageDTO message in messages)
-				SendMessage(message);
+				await SendMessageAsync(message);
 		}
 
 		/// <summary>
@@ -114,12 +115,12 @@ namespace WebCustomerApp.Services
 		/// Throw exception with user and recepient phones if message aren`t sended
 		/// </summary>
 		/// <param name="message">Message for send</param>
-		public void SendMessage(MessageDTO message)
+		public async Task SendMessageAsync(MessageDTO message)
 		{
-            if (messageDTOs.Any(m => m.RecipientId == message.RecipientId))
+            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId && m.ServerId != ""))
                 return;
-            else
-                messageDTOs.Add(message);
+            else if (!messagesForSend.Any(m => m.RecipientId == message.RecipientId))
+				messagesForSend.Add(message);
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -128,17 +129,16 @@ namespace WebCustomerApp.Services
 			message.MessageText = utf.GetString(Encoding.Convert(estEncoding, utf, estEncoding.GetBytes(message.MessageText)));
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
+			string exParameters = "smpp.mesId=11";
 
-			int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
+			//int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
 
-            message.ServerId = messageIDs.FirstOrDefault();
+			int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+							message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, 
+							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
-            //int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-            //				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, DateTime.Now, DateTime.Now, ,,, out messageIDs);
-
-            if (resultStatus != 0)
-				throw new Exception($"Sending error, from: {message.SenderPhone} to :{message.RecepientPhone}");
+			message.ServerId = Convert.ToString(messageIDs.FirstOrDefault());
 		}
 		
 		/// <summary>
@@ -170,13 +170,18 @@ namespace WebCustomerApp.Services
 			Console.WriteLine("You have new message");
 		}
 
+		public void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(Object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
+		{
+			Console.WriteLine("Feedback from async message ");
+		}
+
 		// Status Report (SR) received from SMSC
 		public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
 		{
 			//FileStream fstream = new FileStream(@"C:\Users\pivastc\Source\Repos\Messages report.txt", FileMode.OpenOrCreate);
 			string report = $"Message From: {e.Originator}, To: {e.Destination},  Message state: {e.MessageState}, Error code: {e.NetworkErrorCode}, Content: {e.Content}";
 
-			using (StreamWriter sw = new StreamWriter(@"C:\Users\Autum\Desktop\Log.txt", true, Encoding.UTF8))
+			using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
 			{
 				sw.WriteLine(report);
 			}
@@ -196,17 +201,6 @@ namespace WebCustomerApp.Services
                 }
             }
 
-            // Message undeliverable or rejected
-            // Remove message from messageDTOs and try again on next SendMessageAsync call
-            if (e.MessageState == 5 || e.MessageState == 8 && e.NetworkErrorCode == 0)
-            {
-                var temp = messageDTOs.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    messageDTOs.Remove(temp);
-                }
-            }
-		}
 
 		// Multipart message completed
 		private void SMSCclientSMPP_OnSmppMessageCompleted(object Sender, smppMessageCompletedEventArgs e)
