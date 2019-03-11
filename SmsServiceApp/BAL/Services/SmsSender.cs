@@ -75,8 +75,12 @@ namespace WebCustomerApp.Services
             do
             {
                 try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
-                finally { await Task.Delay(5000); }
-            } while (connectionStatus != 0);
+                finally { }
+                if (connectionStatus == 0)
+                    break;
+                else
+                    await Task.Delay(5000);
+            } while (true);
 
 		}
 
@@ -93,8 +97,12 @@ namespace WebCustomerApp.Services
             do
             {
                 try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, ""); }
-                finally { await Task.Delay(5000); }
-            } while (sessionStatus != 0);
+                finally { }
+                if (sessionStatus == 0)
+                    break;
+                else
+                    await Task.Delay(5000);
+            } while (true);
         }
 
 		/// <summary>
