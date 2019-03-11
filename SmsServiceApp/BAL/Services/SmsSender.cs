@@ -133,7 +133,7 @@ namespace WebCustomerApp.Services
 			message.MessageText = utf.GetString(Encoding.Convert(estEncoding, utf, estEncoding.GetBytes(message.MessageText)));
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
-			string exParameters = "mesId=11";
+			string exParameters = "smpp.mesId=11";
 
 			//int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
