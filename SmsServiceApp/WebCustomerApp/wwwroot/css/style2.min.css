@@ -1,7 +1,7 @@
 .preview {
   position: fixed;
   background: #000;
-  transition: 4s all;
+  transition: 2s all;
   opacity: 1;
   visibility: visible;
   z-index: 3;

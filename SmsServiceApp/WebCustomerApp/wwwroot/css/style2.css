@@ -36,7 +36,7 @@
   /*section_title*/
   .section_title {
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     line-height: 30px;
     display: flex;
@@ -223,13 +223,14 @@
     margin-left: auto;
     text-align: right;
   }
-  .app_description {
+.app_description {
     margin: 10px;
     font-size: 16px;
     font-weight: 300;
-    line-height: 18px;
+    line-height: 20px;
     color: #8b8b8b;
-  }
+    font-size: 30px;
+}
   .app_link {
     display: inline-block;
     margin-right: 10px;
