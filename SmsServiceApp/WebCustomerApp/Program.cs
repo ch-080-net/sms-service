@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebCustomerApp.Models;
 using static WebCustomerApp.Startup;
+using BAL.Services;
 
 namespace WebCustomerApp
 {
@@ -29,7 +30,7 @@ namespace WebCustomerApp
 
                     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    MyIdentityDataInitializer.SeedData(userManager, roleManager);
+                    IdentityDataInitializer.SeedData(userManager, roleManager);
                 }
                 catch
                 {
