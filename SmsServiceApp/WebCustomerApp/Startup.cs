@@ -24,7 +24,8 @@ using Microsoft.AspNetCore.Localization;
 using WebApp;
 using Microsoft.Extensions.Localization;
 using System.Reflection;
-
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApp
 {
@@ -143,7 +144,9 @@ namespace WebApp
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+
         }
+            
        
         public static class MyIdentityDataInitializer
         {
@@ -235,6 +238,19 @@ namespace WebApp
                 }
             }
         }
+        public class LanguageRouteConstraint : IRouteConstraint
+        {
+            public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
+            {
+
+                if (!values.ContainsKey("culture"))
+                    return false;
+
+                var culture = values["culture"].ToString();
+                return culture == "en" || culture == "ua";
+            }
+        }
+        
 
         public void Configure(IApplicationBuilder app, 
                               IHostingEnvironment env)
@@ -249,24 +265,6 @@ namespace WebApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-
-            var supportedCultures = new[]
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("uk-UA"),
-            };
-
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en-US"),
-                // Formatting numbers, dates, etc.
-                SupportedCultures = supportedCultures,
-                // UI strings that we have localized.
-                SupportedUICultures = supportedCultures
-            });
-
-            app.UseStaticFiles();
 
             app.UseStaticFiles();
             app.UseAuthentication();

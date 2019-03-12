@@ -59,7 +59,7 @@ namespace WebApp.Controllers
             }
             else
             {
-                return View();
+                return new ObjectResult("Fill in all fields"); ;
             }
         }
 
