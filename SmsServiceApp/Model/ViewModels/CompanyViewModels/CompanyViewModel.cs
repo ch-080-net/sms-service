@@ -20,7 +20,6 @@ namespace Model.ViewModels.CompanyViewModels
         public string Description { get; set; }
         public string ApplicationGroupId { get; set; }
         public int TariffId { get; set; }
-        [Required]
         [StringLength(500)]
         public string Message { get; set; }
         public List<RecipientViewModel> RecipientViewModels { get; set; }
