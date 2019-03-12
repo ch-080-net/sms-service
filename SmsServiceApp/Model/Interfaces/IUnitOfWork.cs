@@ -17,6 +17,7 @@ namespace Model.Interfaces
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
         IMailingRepository Mailings { get; }
+        IPoolCampaignChartsRepository PoolCampaignCharts { get; }
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }

@@ -14,6 +14,7 @@ using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
+using System.Linq;
 
 namespace BAL.Services
 {
@@ -58,9 +59,14 @@ namespace BAL.Services
 
             CreateMap<Recipient, MessageDTO>()
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Phone.PhoneNumber))
-                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.Phone.PhoneNumber))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
+
+            CreateMap<Company, PieChartDTO>()
+                .ForMember(pc => pc.Title, opt => opt.MapFrom(com => com.Name))
+                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategories(com)))
+                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
         }
 
         private string ReplaceHashtags(Recipient recipient)
@@ -70,6 +76,19 @@ namespace BAL.Services
                 .Replace("#surname", recipient.Surname)
                 .Replace("#company", recipient.Company.Name)
                 .Replace("#birthday", recipient.BirthDate.ToShortDateString());
+            return result;
+        }
+
+        private IEnumerable<Tuple<string, int>> PopulateCategories(Company company)
+        {
+            var result = new List<Tuple<string, int>>();
+            foreach(var code in company.AnswersCodes)
+            {
+                var messages = from rm in company.RecievedMessages
+                               where rm.Message == Convert.ToString(code.Code)
+                               select rm;
+                result.Add(new Tuple<string, int>(code.Answer, messages.Count()));                
+            }
             return result;
         }
     }
