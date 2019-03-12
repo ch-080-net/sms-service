@@ -73,40 +73,16 @@
                             </div>
                         </div>
                         <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                        </div>
+                    </div>
                 </li>
             </ul>
         </nav>
-       
-        @*<nav class="menu">
 
-        @*<ul class="menu_list">
-            <li class="menu_item">
-                <a href="Account/NewLogin" class="menu_link">Log in</a>
-            </li>
-            <li class="menu_item">
-                <a href="Account/NewRegister" class="menu_link">Sign up</a>
-            </li>
-            @*<li class="menu_item">*@
-        @*<label for="checkbox-button-menu">☰</label>
-        <input id="checkbox-button-menu" type="checkbox" hidden />
-
-        <ul class="button-menu">
-            <li class="button-menu_item"><a href="/Company" class="button-menu_link">Company</a></li>
-            <li class="button-menu_item"><a href="#" class="button-menu_link">Contacts</a></li>
-            <li class="button-menu_item"><a href="#" class="button-menu_link">Operators</a></li>
-            <li class="button-menu_item"><a href="#" class="button-menu_link">Stop Words</a></li>
-        </ul>*@
-
-
-        @*</li>*
-        </ul>*@
-        @*</nav>*@
         <!--/.header-->
     </header>
     <section class="main">
         <h1 class="main_title">Landing page <span class="main_title-big">sms service</span></h1>
-        <a href="#app" class="main_button anchor">get started</a>
+        <a href="#log" class="main_button anchor">get started</a>
         <p class="main_description">some text <a href="#">some link</a>!</p>
     </section>
     <!--/.main-->
@@ -114,47 +90,81 @@
     <section class="features">
         <!-- <img src="styles/images/text1.svg" class="start"> -->
         <ul class="features_list">
-            <li class="features_item features_item--iconMessage">
-                <h3 class="section_title">Sender name</h3>
+            <li class="features_item features_item--sms_tools_1">
+                <h3 class="section_title">STATISTICS</h3>
                 <p class="features_description">
-                    Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
+                    Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out.
                 </p>
             </li>
-            <li class="features_item features_item--messages">
-                <h3 class="section_title">Easy-to-setup automation</h3>
+            <li class="features_item features_item--sms_tools_2">
+                <h3 class="section_title">API INTEGRATION</h3>
                 <p class="features_description">
-                    Bulk SMS sending can be scheduled for a particular time and date. You can also set up gradual sending of SMS over specific time frames.
+                    Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow.
                 </p>
             </li>
-            <li class="features_item features_item--phoneMessage">
-                <h3 class="section_title">Personalized SMS</h3>
+            <li class="features_item features_item--sms_tools_3">
+                <h3 class="section_title">SMS AUTORESPONDERS</h3>
                 <p class="features_description">
                     Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
                 </p>
             </li>
         </ul>
     </section>
+    <section class="features">
+        <ul class="features_list">
+            <li class="features_item features_item--sms_tools_4">
+                <h3 class="section_title">SUBSCRIPTION FORMS</h3>
+                <p class="features_description">
+                    Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_5">
+                <h3 class="section_title">UNSUBSCRIBE LINKS</h3>
+                <p class="features_description">
+                    Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_6">
+                <h3 class="section_title">EXCEPTION LIST</h3>
+                <p class="features_description">
+                    You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list.
+                </p>
+            </li>
+        </ul>
+    </section>
+    <section class="log_section" id="log">
+        <p class="app_description_link">
+            <a href="Account/NewLogin" class="app_link">Log in</a>
+            <a href="Account/NewRegister" class="app_link">Registration</a>
+        </p>
+    </section>
     <!--/.features -->
     <section class="app" id="app">
-        <div class="app_image"></div>
+        <div class="app_image_phone"><div class="app_image_message"></div></div>
+
+
+
         <div class="app_content">
-            <h1 class="section_title ">Sender name</h1>
+
+            <h1 class="section_title ">Personalized SMS</h1>
             <p class="app_description">
 
-                Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries
-            </p>
-            <p class="app_description">
-                Bulk SMS sending can be scheduled for a particular time and date. You can also set up gradual sending of SMS over specific time frames.
-            </p>
-            <p class="app_description">
                 Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
             </p>
-            <p class="app_description">
-                <a href="Account/NewLogin" class="app_link">Log in</a>
-                <a href="#" class="app_link">Link2</a>
-            </p>
+            <div class="app_content">
+
+                <h1 class="section_title ">Sender name</h1>
+                <p class="app_description">
+                    Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
+                </p>
+
+
+            </div>
+
         </div>
     </section>
+
+
     <!--/.footer -->
     <footer>
         <div id="social">

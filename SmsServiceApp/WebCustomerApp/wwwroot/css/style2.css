@@ -25,10 +25,12 @@
     padding: 0 10%;
   }
   /*Logo*/
-  .logo {
-    width: 100px;
-    height: 80px;
-  }
+.logo {
+    min-height: 80px;
+    min-width: 100px;
+   height:100px;
+   width:auto;
+}
   .logo_img {
     width: 100%;
     height: auto;
@@ -159,7 +161,7 @@
     text-transform: uppercase;
   }
   .features {
-    padding: 100px 10px;
+    padding: 70px 10px;
   }
   .features_list {
     margin: 0;
@@ -175,12 +177,12 @@
   }
   .features_item:before {
     content: "";
-    width: 107px;
-    height: 107px;
+    width: 135px;
+    height: 135px;
     border: 1px solid #000;
     border-radius: 50%;
     background-repeat: no-repeat;
-    background-size: 50%;
+    background-size: 75%;
     background-position: center;
     display: inline-block;
     margin-bottom: 20px;
@@ -197,6 +199,31 @@
   
     background-image: url('../images/landing/iconmessage.png');
 }
+
+.features_item--sms_tools_1:before {
+    background-image: url('../images/landing/sms_tools_1.png');
+}
+
+.features_item--sms_tools_2:before {
+    background-image: url('../images/landing/sms_tools_2.png');
+}
+
+.features_item--sms_tools_3:before {
+    background-image: url('../images/landing/sms_tools_3.png');
+}
+
+.features_item--sms_tools_4:before {
+    background-image: url('../images/landing/sms_tools_4.png');
+
+}
+
+.features_item--sms_tools_5:before {
+    background-image: url('../images/landing/sms_tools_5.png');
+}
+
+.features_item--sms_tools_6:before {
+    background-image: url('../images/landing/sms_tools_6.png');
+}
   .features_description {
     margin: 0;
     font-size: 16px;
@@ -204,41 +231,67 @@
     line-height: 18px;
     color: #8b8b8b;
   }
-  .app {
+.app {
     padding: 180px 10% 50px;
     background-color: #f7f7f7;
-    height: 700px auto;
+    min-height: 700px;
     display: flex;
-  }
-.app_image {
-    width: 550px;
-    margin-top: -50px;
+}
+
+/*.app_image{
+
+}*/
+.app_image_phone {
+    width: 450px;
+    margin-top: -60px;
     background-repeat: no-repeat;
-    background-image: url('../images/landing/phone.png');
+    background-image: url('../images/landing/phoneview.png');
     background-size: contain;
     background-position: top;
 }
+
+
+.app_image_message {
+    display: flex;
+    width: 380px;
+    height: 225px;
+    margin-top: 400px;
+    margin-left:30px;
+    background-repeat: no-repeat;
+    background-image: url('../images/landing/messageview.png');
+    background-size: contain;
+    background-position: center bottom;
+}
   .app_content {
-    width: 550px;
+    width: 400px;
     margin-left: auto;
     text-align: right;
   }
+
 .app_description {
     margin: 10px;
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
     color: #8b8b8b;
-    font-size: 30px;
+
 }
-  .app_link {
+.app_description_link {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #8b8b8b;
+    margin-top: 50px;
+}
+.app_link {
     display: inline-block;
     margin-right: 10px;
     background-repeat: no-repeat;
     background-size: cover;
     text-decoration: none;
     color: #000;
-  }
+}
   .app_link:hover {
     color: rgba(0, 0, 0, 0.8);
     text-decoration: underline;
@@ -249,7 +302,20 @@
     height: 100px;
     background-image: url('../images/landing/iconMessage.png');
 }
-  .start {
+
+.log_section {
+    padding: 180px 10% 50px;
+    background: #010101;
+    background: -webkit-radial-gradient(bottom left, #010101, #2575FB);
+    background: -moz-radial-gradient(bottom left, #010101, #2575FB);
+    background: radial-gradient(bottom left, #010101, #2575FB);
+    min-height: 500px;
+    display: flex;
+    color: black;
+}
+
+
+.start {
     /*image-rendering: 100%;*/
     height: 100%;
     width: 100%;
@@ -259,16 +325,19 @@
     left: 100vh;
     transform: translate(-50%, -50%);
     text-align: center;
-  }
+}
   footer {
+      position: absolute;
+      height:auto;
     width: 100%;
     float: left;
     padding: 1%;
     background: #141414;
     color: #fff;
     border-top: 2px solid silver;
-    margin-top: 50px;
-  }
+    margin-top: 10vh;
+  
+    }
   footer #social {
     float: left;
     width: 50%;
