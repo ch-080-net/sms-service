@@ -30,7 +30,8 @@ namespace BAL.Managers
             return result;
         }
 
-        public void MarkAsAccepted(IEnumerable<MessageDTO> messages)
+
+        public void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState)
         {
             var recipientIds = from m in messages
                                select m.RecipientId;
@@ -39,89 +40,17 @@ namespace BAL.Managers
             {
                 var tempRecipient = unitOfWork.Mailings.GetById(id);
                 if (tempRecipient != null)
-                    tempRecipient.MessageState = MessageState.Accepted;
+                    tempRecipient.MessageState = messageState;
             }
             try { unitOfWork.Save(); }
             finally { }
         }
 
-        public void MarkAsAccepted(MessageDTO messages)
+        public void MarkAs(MessageDTO messages, MessageState messageState)
         {
             var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
             if (tempRecipient != null)
-                tempRecipient.MessageState = MessageState.Accepted;
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsDelivered(IEnumerable<MessageDTO> messages)
-        {
-            var recipientIds = from m in messages
-                               select m.RecipientId;
-
-            foreach (var id in recipientIds)
-            {
-                var tempRecipient = unitOfWork.Mailings.GetById(id);
-                if (tempRecipient != null)
-                    tempRecipient.MessageState = MessageState.Delivered;
-            }
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsDelivered(MessageDTO messages)
-        {
-            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
-            if (tempRecipient != null)
-                tempRecipient.MessageState = MessageState.Delivered;
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsRejected(IEnumerable<MessageDTO> messages)
-        {
-            var recipientIds = from m in messages
-                               select m.RecipientId;
-
-            foreach (var id in recipientIds)
-            {
-                var tempRecipient = unitOfWork.Mailings.GetById(id);
-                if (tempRecipient != null)
-                    tempRecipient.MessageState = MessageState.Rejected;
-            }
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsRejected(MessageDTO messages)
-        {
-            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
-            if (tempRecipient != null)
-                tempRecipient.MessageState = MessageState.Rejected;
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsUndeliverable(IEnumerable<MessageDTO> messages)
-        {
-            var recipientIds = from m in messages
-                               select m.RecipientId;
-
-            foreach (var id in recipientIds)
-            {
-                var tempRecipient = unitOfWork.Mailings.GetById(id);
-                if (tempRecipient != null)
-                    tempRecipient.MessageState = MessageState.Undeliverable;
-            }
-            try { unitOfWork.Save(); }
-            finally { }
-        }
-
-        public void MarkAsUndeliverable(MessageDTO messages)
-        {
-            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
-            if (tempRecipient != null)
-                tempRecipient.MessageState = MessageState.Undeliverable;
+                tempRecipient.MessageState = messageState;
             try { unitOfWork.Save(); }
             finally { }
         }

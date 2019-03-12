@@ -10,6 +10,7 @@ using System.IO;
 using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using WebCustomerApp.Models;
 
 namespace WebCustomerApp.Services
 {
@@ -181,54 +182,37 @@ namespace WebCustomerApp.Services
                 sw.WriteLine(report);
             }
 
-            if ((e.MessageState == 2) && e.NetworkErrorCode == 0)
+            if (e.NetworkErrorCode == 0)
             {
+                MessageState messageState;
+                switch (e.MessageState)
+                {
+                    case 2:
+                        messageState = MessageState.Delivered;
+                        break;
+                    case 6:
+                        messageState = MessageState.Accepted;
+                        break;
+                    case 5:
+                        messageState = MessageState.Undeliverable;
+                        break;
+                    case 8:
+                        messageState = MessageState.Rejected;
+                        break;
+                    default:
+                        return;
+                }
                 var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
                     using (var scope = serviceScopeFactory.CreateScope())
                     {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsDelivered(temp);
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAs(temp, messageState);
                     }
                     messagesForSend.Remove(temp);
                 }
             }
-            else if ((e.MessageState == 6) && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsAccepted(temp);
-                    }
-                    messagesForSend.Remove(temp);
-                }
-            }
-            else if ((e.MessageState == 5) && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsUndeliverable(temp);
-                    }
-                    messagesForSend.Remove(temp);
-                }
-            }
-            else if ((e.MessageState == 8) && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsRejected(temp);
-                    }
-                    messagesForSend.Remove(temp);
-                }
-            }
+            
         }
 
 		// Multipart message completed

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.DTOs;
 using System.Threading.Tasks;
+using WebCustomerApp.Models;
 
 namespace Model.Interfaces
 {
@@ -10,13 +11,7 @@ namespace Model.Interfaces
     {
         IEnumerable<MessageDTO> GetUnsentMessages();
 
-        void MarkAsDelivered(IEnumerable<MessageDTO> messages);
-        void MarkAsDelivered(MessageDTO messages);
-        void MarkAsAccepted(IEnumerable<MessageDTO> messages);
-        void MarkAsAccepted(MessageDTO messages);
-        void MarkAsUndeliverable(IEnumerable<MessageDTO> messages);
-        void MarkAsUndeliverable(MessageDTO messages);
-        void MarkAsRejected(IEnumerable<MessageDTO> messages);
-        void MarkAsRejected(MessageDTO messages);
+        void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState);
+        void MarkAs(MessageDTO messages, MessageState messageState);
     }
 }
