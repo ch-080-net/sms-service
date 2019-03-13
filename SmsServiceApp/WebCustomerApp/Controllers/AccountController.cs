@@ -13,10 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Model.ViewModels.GroupViewModels;
-
 using WebApp.Models;
 using WebApp.Models.AccountViewModels;
 using WebApp.Services;
+using WebApp.Controllers;
 
 namespace WebApp.Controllers
 {
