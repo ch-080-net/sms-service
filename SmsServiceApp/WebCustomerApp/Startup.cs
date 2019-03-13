@@ -67,6 +67,11 @@ namespace WebApp
                 options.DefaultRequestCulture = new RequestCulture("en-US");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
             });
 
 
@@ -259,19 +264,10 @@ namespace WebApp
             var supportedCultures = new[]
            {
                 new CultureInfo("en-US"),
-                new CultureInfo("uk-UA"),
+                new CultureInfo("uk-UA")
             };
 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("en-US"),
-                // Formatting numbers, dates, etc.
-                SupportedCultures = supportedCultures,
-                // UI strings that we have localized.
-                SupportedUICultures = supportedCultures
-            });
-
-
+            app.UseRequestLocalization();
             app.UseStaticFiles();
             app.UseAuthentication();
 

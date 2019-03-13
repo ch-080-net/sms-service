@@ -17,6 +17,7 @@ using WebApp.Models;
 using WebApp.Models.AccountViewModels;
 using WebApp.Services;
 using WebApp.Controllers;
+using Model.ViewModels.AccountViewModels;
 
 namespace WebApp.Controllers
 {

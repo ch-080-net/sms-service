@@ -21,7 +21,7 @@
     <div class="col-md-4">
         <form action="@Url.Action("Codes", "Code", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
             <div class="form-group">
-                <label asp-for="OperatorCode"></label>
+   
                 <input asp-for="OperatorCode" class="form-control code" placeholder="@Localizer["Example"]: +38066" />
                 <span asp-validation-for="OperatorCode" class="text-danger"></span>
             </div>

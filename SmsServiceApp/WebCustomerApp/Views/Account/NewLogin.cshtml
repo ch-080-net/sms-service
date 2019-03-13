@@ -1,31 +1,32 @@
 ﻿@using System.Linq
+@using Model.ViewModels.AccountViewModels
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-	Layout = null;
+    Layout = null;
 }
 
 <!DOCTYPE HTML>
 <html>
 
 <head>
-	<title>Log in</title>
+    <title>Log in</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
-	<script>
-		addEventListener("load", function () {
-			setTimeout(hideURLbar, 0);
-		}, false);
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	</script>
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
 
-	<link rel="stylesheet" href="~/css/style_login.css" />
+    <link rel="stylesheet" href="~/css/style_login.css" />
 
-	<link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
 
 </head>
 
@@ -84,16 +85,16 @@
 </html>
 
 <script>
-	function ShowPassword() {
-		var x = document.getElementById("pass");
-		if (x.type === "password") {
-			x.type = "text";
-		} else {
-			x.type = "password";
-		}
-	}
+    function ShowPassword() {
+        var x = document.getElementById("pass");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
 </script>
 
 @section Scripts {
-	@await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

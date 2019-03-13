@@ -1,7 +1,8 @@
 ﻿@using System.Linq
+@using Model.ViewModels.AccountViewModels
 @model RegisterViewModel
 @{
-	Layout = null;
+    Layout = null;
 }
 
 <!DOCTYPE HTML>
@@ -27,7 +28,7 @@
 
 </head>
 
-<body >
+<body>
     <div class="back_image"></div>
     <div class="w3ls-login box box--big">
         <h1 class="title-page">Registration</h1>
@@ -53,7 +54,7 @@
             </div>
             <div class="agile-field-txt" id="company">
                 <label asp-for="CompanyName"></label>
-                <input asp-for="CompanyName" class="form-control" placeholder="Your company"/>
+                <input asp-for="CompanyName" class="form-control" placeholder="Your company" />
                 @*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
             </div>
             <div class="agile-field-txt">
@@ -88,16 +89,16 @@
 </html>
 
 <script>
-	function ShowPassword() {
-		var x = document.getElementById("pass");
-		var c = document.getElementById("confirm");
-		if (x.type === "password") {
-			x.type = "text";
-			c.type = "text";
-		} else {
-			x.type = "password";
-			c.type = "password";
-		}
+    function ShowPassword() {
+        var x = document.getElementById("pass");
+        var c = document.getElementById("confirm");
+        if (x.type === "password") {
+            x.type = "text";
+            c.type = "text";
+        } else {
+            x.type = "password";
+            c.type = "password";
+        }
     }
 
     document.getElementById("company").style.display = 'none';
@@ -113,5 +114,5 @@
 </script>
 
 @section Scripts {
-	@await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
