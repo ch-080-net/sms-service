@@ -11,6 +11,7 @@ using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WebCustomerApp.Models;
+using BAL.Managers;
 
 namespace WebCustomerApp.Services
 {
@@ -173,7 +174,11 @@ namespace WebCustomerApp.Services
 
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
-			Console.WriteLine("You have new message");
+          
+          
+           
+
+            Console.WriteLine("You have new message");
 		}
 
         // Status Report (SR) received from SMSC
