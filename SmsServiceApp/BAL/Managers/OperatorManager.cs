@@ -39,7 +39,7 @@ namespace BAL.Managers
         /// Should contain not null or empty Name.
         /// Name must be unique
         /// </param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Add(OperatorViewModel newOperator)
         {
             if (newOperator.Name == null || newOperator.Name == "")
@@ -74,7 +74,7 @@ namespace BAL.Managers
         /// <summary>
         /// Remove entry from Operators table with corresponding <paramref name="id"/>
         /// </summary>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Remove(int id)
         {
             var oper = unitOfWork.Operators.GetById(id);
@@ -99,7 +99,7 @@ namespace BAL.Managers
         /// Should contain not null or empty Name and Id of existing Operators table entry.
         /// Name must be unique
         /// </param>
-        /// <returns>true, if transaction succesfull; false if not</returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Update(OperatorViewModel updatedOperator)
         {
             if (updatedOperator.Name == null || updatedOperator.Name == "")

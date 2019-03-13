@@ -1,6 +1,6 @@
 ﻿@{
-	ViewData["Title"] = "SMS-service";
-	Layout = null;
+    ViewData["Title"] = "SMS-service";
+    Layout = null;
 }
 @using WebApp.Models
 
@@ -8,90 +8,176 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
 <head>
-	<title>SMS-service</title>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
-	<script>
-		addEventListener("load", function () {
-			setTimeout(hideURLbar, 0);
-		}, false);
-
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	</script>
-	<link rel="stylesheet" href="~/css/bootstrap.css"> <!-- Bootstrap-Core-CSS -->
-	<link rel="stylesheet" href="~/css/style.css" type="text/css" media="all" /> <!-- Style-CSS -->
-	<link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css" media="all" /> <!-- Style-CSS -->
-	<link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>SmS Service</title>
 
 
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/menunav.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/style2.min.css">
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/style2.css">
 </head>
-
 <body>
+    <div id="page_preloader"onload='StartPage()'>
+    <div class="" id="pagefirst">
 
-	<!-- //header -->
-	<header>
-		<div class="header d-lg-flex align-items-center">
-			<div class="container">
-				<div class="nav_w3ls">
-					<nav>
-						@if (SignInManager.IsSignedIn(User))
-						{
-							<label for="drop" class="toggle mt-lg-0 mt-2"><span class="fa fa-bars" aria-hidden="true"></span></label>
-						}
-							<input type="checkbox" id="drop" />
-                            <ul class="menu" style="width: 70vw;">
-                                @if (SignInManager.IsSignedIn(User))
+        <div class="" id="text_preloader"></div>
+      
+    </div>
+        </div>
+    <header class="header">
+        <a href="#" class="logo">
+            <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
+        </a>
+
+        <nav class="menu">
+            <ul class="menu_list">
+                <li class="menu_item">
+                    <div class="container">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+
+                        </a>
+                        <div id="myNav" class="overlay">
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                            <div class="overlay-content">
+                                <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                 {
-                                    <li><a asp-area="" asp-controller="Company" asp-action="Index">Company</a></li>
-                                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a></li>
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a></li>
-                                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a></li>
-                                    }
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                                    {
-                                        <li><a asp-area="" asp-controller="Group" asp-action="Index">Users Group</a></li>
-                                    }
-                                    <li class="p-0" style="float: right;">
-                                        <label for="drop-2" class="toggle">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span> </label>
-                                        <a href="#">Hello @UserManager.GetUserName(User)! <span class="fa fa-angle-down" aria-hidden="true"></span></a>
-                                        <input type="checkbox" id="drop-2" />
-                                        <ul class="inner-dropdown" style="position: sticky">
-                                            <li><a asp-controller="Manage" asp-action="Index" asp-route-returnurl="@ViewData["ReturnUrl"]" class="active">Profile manager</a></li>
-                                            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-                                                <button style="color:black" type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-                                            </form>
-                                        </ul>
-                                    </li>
+                                    <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
+                                    <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
                                 }
-                            </ul>
-						</nav>
-				</div>
-			</div>
-		</div>
-	</header>
-	<!-- //header -->
-	<!-- banner -->
-	<div class="banner_w3lspvt" id="home">
-		<div class="container">
-			<div class="banner-tops-style">
-				<div class="style-banner">
-					<h2 class="text-wh"> Better service <span>For easy and fast messaging</span><span>In your company</span></h2>
-					@if (!SignInManager.IsSignedIn(User))
-					{
-						<a asp-controller="Account" asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn button-style mt-sm-5 mt-4">Login</a>
-						<a asp-controller="Account" asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn button-style mt-sm-5 mt-4">Registration</a>
-					}
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- //banner -->
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                                {
+                                    <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                                }
+                                @await Html.PartialAsync("_LoginPartial")
+                            </div>
+                        </div>
+                        <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!--/.header-->
+    </header>
+    <section class="main">
+        <h1 class="main_title">Landing page <span class="main_title-big">sms service</span></h1>
+        <a href="#log" class="main_button anchor">get started</a>
+        <p class="main_description">some text <a href="#">some link</a>!</p>
+    </section>
+    <!--/.main-->
+
+    <section class="features">
+        <!-- <img src="styles/images/text1.svg" class="start"> -->
+        <ul class="features_list">
+            
+            <li class="features_item features_item--sms_tools_1">
+                <h3 class="section_title">STATISTICS</h3>
+                <p class="features_description">
+                    Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_2">
+                <h3 class="section_title">API INTEGRATION</h3>
+                <p class="features_description">
+                    Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_3">
+                <h3 class="section_title">SMS AUTORESPONDERS</h3>
+                <p class="features_description">
+                    Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
+                </p>
+            </li>
+        </ul>
+    </section>
+    <section class="features">
+        <ul class="features_list">
+            <li class="features_item features_item--sms_tools_4">
+                <h3 class="section_title">SUBSCRIPTION FORMS</h3>
+                <p class="features_description">
+                    Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_5">
+                <h3 class="section_title">UNSUBSCRIBE LINKS</h3>
+                <p class="features_description">
+                    Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like.
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_6">
+                <h3 class="section_title">EXCEPTION LIST</h3>
+                <p class="features_description">
+                    You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list.
+                </p>
+            </li>
+        </ul>
+    </section>
+    <section class="log_section" id="log">
+        <p class="app_description_link">
+            <a href="Account/NewLogin" class="app_link main_description">Log in</a>
+            <a href="Account/NewRegister" class="main_description app_link ">Registration</a>
+        </p>
+    </section>
+    <!--/.features -->
+    <section class="app" id="app">
+        <div class="app_image_phone"><div class="app_image_message"></div></div>
+
+
+
+        <div class="app_content">
+
+            <h1 class="section_title ">Personalized SMS</h1>
+            <p class="app_description">
+
+                Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
+            </p>
+            <div class="app_content">
+
+                <h1 class="section_title ">Sender name</h1>
+                <p class="app_description">
+                    Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
+                </p>
+
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!--/.footer -->
+    <footer>
+        <div id="social">
+        </div>
+        <div id="rights">
+            All rights reserved &copy; 2019
+        </div>
+    </footer>
+
+    <script src="~/js/preloader.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

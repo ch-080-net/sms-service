@@ -22,7 +22,6 @@ namespace WebApp.Controllers
         private readonly IOperatorManager operatorManager;
         private readonly ITariffManager tariffManager;
         private readonly UserManager<ApplicationUser> userManager;
-        private static int groupId;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, UserManager<ApplicationUser> userManager)
         {
@@ -41,7 +40,7 @@ namespace WebApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            groupId = user.ApplicationGroupId;
+            var groupId = user.ApplicationGroupId;
             return View(companyManager.GetCompanies(groupId));
         }
 
@@ -64,6 +63,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] CompanyViewModel item)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
             if (ModelState.IsValid)
             {
                 item.Message = item.Message.Replace("#company", item.Name);
@@ -81,6 +83,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
             if (id == null)
             {
                 return NotFound();
@@ -104,6 +109,9 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind]CompanyViewModel company)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
             if (ModelState.IsValid)
             {
                 var tariffId = companyManager.Get(id).TariffId;
@@ -129,6 +137,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
             if (id == null)
             {
                 return NotFound();
@@ -190,6 +201,9 @@ namespace WebApp.Controllers
 		[HttpGet]
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
             CompanyViewModel currentCompany = companyManager.Get(companyId);
             companyManager.Update(currentCompany, groupId, tariffId);
             return RedirectToAction("Index","Company");

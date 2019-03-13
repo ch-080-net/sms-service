@@ -10,58 +10,51 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/css/menunav.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link href="~/css/menunav.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">@Localizer["Toggle navigation"]</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmsService</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
 
-                    <li><a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Company"]</a></li>
-                    <li><a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a></li>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <li><a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a></li>
-                        <li><a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a></li>
-                    }
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                    {
-                        <li><a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Users Group"]</a></li>
-                    }
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer id="footer">
-            <div class="bottom-menu">
-                <div class="col-md-2">
-                    <p>&copy Localization</p>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmsService</a>
+                <div id="myNav" class="overlay">
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <div class="overlay-content">
+                        <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
+                            <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
+                        }
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                        {
+                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                        }
+                            @await Html.PartialAsync("_LoginPartial")
+                        </div>
                 </div>
-                @await Html.PartialAsync("_SelectLanguagePartial")
+                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
             </div>
-        </footer>
-    </div>
+
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
+
+            <link href="~/css/site.css" rel="stylesheet" />
+            <footer id="footer">
+                <p align="center">&copy; Copyright 2019</p>
+            </footer>
+        </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

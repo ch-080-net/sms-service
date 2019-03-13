@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using Model.DTOs;
 using System.Threading.Tasks;
+using WebCustomerApp.Models;
 
 namespace Model.Interfaces
 {
-    public interface IMailingManager : IDisposable
+    public interface IMailingManager
     {
-        Task<IEnumerable<MessageDTO>> GetUnsentMessages();
+        IEnumerable<MessageDTO> GetUnsentMessages();
+
+        void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState);
+        void MarkAs(MessageDTO messages, MessageState messageState);
     }
 }

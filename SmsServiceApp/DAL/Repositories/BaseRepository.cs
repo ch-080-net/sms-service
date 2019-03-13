@@ -12,7 +12,7 @@ namespace DAL.Repositories
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly ApplicationDbContext context;
-        private DbSet<TEntity> dbSet;
+        private readonly DbSet<TEntity> dbSet;
 
         public BaseRepository(ApplicationDbContext mainDbContext)
         {
@@ -59,31 +59,31 @@ namespace DAL.Repositories
             }
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual void Insert(TEntity item)
         {
-            dbSet.Add(entity);
+            dbSet.Add(item);
         }
 
-        public virtual void Update(TEntity entityToUpdate)
+        public virtual void Update(TEntity item)
         {
             try
             {
-                dbSet.Attach(entityToUpdate);
+                dbSet.Attach(item);
             }
             catch { }
             finally
             {
-                dbSet.Update(entityToUpdate);
+                dbSet.Update(item);
             }
         }
 
-        public virtual void Delete(TEntity entityToDelete)
+        public virtual void Delete(TEntity item)
         {
-            if (context.Entry(entityToDelete).State == EntityState.Detached)
+            if (context.Entry(item).State == EntityState.Detached)
             {
-                dbSet.Attach(entityToDelete);
+                dbSet.Attach(item);
             }
-            dbSet.Remove(entityToDelete);
+            dbSet.Remove(item);
         }
 
         public void SetStateModified(TEntity entity)

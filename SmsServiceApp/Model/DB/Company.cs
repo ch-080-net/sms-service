@@ -13,6 +13,8 @@ namespace WebApp.Models
     {
         public int Id { get; set; } //PRIMARY KEY
         public ICollection<Recipient> Recipients { get; set; }
+        public ICollection<RecievedMessage> RecievedMessages { get; set; }
+        public ICollection<AnswersCode> AnswersCodes { get; set; }
 
         public string Name { get; set; }
 
@@ -21,9 +23,14 @@ namespace WebApp.Models
         public int ApplicationGroupId { get; set; } //FOREIGN KEY (User)
         public ApplicationGroup ApplicationGroup { get; set; }
 
+        public int? PhoneId { get; set; }
+        public Phone Phone { get; set; }
+
         public int? TariffId { get; set; }
         public Tariff Tariff { get; set; }
 
         public string Message { get; set; }
+
+        public int Type { get; set; }
     }
 }

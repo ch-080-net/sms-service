@@ -24,7 +24,16 @@ namespace WebApp.Models
         public string Priority { get; set; }
         public string Notes { get; set; }
         public string KeyWords { get; set; }
-        public bool BeenSent { get; set; }
+        public MessageState MessageState { get; set; }
+        public bool IsStopped { get; set; }
+    }
 
+    public enum MessageState
+    {
+        NotSent,
+        Delivered,
+        Undeliverable,
+        Accepted,
+        Rejected
     }
 }

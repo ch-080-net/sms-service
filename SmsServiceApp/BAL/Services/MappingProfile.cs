@@ -59,7 +59,18 @@ namespace BAL.Services
             CreateMap<Recipient, MessageDTO>()
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Phone.PhoneNumber))
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
-                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Company.Message));
+                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
+                .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
+        }
+
+        private string ReplaceHashtags(Recipient recipient)
+        {
+            string result = recipient.Company.Message;
+            result = result.Replace("#name", recipient.Name)
+                .Replace("#surname", recipient.Surname)
+                .Replace("#company", recipient.Company.Name)
+                .Replace("#birthday", recipient.BirthDate.ToShortDateString());
+            return result;
         }
     }
 }

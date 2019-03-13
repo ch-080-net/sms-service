@@ -10,7 +10,11 @@ namespace WebApp.Models
         public ICollection<Contact> Contacts { get; set; }
         public ICollection<Recipient> Recipients { get; set; }
         public ApplicationGroup ApplicationGroup { get; set; }
+        public ICollection<RecievedMessage> RecievedMessages { get; set; }
+        public ICollection<Company> Companies { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        //public bool 
     }
 }

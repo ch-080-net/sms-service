@@ -7,6 +7,9 @@ using WebApp.Models;
 
 namespace Model.Interfaces
 {
+    /// <summary>
+    /// Interface of ContactRepository
+    /// </summary>
     public interface IContactRepository : IBaseRepository<Contact>
     {
         IEnumerable<Contact> GetContactsByPageNumber(int pageNumber, int pageSize,

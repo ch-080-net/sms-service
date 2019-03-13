@@ -23,35 +23,36 @@ namespace BAL.Managers
         /// <summary>
         /// Get messages wich was not been sent
         /// </summary>
-        public async Task<IEnumerable<MessageDTO>> GetUnsentMessages()
+        public IEnumerable<MessageDTO> GetUnsentMessages()
         {
-            var recipients = unitOfWork.Mailings.Get(r => !r.BeenSent);
+            var recipients = unitOfWork.Mailings.Get(r => r.MessageState == MessageState.NotSent);
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
             return result;
         }
 
 
-        #region IDisposable Support
-        private bool disposedValue = false;
-
-        protected virtual void Dispose(bool disposing)
+        public void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState)
         {
-            if (!disposedValue)
+            var recipientIds = from m in messages
+                               select m.RecipientId;
+
+            foreach (var id in recipientIds)
             {
-                if (disposing)
-                {
-                    base.unitOfWork.Dispose();
-                }
-
-                disposedValue = true;
+                var tempRecipient = unitOfWork.Mailings.GetById(id);
+                if (tempRecipient != null)
+                    tempRecipient.MessageState = messageState;
             }
+            try { unitOfWork.Save(); }
+            finally { }
         }
 
-        public void Dispose()
+        public void MarkAs(MessageDTO messages, MessageState messageState)
         {
-            Dispose(true);
+            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
+            if (tempRecipient != null)
+                tempRecipient.MessageState = messageState;
+            try { unitOfWork.Save(); }
+            finally { }
         }
-
-        #endregion
     }
 }

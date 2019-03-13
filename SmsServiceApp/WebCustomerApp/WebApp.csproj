@@ -6,12 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\LandingPage\b.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\style2.css" />
+    <None Include="wwwroot\css\style2.min.css" />
+    <None Include="wwwroot\images\landing\fond.png" />
+    <None Include="wwwroot\images\landing\iconMessage.png" />
+    <None Include="wwwroot\images\landing\messages.png" />
+    <None Include="wwwroot\images\landing\phone.png" />
+    <None Include="wwwroot\images\landing\phoneMessage.png" />
+    <None Include="wwwroot\images\landing\logo.svg" />
     <None Include="wwwroot\js\ContactTableFunctional.js" />
+    <None Include="wwwroot\js\preloader.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +37,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\LandingPage\" />
   </ItemGroup>
 
 </Project>

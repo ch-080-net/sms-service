@@ -3172,6 +3172,7 @@ tbody.collapse.show {
 }
 
 .dropup .dropdown-menu {
+
   margin-top: 0;
   margin-bottom: 0.125rem;
 }
@@ -3280,11 +3281,13 @@ tbody.collapse.show {
   color: #16181b;
   text-decoration: none;
   background-color: #f8f9fa;
+
 }
 
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
   text-decoration: none;
+
   background-color: #007bff;
 }
 
@@ -3325,7 +3328,7 @@ tbody.collapse.show {
 
 .btn-group > .btn:hover,
 .btn-group-vertical > .btn:hover {
-  z-index: 1;
+  z-index: 998;
 }
 
 .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,

@@ -3,47 +3,37 @@ using System.Threading.Tasks;
 using Quartz;
 using Model.Interfaces;
 using AutoMapper;
+using WebCustomerApp.Services;
+using Model.DTOs;
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
     /// <summary>
     /// IJob implementation for sending messages through SMPP
     /// </summary>
-    public class Mailing : IJob, IDisposable
+    public class Mailing : IJob
     {
-        private readonly IMailingManager mailingManager;
-        private readonly IMapper mapper;
+        private readonly IServiceProvider serviceProvider;
 
-        public Mailing(IMailingManager mailingManager, IMapper mapper)
+        public Mailing(IServiceProvider serviceProvider)
         {
-            this.mailingManager = mailingManager;
-            this.mapper = mapper;
+            this.serviceProvider = serviceProvider;
         }
+
         public async Task Execute(IJobExecutionContext context)
         {
-            var result = await mailingManager.GetUnsentMessages();
-            Console.WriteLine(result);
+            var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
+            if (result.Any())
+                await SendMessages(result);
         }
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
+        private async Task SendMessages(IEnumerable<MessageDTO> messages)
         {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    mailingManager.Dispose();
-                }
-                disposedValue = true;
-            }
+			SmsSender sms = await SmsSender.GetInstance(serviceProvider.GetService<IServiceScopeFactory>());
+            sms.SendMessages(messages); 
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-        #endregion
     }
 }
