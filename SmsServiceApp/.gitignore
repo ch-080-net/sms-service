@@ -9,6 +9,7 @@
 *.userosscache
 *.sln.docstates
 !Log.txt
+WebCustomerApp/wwwroot/images/OperatorLogo/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
