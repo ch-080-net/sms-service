@@ -5,7 +5,7 @@ using WebCustomerApp.Models;
 
 namespace Model.Interfaces
 {
-    public interface IPoolCampaignChartRepository : IBaseRepository<Company>
+    public interface IPoolCampaignChartsRepository : IBaseRepository<Company>
     {
 
     }
