@@ -10,6 +10,7 @@ using System.IO;
 using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using WebCustomerApp.Models;
 
 namespace WebCustomerApp.Services
 {
@@ -76,9 +77,12 @@ namespace WebCustomerApp.Services
             do
             {
                 try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
-                catch { await Task.Delay(5000); }
-            } 
-			while (connectionStatus != 0);
+                finally { }
+                if (connectionStatus == 0)
+                    break;
+                else
+                    await Task.Delay(5000);
+            } while (true);
 
 		}
 
@@ -90,15 +94,17 @@ namespace WebCustomerApp.Services
 		private async Task OpenSession()
 		{
 			//string exParameters = "smpp.long-messages=udh8";
-			string exParameters = "smpp.long-messages=none";
 
 			int sessionStatus = -1;
             do
             {
-                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, exParameters); }
-                catch { await Task.Delay(5000); }
-            } 
-			while (sessionStatus != 0);
+                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, ""); }
+                finally { }
+                if (sessionStatus == 0)
+                    break;
+                else
+                    await Task.Delay(5000);
+            } while (true);
         }
 
 		/// <summary>
@@ -180,25 +186,33 @@ namespace WebCustomerApp.Services
                 sw.WriteLine(report);
             }
 
-            // Message delivered or accepted
-            // Mark message in DB as sent and remove from messageDTOs
-            if ((e.MessageState == 2 || e.MessageState == 6) && e.NetworkErrorCode == 0)
+            if (e.NetworkErrorCode == 0)
             {
+                MessageState messageState;
+                switch (e.MessageState)
+                {
+                    case 2:
+                        messageState = MessageState.Delivered;
+                        break;
+                    case 6:
+                        messageState = MessageState.Accepted;
+                        break;
+                    case 5:
+                        messageState = MessageState.Undeliverable;
+                        break;
+                    case 8:
+                        messageState = MessageState.Rejected;
+                        break;
+                    default:
+                        return;
+                }
                 var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
                     using (var scope = serviceScopeFactory.CreateScope())
                     {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsSent(temp);
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAs(temp, messageState);
                     }
-                    messagesForSend.Remove(temp);
-                }
-            }
-            else if (e.MessageState == 5 || e.MessageState == 8 && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
                     messagesForSend.Remove(temp);
                 }
             }

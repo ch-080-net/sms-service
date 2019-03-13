@@ -25,50 +25,34 @@ namespace BAL.Managers
         /// </summary>
         public IEnumerable<MessageDTO> GetUnsentMessages()
         {
-            var recipients = unitOfWork.Mailings.Get(r => !r.BeenSent);
+            var recipients = unitOfWork.Mailings.Get(r => r.MessageState == MessageState.NotSent);
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
             return result;
         }
 
-        /// <summary>
-        /// Find recipients of messages and mark them as sent
-        /// </summary>
-        /// <param name="messages">Should contain RecipientId</param>
-        public void MarkAsSent(IEnumerable<MessageDTO> messages)
+
+        public void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState)
         {
             var recipientIds = from m in messages
-            select m.RecipientId;
+                               select m.RecipientId;
 
-            foreach(var id in recipientIds)
+            foreach (var id in recipientIds)
             {
                 var tempRecipient = unitOfWork.Mailings.GetById(id);
                 if (tempRecipient != null)
-                    tempRecipient.BeenSent = true;
+                    tempRecipient.MessageState = messageState;
             }
-            try
-            {
-                unitOfWork.Save();
-            }
-            catch
-            {
-
-            }
+            try { unitOfWork.Save(); }
+            finally { }
         }
 
-
-        public void MarkAsSent(MessageDTO messages)
+        public void MarkAs(MessageDTO messages, MessageState messageState)
         {
             var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
             if (tempRecipient != null)
-                tempRecipient.BeenSent = true;
-            try
-            {
-                unitOfWork.Save();
-            }
-            catch
-            {
-
-            }
+                tempRecipient.MessageState = messageState;
+            try { unitOfWork.Save(); }
+            finally { }
         }
     }
 }
