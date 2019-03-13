@@ -9,16 +9,11 @@
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.5.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
     <PackageReference Include="Quartz" Version="3.0.7" />
+    <PackageReference Include="tops.smsccn" Version="8.0.80" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="smsccn">
-      <HintPath>..\WebCustomerApp\smsccn.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
