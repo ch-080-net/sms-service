@@ -29,19 +29,20 @@
                 <div id="myNav" class="overlay">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="overlay-content">
-                        <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                        <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Company"]</a>
+                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
-                            <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
-                            <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
+                            <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
+                            <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
                         }
                         @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
                         {
-                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                            <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
                         }
-                            @await Html.PartialAsync("_LoginPartial")
-                        </div>
+                        @await Html.PartialAsync("_LoginPartial")
+                        @await Html.PartialAsync("_SelectLanguagePartial")
+                    </div>
                 </div>
                 <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
             </div>
@@ -53,6 +54,7 @@
             <link href="~/css/site.css" rel="stylesheet" />
             <footer id="footer">
                 <p align="center">&copy; Copyright 2019</p>
+             
             </footer>
         </div>
 

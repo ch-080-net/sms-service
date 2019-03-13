@@ -129,6 +129,9 @@
   <data name="Manage" xml:space="preserve">
     <value>Керувати</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
   <data name="Register" xml:space="preserve">
     <value>Зареєструватись</value>
   </data>

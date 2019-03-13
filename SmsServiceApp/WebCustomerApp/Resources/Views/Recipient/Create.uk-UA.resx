@@ -124,10 +124,10 @@
     <value>Створити</value>
   </data>
   <data name="Female" xml:space="preserve">
-    <value>Жінка</value>
+    <value>Жіноча</value>
   </data>
   <data name="Male" xml:space="preserve">
-    <value>Чоловік</value>
+    <value>Чоловіча</value>
   </data>
   <data name="Recipient" xml:space="preserve">
     <value>Отримувачі</value>
