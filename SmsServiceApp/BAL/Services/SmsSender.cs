@@ -10,6 +10,7 @@ using System.IO;
 using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using BAL.Managers;
 
 namespace WebCustomerApp.Services
 {
@@ -168,7 +169,19 @@ namespace WebCustomerApp.Services
 
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
-			Console.WriteLine("You have new message");
+            RecievedMessageDTO recievedMessage = new RecievedMessageDTO();
+            recievedMessage.SenderPhone = e.Originator;
+            recievedMessage.RecipientPhone = e.Destination;
+            recievedMessage.MessageText = e.Content.Substring(e.Content.IndexOf("Text:") + 6
+                , e.Content.Length - e.Content.IndexOf("Text:") - 6);
+            recievedMessage.TimeOfRecieve = DateTime.FromFileTimeUtc(long.Parse(
+                e.Content.Substring(e.Content.IndexOf("done date:") + 10,
+                e.Content.IndexOf("stat:") - e.Content.IndexOf("done date:") - 10)));
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                RecievedMessageManager recievedMessageManager = scope.ServiceProvider.GetService<RecievedMessageManager>();
+                recievedMessageManager.Insert(recievedMessage);
+            }
 		}
 
         // Status Report (SR) received from SMSC

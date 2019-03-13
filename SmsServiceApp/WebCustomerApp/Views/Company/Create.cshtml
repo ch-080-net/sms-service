@@ -54,52 +54,20 @@
         }
 
         function MessagePreview(item) {
-            CursorPosition = $(item).prop('selectionStart') + 1;
+            CursorPosition = $(item).prop('selectionStart');
             var v = $(item).val();
-            var meetHashTag = false;
-            var hashTagPosition = -1;
-            var hashTagWord = "";
-            for (var i = 0; i < v.length; i++) {
-                if (!meetHashTag) {
-                    if (v[i] == "#") {
-                        meetHashTag = true;
-                        hashTagPosition = i;
-                        hashTagWord += v[i];
-                    }
-                }
-                else {
-                    if (v[i] == "#") {
-                        hashTagWord = "";
-                        hashTagPosition = i;
-                    }
-                    if (v[i] == " ") {
-                        meetHashTag = false;
-                        hashTagPosition = -1;
-                        hashTagWord = "";
-                    }
-                    else {
-                        hashTagWord += v[i];
-                        var isHashTagWord = false;
-                        var hashTagWordIndex = -1;
-                        for (var j = 0; j < hashTagWords.length; j++) {
-                            if (hashTagWord == hashTagWords[j]) {
-                                isHashTagWord = true;
-                                hashTagWordIndex = j;
-                            }
-                        }
-                        if (isHashTagWord) {
-                            var textBefore = v.substring(0, hashTagPosition);
-                            var textAfter = v.substring(i + 1, v.length);
-                            v = textBefore + hashTagWordsRaplacer[hashTagWordIndex] + textAfter;
-                            i += hashTagWordsRaplacer[hashTagWordIndex].length - hashTagWord.length;
-                            meetHashTag = false;
-                            hashTagPosition = -1;
-                            hashTagWord = "";
-                        }
-                    }
-                }       
+            v = v.replace(new RegExp('#name', 'g'), 'ClientName');
+            for (var i = 0; i < hashTagWords.length; i++) {
+                v = v.replace(new RegExp(hashTagWords[i], 'g'), hashTagWordsRaplacer[i]);
             }
             $('#messagePreview').text(v);
+            if (v.length == 0) {
+                $('#messagePreview')[0].style.display = "none";
+            }
+            else {
+                $('#messagePreview')[0].style.display = "block";
+            }
+            $('#messagePreview')[0].style.height = $('#messagePreview')[0].scrollHeight + "px";
         }
 
         function ClickPosition(item) {
@@ -159,18 +127,16 @@
         </form>
     </div>
     <div class="form-group col-md-4" style="background: url(/images/iphone.png)no-repeat; background-size:contain;
-                height: 60vh;">
+                height: 60vh; width: 60vh;">
         <div style="position:relative; height:auto !important; " contenteditable>
-            <div id="messageView" class="form-group" style="content:url(/images/iphonemessage.png);
-                margin-top: 64%; margin-left: 9%; width: 82%; height: 160vh; position:absolute; height:auto !important;">
-            </div>
             <div style="position:absolute; height:auto !important; ">
-                <textarea rows="8" readonly class="form-control" id="messagePreview" style="z-index:10; border: none; border: none; overflow: auto;
-                    margin-top: 105%; margin-left: 19.5%; font-family: '-apple-system','HelveticaNeue'; line-height: 100%; 
-                    width: 156%; background-color:rgb(14, 209, 96); -webkit-border-radius: 20px; -moz-border-radius: 20px;
-                    resize: none; color: white;"></textarea>
+                <textarea rows="0" readonly class="form-control" id="messagePreview" style="z-index:10; border: none;
+                    margin-top: 50%; margin-left: 6.5vh; font-family: '-apple-system','HelveticaNeue'; line-height: 100%;
+                    width: 42vh; background-color:rgb(14, 209, 96); -webkit-border-radius: 20px; -moz-border-radius: 20px;
+                    resize: none; color: white; max-height: 33vh; overflow:hidden;"></textarea>
             </div>
         </div>
+
     </div>
 </div>
 </body>

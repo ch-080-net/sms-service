@@ -20,6 +20,8 @@ namespace Model.Interfaces
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
+        IBaseRepository<RecievedMessage> RecievedMessages { get; }
+        IBaseRepository<AnswersCode> AnswersCodes { get; }
      
         int Save();
     }

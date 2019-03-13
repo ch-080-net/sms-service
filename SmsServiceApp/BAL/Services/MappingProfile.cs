@@ -61,6 +61,16 @@ namespace BAL.Services
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
+
+            CreateMap<RecievedMessage, RecievedMessageDTO>()
+                .ForMember(dest => dest.RecipientPhone, opt => opt.MapFrom(src => src.Company.Phone.PhoneNumber))
+                .ForMember(dest => dest.SenderPhone, opt => opt.MapFrom(src => src.Phone.PhoneNumber))
+                .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Message))
+                .ForMember(dest => dest.TimeOfRecieve, opt => opt.MapFrom(src => src.RecievedTime));
+
+            CreateMap<RecievedMessageDTO, RecievedMessage>()
+                .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.MessageText))
+                .ForMember(dest => dest.RecievedTime, opt => opt.MapFrom(src => src.TimeOfRecieve));
         }
 
         private string ReplaceHashtags(Recipient recipient)
