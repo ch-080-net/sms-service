@@ -5,3 +5,58 @@
     ViewData["Title"] = Model.Title;
 }
 
+<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+@section Scripts{ 
+    <script src="~/js/highcharts.js"></script>
+
+    <script type="text/javascript">
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '@Model.Description'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Votes',
+                colorByPoint: true,
+                data: [{
+                    name: @Model.Categories.First().Item1,
+                    y: @Model.Categories.First().Item2,
+                    sliced: true,
+                    selected: true}
+                @for(int i = 1; i < Model.Categories.Count(); i++)
+                {
+                    Html.Raw(", {" +
+                        "name: " + Model.Categories.ElementAt(i).Item1 +
+                        "y: " + Model.Categories.ElementAt(i).Item2 +
+                        "}");
+                }
+                    ]
+            }]
+        });
+
+    </script>
+
+}
+

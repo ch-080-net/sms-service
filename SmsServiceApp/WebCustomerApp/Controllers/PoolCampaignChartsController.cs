@@ -25,8 +25,9 @@ namespace WebApp.Controllers
         public IActionResult Chart(int CompanyId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ViewBag.Chart = poolCampaignChartsManager.GetPieChart(CompanyId, userId);
-            return View();
+            return View(poolCampaignChartsManager.GetPieChart(CompanyId, userId));
         }
+
+
     }
 }
