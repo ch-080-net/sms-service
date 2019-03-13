@@ -181,7 +181,8 @@ namespace BAL.Managers
             try
             {
                 image = new Bitmap(stream);
-                image.SetResolution(32F, 32F);
+                image = new Bitmap(image, 32, 32);
+                // .setResolution() doesnt work. Bug, possibly
             }
             catch(ArgumentException)
             {
