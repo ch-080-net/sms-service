@@ -10,6 +10,7 @@ using System.IO;
 using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using WebCustomerApp.Models;
 
 namespace WebCustomerApp.Services
 {
@@ -23,7 +24,7 @@ namespace WebCustomerApp.Services
         private static SmsSender instance;
 
 		public SMSCclientSMPP clientSMPP;
-		public string userDataHeader;
+		//public string userDataHeader;
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
@@ -50,7 +51,7 @@ namespace WebCustomerApp.Services
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
-            userDataHeader = "050003010101";
+            //userDataHeader = "0003A40101";
 			messageIDs = new List<string>();
 			ImmediateResponse = false;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
@@ -72,6 +73,7 @@ namespace WebCustomerApp.Services
         private async Task Connect()
 		{
             int connectionStatus = -1;
+
             do
             {
                 try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
@@ -91,9 +93,9 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		private async Task OpenSession()
 		{
-			string concatCode = "smpp.long-messages=udh8";
+			//string exParameters = "smpp.long-messages=udh8";
 
-            int sessionStatus = -1;
+			int sessionStatus = -1;
             do
             {
                 try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, ""); }
@@ -123,9 +125,9 @@ namespace WebCustomerApp.Services
 		/// <param name="message">Message for send</param>
 		public void SendMessage(MessageDTO message)
 		{
-            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId && m.ServerId != ""))
+            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId))
                 return;
-            else if (!messagesForSend.Any(m => m.RecipientId == message.RecipientId))
+            else
 				messagesForSend.Add(message);
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -144,7 +146,10 @@ namespace WebCustomerApp.Services
 							message.MessageText, EncodingEnum.et7BitText, "", options, 
 							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
-			message.ServerId = messageIDs.FirstOrDefault();
+			if (resultStatus == 0)
+				message.ServerId = messageIDs.FirstOrDefault();
+			else
+				messagesForSend.Remove(message);
 		}
 		
 		/// <summary>
@@ -181,50 +186,32 @@ namespace WebCustomerApp.Services
                 sw.WriteLine(report);
             }
 
-            if ((e.MessageState == 2) && e.NetworkErrorCode == 0)
+            if (e.NetworkErrorCode == 0)
             {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
+                MessageState messageState;
+                switch (e.MessageState)
                 {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsDelivered(temp);
-                    }
-                    messagesForSend.Remove(temp);
+                    case 2:
+                        messageState = MessageState.Delivered;
+                        break;
+                    case 6:
+                        messageState = MessageState.Accepted;
+                        break;
+                    case 5:
+                        messageState = MessageState.Undeliverable;
+                        break;
+                    case 8:
+                        messageState = MessageState.Rejected;
+                        break;
+                    default:
+                        return;
                 }
-            }
-            else if ((e.MessageState == 6) && e.NetworkErrorCode == 0)
-            {
                 var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
                 if (temp != null)
                 {
                     using (var scope = serviceScopeFactory.CreateScope())
                     {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsAccepted(temp);
-                    }
-                    messagesForSend.Remove(temp);
-                }
-            }
-            else if ((e.MessageState == 5) && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsUndeliverable(temp);
-                    }
-                    messagesForSend.Remove(temp);
-                }
-            }
-            else if ((e.MessageState == 8) && e.NetworkErrorCode == 0)
-            {
-                var temp = messagesForSend.FirstOrDefault(m => m.ServerId == e.MessageID);
-                if (temp != null)
-                {
-                    using (var scope = serviceScopeFactory.CreateScope())
-                    {
-                        scope.ServiceProvider.GetService<IMailingManager>().MarkAsRejected(temp);
+                        scope.ServiceProvider.GetService<IMailingManager>().MarkAs(temp, messageState);
                     }
                     messagesForSend.Remove(temp);
                 }
