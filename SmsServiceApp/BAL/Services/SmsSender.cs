@@ -72,11 +72,13 @@ namespace WebCustomerApp.Services
         private async Task Connect()
 		{
             int connectionStatus = -1;
+
             do
             {
                 try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
                 catch { await Task.Delay(5000); }
-            } while (connectionStatus != 0);
+            } 
+			while (connectionStatus != 0);
 
 		}
 
@@ -95,7 +97,8 @@ namespace WebCustomerApp.Services
             {
                 try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, exParameters); }
                 catch { await Task.Delay(5000); }
-            } while (sessionStatus != 0);
+            } 
+			while (sessionStatus != 0);
         }
 
 		/// <summary>
@@ -116,9 +119,9 @@ namespace WebCustomerApp.Services
 		/// <param name="message">Message for send</param>
 		public void SendMessage(MessageDTO message)
 		{
-            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId && m.ServerId != ""))
+            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId))
                 return;
-            else if (!messagesForSend.Any(m => m.RecipientId == message.RecipientId))
+            else
 				messagesForSend.Add(message);
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -137,7 +140,10 @@ namespace WebCustomerApp.Services
 							message.MessageText, EncodingEnum.et7BitText, "", options, 
 							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
-			message.ServerId = messageIDs.FirstOrDefault();
+			if (resultStatus == 0)
+				message.ServerId = messageIDs.FirstOrDefault();
+			else
+				messagesForSend.Remove(message);
 		}
 		
 		/// <summary>
