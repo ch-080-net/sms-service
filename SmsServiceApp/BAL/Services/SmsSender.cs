@@ -23,7 +23,7 @@ namespace WebCustomerApp.Services
         private static SmsSender instance;
 
 		public SMSCclientSMPP clientSMPP;
-		public string userDataHeader;
+		//public string userDataHeader;
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
@@ -50,7 +50,7 @@ namespace WebCustomerApp.Services
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
-            userDataHeader = "0003A40101";
+            //userDataHeader = "0003A40101";
 			messageIDs = new List<string>();
 			ImmediateResponse = false;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
@@ -87,12 +87,13 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		private async Task OpenSession()
 		{
-			string concatCode = "smpp.long-messages=udh8";
+			//string exParameters = "smpp.long-messages=udh8";
+			string exParameters = "smpp.long-messages=none";
 
-            int sessionStatus = -1;
+			int sessionStatus = -1;
             do
             {
-                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, concatCode); }
+                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, exParameters); }
                 catch { await Task.Delay(5000); }
             } while (sessionStatus != 0);
         }
@@ -134,7 +135,7 @@ namespace WebCustomerApp.Services
 
 			int resultStatus = clientSMPP.smppSubmitMessageEx(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.et7BitText, "", options, 
-							DateTime.Now, DateTime.Now, userDataHeader, 0, exParameters, out messageIDs);
+							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
 
 			message.ServerId = messageIDs.FirstOrDefault();
 		}
