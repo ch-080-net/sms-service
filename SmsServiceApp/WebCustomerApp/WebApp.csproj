@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Views\LandingPage\" />
+    <Folder Include="wwwroot\images\OperatorLogo\" />
   </ItemGroup>
 
 </Project>
