@@ -167,13 +167,13 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="logo"> Should contain not 0 OperatorId and not null Logo</param>
         /// <returns></returns>
-        public bool AddLogo(LogoViewModel logo)
+        public TransactionResultDTO AddLogo(LogoViewModel logo)
         {
             if (logo.Logo == null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "No logo sent" };
 
             if (logo.OperatorId == 0)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
 
             // Create bitmap
             var stream = logo.Logo.OpenReadStream();
@@ -186,11 +186,11 @@ namespace BAL.Managers
             }
             catch(ArgumentException)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Image data corrupted" };
             }
             catch(Exception)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
             }
 
             try
@@ -199,17 +199,18 @@ namespace BAL.Managers
             }
             catch(ArgumentNullException)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            catch(System.Runtime.InteropServices.ExternalException)
+            catch (System.Runtime.InteropServices.ExternalException)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Saving destination cannot be reached" };
             }
-            catch(Exception)
+            catch (Exception)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
             }
-            return true;
+
+            return new TransactionResultDTO() { Success = true };
         }
     }
 }
