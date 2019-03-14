@@ -132,14 +132,11 @@ namespace WebCustomerApp.Services
 				messagesForSend.Add(message);
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
-			string exParameters = "smpp.esm_class = 04;smpp.tlvs = 1403000A34343132333435363738;smpp.mes_id=11";
-
-			//int resultStatus = clientSMPP.smppSubmitMessage(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
-			//				message.MessageText, EncodingEnum.et7BitText, userDataHeader, options, out messageIDs);
+			//string exParameters = "smpp.esm_class = 04;smpp.tlvs = 1403000A34343132333435363738;smpp.mes_id=11";
 
 			int resultStatus = clientSMPP.smppSubmitMessageEx(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.etUCS2Text, "", options, 
-							DateTime.Now, DateTime.Now, "", 0, exParameters, out messageIDs);
+							DateTime.Now, DateTime.Now, "", 0, "", out messageIDs);
 
 			if (resultStatus == 0)
 				message.ServerId = messageIDs.FirstOrDefault();
@@ -183,10 +180,6 @@ namespace WebCustomerApp.Services
         // Status Report (SR) received from SMSC
         public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
         {
-			string Content = e.Content.Substring(e.Content.IndexOf("Text:") + 5);
-
-			Content = DecodeFromUtf8(Content);
-
 			string report = $"Message From: {e.Originator}, To: {e.Destination}, Content: {e.Content}";
 
 			using (StreamWriter sw = new StreamWriter(@"Log.txt", true, Encoding.UTF8))
@@ -230,19 +223,6 @@ namespace WebCustomerApp.Services
 		private void SMSCclientSMPP_OnSmppMessageCompleted(object Sender, smppMessageCompletedEventArgs e)
 		{
 			Console.WriteLine("Multipart message complete");
-		}
-
-		public static string DecodeFromUtf8(string utf8String)
-		{
-			// copy the string as UTF-8 bytes.
-			byte[] utf8Bytes = new byte[utf8String.Length];
-			for (int i = 0; i < utf8String.Length; ++i)
-			{
-				//Debug.Assert( 0 <= utf8String[i] && utf8String[i] <= 255, "the char must be in byte's range");
-				utf8Bytes[i] = (byte)utf8String[i];
-			}
-
-			return Encoding.UTF8.GetString(utf8Bytes, 0, utf8Bytes.Length);
 		}
 	}
 	
