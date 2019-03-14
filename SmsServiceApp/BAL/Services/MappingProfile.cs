@@ -77,24 +77,12 @@ namespace BAL.Services
             return result;
         }
 
-        private byte[] GetLogo(Operator oper)
+        private string GetLogo(Operator oper)
         {
             string filePath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
             if (File.Exists(filePath))
             {
-                try
-                {
-                    var fileStream = File.OpenRead(filePath);
-                    using (BinaryReader reader = new BinaryReader(fileStream))
-                    {
-                        byte[] result = reader.ReadBytes((int)fileStream.Length);
-                        return result;
-                    }
-                }
-                catch
-                {
-                    return null;
-                }
+                return "/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
             }
             else
                 return null;
