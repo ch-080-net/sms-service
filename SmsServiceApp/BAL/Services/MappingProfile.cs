@@ -93,5 +93,18 @@ namespace BAL.Services
             else
                 return null;
         }
+
+        private IEnumerable<Tuple<string, int>> PopulateCategories(Company company)
+        {
+            var result = new List<Tuple<string, int>>();
+            foreach (var code in company.AnswersCodes)
+            {
+                var messages = from rm in company.RecievedMessages
+                               where rm.Message == Convert.ToString(code.Code)
+                               select rm;
+                result.Add(new Tuple<string, int>(code.Answer, messages.Count()));
+            }
+            return result;
+        }
     }
 }
