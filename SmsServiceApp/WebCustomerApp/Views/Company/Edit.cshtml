@@ -54,12 +54,9 @@
         function MessagePreview(item) {
             CursorPosition = $(item).prop('selectionStart');
             var v = $(item).val();
-            var v = $(item).val();
-            v = v.replace(new RegExp('#name', 'g'), 'ClientName');
             for (var i = 0; i < hashTagWords.length; i++) {
                 v = v.replace(new RegExp(hashTagWords[i], 'g'), hashTagWordsRaplacer[i]);
             }
-            $('#messagePreview').text(v);
             $('#messagePreview').text(v);
             if (v.length == 0) {
                 $('#messagePreview')[0].style.display = "none";

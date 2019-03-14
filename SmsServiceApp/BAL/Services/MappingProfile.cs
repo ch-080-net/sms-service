@@ -14,6 +14,7 @@ using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
+using Model.ViewModels.AnswersCodeViewModels;
 
 namespace BAL.Services
 {
@@ -71,6 +72,9 @@ namespace BAL.Services
             CreateMap<RecievedMessageDTO, RecievedMessage>()
                 .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.MessageText))
                 .ForMember(dest => dest.RecievedTime, opt => opt.MapFrom(src => src.TimeOfRecieve));
+
+            CreateMap<AnswersCode, AnswersCodeViewModel>();
+            CreateMap<AnswersCodeViewModel, AnswersCode>();
         }
 
         private string ReplaceHashtags(Recipient recipient)
