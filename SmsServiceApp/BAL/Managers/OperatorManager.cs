@@ -193,6 +193,18 @@ namespace BAL.Managers
                 return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
             }
 
+            if(!Directory.Exists("wwwroot/images/OperatorLogo/"))
+            {
+                try
+                {
+                    Directory.CreateDirectory("wwwroot/images/OperatorLogo/");
+                }
+                catch (Exception)
+                {
+                    return new TransactionResultDTO() { Success = false, Details = "Can't create directory for logos" };
+                }
+            }
+
             try
             {
                 image.Save("wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(logo.OperatorId) + ".png", ImageFormat.Png);
