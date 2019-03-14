@@ -4,6 +4,7 @@ using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.RecipientViewModels;
 using Model.ViewModels.ContactViewModels;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
@@ -35,7 +36,10 @@ namespace BAL.Services
                             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
 
-            CreateMap<Operator, OperatorViewModel>().ReverseMap();
+            CreateMap<Operator, OperatorViewModel>()
+                .ForMember(ovm => ovm.Logo, opt => opt.MapFrom(o => GetLogo(o)));
+            CreateMap<OperatorViewModel, Operator>();
+
             CreateMap<Code, CodeViewModel>().ReverseMap();
 
             CreateMap<StopWord, StopWordViewModel>();
@@ -79,17 +83,15 @@ namespace BAL.Services
             return result;
         }
 
-        private IEnumerable<Tuple<string, int>> PopulateCategories(Company company)
+        private string GetLogo(Operator oper)
         {
-            var result = new List<Tuple<string, int>>();
-            foreach(var code in company.AnswersCodes)
+            string filePath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
+            if (File.Exists(filePath))
             {
-                var messages = from rm in company.RecievedMessages
-                               where rm.Message == Convert.ToString(code.Code)
-                               select rm;
-                result.Add(new Tuple<string, int>(code.Answer, messages.Count()));                
+                return "/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
             }
-            return result;
+            else
+                return null;
         }
     }
 }
