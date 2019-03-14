@@ -6,21 +6,21 @@
     ViewData["Title"] = "Create";
 }
 <head>
-
     <style>
-        #messagePreview::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            background-color: #F5F5F5;
-        }
-
-        #messagePreview::-webkit-scrollbar {
-            width: 6px;
-            background-color: #F5F5F5;
-        }
-
-        #messagePreview::-webkit-scrollbar-thumb {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-color: #555;
+        #messagePreview::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 38px;
+            height: 26px;
+            border-color: inherit;
+            border-style: solid;
+            border-radius: 50%;
+            border-width: 0 10px;
+            z-index: 99;
+            left: 4px;
+            color: #e5e5ea;
+            clip: rect(10px,40px,30px,21px) !important;
         }
     </style>
 
@@ -66,6 +66,7 @@
             else {
                 $('#messagePreview')[0].style.display = "block";
             }
+            $('#messagePreview')[0].style.height = "0px";
             $('#messagePreview')[0].style.height = $('#messagePreview')[0].scrollHeight + "px";
         }
 
@@ -126,13 +127,16 @@
         </form>
     </div>
     <div class="form-group col-md-4" style="background: url(/images/iphone.png)no-repeat; background-size:contain;
-                height: 60vh; width: 60vh;">
+                height: 320px; width: 320px; margin-top: 50px">
         <div style="position:relative; height:auto !important; " contenteditable>
             <div style="position:absolute; height:auto !important; ">
-                <textarea rows="0" readonly class="form-control" id="messagePreview" style="z-index:10; border: none;
-                    margin-top: 50%; margin-left: 6.5vh; font-family: '-apple-system','HelveticaNeue'; line-height: 100%;
-                    width: 42vh; background-color:rgb(14, 209, 96); -webkit-border-radius: 20px; -moz-border-radius: 20px;
-                    resize: none; color: white; max-height: 33vh; overflow:hidden;"></textarea>
+                <div rows="0" readonly class="form-control" id="messagePreview" style="z-index:10; border: none;
+                    margin-top: 120px; margin-left: 30px; 
+                    font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif; line-height: 100%;
+                    width: 210px; background-color:#e5e5ea; -webkit-border-radius: 20px; -moz-border-radius: 20px;
+                    resize: none; max-height: 190px; overflow:hidden; display: none;">
+                    ::before
+                </div>
             </div>
         </div>
 

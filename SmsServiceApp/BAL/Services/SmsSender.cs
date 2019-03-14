@@ -171,11 +171,8 @@ namespace WebCustomerApp.Services
             RecievedMessageDTO recievedMessage = new RecievedMessageDTO();
             recievedMessage.SenderPhone = e.Originator;
             recievedMessage.RecipientPhone = e.Destination;
-            recievedMessage.MessageText = e.Content.Substring(e.Content.IndexOf("Text:") + 6
-                , e.Content.Length - e.Content.IndexOf("Text:") - 6);
-            recievedMessage.TimeOfRecieve = DateTime.FromFileTimeUtc(long.Parse(
-                e.Content.Substring(e.Content.IndexOf("done date:") + 10,
-                e.Content.IndexOf("stat:") - e.Content.IndexOf("done date:") - 10)));
+            recievedMessage.MessageText = e.Content;
+            recievedMessage.TimeOfRecieve = DateTime.UtcNow;
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 RecievedMessageManager recievedMessageManager = scope.ServiceProvider.GetService<RecievedMessageManager>();
