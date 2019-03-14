@@ -16,6 +16,7 @@ using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
 using System.Linq;
+using Model.ViewModels.ChartsViewModels;
 
 namespace BAL.Services
 {
@@ -67,9 +68,12 @@ namespace BAL.Services
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
 
-            CreateMap<Company, PieChartDTO>()
-                .ForMember(pc => pc.Title, opt => opt.MapFrom(com => com.Name))
-                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategories(com)))
+            CreateMap<Company, PieChart>()
+                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForPieChart(com)))
+                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
+
+            CreateMap<Company, StackedChart>()
+                .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => SetTimeFrameForStackedChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
         }
 
@@ -94,7 +98,7 @@ namespace BAL.Services
                 return null;
         }
 
-        private IEnumerable<Tuple<string, int>> PopulateCategories(Company company)
+        private IEnumerable<Tuple<string, int>> PopulateCategoriesForPieChart(Company company)
         {
             var result = new List<Tuple<string, int>>();
             foreach (var code in company.AnswersCodes)
@@ -106,5 +110,21 @@ namespace BAL.Services
             }
             return result;
         }
+
+        private IEnumerable<string> SetTimeFrameForStackedChart(Company company)
+        {
+            DateTime beginnig = company.StartTime;
+            DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
+            if(beginnig > ending)
+                return null;
+            TimeSpan span = (ending - beginnig) / 10;
+            var result = new List<string>();
+            for (int i = 0; i < 10; i++)
+            {
+                result.Add((beginnig + span * i).ToShortDateString());
+            }
+            return result;                
+        }
+
     }
 }

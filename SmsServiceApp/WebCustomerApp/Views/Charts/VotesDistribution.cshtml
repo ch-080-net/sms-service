@@ -1,11 +1,7 @@
-﻿@using Model.DTOs
-@model PieChartDTO
+﻿@using Model.ViewModels.ChartsViewModels
+@model PieChart
 
-@{
-    ViewData["Title"] = Model.Title;
-}
-
-<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="container" style="margin: 0 auto"></div>
 
 @section Scripts{ 
     <script src="~/js/highcharts.js"></script>
@@ -41,22 +37,20 @@
                 name: 'Votes',
                 colorByPoint: true,
                 data: [{
-                    name: @Model.Categories.First().Item1,
+                    name: '@Model.Categories.First().Item1',
                     y: @Model.Categories.First().Item2,
                     sliced: true,
-                    selected: true}
-                @for(int i = 1; i < Model.Categories.Count(); i++)
-                {
-                    Html.Raw(", {" +
-                        "name: " + Model.Categories.ElementAt(i).Item1 +
-                        "y: " + Model.Categories.ElementAt(i).Item2 +
-                        "}");
+                    selected: true
                 }
-                    ]
+                @foreach(var i in Model.Categories.Skip(1))
+                {
+                    WriteLiteral(", {" +
+                        "name: '" + i.Item1 +
+                        "', y: " + i.Item2 +
+                        "}");
+                }]
             }]
         });
-
     </script>
-
 }
 

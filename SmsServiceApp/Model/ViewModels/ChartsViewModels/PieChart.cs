@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace Model.DTOs
+namespace Model.ViewModels.ChartsViewModels
 {
-    public class PieChartDTO
+    public class PieChart
     {
-        public string Title { get; set; }
         public string Description { get; set; }
         public IEnumerable<Tuple<string, int>> Categories { get; set; }
     }

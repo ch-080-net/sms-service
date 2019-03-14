@@ -12,20 +12,21 @@ using System.Security.Claims;
 namespace WebApp.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class PoolCampaignChartsController : Controller
+    public class ChartsController : Controller
     {
-        private readonly IPoolCampaignChartsManager poolCampaignChartsManager;
+        private readonly IChartsManager poolCampaignChartsManager;
 
-        public PoolCampaignChartsController(IPoolCampaignChartsManager poolCampaignChartsManager)
+        public ChartsController(IChartsManager poolCampaignChartsManager)
         {
             this.poolCampaignChartsManager = poolCampaignChartsManager;
         }
 
         [HttpGet]
-        public IActionResult Chart(int CompanyId)
+        public IActionResult VotesDistribution(int CompanyId = 1)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(poolCampaignChartsManager.GetPieChart(CompanyId, userId));
+            var result = poolCampaignChartsManager.GetPieChart(CompanyId, userId);
+            return View(result);
         }
 
 

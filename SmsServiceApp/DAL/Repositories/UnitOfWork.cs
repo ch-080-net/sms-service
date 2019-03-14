@@ -21,7 +21,7 @@ namespace DAL.Repositories
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
         private IMailingRepository mailingRepo;
-        private IPoolCampaignChartsRepository poolCampaignChartsRepo;
+        private IChartsRepository ChartsRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -121,15 +121,15 @@ namespace DAL.Repositories
             }
         }
 
-        public IPoolCampaignChartsRepository PoolCampaignCharts
+        public IChartsRepository Charts
         {
             get
             {
-                if (poolCampaignChartsRepo == null)
+                if (ChartsRepo == null)
                 {
-                    poolCampaignChartsRepo = new PoolCampaignChartsRepository(context);
+                    ChartsRepo = new ChartsRepository(context);
                 }
-                return poolCampaignChartsRepo;
+                return ChartsRepo;
             }
         }
 

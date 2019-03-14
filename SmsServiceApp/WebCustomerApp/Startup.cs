@@ -102,7 +102,7 @@ namespace WebCustomerApp
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
-            services.AddScoped<IPoolCampaignChartsManager, PoolCampaignChartsManager>();
+            services.AddScoped<IChartsManager, ChartsManager>();
 
             // Start scheduler
 

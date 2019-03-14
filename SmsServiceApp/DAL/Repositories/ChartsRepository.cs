@@ -10,9 +10,9 @@ using WebCustomerApp.Data;
 
 namespace DAL.Repositories
 {
-    public class PoolCampaignChartsRepository : BaseRepository<Company>, IPoolCampaignChartsRepository
+    public class ChartsRepository : BaseRepository<Company>, IChartsRepository
     {
-        public PoolCampaignChartsRepository(ApplicationDbContext mainDbContext) : base(mainDbContext)
+        public ChartsRepository(ApplicationDbContext mainDbContext) : base(mainDbContext)
         {
         }
 
