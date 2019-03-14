@@ -51,21 +51,5 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        //clear
-        //public void SearchStopWordInMeaasge(string Originator ,string Destination ,string Content)
-        //{
-        //    Content = Content.Substring(Content.IndexOf(" Text: ") + 7);//7=" Text: " size
-
-        //   var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => c.Word==Content);
-        //    if (words != null)
-        //    {
-        //        var recipient = unitOfWork.Recipients.GetAll().FirstOrDefault(r => (r.Phone.PhoneNumber == Originator) && (r.Company.Phone.PhoneNumber == Destination));
-        //        if (recipient != null)
-        //        {
-        //            recipient.IsStopped = true;
-        //            unitOfWork.Recipients.Update(recipient);
-        //        }
-        //    }
-        //}
     }
 }

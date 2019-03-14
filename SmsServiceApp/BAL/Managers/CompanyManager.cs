@@ -31,6 +31,17 @@ namespace BAL.Managers
         }
 
         /// <summary>
+        ///  Method for getting all the companies that have this phone
+        /// </summary>
+        /// <param phone="Destination">getting all the companies that have this phone</param>
+        /// <returns>IEnumerable of mapped to ViewModel objects</returns>
+        public IEnumerable<CompanyViewModel> GetCompaniesByPhone(Phone phone)
+        {
+            IEnumerable<Company> companies = unitOfWork.Companies.Get(p => p.PhoneId == phone.Id);
+            return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
+        }
+
+        /// <summary>
         /// Method for inserting new company to db
         /// </summary>
         /// <param name="item">ViewModel of Company</param>

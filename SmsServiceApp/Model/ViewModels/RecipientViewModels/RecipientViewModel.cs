@@ -26,5 +26,6 @@ namespace Model.ViewModels.RecipientViewModels
         public string Gender { get; set; }
         public string Priority { get; set; }
         public string KeyWords { get; set; }
+        public bool IsStopped { get; set; }
     }
 }

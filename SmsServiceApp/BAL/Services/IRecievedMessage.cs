@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BAL.Services
 {
-   public interface IResivedMessage
+   public interface IRecievedMessage
     {
         void SearchStopWordInMeaasge(string Originator, string Destination, string Content);
     }
