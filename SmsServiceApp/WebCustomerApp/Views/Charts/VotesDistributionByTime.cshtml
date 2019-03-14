@@ -1,0 +1,81 @@
+﻿@using Model.ViewModels.ChartsViewModels
+@model StackedChart
+
+<div id="container" style="margin: 0 auto"></div>
+
+@section Scripts{
+    <script src="~/js/highcharts.js"></script>
+
+    <script type="text/javascript">
+        Highcharts.chart('container', {
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: '@Model.Description'
+            },
+            xAxis: {
+                categories: ['@Model.TimeFrame.ElementAt(0)'
+
+           @foreach (var i in Model.TimeFrame.Skip(1))
+            {
+               WriteLiteral(", '" + i + "'");
+            }
+
+                ],
+                tickmarkPlacement: 'on',
+                title: {
+                        enabled: false
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Votes'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                split: true,
+                valueSuffix: ' votes'
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'normal',
+                    lineColor: '#666666',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#666666'
+                    }
+                }
+            },
+            series: [{
+                name: '@Model.Categories.ElementAt(0).Item1',
+                data: [
+                    @Model.Categories.ElementAt(0).Item2.ElementAt(0)
+                    @foreach(var i in Model.Categories.ElementAt(0).Item2.Skip(1))
+                     {
+                        WriteLiteral(", " + i);
+                     }
+                ]
+            }
+                @foreach(var i in Model.Categories.Skip(1))
+                {
+                    WriteLiteral(", {" +
+                        "name: '" + i.Item1 + "', " +
+                        "data: [" + i.Item2.ElementAt(0));
+                    @foreach(var j in i.Item2.Skip(1))
+                    {
+                        WriteLiteral(", " + j);
+                    }
+                    WriteLiteral("]}");
+                }
+                ]
+        });
+    </script>
+}
+

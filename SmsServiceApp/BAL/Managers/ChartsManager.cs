@@ -28,7 +28,10 @@ namespace BAL.Managers
 
         public StackedChart GetStackedChart(int campaignId, string userId)
         {
-            throw new NotImplementedException();
+            var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
+                && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();
+
+            return mapper.Map<Company, StackedChart>(campaign);
         }
     }
 }

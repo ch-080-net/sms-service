@@ -74,7 +74,8 @@ namespace BAL.Services
 
             CreateMap<Company, StackedChart>()
                 .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => SetTimeFrameForStackedChart(com)))
-                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
+                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
+                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForStackedChart(com)));
         }
 
         private string ReplaceHashtags(Recipient recipient)
@@ -113,17 +114,52 @@ namespace BAL.Services
 
         private IEnumerable<string> SetTimeFrameForStackedChart(Company company)
         {
-            DateTime beginnig = company.StartTime;
+            DateTime beginning = company.StartTime;
             DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
-            if(beginnig > ending)
+            if(beginning > ending)
                 return null;
-            TimeSpan span = (ending - beginnig) / 10;
+            
             var result = new List<string>();
-            for (int i = 0; i < 10; i++)
+            foreach (var i in GetInterimTimes(beginning, ending))
             {
-                result.Add((beginnig + span * i).ToShortDateString());
+                result.Add(i.ToString());
             }
             return result;                
+        }
+
+        private IEnumerable<DateTime> GetInterimTimes(DateTime beginning, DateTime ending, int slices = 7)
+        {
+            if (slices < 2)
+                slices = 2;
+            TimeSpan span = (ending - beginning) / slices;
+            var result = new List<DateTime>();
+            for (int i = 0; i < slices; i++)
+            {
+                result.Add(beginning + span * i);
+            }
+            return result;
+        }
+
+        private IEnumerable<Tuple<string, IEnumerable<int>>> PopulateCategoriesForStackedChart(Company company)
+        {
+            var result = new List<Tuple<string, IEnumerable<int>>>();
+            var timeGates = GetInterimTimes(company.StartTime, company.EndTime);
+
+            foreach (var code in company.AnswersCodes)
+            {
+                var counts = new List<int>();
+                for (int i = 0; i < timeGates.Count() - 1; i++)
+                {
+                    var numOfMessages = (from rm in company.RecievedMessages
+                                   where rm.Message == Convert.ToString(code.Code) &&
+                                   rm.RecievedTime >= timeGates.ElementAt(i) &&
+                                   rm.RecievedTime < timeGates.ElementAt(i + 1)                        
+                                   select rm).Count();
+                    counts.Add(numOfMessages + counts.LastOrDefault());
+                }
+                result.Add(new Tuple<string, IEnumerable<int>>(code.Answer, counts));
+            }
+            return result;
         }
 
     }

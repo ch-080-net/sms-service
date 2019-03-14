@@ -29,6 +29,13 @@ namespace WebApp.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        public IActionResult VotesDistributionByTime(int CompanyId = 1)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = poolCampaignChartsManager.GetStackedChart(CompanyId, userId);
+            return View(result);
+        }
 
     }
 }
