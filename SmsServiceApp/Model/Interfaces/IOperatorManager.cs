@@ -13,7 +13,7 @@ namespace Model.Interfaces
         TransactionResultDTO Update(OperatorViewModel updatedOperator);
         TransactionResultDTO Remove(int id);
         IEnumerable<OperatorViewModel> GetAll();
-        bool AddLogo(LogoViewModel logo);
+        TransactionResultDTO AddLogo(LogoViewModel logo);
         Page GetPage(PageState pageState);
     }
 }

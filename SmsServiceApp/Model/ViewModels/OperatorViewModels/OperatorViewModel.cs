@@ -11,6 +11,6 @@ namespace Model.ViewModels.OperatorViewModels
         //[Required]
         public string Name { get; set; }
 
-        public byte[] Logo { get; set; }
+        public string Logo { get; set; }
     }
 }
