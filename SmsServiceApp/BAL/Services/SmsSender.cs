@@ -24,11 +24,9 @@ namespace WebCustomerApp.Services
         private static SmsSender instance;
 
 		public SMSCclientSMPP clientSMPP;
-		//public string userDataHeader;
 		public List<string> messageIDs;
-		public bool ImmediateResponse { get; protected set; }
 
-        private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
+		private ICollection<MessageDTO> messagesForSend;
         private IServiceScopeFactory serviceScopeFactory;
 
         public static async Task<SmsSender> GetInstance(IServiceScopeFactory serviceScopeFactory)
@@ -51,9 +49,7 @@ namespace WebCustomerApp.Services
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
-            //userDataHeader = "0003A40101";
-			messageIDs = new List<string>();
-			ImmediateResponse = false;
+			messagesForSend = new List<MessageDTO>();
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
@@ -164,7 +160,12 @@ namespace WebCustomerApp.Services
 
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
-			Console.WriteLine("You have new message");
+			string report = $"Message From: {e.Originator}, To: {e.Destination}, Text: {e.Content}";
+
+			using (StreamWriter sw = new StreamWriter(@"Received messages.txt", true, Encoding.UTF8))
+			{
+				sw.WriteLine(report);
+			}
 		}
 
         // Status Report (SR) received from SMSC
