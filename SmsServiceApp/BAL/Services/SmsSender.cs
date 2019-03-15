@@ -37,9 +37,6 @@ namespace WebCustomerApp.Services
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
-
-			Connect();
-			OpenSession();
 		}
 
         /// <summary>

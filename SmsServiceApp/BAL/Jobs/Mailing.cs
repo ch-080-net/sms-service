@@ -25,11 +25,14 @@ namespace BAL.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-			var sender = serviceProvider.GetService<ISmsSender>();
-
-			var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
+            var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
             if (result.Any())
-                await sender.SendMessages(result);
+                await SendMessages(result);
+        }
+
+        private async Task SendMessages(IEnumerable<MessageDTO> messages)
+        {
+			await serviceProvider.GetService<ISmsSender>().SendMessages(messages);
         }
     }
 }
