@@ -28,7 +28,8 @@ namespace BAL.Services
         {
             Content = Content.Substring(Content.IndexOf(" Text: ") + 7);//7=" Text: " size
 
-            var words = stopWordManager.GetStopWords().FirstOrDefault(c => c.Word == Content);
+            var words = stopWordManager.GetStopWords().FirstOrDefault(c => c.Word == Content);//"STOP"==Content
+
             if (words != null)
             {
                 Phone phoneDestination = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == Destination);
@@ -36,14 +37,23 @@ namespace BAL.Services
                 var companies = companyManager.GetCompaniesByPhone(phoneDestination);
                 foreach (var company in companies)
                 {
-                    var recipients = recipientManager.GetRecipients(company.Id).Where(r=>r.PhoneNumber==Originator);
+                    var recipients = recipientManager
+                        .GetRecipients(company.Id)
+                        .Where(r => (r.PhoneNumber==Originator)&&(r.MessageState != Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed));
+
                     foreach (var recipient in recipients)
                     {
-                            recipient.IsStopped = true;
+
+                        if (recipient.MessageState != Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed)
+                        {
+                            recipient.MessageState = Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed;
+                            recipientManager.Update(recipient);
+                        }
                     }
                 }
 
             }
+
         }
     }
 }

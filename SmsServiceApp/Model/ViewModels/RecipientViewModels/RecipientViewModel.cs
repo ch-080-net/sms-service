@@ -26,6 +26,17 @@ namespace Model.ViewModels.RecipientViewModels
         public string Gender { get; set; }
         public string Priority { get; set; }
         public string KeyWords { get; set; }
-        public bool IsStopped { get; set; }
+        public MessageState MessageState { get; set; }
+    }
+
+    public enum MessageState
+    {
+        NotSent,
+        Delivered,
+        Undeliverable,
+        Accepted,
+        Rejected,
+        Unsubscribed
+
     }
 }
