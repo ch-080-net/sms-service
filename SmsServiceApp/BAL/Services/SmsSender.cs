@@ -163,6 +163,12 @@ namespace WebCustomerApp.Services
             finally { }
 		}
 
+
+        /// <summary>
+        /// Method for saving recieved messages in database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
             RecievedMessageDTO recievedMessage = new RecievedMessageDTO();

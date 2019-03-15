@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<!DOCTYPE html>
+<html>
 <head>
     <style>
         #messagePreview::before {
@@ -16,10 +18,57 @@
             border-radius: 50%;
             border-width: 0 10px;
             z-index: 99;
-            left: 4px;
+            left: 8px;
             color: #e5e5ea;
             clip: rect(10px,40px,30px,21px) !important;
         }
+
+        #messagePreview {
+            z-index: 10;
+            border: none;
+            margin-top: 140px;
+            margin-left: 35px;
+            font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+            line-height: 100%;
+            width: 210px;
+            background-color: #e5e5ea;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            resize: none;
+            overflow: hidden;
+            display: none;
+        }
+
+        #messagePreviewSwitcher span {
+            display: block;
+            width: 21px;
+            margin: auto;
+            margin-top: 5px;
+            font-size: 25px;
+            height: 30px;
+        }
+
+        #messagePreviewContainer {
+            transition: 0.9s;
+            background: url(/images/iphone.png)no-repeat;
+            background-size: cover;
+            border-left: none;
+            border-radius: 0 0 8px;
+            padding-right: 0px;
+            height: 320px;
+            width: 0px;
+            margin-top: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #messagePreviewSwitcher {
+            border-radius: 0 8px 8px 0;
+            border-width: 0px;
+            text-align: center;
+            height: 50px;
+        }
+
     </style>
 
 
@@ -73,8 +122,20 @@
             CursorPosition = $(item).prop('selectionStart');
         }
 
+        function MessagePreviewShow(item) {
+            $('#messagePreviewContainer')[0].style.width = "320px";
+            $('#messagePreview')[0].style.height = "0px";
+            $('#messagePreview')[0].style.height = $('#messagePreview')[0].scrollHeight + "px";
+            item.setAttribute("onclick", "MessagePreviewHide(this)");
+        }
+
+        function MessagePreviewHide(item) {
+            $('#messagePreviewContainer')[0].style.width = "0px";
+            item.setAttribute("onclick", "MessagePreviewShow(this)");
+        }
     </script>
 </head>
+<body>
 <h2>Edit</h2>
 <h4>Company</h4>
 <hr />
@@ -123,20 +184,18 @@
             </div>
         </form>
     </div>
-    <div class="form-group col-md-4" style="background: url(/images/iphone.png)no-repeat; background-size:contain;
-                height: 320px; width: 320px; margin-top: 50px">
-        <div style="position:relative; height:auto !important; " contenteditable>
-            <div style="position:absolute; height:auto !important; ">
-                <div rows="0" readonly class="form-control" id="messagePreview" style="z-index:10; border: none;
-                    margin-top: 120px; margin-left: 30px;
-                    font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif; line-height: 100%;
-                    width: 210px; background-color:#e5e5ea; -webkit-border-radius: 20px; -moz-border-radius: 20px;
-                    resize: none; max-height: 190px; overflow:hidden; display: none;">
+    
+    <div>
+        <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
+            <div style="position:absolute; height:auto !important;">
+                <div rows="1" readonly class="form-control" id="messagePreview">
                     ::before
                 </div>
             </div>
         </div>
-
+        <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
+            <span class="glyphicon glyphicon-phone"></span>
+        </button>
     </div>
 </div>
 <script>
@@ -145,3 +204,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+</body>
+</html>
