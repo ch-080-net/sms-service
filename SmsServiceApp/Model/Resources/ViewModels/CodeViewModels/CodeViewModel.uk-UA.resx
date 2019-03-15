@@ -120,4 +120,10 @@
   <data name="OperatorCode" xml:space="preserve">
     <value>Код Оператора</value>
   </data>
+  <data name="The Operator Code field is required." xml:space="preserve">
+    <value>Поле Код Оператора обов'язкове.</value>
+  </data>
+  <data name="Wrong operator code" xml:space="preserve">
+    <value>Неправильний код оператора</value>
+  </data>
 </root>

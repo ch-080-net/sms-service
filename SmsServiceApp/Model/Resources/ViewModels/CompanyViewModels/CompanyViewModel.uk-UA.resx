@@ -126,4 +126,13 @@
   <data name="Name" xml:space="preserve">
     <value>Ім'я</value>
   </data>
+  <data name="The Description field is required." xml:space="preserve">
+    <value>Поле Опис обов'язкове.</value>
+  </data>
+  <data name="The Message field is required." xml:space="preserve">
+    <value>Поле Повідомлення обов'язкове.</value>
+  </data>
+  <data name="The Name field is required." xml:space="preserve">
+    <value>Поле Ім'я обов'язкове.</value>
+  </data>
 </root>

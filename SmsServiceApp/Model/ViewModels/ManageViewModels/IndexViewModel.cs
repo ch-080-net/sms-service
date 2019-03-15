@@ -17,7 +17,7 @@ namespace Model.ViewModels.ManageViewModels
         [Display(Name = "IsEmailConfirmed")]
         public bool IsEmailConfirmed { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

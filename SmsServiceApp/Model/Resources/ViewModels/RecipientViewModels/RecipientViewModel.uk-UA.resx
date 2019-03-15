@@ -129,6 +129,9 @@
   <data name="Name" xml:space="preserve">
     <value>Ім'я</value>
   </data>
+  <data name="Not a valid phone number" xml:space="preserve">
+    <value>Недійсний номер телефону</value>
+  </data>
   <data name="Phone Number" xml:space="preserve">
     <value>Номер телефону</value>
   </data>
@@ -137,5 +140,14 @@
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Прізвище</value>
+  </data>
+  <data name="The Name field is required." xml:space="preserve">
+    <value>Поле Ім'я обов'язкове.</value>
+  </data>
+  <data name="The Phone Number field is required." xml:space="preserve">
+    <value>Поле "Номер телефону" обов'язкове.</value>
+  </data>
+  <data name="The Surname field is required." xml:space="preserve">
+    <value>Поле Прізвище обов'язкове.</value>
   </data>
 </root>

@@ -40,12 +40,12 @@
             <div class="agile-field-txt">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Enter your login"]" />
-                <span asp-validation-for="Email" class="agile-right"></span>
+                @*<span asp-validation-for="Email" class="agile-right"></span>*@
             </div>
             <div class="agile-field-txt">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" id="pass" class="form-control" placeholder="@Localizer["Enter your password"]" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                @*<span asp-validation-for="Password" class="text-danger"></span>*@
                 <div asp-validation-summary="All" class="agile_label" style="color : red"></div>
             </div>
             <div class="agile-field-txt">

@@ -8,7 +8,7 @@ namespace Model.ViewModels.StopWordViewModels
     public class StopWordViewModel
     {
         public int Id { get; set; }
-        [Required]
+        [Required (ErrorMessage = "The Name field is required.")]
         [Display(Name ="Word")]
         public string Word { get; set; }
 

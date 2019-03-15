@@ -34,22 +34,73 @@
         routeData.Add(r.Key, r.Value.ToString());
     }
 }
+<style>
+
+
+
+    .language-switcher {
+        display: flex;
+        float: right;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .language-switcher li.selected {
+            background-color: #ffffff;
+     }
+
+        .language-switcher li a {
+            color: #aaa;
+            text-decoration: none;
+            text-decoration-line: none;
+            text-decoration-style: initial;
+            text-decoration-color: initial;
+        }
+        .language-switcher li {
+            display: inline-block;
+            font-family: OpenSans;
+            text-transform: uppercase;
+            padding: 2px;
+            margin: 1px;
+            border-radius: 5px;
+        }
+         li {
+           display: list-item;
+          }
+    a, a:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+       
+</style>
 
 <form id="form" asp-controller="Home" name="form" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
-   <a style="display:inline-block; font-size:14pt;">
-      @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
-   </a>
-
-     @foreach (var culture in supportedCultures)
-      {
-        if (culture.Value.ToLower() != requestCulture.Name.ToLower())
-          {
-            routeData["culture"] = culture.Value;
-             <a href="#" onclick="document.getElementById('form').submit();" style="display:inline-block; font-size:14pt;">
-             @culture.Text.ToUpper()
-             </a>
-             <input type="hidden" name="culture" value="@culture.Value" />
-          }
-        }
+    
+        <ul class="language-switcher">
+            <li class ="selected">
+               
+                    <a style=" font-size:13px; ">
+                        @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
+                    </a>
+              
+            </li>
+            <li>
+                @foreach (var culture in supportedCultures)
+                {
+                    if (culture.Value.ToLower() != requestCulture.Name.ToLower())
+                    {
+                        routeData["culture"] = culture.Value;
+            
+                    <a href="#" onclick="document.getElementById('form').submit();" style=" font-size:13px;">
+                        @culture.Text.ToUpper()
+                    </a>
+           
+                        <input type="hidden" name="culture" value="@culture.Value" />
+                    }
+                }
+            </li>
+        </ul>
+   
 </form>
    

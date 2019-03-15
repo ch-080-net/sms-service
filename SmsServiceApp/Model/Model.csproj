@@ -28,11 +28,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>RegisterViewModel.uk-UA.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ViewModels\CompanyViewModels\CompanyViewModel.uk-UA.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CompanyViewModel.uk-UA.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -41,8 +36,7 @@
       <LastGenOutput>RegisterViewModel.uk-UA.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ViewModels\CompanyViewModels\CompanyViewModel.uk-UA.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CompanyViewModel.uk-UA.Designer.cs</LastGenOutput>
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 

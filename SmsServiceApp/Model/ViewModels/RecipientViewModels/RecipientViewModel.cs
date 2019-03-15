@@ -12,15 +12,15 @@ namespace Model.ViewModels.RecipientViewModels
     {
         public int Id { get; set; }
         public int CompanyId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The Phone Number field is required.")]
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The Name field is required.")]
         [StringLength(100)]
         [Display(Name = "Name")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The Surname field is required.")]
         [StringLength(100)]
         [Display(Name = "Surname")]
         public string Surname { get; set; }
