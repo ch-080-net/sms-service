@@ -130,7 +130,7 @@
     margin-bottom: 60pt;
   }
   .main_title-big {
-      margin-top: 50px;
+    margin-top: 50px;
     display: block;
     color: #fff;
     font-family: 'Lato', sans-serif;
@@ -307,14 +307,19 @@
 }
 
 .log_section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     padding: 180px 10% 50px;
-    background: #010101;
-    background: -webkit-radial-gradient(bottom left, #010101, #2575FB);
-    background: -moz-radial-gradient(bottom left, #010101, #2575FB);
-    background: radial-gradient(bottom left, #010101, #2575FB);
+    background: #3D3C39;
+    background: -webkit-linear-gradient(bottom, #3D3C39, #BBBBBB);
+    background: -moz-linear-gradient(bottom, #3D3C39, #BBBBBB);
+    background: linear-gradient(to top, #3D3C39, #BBBBBB);
     min-height: 500px;
     display: flex;
     color: black;
+   
 }
 
 
