@@ -22,8 +22,7 @@ namespace WebCustomerApp.Services
 	public class SmsSender : ISmsSender 
 	{
 		public SMSCclientSMPP clientSMPP;
-		public List<string> messageIDs;
-		public bool ImmediateResponse { get; protected set; }
+		public List<uint> messageIDs;
 
         private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScopeFactory serviceScopeFactory;
@@ -32,11 +31,13 @@ namespace WebCustomerApp.Services
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
-			messageIDs = new List<string>();
-			ImmediateResponse = false;
+			clientSMPP.KeepAliveInterval = 60;
+			messageIDs = new List<uint>();
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
-			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
+
+			Connect();
+			OpenSession();
 		}
 
         /// <summary>
@@ -90,7 +91,6 @@ namespace WebCustomerApp.Services
 
 			foreach (MessageDTO message in messages)
 				SendMessage(message);
-
 		}
 
 		/// <summary>
@@ -108,13 +108,14 @@ namespace WebCustomerApp.Services
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
 
-			int resultStatus = clientSMPP.smppSubmitMessageEx(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
+			int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.etUCS2Text, "", options, 
 							DateTime.Now, DateTime.Now, "", 0, "", out messageIDs);
 
+			//when the status = -1 server id is added in later, and we receive a message			
 			if (resultStatus == 0)
-				message.ServerId = messageIDs.FirstOrDefault();
-			else
+				message.ServerId = Convert.ToString(messageIDs.FirstOrDefault()-2);
+			else if (resultStatus != -1)
 				messagesForSend.Remove(message);
 		}
 		
@@ -188,12 +189,6 @@ namespace WebCustomerApp.Services
                 }
             }
         }
-
-		// Multipart message completed
-		private void SMSCclientSMPP_OnSmppMessageCompleted(object Sender, smppMessageCompletedEventArgs e)
-		{
-			Console.WriteLine("Multipart message complete");
-		}
 	}
 	
 }
