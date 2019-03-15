@@ -25,7 +25,7 @@ namespace WebApp.Controllers
         public IActionResult VotesDistribution(int CompanyId = 1)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = poolCampaignChartsManager.GetPieChart(CompanyId, userId);
+            var result = poolCampaignChartsManager.GetVotesChart(CompanyId, userId);
             return View(result);
         }
 
@@ -33,7 +33,7 @@ namespace WebApp.Controllers
         public IActionResult VotesDistributionByTime(int CompanyId = 1)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = poolCampaignChartsManager.GetStackedChart(CompanyId, userId);
+            var result = poolCampaignChartsManager.GetVotesChartByTime(CompanyId, userId);
             return View(result);
         }
 

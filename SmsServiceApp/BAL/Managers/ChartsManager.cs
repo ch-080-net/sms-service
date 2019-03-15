@@ -18,7 +18,7 @@ namespace BAL.Managers
 
         }
 
-        public PieChart GetPieChart(int campaignId, string userId)
+        public PieChart GetVotesChart(int campaignId, string userId)
         {
             var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
                 && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();
@@ -26,7 +26,7 @@ namespace BAL.Managers
             return mapper.Map<Company, PieChart>(campaign);
         }
 
-        public StackedChart GetStackedChart(int campaignId, string userId)
+        public StackedChart GetVotesChartByTime(int campaignId, string userId)
         {
             var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
                 && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();

@@ -8,8 +8,8 @@ namespace Model.Interfaces
 {
     public interface IChartsManager
     {
-        PieChart GetPieChart(int campaignId, string userId);
+        PieChart GetVotesChart(int campaignId, string userId);
 
-        StackedChart GetStackedChart(int campaignId, string userId);
+        StackedChart GetVotesChartByTime(int campaignId, string userId);
     }
 }
