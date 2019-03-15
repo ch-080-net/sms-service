@@ -22,14 +22,15 @@
     position: absolute;
     width: 100%;
     display: flex;
-    padding: 0 10%;
+    padding: 1% 5%;
   }
   /*Logo*/
 .logo {
+    margin-left: auto;
     min-height: 80px;
     min-width: 100px;
-   height:100px;
-   width:auto;
+    height: 100px;
+    width: auto;
 }
   .logo_img {
     width: 100%;
@@ -58,13 +59,13 @@
   }
   /*menu*/
   .menu {
-    margin-left: auto;
+    float:left;
   }
   .menu_list {
     display: flex;
     align-items: center;
     height: 100%;
-    margin: 0;
+    margin-left: auto;
     padding: 0;
   }
   .menu_item {
@@ -126,9 +127,10 @@
     color: rgba(255, 255, 255, 0.8);
     margin: 0 0 40px;
     text-align: center;
-    margin-bottom: 40pt;
+    margin-bottom: 60pt;
   }
   .main_title-big {
+      margin-top: 50px;
     display: block;
     color: #fff;
     font-family: 'Lato', sans-serif;
