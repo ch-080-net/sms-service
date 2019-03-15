@@ -21,23 +21,49 @@ namespace WebCustomerApp.Services
 	/// </summary>
 	public class SmsSender : ISmsSender 
 	{
+        private static SmsSender instance;
+
 		public SMSCclientSMPP clientSMPP;
+		//public string userDataHeader;
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
 
         private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScopeFactory serviceScopeFactory;
 
-        public SmsSender(IServiceScopeFactory serviceScopeFactory)
+        public static async Task<SmsSender> GetInstance(IServiceScopeFactory serviceScopeFactory)
+        {
+            if (instance == null)
+            {                
+                instance = new SmsSender(serviceScopeFactory);
+                await instance.Connect();
+                await instance.OpenSession();
+            }
+            else if (instance.clientSMPP.Connected == false)
+            {
+                await instance.Connect();
+                await instance.OpenSession();
+            }
+            return instance;
+        }
+
+        private SmsSender(IServiceScopeFactory serviceScopeFactory)
 		{
             this.serviceScopeFactory = serviceScopeFactory;
 			clientSMPP = new SMSCclientSMPP();
+            //userDataHeader = "0003A40101";
 			messageIDs = new List<string>();
 			ImmediateResponse = false;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppMessageCompleted += SMSCclientSMPP_OnSmppMessageCompleted;
-		}
+        }
+
+        ~SmsSender()
+        {
+            CloseSession();
+            Disconnect();
+        }
 
         /// <summary>
         /// Sets the connection with emulator,
@@ -46,10 +72,12 @@ namespace WebCustomerApp.Services
         /// <returns>True - if the connection is established</returns>
         private async Task Connect()
 		{
-            int connectionStatus;
+            int connectionStatus = -1;
+
             do
             {
-                connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); 				
+                try { connectionStatus = clientSMPP.tcpConnect("127.0.0.1", 2775, ""); }
+                finally { }
                 if (connectionStatus == 0)
                     break;
                 else
@@ -65,14 +93,17 @@ namespace WebCustomerApp.Services
 		/// <returns>True - if the session are opened</returns>
 		private async Task OpenSession()
 		{
-			int sessionStatus;
+			//string exParameters = "smpp.long-messages=udh8";
+
+			int sessionStatus = -1;
             do
             {
-                sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, "");          
+                try { sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, ""); }
+                finally { }
                 if (sessionStatus == 0)
                     break;
                 else
-					await Task.Delay(5000);
+                    await Task.Delay(5000);
             } while (true);
         }
 
@@ -80,17 +111,10 @@ namespace WebCustomerApp.Services
 		/// Send collection of messages 
 		/// </summary>
 		/// <param name="messages">Collection of messages for send</param>
-		public async Task SendMessages(IEnumerable<MessageDTO> messages)
+		public void SendMessages(IEnumerable<MessageDTO> messages)
 		{
-			if (!clientSMPP.Connected)
-			{
-				await Connect();
-				await OpenSession();
-			}
-
-			foreach (MessageDTO message in messages)
+            foreach (MessageDTO message in messages)
 				SendMessage(message);
-
 		}
 
 		/// <summary>
@@ -107,6 +131,7 @@ namespace WebCustomerApp.Services
 				messagesForSend.Add(message);
 
 			int options = (int)SubmitOptionEnum.soRequestStatusReport;
+			//string exParameters = "smpp.esm_class = 04;smpp.tlvs = 1403000A34343132333435363738;smpp.mes_id=11";
 
 			int resultStatus = clientSMPP.smppSubmitMessageEx(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.etUCS2Text, "", options, 
@@ -137,18 +162,13 @@ namespace WebCustomerApp.Services
             finally { }
 		}
 
-		private void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
+		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
-			string report = $"Message From: {e.Originator}, To: {e.Destination}, Text: {e.Content}";
-
-			using (StreamWriter sw = new StreamWriter(@"Received messages.txt", true, Encoding.UTF8))
-			{
-				sw.WriteLine(report);
-			}
+			Console.WriteLine("You have new message");
 		}
 
         // Status Report (SR) received from SMSC
-        private void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
+        public void SMSCclientSMPP_OnSmppStatusReportReceived(object sender, smppStatusReportReceivedEventArgs e)
         {
 			string report = $"Message From: {e.Originator}, To: {e.Destination}, Content: {e.Content}";
 
