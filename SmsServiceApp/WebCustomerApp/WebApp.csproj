@@ -4,10 +4,6 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-WebCustomerApp-85942A8D-8932-4A08-808C-60632CB8DAA4</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Views\LandingPage\b.jpg" />
-  </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
@@ -37,10 +33,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\LandingPage\" />
   </ItemGroup>
 
 </Project>

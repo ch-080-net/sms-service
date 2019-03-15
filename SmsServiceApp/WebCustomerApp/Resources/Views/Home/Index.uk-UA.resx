@@ -126,8 +126,8 @@
   <data name="API INTEGRATION" xml:space="preserve">
     <value>ІНТЕГРАЦІЯ API</value>
   </data>
-  <data name="Company" xml:space="preserve">
-    <value>Компанії</value>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Розсилки</value>
   </data>
   <data name="Contacts" xml:space="preserve">
     <value>Контакти</value>

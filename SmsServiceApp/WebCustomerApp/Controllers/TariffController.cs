@@ -32,14 +32,19 @@ namespace WebApp.Controllers
            
             return View(tariffManager.GetTariffs(OperatorId).ToList());
         }
-       
+        
         [HttpGet]
         public IActionResult GetTariffList()
         {
             ViewBag.Tariff = tariffManager.GetAll();
             return View();
         }
-        
+
+        /// <summary>
+        /// Create tariff View
+        /// </summary>
+        /// <param name="OperatorId">The operator for which we add the tariff</param>
+        /// <returns>Create View</returns>
         [HttpGet]
         public IActionResult Create(int OperatorId)
         {
@@ -47,6 +52,11 @@ namespace WebApp.Controllers
             return View(); 
         }
 
+        /// <summary>
+        /// Create tariff plan and send them to database
+        /// </summary>
+        /// <param name="item">Model from View</param>
+        /// <returns>Operators List</returns>
         [Route("~/Tariff/Create")]
         [HttpPost]
         public IActionResult Create(TariffViewModel item)
@@ -63,6 +73,11 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets EditView with Tariff info from db
+        /// </summary>
+        /// <param name="id">Id of tariff which need to edit</param>
+        /// <returns>Edit View</returns>
         [HttpGet]
         public IActionResult Update(int id)
         {  
@@ -70,6 +85,11 @@ namespace WebApp.Controllers
           return View(tariffManager.GetTariffById(id));
         }
 
+        /// <summary>
+        /// Send updated Tariff to db
+        /// </summary>
+        /// <param name="item">Id of Tariff which need to edit</param>
+        /// <returns>List of Tariff for selected Operator</returns>
         [HttpPost]
         [Route("~/Tariff/Update")]
         [AutoValidateAntiforgeryToken]
@@ -85,7 +105,12 @@ namespace WebApp.Controllers
                 return View();
             }
         }
-      
+
+        /// <summary>
+        ///  Get Delete Confirmation View with Tariff information
+        /// </summary>
+        /// <param name="id">Id of selected item</param>
+        /// <returns>View with selected tariff info</returns>
         [HttpGet]
         [Route("~/Tariff/Delete/{id?}")]
         public IActionResult Delete( int? id)
@@ -104,6 +129,12 @@ namespace WebApp.Controllers
             return View(tariff);
         }
 
+
+        /// <summary>
+        ///  Delete selected item from db
+        /// </summary>
+        /// <param name="id">Id of Tariff which select to delete</param>
+        /// <returns>Operators Index View</returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int? id)

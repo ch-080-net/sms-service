@@ -120,8 +120,8 @@
   <data name="Back to List" xml:space="preserve">
     <value>Назад до списку</value>
   </data>
-  <data name="Company" xml:space="preserve">
-    <value>Компанію</value>
+  <data name="Campaigns" xml:space="preserve">
+    <value>Розсилки</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Створити</value>

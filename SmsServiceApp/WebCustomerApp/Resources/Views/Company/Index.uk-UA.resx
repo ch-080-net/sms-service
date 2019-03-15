@@ -120,8 +120,8 @@
   <data name="Add recipients" xml:space="preserve">
     <value>Додати</value>
   </data>
-  <data name="Companies" xml:space="preserve">
-    <value>Компанії</value>
+  <data name="Campaign" xml:space="preserve">
+    <value>Розсилка</value>
   </data>
   <data name="Create New" xml:space="preserve">
     <value>Створити нову</value>

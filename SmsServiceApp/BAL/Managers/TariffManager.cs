@@ -9,11 +9,21 @@ using WebApp.Models;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manager for Tariffs, include all methods needed to work with Tariff storage.
+    /// Inherited from BaseManager and have additional methods.
+    /// </summary>
     public class TariffManager: BaseManager, ITariffManager
     {
         public TariffManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="operatorId"></param>
+        /// <returns></returns>
         public IEnumerable<TariffViewModel> GetTariffs(int operatorId)
         {
             IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll().Where(op => op.OperatorId == operatorId);
