@@ -12,6 +12,7 @@ using Model.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApp.Controllers
 {
@@ -22,13 +23,29 @@ namespace WebApp.Controllers
         private readonly IOperatorManager operatorManager;
         private readonly ITariffManager tariffManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IGroupManager groupManager;
+        private readonly IPhoneManager phoneManager;
+        private readonly IRecipientManager recipientManager;
 
-        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, UserManager<ApplicationUser> userManager)
+        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
+                                 UserManager<ApplicationUser> userManager, IGroupManager groupManager,
+                                 IRecipientManager recipientManager, IPhoneManager phoneManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
             this.tariffManager = tariff;
             this.userManager = userManager;
+            this.groupManager = groupManager;
+            this.phoneManager = phoneManager;
+            this.recipientManager = recipientManager;
+        }
+
+        public int GetGroupId()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
+            var groupId = user.ApplicationGroupId;
+            return groupId;
         }
 
         /// <summary>
@@ -38,10 +55,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
-            return View(companyManager.GetCompanies(groupId));
+            return View(companyManager.GetCompanies(GetGroupId()));
         }
 
         /// <summary>
@@ -51,7 +65,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            CompanyViewModel company = new CompanyViewModel();
+            var phoneId = groupManager.Get(GetGroupId()).PhoneId;
+            company.PhoneNumber = phoneManager.GetPhoneById(phoneId).PhoneNumber;
+            return View(company);
         }
 
         /// <summary>
@@ -63,70 +80,73 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] CompanyViewModel item)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
             if (ModelState.IsValid)
             {
-                item.Message = item.Message.Replace("#company", item.Name);
-                companyManager.Insert(item, groupId);
+                item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
+                item.ApplicationGroupId = GetGroupId();
+                int companyId = companyManager.InsertWithId(item);
+                if (item.Type == 1)
+                {
+                    return RedirectToAction("Send", new { companyId });
+                }
+                if (item.Type == 2)
+                {
+                    return RedirectToAction("Recieve", new { companyId });
+                }
+            }
+            return View(item);
+        }
+
+        [HttpGet]
+        public IActionResult Send(int companyId)
+        {
+            ViewData["companyId"] = companyId;
+            CompanyViewModel company = companyManager.Get(companyId);
+            SendViewModel item = new SendViewModel();
+            item.Id = companyId;
+            item.TariffId = company.TariffId;
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            if (item.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(item.TariffId).Name;
+                item.Tariff = tariff;
+            }
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Send(SendViewModel item)
+        {
+            if (ModelState.IsValid)
+            {
+                item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
+                companyManager.AddSend(item);
                 return RedirectToAction("Index");
             }
             return View(item);
         }
 
-        /// <summary>
-        /// Gets EditView with Company info from db
-        /// </summary>
-        /// <param name="id">Id of company which need to edit</param>
-        /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Recieve(int companyId)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
-            if (id == null)
-            {
-                return NotFound();
-            }
-            CompanyViewModel company = companyManager.GetCompanies(groupId).FirstOrDefault(c => c.Id == id);
-
-            if (company == null)
-            {
-                return NotFound();
-            }
-            return View(company);
+            ViewData["companyId"] = companyId;
+            CompanyViewModel company = companyManager.Get(companyId);
+            RecieveViewModel item = new RecieveViewModel();
+            item.Id = companyId;
+            return View(item);
         }
 
-        /// <summary>
-        /// Send updated Company to db
-        /// </summary>
-        /// <param name="id">Id of company which need to edit</param>
-        /// <param name="company">ViewModel of Company from View</param>
-        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]CompanyViewModel company)
+        public IActionResult Recieve(RecieveViewModel item)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
             if (ModelState.IsValid)
             {
-                var tariffId = companyManager.Get(id).TariffId;
-                company.Message = company.Message.Replace("#company", company.Name);
-                if (tariffId == 0)
-                {
-                    companyManager.Update(company, groupId, 0);
-                }
-                else
-                {
-                    companyManager.Update(company, groupId, tariffId);
-                }
+                companyManager.AddRecieve(item);
                 return RedirectToAction("Index");
             }
-            return View(company);
+            return View(item);
         }
 
         /// <summary>
@@ -137,15 +157,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
             if (id == null)
             {
                 return NotFound();
             }
 
-            CompanyViewModel company = companyManager.GetCompanies(groupId).FirstOrDefault(c => c.Id == id);
+            CompanyViewModel company = companyManager.GetCompanies(GetGroupId()).FirstOrDefault(c => c.Id == id);
 
             if (company == null)
             {
@@ -201,12 +218,9 @@ namespace WebApp.Controllers
 		[HttpGet]
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = userManager.Users.FirstOrDefault(u => u.Id == userId);
-            var groupId = user.ApplicationGroupId;
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            companyManager.Update(currentCompany, groupId, tariffId);
-            return RedirectToAction("Index","Company");
+            companyManager.Update(currentCompany, GetGroupId(), tariffId);
+            return RedirectToAction("Send","Company", new { companyId});
         }
     }
 }
