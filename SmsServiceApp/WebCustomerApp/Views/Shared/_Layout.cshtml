@@ -19,7 +19,6 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link href="~/css/menunav.css" rel="stylesheet" asp-append-version="true" />
     </environment>
-    
 </head>
 <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -41,11 +40,19 @@
                             <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
                         }
                         @await Html.PartialAsync("_LoginPartial")
-                        @await Html.PartialAsync("_SelectLanguagePartial")
+
+
                     </div>
+                    <div class="container body-content">     
+                        <footer id="fotter">
+                            <div align="right">
+                                @await Html.PartialAsync("_SelectLanguagePartial")
+                            </div>
+                        </footer>
+                    </div>
+                    </div>
+                    <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
                 </div>
-                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-            </div>
 
         </nav>
         <div class="container body-content">

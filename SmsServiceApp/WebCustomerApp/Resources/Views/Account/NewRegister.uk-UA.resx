@@ -117,13 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Підтвердьте пароль</value>
   </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
+  <data name="Enter your password" xml:space="preserve">
+    <value>Введіть ваш пароль</value>
   </data>
-  <data name="Remember me?" xml:space="preserve">
-    <value>Remember me?</value>
+  <data name="LOGIN" xml:space="preserve">
+    <value>ВХІД</value>
+  </data>
+  <data name="REGISTER" xml:space="preserve">
+    <value>РЕЄСТРАЦІЯ</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Реєстрація</value>
+  </data>
+  <data name="Show password" xml:space="preserve">
+    <value>Показати пароль</value>
+  </data>
+  <data name="Your company" xml:space="preserve">
+    <value>Ваша компанія</value>
+  </data>
+  <data name="Your e-mail adress" xml:space="preserve">
+    <value>Ваша електронна адреса</value>
+  </data>
+  <data name="Your phone" xml:space="preserve">
+    <value>Ваш номер телефону</value>
   </data>
 </root>

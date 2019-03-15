@@ -16,7 +16,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
-    <title>@Localizer["SmS Service"]</title>
+    <title>SmS Service</title>
 
 
     <script>
@@ -35,7 +35,7 @@
 
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 
     <link rel="stylesheet" href="~/css/style2.css">
 </head>
@@ -46,7 +46,7 @@
         <div class="" id="text_preloader"></div>
 
     </div>
-    </div>
+    
     <header class="header">
         <a href="#" class="logo">
             <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
@@ -74,7 +74,14 @@
                                     <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
                                 }
                                 @await Html.PartialAsync("_LoginPartial")
-                       
+
+                            </div>
+                            <div class="container body-content">
+                                <footer id="footer">
+                                    <div align="right">
+                                        @await Html.PartialAsync("_SelectLanguagePartial")
+                                    </div>
+                                </footer>
                             </div>
                         </div>
                         <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
@@ -87,8 +94,8 @@
     </header>
     <section class="main">
         <h1 class="main_title">Landing page <span class="main_title-big">sms service</span></h1>
-        <a href="#log" class="main_button anchor">get started</a>
-        <p class="main_description">some text <a href="#">some link</a>!</p>
+        <a href="#log" class="main_button anchor">@Localizer["get started"]</a>
+        <p class="main_description">some text <a href="#">@Localizer["some link"]</a>!</p>
     </section>
     <!--/.main-->
 
@@ -97,21 +104,21 @@
         <ul class="features_list">
 
             <li class="features_item features_item--sms_tools_1">
-                <h3 class="section_title">STATISTICS</h3>
+                <h3 class="section_title">@Localizer["STATISTICS"]</h3>
                 <p class="features_description">
-                    Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out.
+                   @Localizer["Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out."]
                 </p>
             </li>
             <li class="features_item features_item--sms_tools_2">
-                <h3 class="section_title">API INTEGRATION</h3>
+                <h3 class="section_title">@Localizer["API INTEGRATION"]</h3>
                 <p class="features_description">
-                    Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow.
+                    @Localizer["Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow."]
                 </p>
             </li>
             <li class="features_item features_item--sms_tools_3">
-                <h3 class="section_title">SMS AUTORESPONDERS</h3>
+                <h3 class="section_title">@Localizer["SMS AUTORESPONDERS"]</h3>
                 <p class="features_description">
-                    Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
+                    @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
                 </p>
             </li>
         </ul>
@@ -119,29 +126,29 @@
     <section class="features">
         <ul class="features_list">
             <li class="features_item features_item--sms_tools_4">
-                <h3 class="section_title">SUBSCRIPTION FORMS</h3>
+                <h3 class="section_title">@Localizer["SUBSCRIPTION FORMS"]</h3>
                 <p class="features_description">
-                    Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo.
+                    @Localizer["Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo."]
                 </p>
             </li>
             <li class="features_item features_item--sms_tools_5">
-                <h3 class="section_title">UNSUBSCRIBE LINKS</h3>
+                <h3 class="section_title">@Localizer["UNSUBSCRIBE LINKS"]</h3>
                 <p class="features_description">
-                    Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like.
+                    @Localizer["Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like."]
                 </p>
             </li>
             <li class="features_item features_item--sms_tools_6">
-                <h3 class="section_title">EXCEPTION LIST</h3>
+                <h3 class="section_title">@Localizer["EXCEPTION LIST"]</h3>
                 <p class="features_description">
-                    You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list.
+                    @Localizer["You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list."]
                 </p>
             </li>
         </ul>
     </section>
     <section class="log_section" id="log">
         <p class="app_description_link">
-            <a href="Account/NewLogin" class="app_link main_description">Log in</a>
-            <a href="Account/NewRegister" class="main_description app_link ">Registration</a>
+            <a href="Account/NewLogin" class="app_link main_description">@Localizer["Log in"]</a>
+            <a href="Account/NewRegister" class="main_description app_link ">@Localizer["Registration"]</a>
         </p>
     </section>
     <!--/.features -->
@@ -152,16 +159,16 @@
 
         <div class="app_content">
 
-            <h1 class="section_title ">Personalized SMS</h1>
+            <h1 class="section_title ">@Localizer["Personalized SMS"]</h1>
             <p class="app_description">
 
-                Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
+               @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
             </p>
             <div class="app_content">
 
-                <h1 class="section_title ">Sender name</h1>
+                <h1 class="section_title ">@Localizer["Sender name"]</h1>
                 <p class="app_description">
-                    Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
+                    @Localizer["Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries."]
                 </p>
 
 
@@ -176,7 +183,7 @@
         <div id="social">
         </div>
         <div id="rights">
-            All rights reserved &copy; 2019
+            @Localizer["All rights reserved"] &copy; 2019
         </div>
     </footer>
 

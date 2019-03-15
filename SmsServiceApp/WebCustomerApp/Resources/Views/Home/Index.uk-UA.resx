@@ -117,22 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other." xml:space="preserve">
+    <value>Додайте ім'я та іншу особисту інформацію одержувача до кожного SMS: ваше ім'я або назва компанії, дата народження, код знижки та інше.</value>
+  </data>
+  <data name="All rights reserved" xml:space="preserve">
+    <value>Всі права захищені</value>
+  </data>
+  <data name="API INTEGRATION" xml:space="preserve">
+    <value>ІНТЕГРАЦІЯ API</value>
+  </data>
   <data name="Company" xml:space="preserve">
     <value>Компанії</value>
   </data>
   <data name="Contacts" xml:space="preserve">
     <value>Контакти</value>
   </data>
+  <data name="Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo." xml:space="preserve">
+    <value>Створіть форми підписки SMS та інтегруйте їх у свій веб-сайт. Ви можете налаштувати розмір, фон, колір шрифту і навіть завантажити зображення або логотип.</value>
+  </data>
+  <data name="Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out." xml:space="preserve">
+    <value>Оцініть результати SMS-кампаній, аналізуючи статистичні дані щодо відкриття та доставки кожного повідомлення, яке ви надсилаєте.</value>
+  </data>
+  <data name="EXCEPTION LIST" xml:space="preserve">
+    <value>СПИСОК ВИКЛЮЧЕННЯ</value>
+  </data>
+  <data name="get started" xml:space="preserve">
+    <value>Почати</value>
+  </data>
+  <data name="Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like." xml:space="preserve">
+    <value>Включіть посилання для скасування підписки в SMS. Дозвольте вашій аудиторії знати, що вони можуть скасувати підписку, коли захочуть.</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
   <data name="Operators" xml:space="preserve">
     <value>Оператори</value>
+  </data>
+  <data name="Personalized SMS" xml:space="preserve">
+    <value>Персоналізовані SMS</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Реєстрація</value>
+  </data>
+  <data name="Sender name" xml:space="preserve">
+    <value>Ім'я відправника</value>
+  </data>
+  <data name="SMS AUTORESPONDERS" xml:space="preserve">
+    <value>SMS АВТОВІДПОВІДАЧ</value>
+  </data>
+  <data name="STATISTICS" xml:space="preserve">
+    <value>СТАТИСТИКА</value>
   </data>
   <data name="Stop Words" xml:space="preserve">
     <value>Слова зупинки</value>
   </data>
+  <data name="SUBSCRIPTION FORMS" xml:space="preserve">
+    <value>ФОРМИ ПІДПИСАННЯ</value>
+  </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Навігація</value>
   </data>
+  <data name="UNSUBSCRIBE LINKS" xml:space="preserve">
+    <value>СПІЛЬНІ ПОСИЛАННЯ</value>
+  </data>
+  <data name="Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries." xml:space="preserve">
+    <value>Використовуйте будь-який ідентифікатор відправника залежно від вашої кампанії. Ідентифікатори відправника повинні бути попередньо схвалені для деяких країн.</value>
+  </data>
+  <data name="Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow." xml:space="preserve">
+    <value>Використовуйте наш API для інтеграції SMS-повідомлень з вашим веб-сайтом, додатком, програмним забезпеченням або системою CRM. Багато розробників вже реалізували його, щоб полегшити робочий процес для оповіщення.</value>
+  </data>
   <data name="Users Group" xml:space="preserve">
     <value>Групи</value>
+  </data>
+  <data name="You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list." xml:space="preserve">
+    <value>Ви можете виключити телефонні номери з списку одержувачів. Використовуйте цю функцію, коли ви не хочете надсилати повідомлення до всього списку.</value>
   </data>
 </root>

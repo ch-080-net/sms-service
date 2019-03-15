@@ -44,7 +44,7 @@ namespace WebApp.Controllers
         public IActionResult Create(int OperatorId)
         {
             ViewData["OperatorId"] = OperatorId;
-            return View();
+            return View(); 
         }
 
         [Route("~/Tariff/Create")]
@@ -55,7 +55,7 @@ namespace WebApp.Controllers
             string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Tariff tariff = new Tariff();
             tariffManager.Insert(item);
-            return View();
+            return RedirectToAction("Operators", "Operator");
             }
             else
             {

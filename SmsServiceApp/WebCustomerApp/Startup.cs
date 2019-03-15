@@ -26,6 +26,7 @@ using Microsoft.Extensions.Localization;
 using System.Reflection;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 namespace WebApp
 {
@@ -266,8 +267,8 @@ namespace WebApp
                 new CultureInfo("en-US"),
                 new CultureInfo("uk-UA")
             };
-
-            app.UseRequestLocalization();
+ 
+            app.UseRequestLocalization(); 
             app.UseStaticFiles();
             app.UseAuthentication();
 

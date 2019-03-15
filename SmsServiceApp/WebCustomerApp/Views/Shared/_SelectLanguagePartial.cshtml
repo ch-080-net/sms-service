@@ -1,25 +1,55 @@
-﻿@using Microsoft.AspNetCore.Builder
-@using Microsoft.AspNetCore.Http.Features
+﻿@using System.Globalization;
+@using Microsoft.AspNetCore.Builder;
+@using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-@using Microsoft.Extensions.Options
-
 @inject IViewLocalizer Localizer
-@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IOptions<RequestLocalizationOptions> LocOps
+
 @{
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var cultureItems = LocOptions.Value.SupportedUICultures
-        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
-        .ToList();
+    var requestCultures = Context.Features.Get<IRequestCultureFeature>();
+    var requestCulture = CultureInfo.CurrentCulture;
+    var supportedCultures = LocOps.Value.SupportedUICultures
+        .Select(c => new SelectListItem
+        {
+            Value = c.Name,
+            Text = $"{c.TwoLetterISOLanguageName}"
+        }).ToList();
+
+    var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+    var url = location.AbsoluteUri;
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var routeData = new Dictionary<string, string>();
+
+    if (Context.Request.QueryString.HasValue)
+    {
+        returnUrl = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+    }
+
+    // capture all route parameters
+    // necessary for "Page Route" opioon
+    foreach (var r in ViewContext.RouteData.Values)
+    {
+        routeData.Add(r.Key, r.Value.ToString());
+    }
 }
 
-<div title="@Localizer["Request culture provider:"] @requestCulture?.Provider?.GetType().Name">
-    <form id="selectLanguage" asp-controller="Home"
-          asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
-          method="post" class="form-horizontal" role="form">
-        <select name="culture"
-         onchange="this.form.submit();"
-        asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>
-    </form>
-</div>
+<form id="form" asp-controller="Home" name="form" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
+   <a style="display:inline-block; font-size:14pt;">
+      @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
+   </a>
+
+     @foreach (var culture in supportedCultures)
+      {
+        if (culture.Value.ToLower() != requestCulture.Name.ToLower())
+          {
+            routeData["culture"] = culture.Value;
+             <a href="#" onclick="document.getElementById('form').submit();" style="display:inline-block; font-size:14pt;">
+             @culture.Text.ToUpper()
+             </a>
+             <input type="hidden" name="culture" value="@culture.Value" />
+          }
+        }
+</form>
+   
