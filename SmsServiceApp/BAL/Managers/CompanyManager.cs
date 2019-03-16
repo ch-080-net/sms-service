@@ -95,6 +95,18 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        public void AddSendRecieve(SendRecieveViewModel item)
+        {
+            Company company = unitOfWork.Companies.GetById(item.Id);
+            company.TariffId = item.TariffId;
+            company.Message = item.Message;
+            company.SendingTime = item.SendingTime;
+            company.StartTime = item.StartTime;
+            company.EndTime = item.EndTime;
+            unitOfWork.Companies.Update(company);
+            unitOfWork.Save();
+        }
+
         /// <summary>
         /// Get one company from db by Id
         /// </summary>

@@ -67,7 +67,7 @@ namespace WebApp.Controllers
         {
             CompanyViewModel company = new CompanyViewModel();
             var phoneId = groupManager.Get(GetGroupId()).PhoneId;
-            company.PhoneNumber = phoneManager.GetPhoneById(phoneId).PhoneNumber;
+            company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
             return View(company);
         }
 
@@ -82,7 +82,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
+                item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
                 item.ApplicationGroupId = GetGroupId();
                 int companyId = companyManager.InsertWithId(item);
                 if (item.Type == 1)
@@ -92,6 +92,10 @@ namespace WebApp.Controllers
                 if (item.Type == 2)
                 {
                     return RedirectToAction("Recieve", new { companyId });
+                }
+                if (item.Type == 3)
+                {
+                    return RedirectToAction("SendRecieve", new { companyId });
                 }
             }
             return View(item);
@@ -124,6 +128,7 @@ namespace WebApp.Controllers
                 companyManager.AddSend(item);
                 return RedirectToAction("Index");
             }
+            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
             return View(item);
         }
 
@@ -141,11 +146,59 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Recieve(RecieveViewModel item)
         {
+            if(item.StartTime <= DateTime.Now)
+            {
+                ModelState.AddModelError(string.Empty, "The date can not be less than the current");
+            }
+            if (item.EndTime <= item.StartTime)
+            {
+                ModelState.AddModelError(string.Empty, "The date can not be less than the start date");
+            }
             if (ModelState.IsValid)
             {
                 companyManager.AddRecieve(item);
                 return RedirectToAction("Index");
             }
+            return View(item);
+        }
+
+        [HttpGet]
+        public IActionResult SendRecieve(int companyId)
+        {
+            ViewData["companyId"] = companyId;
+            CompanyViewModel company = companyManager.Get(companyId);
+            SendRecieveViewModel item = new SendRecieveViewModel();
+            item.Id = companyId;
+            item.TariffId = company.TariffId;
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            if (item.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(item.TariffId).Name;
+                item.Tariff = tariff;
+            }
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SendRecieve(SendRecieveViewModel item)
+        {
+            if (item.StartTime <= DateTime.Now)
+            {
+                ModelState.AddModelError(string.Empty, "The date can not be less than the current");
+            }
+            if (item.EndTime <= item.StartTime)
+            {
+                ModelState.AddModelError(string.Empty, "The date can not be less than the start date");
+            }
+     
+            if (ModelState.IsValid)
+            {
+                item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
+                companyManager.AddSendRecieve(item);
+                return RedirectToAction("Index");
+            }
+            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
             return View(item);
         }
 
@@ -220,7 +273,27 @@ namespace WebApp.Controllers
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
             companyManager.Update(currentCompany, GetGroupId(), tariffId);
-            return RedirectToAction("Send","Company", new { companyId});
+            if (currentCompany.Type == 1)
+            {
+                return RedirectToAction("Send", "Company", new { companyId });
+            }
+            else
+            {
+                return RedirectToAction("SendRecieve", "Company", new { companyId });
+            }
+        }
+
+        public IActionResult RedirectByType(int companyId)
+        {
+            CompanyViewModel company = companyManager.Get(companyId);
+            if (company.Type == 1)
+            {
+                return RedirectToAction("Send", "Company", new { companyId });
+            }
+            else
+            {
+                return RedirectToAction("SendRecieve", "Company", new { companyId });
+            }
         }
     }
 }
