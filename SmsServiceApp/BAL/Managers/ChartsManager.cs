@@ -31,7 +31,14 @@ namespace BAL.Managers
             var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
                 && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();
 
-            return mapper.Map<Company, StackedChart>(campaign);
+            try
+            {
+                return mapper.Map<Company, StackedChart>(campaign);
+            }
+            catch(AutoMapperMappingException)
+            {
+                return null;
+            }
         }
     }
 }

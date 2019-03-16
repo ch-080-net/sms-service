@@ -116,8 +116,8 @@ namespace BAL.Services
         {
             DateTime beginning = company.StartTime;
             DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
-            if(beginning > ending)
-                return null;
+            if(beginning >= ending)
+                throw new ArgumentOutOfRangeException("End time is prior or equal to beginnig time");
             
             var result = new List<string>();
             foreach (var i in GetInterimTimes(beginning, ending))
@@ -131,7 +131,7 @@ namespace BAL.Services
         {
             if (slices < 2)
                 slices = 2;
-            TimeSpan span = (ending - beginning) / slices;
+            TimeSpan span = (ending - beginning) / (slices - 1);
             var result = new List<DateTime>();
             for (int i = 0; i < slices; i++)
             {
@@ -147,7 +147,7 @@ namespace BAL.Services
 
             foreach (var code in company.AnswersCodes)
             {
-                var counts = new List<int>();
+                var counts = new List<int>() { 0 };
                 for (int i = 0; i < timeGates.Count() - 1; i++)
                 {
                     var numOfMessages = (from rm in company.RecievedMessages

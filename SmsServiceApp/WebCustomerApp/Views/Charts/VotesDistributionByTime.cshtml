@@ -13,7 +13,8 @@
                 type: 'area'
             },
             title: {
-                text: '@Model.Description'
+                @*text: '@Model.Description'*@
+                text: ''
             },
             xAxis: {
                 categories: ['@Model.TimeFrame.ElementAt(0)'
@@ -82,6 +83,7 @@
                 }
             ]
         });
+
     </script>
 }
 
