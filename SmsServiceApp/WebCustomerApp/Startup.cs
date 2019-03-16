@@ -44,7 +44,7 @@ namespace WebCustomerApp
             services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
-			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IMailingRepository, MailingRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 

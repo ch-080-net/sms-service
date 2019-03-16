@@ -13,7 +13,7 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
-        private IBaseRepository<Company> companyRepo;
+        private ICompanyRepository companyRepo;
         private IBaseRepository<Operator> operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
@@ -28,11 +28,11 @@ namespace DAL.Repositories
             this.context = context;
         }
 
-        public IBaseRepository<Company> Companies
+        public ICompanyRepository Companies
         {
             get
             {
-                if (companyRepo == null) { companyRepo = new BaseRepository<Company>(context); }
+                if (companyRepo == null) { companyRepo = new CompanyRepository(context); }
                 return companyRepo;
             }
         }
