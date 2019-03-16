@@ -74,8 +74,7 @@ namespace WebApp.Controllers
                 TempData["companyId"] = companyId;
             }
             TempData.Keep("companyId");
-            int phoneId = phoneManager.GetPhoneId(item.PhoneNumber);
-            bool IsRecipientPhoneExist = recipientManager.IsRecipientExist(phoneId);
+            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
             if (IsRecipientPhoneExist)
             {
                 ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");
