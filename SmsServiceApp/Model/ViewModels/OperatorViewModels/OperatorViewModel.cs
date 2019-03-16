@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using Model.ViewModels.TariffViewModels;
 
 namespace Model.ViewModels.OperatorViewModels
 {
