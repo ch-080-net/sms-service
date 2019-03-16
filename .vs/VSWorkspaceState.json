@@ -1,8 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\SmsServiceApp"
+    "\\SmsServiceApp",
+    "\\SmsServiceApp\\BAL",
+    "\\SmsServiceApp\\BAL\\Managers",
+    "\\SmsServiceApp\\Model",
+    "\\SmsServiceApp\\Model\\DB"
   ],
-  "SelectedNode": "\\SmsServiceApp\\SmsServiceApp.sln",
+  "SelectedNode": "\\SmsServiceApp\\BAL\\Managers\\OperatorManager.cs",
   "PreviewInSolutionExplorer": false
 }

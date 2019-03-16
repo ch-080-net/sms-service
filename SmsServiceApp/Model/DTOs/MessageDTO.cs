@@ -11,5 +11,6 @@ namespace Model.DTOs
         public string SenderPhone { get; set; }
         public string MessageText { get; set; }
         public string ServerId { get; set; }
-    }
+		public uint SequenceNumber { get; set; }
+	}
 }
