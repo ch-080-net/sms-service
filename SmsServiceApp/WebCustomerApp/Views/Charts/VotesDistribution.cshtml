@@ -3,8 +3,9 @@
 
 <div id="container" style="margin: 0 auto"></div>
 
-@section Scripts{ 
+@section Scripts{
     <script src="~/js/highcharts.js"></script>
+    <script src="~/js/no-data-to-display.js"></script>
 
     <script type="text/javascript">
         Highcharts.chart('container', {
@@ -15,7 +16,8 @@
                 type: 'pie'
             },
             title: {
-                text: '@Model.Description'
+                @*text: '@Model.Description'*@
+                text: ''
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -36,21 +38,29 @@
             series: [{
                 name: 'Votes',
                 colorByPoint: true,
-                data: [{
-                    name: '@Model.Categories.First().Item1',
-                    y: @Model.Categories.First().Item2,
-                    sliced: true,
-                    selected: true
+                data: [
+                @if (Model.Categories.Any())
+                    {
+                        WriteLiteral("{" +
+                        "name: '" + @Model.Categories.First().Item1 + "', " +
+                            "y: " + @Model.Categories.First().Item2 + ", " +
+                            "sliced: true, " +
+                            "selected: true" +
+                            " }");
+
+                        @foreach (var i in Model.Categories.Skip(1))
+                        {
+                            WriteLiteral(", {" +
+                                "name: '" + i.Item1 +
+                                "', y: " + i.Item2 +
+                                "}");
+                        }
                 }
-                @foreach(var i in Model.Categories.Skip(1))
-                {
-                    WriteLiteral(", {" +
-                        "name: '" + i.Item1 +
-                        "', y: " + i.Item2 +
-                        "}");
-                }]
+                ]
             }]
         });
+
+
     </script>
 }
 

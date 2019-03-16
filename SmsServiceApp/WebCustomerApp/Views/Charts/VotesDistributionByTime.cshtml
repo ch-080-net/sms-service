@@ -5,6 +5,7 @@
 
 @section Scripts{
     <script src="~/js/highcharts.js"></script>
+    <script src="~/js/no-data-to-display.js"></script>
 
     <script type="text/javascript">
         Highcharts.chart('container', {
@@ -53,28 +54,33 @@
                     }
                 }
             },
-            series: [{
-                name: '@Model.Categories.ElementAt(0).Item1',
-                data: [
-                    @Model.Categories.ElementAt(0).Item2.ElementAt(0)
-                    @foreach(var i in Model.Categories.ElementAt(0).Item2.Skip(1))
-                     {
-                        WriteLiteral(", " + i);
-                     }
-                ]
-            }
-                @foreach(var i in Model.Categories.Skip(1))
+            series: [
+            @if(Model.Categories.Any())
                 {
-                    WriteLiteral(", {" +
-                        "name: '" + i.Item1 + "', " +
-                        "data: [" + i.Item2.ElementAt(0));
-                    @foreach(var j in i.Item2.Skip(1))
+                    WriteLiteral("{ " +
+                    "name: '" + Model.Categories.ElementAt(0).Item1 + "', " +
+                    "data: [" +
+                    Model.Categories.ElementAt(0).Item2.ElementAt(0));
+                    foreach(var i in Model.Categories.ElementAt(0).Item2.Skip(1))
                     {
-                        WriteLiteral(", " + j);
+                        WriteLiteral(", " + i);
                     }
                     WriteLiteral("]}");
+            
+                    foreach(var i in Model.Categories.Skip(1))
+                    {
+                        WriteLiteral(", {" +
+                            "name: '" + i.Item1 + "', " +
+                            "data: [" + i.Item2.ElementAt(0));
+                        foreach(var j in i.Item2.Skip(1))
+                        {
+                            WriteLiteral(", " + j);
+                        }
+                        WriteLiteral("]}");
+                    }
+
                 }
-                ]
+            ]
         });
     </script>
 }

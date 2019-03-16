@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult VotesDistribution(int CompanyId = 1)
+        public IActionResult VotesDistribution(int CompanyId = 6)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = poolCampaignChartsManager.GetVotesChart(CompanyId, userId);
@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult VotesDistributionByTime(int CompanyId = 1)
+        public IActionResult VotesDistributionByTime(int CompanyId = 6)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = poolCampaignChartsManager.GetVotesChartByTime(CompanyId, userId);
