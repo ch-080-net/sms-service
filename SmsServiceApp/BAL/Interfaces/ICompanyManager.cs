@@ -13,7 +13,8 @@ namespace BAL.Managers
     {
         CompanyViewModel Get(int id);
         IEnumerable<CompanyViewModel> GetCompanies(int groupId);
-		int GetTariffLimit(int companyId);
+        IEnumerable<CompanyViewModel> GetCompaniesByPhone(Phone phone);
+        int GetTariffLimit(int companyId);
 		void Insert(CompanyViewModel item, int groupId);
 		void Update(CompanyViewModel item, int groupId, int tariffId);
 		void Delete(int id);

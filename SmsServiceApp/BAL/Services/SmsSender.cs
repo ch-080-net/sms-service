@@ -11,7 +11,7 @@ using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WebCustomerApp.Models;
-using BAL.Managers;
+using BAL.Services;
 
 namespace WebCustomerApp.Services
 {
@@ -28,9 +28,11 @@ namespace WebCustomerApp.Services
 		//public string userDataHeader;
 		public List<string> messageIDs;
 		public bool ImmediateResponse { get; protected set; }
+        public IRecievedMessage recievedMessage;
 
         private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScopeFactory serviceScopeFactory;
+       
 
         public static async Task<SmsSender> GetInstance(IServiceScopeFactory serviceScopeFactory)
         {
@@ -174,10 +176,9 @@ namespace WebCustomerApp.Services
 
 		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
 		{
-          
-          
-           
 
+            recievedMessage.SearchStopWordInMeaasge(e.Originator, e.Destination, e.Content);
+            
             Console.WriteLine("You have new message");
 		}
 
