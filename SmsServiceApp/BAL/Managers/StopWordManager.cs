@@ -11,31 +11,47 @@ namespace BAL.Managers
 {
    public class StopWordManager: BaseManager,IStopWordManager
     {
+        /// <summary>
+        /// Manager for StopWord, include all methods needed to work with StopWord storage.
+        /// Inherited from BaseManager and have additional methods.
+        /// </summary>
         public StopWordManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork , mapper)
         {
         }
 
-
+        /// <summary>
+        /// Method for getting all stop words from db
+        /// </summary>
+        /// <returns>IEnumerable of mapped to ViewModel objects</returns>
         public IEnumerable<StopWordViewModel> GetStopWords()
         {
             IEnumerable<StopWord> words = unitOfWork.StopWords.GetAll();
             return mapper.Map<IEnumerable<StopWord>, IEnumerable<StopWordViewModel>>(words);
         }
-
+        /// <summary>
+        /// Method for inserting new stopwod to db
+        /// </summary>
+        /// <param name="item">ViewModel of stopword</param>
         public void Insert(StopWordViewModel item)
         {
             StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
             unitOfWork.StopWords.Insert(word);
             unitOfWork.Save();
         }
-
+        /// <summary>
+        ///  Update stop word in db
+        /// </summary>
+        /// <param name="item">ViewModel of stopword</param>
         public void Update(StopWordViewModel item)
         {
             StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
             unitOfWork.StopWords.Update(word);
             unitOfWork.Save();
         }
-
+        /// <summary>
+        /// delete stop word by db
+        /// </summary>
+        /// <param id="item"></param>
         public void Delete(int item)
         {
             StopWord word = unitOfWork.StopWords.GetById(item);
@@ -44,28 +60,5 @@ namespace BAL.Managers
         }
 
 
-        public void SetStateModified(StopWordViewModel item)
-        {
-            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
-            unitOfWork.StopWords.SetStateModified(word);
-            unitOfWork.Save();
-        }
-
-        //clear
-        //public void SearchStopWordInMeaasge(string Originator ,string Destination ,string Content)
-        //{
-        //    Content = Content.Substring(Content.IndexOf(" Text: ") + 7);//7=" Text: " size
-
-        //   var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => c.Word==Content);
-        //    if (words != null)
-        //    {
-        //        var recipient = unitOfWork.Recipients.GetAll().FirstOrDefault(r => (r.Phone.PhoneNumber == Originator) && (r.Company.Phone.PhoneNumber == Destination));
-        //        if (recipient != null)
-        //        {
-        //            recipient.IsStopped = true;
-        //            unitOfWork.Recipients.Update(recipient);
-        //        }
-        //    }
-        //}
     }
 }
