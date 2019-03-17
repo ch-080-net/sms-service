@@ -43,6 +43,19 @@ namespace BAL.Managers
             return mapper.Map<Recipient, RecipientViewModel>(recipient);
         }
 
+        public bool IsRecipientExist(int phoneId)
+        {
+            var recipient = unitOfWork.Recipients.Get(r => r.PhoneId == phoneId);
+            if(recipient != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Method for getting all recipients which belong to specified company
         /// </summary>
