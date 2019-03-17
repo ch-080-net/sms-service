@@ -15,6 +15,7 @@ namespace BAL.Services
         private readonly IRecipientManager recipientManager;
         private readonly IPhoneManager phoneManager;
         private readonly ICompanyManager companyManager;
+   
         public RecievedMessageService(IStopWordManager stopWord , ICompanyManager companyManager , IRecipientManager recipient, IPhoneManager phoneManager)
         {
             this.phoneManager = phoneManager;
@@ -23,7 +24,14 @@ namespace BAL.Services
             this.companyManager = companyManager;
         }
 
-
+        /// <summary>
+        /// check who is in the reported stopword
+        /// if there is something 
+        /// look for the recipient and block the mailing in this group
+        /// </summary>
+        /// <param name="Originator">recipient PhoneNumber</param>
+        /// <param name="Destination">company PhoneNumber</param>
+        /// <param name="Content">message that came back</param>
         public void SearchStopWordInMeaasge(string Originator, string Destination, string Content)
         {
             Content = Content.Substring(Content.IndexOf(" Text: ") + 7);//7=" Text: " size
