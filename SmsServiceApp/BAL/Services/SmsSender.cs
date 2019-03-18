@@ -166,6 +166,9 @@ namespace WebCustomerApp.Services
 		/// <param name="e">event object</param>
 		private void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
 		{
+			if (e.Status != 0)
+				return;
+
 			MessageDTO message;
 			do
 				message = messagesForSend.FirstOrDefault(s => s.SequenceNumber == e.SequenceNumber);
