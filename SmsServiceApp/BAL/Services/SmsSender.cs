@@ -10,6 +10,7 @@ using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WebCustomerApp.Models;
+using BAL.Managers;
 
 namespace WebCustomerApp.Services
 {
@@ -166,6 +167,28 @@ namespace WebCustomerApp.Services
 		/// <param name="e">event object</param>
 		private void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
 		{
+            try { clientSMPP.tcpDisconnect(); }
+            finally { }
+		}
+
+
+        /// <summary>
+        /// Method for saving recieved messages in database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+		public void SMSCclientSMPP_OnSmppMessageReceived(object sender, smppMessageReceivedEventArgs e)
+		{
+            RecievedMessageDTO recievedMessage = new RecievedMessageDTO();
+            recievedMessage.SenderPhone = e.Originator;
+            recievedMessage.RecipientPhone = e.Destination;
+            recievedMessage.MessageText = e.Content;
+            recievedMessage.TimeOfRecieve = DateTime.UtcNow;
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                RecievedMessageManager recievedMessageManager = scope.ServiceProvider.GetService<RecievedMessageManager>();
+                recievedMessageManager.Insert(recievedMessage);
+            }
 			MessageDTO message;
 			do
 				message = messagesForSend.FirstOrDefault(s => s.SequenceNumber == e.SequenceNumber);
