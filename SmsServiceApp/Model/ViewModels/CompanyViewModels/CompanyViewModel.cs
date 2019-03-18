@@ -17,6 +17,7 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name="Name")]
         public string Name { get; set; }
         [Required(ErrorMessage = "The Description field is required.")]
+        [Display(Name="Description")]
         [StringLength(500)]
         public string Description { get; set; }  
         [Required]
