@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DAL.Migrations
 {
-    public partial class first : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,7 +29,6 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Logo = table.Column<byte[]>(nullable: true),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -189,7 +188,7 @@ namespace DAL.Migrations
                     ApplicationGroupId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     EndTime = table.Column<DateTime>(nullable: false),
-                    Message = table.Column<string>(nullable: false),
+                    Message = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: false),
                     PhoneId = table.Column<int>(nullable: true),
                     SendingTime = table.Column<DateTime>(nullable: false),

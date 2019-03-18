@@ -82,7 +82,18 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
+                var phone = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber);
+                if (phone != null)
+                {
+                    item.PhoneId = phone.Id;
+                }
+                else
+                {
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = item.PhoneNumber;
+                    phoneManager.Insert(newPhone);
+                    item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
+                }
                 item.ApplicationGroupId = GetGroupId();
                 int companyId = companyManager.InsertWithId(item);
                 if (item.Type == 1)

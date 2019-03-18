@@ -253,8 +253,7 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("EndTime");
 
-                    b.Property<string>("Message")
-                        .IsRequired();
+                    b.Property<string>("Message");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -314,8 +313,6 @@ namespace DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<byte[]>("Logo");
 
                     b.Property<string>("Name")
                         .IsRequired();
