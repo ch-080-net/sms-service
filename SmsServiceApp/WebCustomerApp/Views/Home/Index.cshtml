@@ -46,11 +46,13 @@
     </div>
         </div>
     <header class="header">
-
+        <a href="#" class="logo">
+            <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
+        </a>
 
         <nav class="menu">
             <ul class="menu_list">
-                <li class="menu_item">
+                <li>
                     <div class="container">
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
 
@@ -74,12 +76,13 @@
                         </div>
                         <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
                     </div>
+
                 </li>
+
             </ul>
+
         </nav>
-        <a href="#" class="logo">
-            <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
-        </a>
+
         <!--/.header-->
     </header>
     <section class="main">
@@ -139,10 +142,11 @@
             </ul>
         </section>
     </section>
+
     <section class="log_section" id="log">
         <p class="app_description">
             <h2 class="app_description_title">SMS SERVICE AT AFFORDABLE PRICE</h2>
-            <h4 class="app_description_welcome">SendPulse is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices.</h4>
+            <h4 class="app_description_welcome">Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices.</h4>
             <div class="app_description_link app_button  ">
                 <a href="Account/NewLogin" class="app_link  ">Log in</a>
             </div>
@@ -177,11 +181,13 @@
 
     <!--/.footer -->
     <footer>
-        <div id="social">
-        </div>
-        <div id="rights">
+        <div class="footer_content">
             All rights reserved &copy; 2019
+            <div>
+
+            </div>
         </div>
+
     </footer>
 
     <script src="~/js/preloader.js"></script>
