@@ -15,6 +15,8 @@ using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
+using Model.ViewModels.AnswersCodeViewModels;
+using Model.ViewModels.RecievedMessageViewModel;
 using System.Linq;
 using Model.ViewModels.CampaignReportingViewModels;
 
@@ -76,6 +78,19 @@ namespace BAL.Services
                 .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => SetTimeFrameForStackedChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
                 .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForStackedChart(com)));
+
+            CreateMap<RecievedMessage, RecievedMessageViewModel>()
+                .ForMember(dest => dest.RecipientPhone, opt => opt.MapFrom(src => src.Company.Phone.PhoneNumber))
+                .ForMember(dest => dest.SenderPhone, opt => opt.MapFrom(src => src.Phone.PhoneNumber))
+                .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Message))
+                .ForMember(dest => dest.TimeOfRecieve, opt => opt.MapFrom(src => src.RecievedTime));
+
+            CreateMap<RecievedMessageDTO, RecievedMessage>()
+                .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.MessageText))
+                .ForMember(dest => dest.RecievedTime, opt => opt.MapFrom(src => src.TimeOfRecieve));
+
+            CreateMap<AnswersCode, AnswersCodeViewModel>();
+            CreateMap<AnswersCodeViewModel, AnswersCode>();
         }
 
         private string ReplaceHashtags(Recipient recipient)

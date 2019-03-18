@@ -20,6 +20,8 @@ namespace DAL.Repositories
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
+        private IBaseRepository<RecievedMessage> recievedMessagesRepo;
+        private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
         private IChartsRepository ChartsRepo;
 
@@ -94,6 +96,24 @@ namespace DAL.Repositories
             {
                 if (groupRepo == null) { groupRepo = new BaseRepository<ApplicationGroup>(context); }
                 return groupRepo;
+            }
+        }
+
+        public IBaseRepository<RecievedMessage> RecievedMessages
+        {
+            get
+            {
+                if (recievedMessagesRepo == null) { recievedMessagesRepo = new BaseRepository<RecievedMessage>(context); }
+                return recievedMessagesRepo;
+            }
+        }
+
+        public IBaseRepository<AnswersCode> AnswersCodes
+        {
+            get
+            {
+                if (answersCodeRepo == null) { answersCodeRepo = new BaseRepository<AnswersCode>(context); }
+                return answersCodeRepo;
             }
         }
 
