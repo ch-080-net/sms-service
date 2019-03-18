@@ -1,5 +1,5 @@
 ﻿@using Model.ViewModels.TariffViewModels
-@model TariffViewModel
+@model TariffsViewModel
 
 <h2>Tariffs</h2>
 <hr />
@@ -9,22 +9,22 @@
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-2">
-                        @Html.DisplayNameFor(model => model.Name)
+                        Tariff
                     </th>
                     <th class="col-md-4">
-                        @Html.DisplayNameFor(model => model.Description)
+						Description
                     </th>
                     <th class="col-md-1">
-                        @Html.DisplayNameFor(model => model.Price)
+                        Price
                     </th>
                     <th class="col-md-1">
-                        @Html.DisplayNameFor(model => model.Limit)
+                        Limit
                     </th>
                     <th class="col-md-1"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ViewBag.tariffs)
+                @foreach (var item in Model.TariffsList)
                 {
                     <tr>
                         <td class="col-md-2">
@@ -48,6 +48,6 @@
         </table>
     </div>
     </div>
-    <div>
-        <a class="btn btn-primary" asp-action="Index">Back to Operators</a>
-    </div>
+<div>
+	<a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Back to Operators</a>
+</div>
