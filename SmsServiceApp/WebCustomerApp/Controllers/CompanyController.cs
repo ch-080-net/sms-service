@@ -1,18 +1,16 @@
 ﻿using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebCustomerApp.Models;
+using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.TariffViewModels;
-using Model.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using WebCustomerApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -96,15 +94,15 @@ namespace WebApp.Controllers
                 }
                 item.ApplicationGroupId = GetGroupId();
                 int companyId = companyManager.InsertWithId(item);
-                if (item.Type == 1)
+                if (item.Type == CompanyType.Send)
                 {
                     return RedirectToAction("Send", new { companyId });
                 }
-                if (item.Type == 2)
+                if (item.Type == CompanyType.Recieve)
                 {
                     return RedirectToAction("Recieve", new { companyId });
                 }
-                if (item.Type == 3)
+                if (item.Type == CompanyType.SendAndRecieve)
                 {
                     return RedirectToAction("SendRecieve", new { companyId });
                 }
@@ -227,33 +225,15 @@ namespace WebApp.Controllers
         /// <param name="id">Id of selected item</param>
         /// <returns>View with selected company info</returns>
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public IActionResult Details(int companyId)
         {
-            if (id == null)
+            var item = companyManager.GetDetails(companyId);
+            item.PhoneNumber = phoneManager.GetPhoneById(item.PhoneId).PhoneNumber;
+            if (item.Type == CompanyType.Send || item.Type == CompanyType.SendAndRecieve)
             {
-                return NotFound();
+                item.Tariff = tariffManager.GetTariffById(item.TariffId).Name;
             }
-
-            CompanyViewModel company = companyManager.GetCompanies(GetGroupId()).FirstOrDefault(c => c.Id == id);
-
-            if (company == null)
-            {
-                return NotFound();
-            }
-            return View(company);
-        }
-
-        /// <summary>
-        /// Delete selected item from db
-        /// </summary>
-        /// <param name="id">Id of Company which select to delete</param>
-        /// <returns>Company Index View</returns>
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            companyManager.Delete(id);
-            return RedirectToAction("Index");
+            return View(item);
         }
 
         [HttpGet]
@@ -292,7 +272,7 @@ namespace WebApp.Controllers
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
             companyManager.Update(currentCompany, GetGroupId(), tariffId);
-            if (currentCompany.Type == 1)
+            if (currentCompany.Type == CompanyType.Send)
             {
                 return RedirectToAction("Send", "Company", new { companyId });
             }
@@ -305,7 +285,7 @@ namespace WebApp.Controllers
         public IActionResult RedirectByType(int companyId)
         {
             CompanyViewModel company = companyManager.Get(companyId);
-            if (company.Type == 1)
+            if (company.Type == CompanyType.Send)
             {
                 return RedirectToAction("Send", "Company", new { companyId });
             }

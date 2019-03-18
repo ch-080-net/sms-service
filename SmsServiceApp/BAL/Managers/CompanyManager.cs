@@ -118,6 +118,12 @@ namespace BAL.Managers
             return mapper.Map<Company, CompanyViewModel>(company);
         }
 
+        public ManageViewModel GetDetails(int id)
+        {
+            Company company = unitOfWork.Companies.GetById(id);
+            return mapper.Map<Company, ManageViewModel>(company);
+        }
+
         /// <summary>
         /// Delete company by Id
         /// </summary>

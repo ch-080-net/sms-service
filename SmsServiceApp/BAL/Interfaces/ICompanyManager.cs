@@ -21,5 +21,6 @@ namespace BAL.Managers
         void AddSend(SendViewModel item);
         void AddRecieve(RecieveViewModel item);
         void AddSendRecieve(SendRecieveViewModel item);
+        ManageViewModel GetDetails(int id);
     }
 }

@@ -22,7 +22,6 @@
         }
     </style>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -100,7 +99,6 @@
         function ClickPosition(item) {
             CursorPosition = $(item).prop('selectionStart');
         }
-
     </script>
     <title>Company</title>
 </head>
@@ -143,19 +141,15 @@
                     <div class="form-group col-md-12">
                         <label asp-for="StartTime" class="control-label"></label>
                         <input asp-for="StartTime" id="TimeStart" type="text">
-                        <script>
-                            $('#TimeStart').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                            $('#sendTime').val(new Date().toLocaleString());
-                        </script>
                         <span asp-validation-for="StartTime" class="text-danger"></span>
+                        <script>  $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                            $('#TimeStart').val(new Date().toLocaleString());</script>
                     </div>
                     <div class="form-group col-md-12">
                         <label asp-for="EndTime" class="control-label"></label>
                         <input asp-for="EndTime" id="TimeEnd" type="text">
-                        <script>
-                            $('#TimeEnd').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                            $('#sendTime').val(new Date().toLocaleString());
-                        </script>
+                        <script>   $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                            $('#TimeEnd').val(new Date().toLocaleString());</script>
                         <span asp-validation-for="EndTime" class="text-danger"></span>
                     </div>
                 </div>
@@ -168,12 +162,10 @@
                     </div>
                     <div class="form-group" id="SendLater">
                         <label asp-for="SendingTime" class="control-label"></label>
-                        <input asp-for="SendingTime" class="form-control" id="sendTime" type="text"/>
+                        <input asp-for="SendingTime" class="form-control" id="sendTime" type="text" />
+                        <script>        $('#sendTime').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                            $('#sendTime').val(new Date().toLocaleString());</script>
                         <span asp-validation-for="SendingTime" class="text-danger"></span>
-                        <script>
-                            $('#sendTime').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
-                            $('#sendTime').val(new Date().toLocaleString());
-                        </script>
                     </div>
                 </div>
                 <div class="row">
