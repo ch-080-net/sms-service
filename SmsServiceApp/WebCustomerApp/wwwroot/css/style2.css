@@ -31,8 +31,8 @@
   }
   /*Logo*/
 .logo {
-    display:flex;
-    float:left;
+    display: flex;
+    align-items: flex-start;
     min-height: 80px;
     min-width: 100px;
     height: 100px;
@@ -65,11 +65,12 @@
   }
   /*menu*/
   .menu {
-     margin-left:auto;
+     padding:0;
+     margin:0;
   }
   .menu_list {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     height: 100%;
     margin-left: auto;
     padding: 0;
