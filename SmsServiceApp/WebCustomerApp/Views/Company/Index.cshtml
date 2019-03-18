@@ -28,17 +28,18 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td class="col-md-4">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-					<td class="col-md-4">
-						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a> |
-					</td>
-                </tr>
+            <tr>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="col-md-6">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="col-md-4">
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

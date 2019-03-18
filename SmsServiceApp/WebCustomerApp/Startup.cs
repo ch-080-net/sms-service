@@ -27,6 +27,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
+using BAL.Interfaces;
 
 namespace WebApp
 {
@@ -139,6 +140,7 @@ namespace WebApp
             services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
+            services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
 
            
 

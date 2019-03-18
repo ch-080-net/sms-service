@@ -1,0 +1,36 @@
+﻿@using Model.ViewModels.AnswersCodeViewModels;
+@model AnswersCodeViewModel;
+@{
+    ViewData["Title"] = "Edit";
+}
+<h2>Edit</h2>
+<h4>Answer's Code</h4>
+<hr />
+<div class="row">
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-5">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" readonly ="@true"/>
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answer" class="control-label"></label>
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-warning" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@Model.CompanyId">Back to List</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
