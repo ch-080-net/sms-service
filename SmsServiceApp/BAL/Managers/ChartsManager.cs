@@ -29,45 +29,28 @@ namespace BAL.Managers
                 return null;
 
             campaignDetails.CampaignName = campaign.Name;
+            if (campaign.Type == 1)
+            {
+                campaignDetails.HaveVoting = false;
+                campaignDetails.Selection = ChartSelection.MailingDetails;
+            }
+            else
+                campaignDetails.HaveVoting = true;
+
 
             switch (campaignDetails.Selection)
             {
                 case ChartSelection.VotesDetails:
                     campaignDetails.PieChart = mapper.Map<Company, PieChart>(campaign);
-                    campaignDetails.StackedChart = null;
                     break;
                 case ChartSelection.VotesDetailsByTime:
-                    try { campaignDetails.StackedChart = mapper.Map<Company, StackedChart>(campaign); }
-                    catch (AutoMapperMappingException) { campaignDetails.StackedChart = null; }
-                    campaignDetails.PieChart = null;
+                    campaignDetails.StackedChart = mapper.Map<Company, StackedChart>(campaign);
                     break;
                 default:
-                    return null;
+                    return campaignDetails;
             }
             return campaignDetails;
         }
 
-        public PieChart GetVotesChart(int campaignId, string userId)
-        {
-            var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
-                && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();
-
-            return mapper.Map<Company, PieChart>(campaign);
-        }
-
-        public StackedChart GetVotesChartByTime(int campaignId, string userId)
-        {
-            var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignId
-                && pcc.ApplicationGroup.ApplicationUsers.Any(au => au.Id == userId)).FirstOrDefault();
-
-            try
-            {
-                return mapper.Map<Company, StackedChart>(campaign);
-            }
-            catch(AutoMapperMappingException)
-            {
-                return null;
-            }
-        }
     }
 }

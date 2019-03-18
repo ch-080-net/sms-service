@@ -131,10 +131,9 @@ namespace BAL.Services
         {
             DateTime beginning = company.StartTime;
             DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
-            if(beginning >= ending)
-                throw new ArgumentOutOfRangeException("End time is prior or equal to beginnig time");
             
             var result = new List<string>();
+
             foreach (var i in GetInterimTimes(beginning, ending))
             {
                 result.Add(i.ToString());
@@ -144,6 +143,9 @@ namespace BAL.Services
 
         private IEnumerable<DateTime> GetInterimTimes(DateTime beginning, DateTime ending, int slices = 7)
         {
+            if (beginning >= ending)
+                return new List<DateTime>();
+
             if (slices < 2)
                 slices = 2;
             TimeSpan span = (ending - beginning) / (slices - 1);

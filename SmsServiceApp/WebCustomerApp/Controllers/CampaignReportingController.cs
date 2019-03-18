@@ -24,14 +24,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult GetChart(int CampaignId)
         {
-            if (CampaignId == 0)
-                return NotFound();
-            else
-            {
-                var result = new CampaignDetailsViewModel() { Selection = ChartSelection.MailingDetails,
-                    CampaignId = CampaignId };
-                return RedirectToAction("ShowChart", result);
-            }
+            var result = new CampaignDetailsViewModel() { Selection = ChartSelection.MailingDetails,
+                CampaignId = CampaignId };
+            return RedirectToAction("ShowChart", result);
         }
 
         public IActionResult ShowChart(CampaignDetailsViewModel campaignDetails)
@@ -40,6 +35,8 @@ namespace WebApp.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var result = chartsManager.GetChart(campaignDetails, userId);
+                if (result == null)
+                    return NotFound();
                 return View(result);
             }
             return RedirectToAction("Index", "Company");

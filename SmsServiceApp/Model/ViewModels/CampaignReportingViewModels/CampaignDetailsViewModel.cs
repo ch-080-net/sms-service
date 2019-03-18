@@ -7,6 +7,7 @@ namespace Model.ViewModels.CampaignReportingViewModels
     public class CampaignDetailsViewModel
     {
         public ChartSelection Selection { get; set; }
+        public bool HaveVoting { get; set; }
         public string CampaignName { get; set; }
         public int CampaignId { get; set; }
         
