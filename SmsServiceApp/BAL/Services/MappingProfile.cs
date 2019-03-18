@@ -16,6 +16,7 @@ using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
 using Model.ViewModels.AnswersCodeViewModels;
+using Model.ViewModels.RecievedMessageViewModel;
 
 namespace BAL.Services
 {
@@ -67,7 +68,7 @@ namespace BAL.Services
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
 
-            CreateMap<RecievedMessage, RecievedMessageDTO>()
+            CreateMap<RecievedMessage, RecievedMessageViewModel>()
                 .ForMember(dest => dest.RecipientPhone, opt => opt.MapFrom(src => src.Company.Phone.PhoneNumber))
                 .ForMember(dest => dest.SenderPhone, opt => opt.MapFrom(src => src.Phone.PhoneNumber))
                 .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Message))
