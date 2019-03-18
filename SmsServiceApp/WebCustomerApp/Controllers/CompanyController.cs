@@ -135,6 +135,10 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(item.SendingTime < DateTime.Now)
+                {
+                    item.SendingTime = DateTime.Now.AddMinutes(1);
+                }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
                 return RedirectToAction("Index");
@@ -205,6 +209,10 @@ namespace WebApp.Controllers
      
             if (ModelState.IsValid)
             {
+                if (item.SendingTime < DateTime.Now)
+                {
+                    item.SendingTime = DateTime.Now.AddMinutes(1);
+                }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSendRecieve(item);
                 return RedirectToAction("Index");
@@ -251,10 +259,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Operators(int companyId)
         {
-            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
-            ViewBag.operators = operators;
+			OperatorsViewModel model = new OperatorsViewModel();
+			model.OperatorsList = operatorManager.GetAll();
             ViewData["companyId"] = companyId;
-            return View();
+            return View(model);
         }
 
 		/// <summary>
@@ -267,10 +275,10 @@ namespace WebApp.Controllers
 		[HttpGet]
         public IActionResult Tariffs(int id, int companyId)
         {
-            IEnumerable<TariffViewModel> tariffs = tariffManager.GetTariffs(id);
-            ViewBag.tariffs = tariffs;
+			TariffsViewModel model = new TariffsViewModel();
+            model.TariffsList = tariffManager.GetTariffs(id);
             ViewData["companyId"] = companyId;
-            return View();
+            return View(model);
         }
 
 		/// <summary>
