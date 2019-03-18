@@ -21,19 +21,5 @@ namespace WebApp.Models
         /// </value>
         public string Name { get; set; }
 
-        /// <summary>
-        /// Logo of operator
-        /// </summary>
-        /// <value>Contains logo as array of bites</value>
-        /// <example>
-        /// <code>
-        /// byte[] imgData = null;
-        /// using (var binReader = new BinaryReader(operatorItem.Logo.OpenReadStream()))
-        /// {
-        ///     imgData = binReader.ReadBytes((int)operatorItem.Logo.Length);
-        /// }
-        /// </code>
-        /// </example>
-        public byte[] Logo { get; set; }
     }
 }

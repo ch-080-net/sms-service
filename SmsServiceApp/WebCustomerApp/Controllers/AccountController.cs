@@ -29,17 +29,19 @@ namespace WebApp.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IPhoneManager _phoneManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, IPhoneManager phoneManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _phoneManager = phoneManager;
         }
 
         [TempData]
@@ -248,7 +250,17 @@ namespace WebApp.Controllers
 
                 if (groupId == 0)
                 {
-                    ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName };
+                    var phone = _phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == model.Phone);
+                    ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName};
+                    if(phone != null)
+                    {
+                        group.PhoneId = phone.Id;
+                    }
+                    else
+                    {
+                        Phone newPhone = new Phone { PhoneNumber = model.Phone };
+                        group.Phone = newPhone;
+                    }
                     user.ApplicationGroup = group;
                 }
                 else

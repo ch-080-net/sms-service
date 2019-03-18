@@ -35,11 +35,9 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="item">ViewModel of Company</param>
         /// <param name="groupId">Id of Group wich create this company</param>
-        public void Insert(CompanyViewModel item, int groupId)
+        public void Insert(CompanyViewModel item)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);
-            company.ApplicationGroupId = groupId;
-            company.TariffId = null;
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();
         }
@@ -78,11 +76,42 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-       /// <summary>
-       /// Get one company from db by Id
-       /// </summary>
-       /// <param name="id">Id of company wich you need</param>
-       /// <returns>ViewModel of company from db</returns>
+        public void AddSend(SendViewModel item)
+        {
+            Company company = unitOfWork.Companies.GetById(item.Id);
+            company.TariffId = item.TariffId;
+            company.Message = item.Message;
+            company.SendingTime = item.SendingTime;
+            unitOfWork.Companies.Update(company);
+            unitOfWork.Save();
+        }
+
+        public void AddRecieve(RecieveViewModel item)
+        {
+            Company company = unitOfWork.Companies.GetById(item.Id);
+            company.StartTime = item.StartTime;
+            company.EndTime = item.EndTime;
+            unitOfWork.Companies.Update(company);
+            unitOfWork.Save();
+        }
+
+        public void AddSendRecieve(SendRecieveViewModel item)
+        {
+            Company company = unitOfWork.Companies.GetById(item.Id);
+            company.TariffId = item.TariffId;
+            company.Message = item.Message;
+            company.SendingTime = item.SendingTime;
+            company.StartTime = item.StartTime;
+            company.EndTime = item.EndTime;
+            unitOfWork.Companies.Update(company);
+            unitOfWork.Save();
+        }
+
+        /// <summary>
+        /// Get one company from db by Id
+        /// </summary>
+        /// <param name="id">Id of company wich you need</param>
+        /// <returns>ViewModel of company from db</returns>
         public CompanyViewModel Get(int id)
         {
             Company company = unitOfWork.Companies.GetById(id);
@@ -98,6 +127,14 @@ namespace BAL.Managers
             Company company = unitOfWork.Companies.GetById(id);
             unitOfWork.Companies.Delete(company);
             unitOfWork.Save();
+        }
+
+        public int InsertWithId(CompanyViewModel item)
+        {
+            Company company = mapper.Map<CompanyViewModel, Company>(item);
+            company.TariffId = null;
+            int id = unitOfWork.Companies.InsertWithId(company);
+            return id;
         }
     }
 }

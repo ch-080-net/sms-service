@@ -11,7 +11,7 @@ namespace Model.Interfaces
         IBaseRepository<Recipient> Recipients { get; }
         IContactRepository Contacts { get; }
         IBaseRepository<Phone> Phones { get; }
-        IBaseRepository<Company> Companies { get; }
+        ICompanyRepository Companies { get; }
         IBaseRepository<Operator> Operators { get; }
         IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }

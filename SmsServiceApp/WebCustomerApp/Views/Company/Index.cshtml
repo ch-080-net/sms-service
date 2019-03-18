@@ -35,15 +35,9 @@
                     <td class="col-md-4">
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
-                    <td scope="row">
-                        <a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">@Localizer["Tariff"]</a> |
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a> |
-                        @if (item.TariffId != 0)
-                        {
-                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">@Localizer["Add recipients"]</a>
-                        }
-                    </td>
+					<td class="col-md-4">
+						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a> |
+					</td>
                 </tr>
             }
         </tbody>

@@ -16,11 +16,13 @@ namespace WebApp.Controllers
     {
         private readonly IRecipientManager recipientManager;
         private readonly ICompanyManager companyManager;
+        private readonly IPhoneManager phoneManager;
 
-        public RecipientController (IRecipientManager recipient, ICompanyManager companyManager)
+        public RecipientController (IRecipientManager recipient, ICompanyManager companyManager, IPhoneManager phoneManager)
         {
             this.recipientManager = recipient;
             this.companyManager = companyManager;
+            this.phoneManager = phoneManager;
         }
 
 		/// <summary>

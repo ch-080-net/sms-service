@@ -53,7 +53,7 @@ namespace WebApp
             services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
-			services.AddTransient<IBaseRepository<Company>, BaseRepository<Company>>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IMailingRepository, MailingRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 
@@ -138,6 +138,7 @@ namespace WebApp
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
+			services.AddSingleton<ISmsSender, SmsSender>();
 
            
 

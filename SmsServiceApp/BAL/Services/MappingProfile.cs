@@ -4,6 +4,7 @@ using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.RecipientViewModels;
 using Model.ViewModels.ContactViewModels;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
@@ -28,13 +29,16 @@ namespace BAL.Services
         public MappingProfile()
         {
             // Add as many of these lines as you need to map your objects
-            CreateMap<Company, CompanyViewModel>().ForMember(dest => dest.RecipientViewModels, opt => opt.MapFrom(src => src.Recipients));
-            CreateMap<CompanyViewModel, Company>().ForMember(dest => dest.Recipients, opt => opt.MapFrom(src => src.RecipientViewModels));
+            CreateMap<Company, CompanyViewModel>();
+            CreateMap<CompanyViewModel, Company>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
                             .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
 
-            CreateMap<Operator, OperatorViewModel>().ReverseMap();
+            CreateMap<Operator, OperatorViewModel>()
+                .ForMember(ovm => ovm.Logo, opt => opt.MapFrom(o => GetLogo(o)));
+            CreateMap<OperatorViewModel, Operator>();
+
             CreateMap<Code, CodeViewModel>().ReverseMap();
 
             CreateMap<StopWord, StopWordViewModel>();
@@ -71,6 +75,17 @@ namespace BAL.Services
                 .Replace("#company", recipient.Company.Name)
                 .Replace("#birthday", recipient.BirthDate.ToShortDateString());
             return result;
+        }
+
+        private string GetLogo(Operator oper)
+        {
+            string filePath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
+            if (File.Exists(filePath))
+            {
+                return "/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
+            }
+            else
+                return null;
         }
     }
 }
