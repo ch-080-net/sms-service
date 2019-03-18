@@ -104,6 +104,7 @@ namespace WebCustomerApp
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
+			services.AddSingleton<ISmsSender, SmsSender>();
 
             // Start scheduler
 
