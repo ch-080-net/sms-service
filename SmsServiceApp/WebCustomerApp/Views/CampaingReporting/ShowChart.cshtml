@@ -1,0 +1,33 @@
+﻿@using Model.ViewModels.CampaignReportingViewModels
+@model CampaignDetailsViewModel
+
+
+@{
+    ViewData["Title"] = Model.CampaignName;
+}
+
+<div class="btn-group-vertical btn-group-justified col-sm-2 col-md-3" role="group">
+    <a role="button" class="btn btn-default" href="@Url.Action("Mailing", "CampaignReporting", Model)">Mailing statistics</a>
+    <a role="button" class="btn btn-default" href="@Url.Action("Voting", "CampaignReporting", Model)">Voting statistics</a>
+    <a role="button" class="btn btn-default" href="@Url.Action("VotingByTime", "CampaignReporting", Model)">Voting by time</a>
+</div>
+
+<div class="col-sm-10 col-md-9">
+    @switch (Model.Selection)
+    {
+        case ChartSelection.MailingDetails:
+            break;
+        case ChartSelection.VotesDetails:
+            if (Model.PieChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistribution", Model.PieChart);
+            }
+            break;
+        case ChartSelection.VotesDetailsByTime:
+            if (Model.StackedChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistributionByTime", Model.PieChart);
+            }
+            break;
+    }
+</div>

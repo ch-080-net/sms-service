@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Model.DTOs;
-using Model.ViewModels.CampaignDetailsViewModels;
+using Model.ViewModels.CampaignReportingViewModels;
 
 namespace Model.Interfaces
 {

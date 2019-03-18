@@ -16,7 +16,7 @@ using Model.ViewModels.UserViewModels;
 using BAL.Managers;
 using Model.DTOs;
 using System.Linq;
-using Model.ViewModels.CampaignDetailsViewModels;
+using Model.ViewModels.CampaignReportingViewModels;
 
 namespace BAL.Services
 {

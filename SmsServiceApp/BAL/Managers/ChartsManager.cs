@@ -7,7 +7,7 @@ using Model.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
 using WebCustomerApp.Models;
-using Model.ViewModels.CampaignDetailsViewModels;
+using Model.ViewModels.CampaignReportingViewModels;
 
 namespace BAL.Managers
 {

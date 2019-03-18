@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace Model.ViewModels.CampaignDetailsViewModels
+namespace Model.ViewModels.CampaignReportingViewModels
 {
     public class PieChart
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Model.ViewModels.CampaignDetailsViewModels
+namespace Model.ViewModels.CampaignReportingViewModels
 {
     public class CampaignDetailsViewModel
     {

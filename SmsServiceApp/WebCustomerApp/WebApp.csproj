@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Views\LandingPage\" />
-    <Folder Include="Views\CampaingDetails\" />
+    <Folder Include="Views\CampaingReporting\" />
   </ItemGroup>
 
 </Project>
