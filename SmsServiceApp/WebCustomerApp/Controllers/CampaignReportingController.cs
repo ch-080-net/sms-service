@@ -12,17 +12,17 @@ using System.Security.Claims;
 namespace WebApp.Controllers
 {
     [Authorize]
-    public class CampaingReportingController : Controller
+    public class CampaignReportingController : Controller
     {
         private readonly IChartsManager chartsManager;
 
-        public CampaingReportingController(IChartsManager ChartsManager)
+        public CampaignReportingController(IChartsManager ChartsManager)
         {
             this.chartsManager = ChartsManager;
         }
 
         [HttpGet]
-        public IActionResult ShowChart(int CampaignId)
+        public IActionResult GetChart(int CampaignId)
         {
             if (CampaignId == 0)
                 return NotFound();
@@ -40,7 +40,7 @@ namespace WebApp.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var result = chartsManager.GetChart(campaignDetails, userId);
-                return View(campaignDetails);
+                return View(result);
             }
             return RedirectToAction("Index", "Company");
         }
@@ -50,7 +50,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 campaignDetails.Selection = ChartSelection.MailingDetails;
-                return View(campaignDetails);
+                return RedirectToAction("ShowChart", "CampaignReporting", campaignDetails);
             }
             return RedirectToAction("Index", "Company");
         }
@@ -60,7 +60,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 campaignDetails.Selection = ChartSelection.VotesDetails;
-                return View(campaignDetails);
+                return RedirectToAction("ShowChart", "CampaignReporting", campaignDetails);
             }
             return RedirectToAction("Index", "Company");
         }
@@ -70,7 +70,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 campaignDetails.Selection = ChartSelection.VotesDetailsByTime;
-                return View(campaignDetails);
+                return RedirectToAction("ShowChart", "CampaignReporting", campaignDetails);
             }
             return RedirectToAction("Index", "Company");
         }
