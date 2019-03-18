@@ -17,12 +17,18 @@ namespace Model.ViewModels.CompanyViewModels
         public string Name { get; set; }
         [Required]
         [StringLength(500)]
-        public string Description { get; set; }
-        public string ApplicationGroupId { get; set; }
+        public string Description { get; set; }  
+        [Required]
+        [Display(Name = "Type of compaign")]
+        public int Type { get; set; }
+        public int ApplicationGroupId { get; set; }
+        public int PhoneId { get; set; }
         public int TariffId { get; set; }
         [Required]
-        [StringLength(500)]
-        public string Message { get; set; }
-        public List<RecipientViewModel> RecipientViewModels { get; set; }
+        [Phone]
+        [Display(Name = "Compaign phone number")]
+        public string PhoneNumber { get; set; }
+       
+
     }
 }

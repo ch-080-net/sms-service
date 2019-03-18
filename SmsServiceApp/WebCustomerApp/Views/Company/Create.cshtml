@@ -1,202 +1,68 @@
-﻿<!DOCTYPE html>
-
-@using Model.ViewModels.CompanyViewModels;
-@model CompanyViewModel;
-@{
-    ViewData["Title"] = "Create";
-}
+﻿@using Model.ViewModels.CompanyViewModels;
+@model CompanyViewModel
 <head>
-    <style>
-        #messagePreview::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 38px;
-            height: 26px;
-            border-color: inherit;
-            border-style: solid;
-            border-radius: 50%;
-            border-width: 0 10px;
-            z-index: 99;
-            left: 8px;
-            color: #e5e5ea;
-            clip: rect(10px,40px,30px,21px) !important;
-        }
-
-        #messagePreview {
-            z-index: 10;
-            border: none;
-            margin-top: 140px;
-            margin-left: 35px;
-            font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-            line-height: 100%;
-            width: 210px;
-            background-color: #e5e5ea;
-            -webkit-border-radius: 20px;
-            -moz-border-radius: 20px;
-            resize: none;
-            overflow: hidden;
-            display: none;
-        }
-
-        #messagePreviewSwitcher span {
-            display: block;
-            width: 21px;
-            margin: auto;
-            margin-top: 5px;
-            font-size: 25px;
-            height: 30px;
-        }
-
-        #messagePreviewContainer {
-            transition: 0.9s;
-            background: url(/images/iphone.png)no-repeat;
-            background-size: cover;
-            border-left: none;
-            border-radius: 0 0 8px;
-            padding-right: 0px;
-            height: 320px;
-            width: 0px;
-            margin-top: 50px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        #messagePreviewSwitcher {
-            border-radius: 0 8px 8px 0;
-            border-width: 0px;
-            text-align: center;
-            height: 50px;
-        }
-    </style>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-
-    <script>
-        var CursorPosition = 0;
-        var hashTagWords = ["#name", "#surname", "#birthday", "#company"];
-        var hashTagWordsRaplacer = ["ClientName", "ClientSurname", "ClientBirthday", "CompanyName"];
-
-        function AddWord(word) {
-            var v = $('#message').val();
-            var textBefore = v.substring(0, CursorPosition);
-            var textAfter = v.substring(CursorPosition, v.length);
-            var tmpCursorPosition = CursorPosition;
-
-            $('#message').val(textBefore + word + textAfter);
-            MessagePreview($('#message'));
-            CursorPosition = tmpCursorPosition + word.length;
-        }
-
-        function hashTagWordReplaceByPosition(position, word) {
-            var v = $('#message').val();
-            var hashTagWordIndex = hashTagWords.findIndex(function (val) { return val == word; });
-            var textBefore = v.substring(0, position);
-            var textAfter = v.substring(position + word.length + 1, v.length);
-            v = textBefore + hashTagWordsRaplacer[hashTagWordIndex] + textAfter;
-            $('#messagePreview').val(v);
-        }
-
-        function MessagePreview(item) {
-            CursorPosition = $(item).prop('selectionStart');
-            var v = $(item).val();
-            for (var i = 0; i < hashTagWords.length; i++) {
-                v = v.replace(new RegExp(hashTagWords[i], 'g'), hashTagWordsRaplacer[i]);
-            }
-            $('#messagePreview').text(v);
-            if (v.length == 0) {
-                $('#messagePreview')[0].style.display = "none";
-            }
-            else {
-                $('#messagePreview')[0].style.display = "block";
-            }
-            $('#messagePreview')[0].style.height = "0px";
-            $('#messagePreview')[0].style.height = $('#messagePreview')[0].scrollHeight + "px";
-        }
-
-        function ClickPosition(item) {
-            CursorPosition = $(item).prop('selectionStart');
-        }
-
-        function MessagePreviewShow(item) {
-            $('#messagePreviewContainer')[0].style.width = "320px";
-            $('#messagePreview')[0].style.height = "0px";
-            $('#messagePreview')[0].style.height = $('#messagePreview')[0].scrollHeight + "px";
-            item.setAttribute("onclick", "MessagePreviewHide(this)");
-        }
-
-        function MessagePreviewHide(item) {
-            $('#messagePreviewContainer')[0].style.width = "0px";
-            item.setAttribute("onclick", "MessagePreviewShow(this)");
-        }
-
-    </script>
     <title>Company</title>
 </head>
-<body >
-<h2>Create</h2>
-<h4>Company</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label asp-for="Description" class="control-label"></label>
-                    <textarea rows="3" style="resize:none" asp-for="Description" class="form-control"></textarea>
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label asp-for="Message" class="control-label"></label>
-                    <textarea rows="7" style="resize:none; width:100%"
-                              asp-for="Message" class="form-control" id="message" onclick="ClickPosition(this)"
-                              onkeyup="MessagePreview(this)"></textarea>
-                    <span asp-validation-for="Message" class="text-danger"></span>
-                    <div>
-                        <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
-                        <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
-                        <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
-                        <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
-
-                        @*add the required fields*@
+<body>
+    <h2>Create</h2>
+    <h4>Company</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="PhoneNumber" class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <input type="submit" value="Create" class="btn btn-success" />
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea rows="3" style="resize:none" asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
-    <div>
-        <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
-            <div style="position:absolute; height:auto !important;">
-                <div rows="1" readonly class="form-control" id="messagePreview">
-                    ::before
+                <div class="row">
+                    <label asp-for="Type" class="col-sm-6 col-form-label">Select compaign type</label>
+                    <div class="col-sm-10">
+                        <div class="mt-2">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" asp-for="Type" type="radio" value=1 />
+                                <label class="form-check-label" for="Type">Send</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" asp-for="Type" type="radio" value=2 />
+                                <label class="form-check-label" for="Type">Recieve</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" asp-for="Type" type="radio" value=3 />
+                                <label class="form-check-label" for="Type">Send and Recieve</label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="Next" class="btn btn-success" />
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </form>
         </div>
-        <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
-            <span class="glyphicon glyphicon-phone"></span>
-        </button>
     </div>
-</div>
 </body>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

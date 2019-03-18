@@ -16,11 +16,13 @@ namespace WebApp.Controllers
     {
         private readonly IRecipientManager recipientManager;
         private readonly ICompanyManager companyManager;
+        private readonly IPhoneManager phoneManager;
 
-        public RecipientController (IRecipientManager recipient, ICompanyManager companyManager)
+        public RecipientController (IRecipientManager recipient, ICompanyManager companyManager, IPhoneManager phoneManager)
         {
             this.recipientManager = recipient;
             this.companyManager = companyManager;
+            this.phoneManager = phoneManager;
         }
 
 		/// <summary>
@@ -72,7 +74,8 @@ namespace WebApp.Controllers
                 TempData["companyId"] = companyId;
             }
             TempData.Keep("companyId");
-            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
+            int phoneId = phoneManager.GetPhoneId(item.PhoneNumber);
+            bool IsRecipientPhoneExist = recipientManager.IsRecipientExist(phoneId);
             if (IsRecipientPhoneExist)
             {
                 ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");
