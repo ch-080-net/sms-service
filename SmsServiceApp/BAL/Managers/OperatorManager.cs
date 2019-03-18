@@ -73,6 +73,12 @@ namespace BAL.Managers
             return mapper.Map<OperatorViewModel>(oper);
         }
 
+		public OperatorViewModel GetByName (string name)
+		{
+			var oper = unitOfWork.Operators.Get(o => o.Name == name);
+			return mapper.Map<OperatorViewModel>(oper.FirstOrDefault());
+		}
+
         /// <summary>
         /// Remove entry from Operators table with corresponding <paramref name="id"/>
         /// Also remove Logo from OperatorLogo folder
