@@ -16,7 +16,7 @@
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
-           
+
                 <th scope="col" class="col-md-4">
                     @Html.DisplayNameFor(model => model.Word)
                 </th>
@@ -27,17 +27,17 @@
             @foreach (var item in Model)
             {
                 <tr>
-                 
-                    <td scope="row" >
+
+                    <td scope="row">
                         @Html.DisplayFor(modelItem => item.Word)
                     </td>
-                 
-                        <td scope="row">
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
+
+                    <td scope="row">
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-</div>
+</div>  
