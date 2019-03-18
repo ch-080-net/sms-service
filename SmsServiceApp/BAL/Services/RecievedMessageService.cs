@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BAL.Interfaces;
 using BAL.Managers;
 using Model.Interfaces;
 using System;
@@ -12,16 +13,12 @@ namespace BAL.Services
     public class RecievedMessageService : IRecievedMessage
     {
         private readonly IStopWordManager stopWordManager;
-        private readonly IRecipientManager recipientManager;
-        private readonly IPhoneManager phoneManager;
-        private readonly ICompanyManager companyManager;
-   
-        public RecievedMessageService(IStopWordManager stopWord , ICompanyManager companyManager , IRecipientManager recipient, IPhoneManager phoneManager)
+        private readonly IPhoneGroupUManager phoneGroupUManager;
+
+        public RecievedMessageService(IStopWordManager stopWord, IPhoneGroupUManager phoneGroupUManager)
         {
-            this.phoneManager = phoneManager;
-            this.recipientManager = recipient;
+            this.phoneGroupUManager = phoneGroupUManager;
             this.stopWordManager = stopWord;
-            this.companyManager = companyManager;
         }
 
         /// <summary>
@@ -40,26 +37,7 @@ namespace BAL.Services
 
             if (words != null)
             {
-                Phone phoneDestination = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == Destination);
-
-                var companies = companyManager.GetCompaniesByPhone(phoneDestination);
-                foreach (var company in companies)
-                {
-                    var recipients = recipientManager
-                        .GetRecipients(company.Id)
-                        .Where(r => (r.PhoneNumber==Originator)&&(r.MessageState != Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed));
-
-                    foreach (var recipient in recipients)
-                    {
-
-                        if (recipient.MessageState != Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed)
-                        {
-                            recipient.MessageState = Model.ViewModels.RecipientViewModels.MessageState.Unsubscribed;
-                            recipientManager.Update(recipient);
-                        }
-                    }
-                }
-
+                phoneGroupUManager.AddGroupPhone(Originator, Destination);
             }
 
         }

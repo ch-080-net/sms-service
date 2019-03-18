@@ -20,6 +20,7 @@ namespace DAL.Repositories
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
+        private IBaseRepository<PhoneGroupUnsubscribe> phoneGroupUnsubscribe;
         private IMailingRepository mailingRepo;
 
         public UnitOfWork(ApplicationDbContext context)
@@ -42,6 +43,8 @@ namespace DAL.Repositories
                 return recipientRepo;
             }
         }
+
+
         public IBaseRepository<Tariff> Tariffs
         {
             get
@@ -108,6 +111,17 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<PhoneGroupUnsubscribe> PhoneGroupUnsubscribes
+        {
+            get
+            {
+                if (phoneGroupUnsubscribe == null)
+                {
+                    phoneGroupUnsubscribe = new BaseRepository<PhoneGroupUnsubscribe>(context);
+                }
+                return phoneGroupUnsubscribe;
+            }
+        }
         public IMailingRepository Mailings
         {
             get
@@ -120,6 +134,7 @@ namespace DAL.Repositories
             }
         }
 
+     
         public int Save()
         {
             return context.SaveChanges();

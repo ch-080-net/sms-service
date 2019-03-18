@@ -65,6 +65,10 @@ namespace BAL.Services
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
+               
+            CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
+                .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
+             .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
         }
 
         private string ReplaceHashtags(Recipient recipient)
