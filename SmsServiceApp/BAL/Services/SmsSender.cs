@@ -11,6 +11,7 @@ using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp.Models;
+using BAL.Managers;
 
 namespace WebApp.Services
 {

@@ -129,11 +129,14 @@
   <data name="Delete" xml:space="preserve">
     <value>Видалити</value>
   </data>
+  <data name="Details" xml:space="preserve">
+    <value>Деталі</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редагувати</value>
   </data>
   <data name="Index" xml:space="preserve">
-    <value>Індекс</value>
+    <value>Головна</value>
   </data>
   <data name="Tariff" xml:space="preserve">
     <value>Тариф</value>

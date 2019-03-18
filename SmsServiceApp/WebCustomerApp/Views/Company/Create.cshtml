@@ -1,14 +1,20 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model CompanyViewModel
+
+@{
+    ViewData["Title"] = Localizer["Compaigns"];
+}
 
 <!Doctype html>
 <html>
 <head>
-    <title>Company</title>
+    <title>@Localizer["Compaigns"]</title>
 </head>
 <body>
-    <h2>Create</h2>
-    <h4>Company</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Compaign"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -36,20 +42,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label asp-for="Type" class="col-sm-6 col-form-label">Select compaign type</label>
+                    <label asp-for="Type" class="col-sm-6 col-form-label">@Localizer["Select campaign type"]</label>
                     <div class="col-sm-10">
                         <div class="mt-2">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" asp-for="Type" type="radio" value=1 />
-                                <label class="form-check-label" for="Type">Send</label>
+                                <label class="form-check-label" for="Type">@Localizer["Send"]</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" asp-for="Type" type="radio" value=2 />
-                                <label class="form-check-label" for="Type">Recieve</label>
+                                <label class="form-check-label" for="Type">@Localizer["Receive"]</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" asp-for="Type" type="radio" value=3 />
-                                <label class="form-check-label" for="Type">Send and Recieve</label>
+                                <label class="form-check-label" for="Type">@Localizer["Send and Receive"]</label>
                             </div>
                         </div>
                         <span asp-validation-for="Type" class="text-danger"></span>
@@ -57,10 +63,10 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <input type="submit" value="Next" class="btn btn-success" />
+                        <input type="submit" value="@Localizer["Next"]" class="btn btn-success" />
                     </div>
                     <div class="col-md-3">
-                        <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
                     </div>
                 </div>
             </form>

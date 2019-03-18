@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept" xml:space="preserve">
+    <value>Прийняти</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Відхилити</value>
+  </data>
   <data name="Profile" xml:space="preserve">
     <value>Мій кабінет</value>
   </data>

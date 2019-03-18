@@ -46,8 +46,8 @@
             @if (Model.IsIvited)
             {
             <div class="form-group" id="invite">
-                <button class="btn btn-success" name="IviteConfirm" value="true" onclick="ShowIvite()">Accept</button>
-                <button class="btn btn-danger" name="IviteConfirm" value="false" onclick="ShowIvite()">Decline</button>
+                <button class="btn btn-success" name="IviteConfirm" value="true" onclick="ShowIvite()">@Localizer["Accept"]</button>
+                <button class="btn btn-danger" name="IviteConfirm" value="false" onclick="ShowIvite()">@Localizer["Decline"]</button>
             </div>
             }
                 <button type="submit" class="btn btn-default">@Localizer["Save"]</button>

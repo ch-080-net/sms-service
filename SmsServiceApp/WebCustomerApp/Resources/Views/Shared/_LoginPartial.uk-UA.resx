@@ -135,4 +135,7 @@
   <data name="Register" xml:space="preserve">
     <value>Зареєструватись</value>
   </data>
+  <data name="Керувати" xml:space="preserve">
+    <value>Керувати</value>
+  </data>
 </root>

@@ -20,15 +20,15 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name="Description")]
         [StringLength(500)]
         public string Description { get; set; }  
-        [Required]
-        [Display(Name = "Type of compaign")]
+        [Required(ErrorMessage = "The Type field is required.")]
+        [Display(Name = "Type of campaign")]
         public int Type { get; set; }
         public int ApplicationGroupId { get; set; }
         public int PhoneId { get; set; }
         public int TariffId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "The Campaign phone number field is required.")]
         [Phone]
-        [Display(Name = "Compaign phone number")]
+        [Display(Name = "Campaign phone number")]
         public string PhoneNumber { get; set; }
        
 

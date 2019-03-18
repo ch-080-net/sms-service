@@ -123,7 +123,25 @@
   <data name="Campaigns" xml:space="preserve">
     <value>Розсилки</value>
   </data>
+  <data name="Compaign" xml:space="preserve">
+    <value>Розсилку</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Створити</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Далі</value>
+  </data>
+  <data name="Receive" xml:space="preserve">
+    <value>Отримати</value>
+  </data>
+  <data name="Select campaign type" xml:space="preserve">
+    <value>Виберіть тип розсилки</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Надіслати</value>
+  </data>
+  <data name="Send and Receive" xml:space="preserve">
+    <value>Надіслати та отримати</value>
   </data>
 </root>
