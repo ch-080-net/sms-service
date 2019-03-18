@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Model.ViewModels.ChartsViewModels
+namespace Model.ViewModels.CampaignDetailsViewModels
 {
     public class StackedChart
     {

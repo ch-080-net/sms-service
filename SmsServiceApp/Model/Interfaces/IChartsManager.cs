@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Model.DTOs;
-using Model.ViewModels.ChartsViewModels;
+using Model.ViewModels.CampaignDetailsViewModels;
 
 namespace Model.Interfaces
 {
@@ -11,5 +11,7 @@ namespace Model.Interfaces
         PieChart GetVotesChart(int campaignId, string userId);
 
         StackedChart GetVotesChartByTime(int campaignId, string userId);
+
+        CampaignDetailsViewModel GetChart(CampaignDetailsViewModel campaignDetails, string userId);
     }
 }
