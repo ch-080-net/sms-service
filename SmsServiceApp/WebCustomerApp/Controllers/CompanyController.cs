@@ -241,7 +241,7 @@ namespace WebApp.Controllers
         public IActionResult Operators(int companyId)
         {
             IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
-            ViewBag.operators = operators;
+            //ViewBag.operators = operators;
             ViewData["companyId"] = companyId;
             return View();
         }
