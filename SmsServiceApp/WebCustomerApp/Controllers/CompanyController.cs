@@ -251,10 +251,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Operators(int companyId)
         {
-            IEnumerable<OperatorViewModel> operators = operatorManager.GetAll();
-            ViewBag.operators = operators;
+			OperatorsViewModel model = new OperatorsViewModel();
+			model.OperatorsList = operatorManager.GetAll();
             ViewData["companyId"] = companyId;
-            return View();
+            return View(model);
         }
 
 		/// <summary>
@@ -267,10 +267,10 @@ namespace WebApp.Controllers
 		[HttpGet]
         public IActionResult Tariffs(int id, int companyId)
         {
-            IEnumerable<TariffViewModel> tariffs = tariffManager.GetTariffs(id);
-            ViewBag.tariffs = tariffs;
+			TariffsViewModel model = new TariffsViewModel();
+            model.TariffsList = tariffManager.GetTariffs(id);
             ViewData["companyId"] = companyId;
-            return View();
+            return View(model);
         }
 
 		/// <summary>
