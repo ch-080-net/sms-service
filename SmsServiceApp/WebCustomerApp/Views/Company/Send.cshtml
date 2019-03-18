@@ -149,10 +149,11 @@
                         </div>
                         <div class="form-group" id="SendLater">
                             <label asp-for="SendingTime" class="control-label"></label>
-                            <input asp-for="SendingTime" class="form-control" id="sendTime" />
+                            <input asp-for="SendingTime" class="form-control" id="sendTime" type="text"/>
                             <span asp-validation-for="SendingTime" class="text-danger"></span>
                             <script>
                                 $('#sendTime').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                                $('#sendTime').val(new Date().toLocaleString());
                             </script>
                         </div>
                     </div>
