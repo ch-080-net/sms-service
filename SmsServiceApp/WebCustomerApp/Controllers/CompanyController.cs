@@ -13,6 +13,10 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BAL.Interfaces;
+using Model.ViewModels.RecievedMessageViewModel;
+using Model.ViewModels.AnswersCodeViewModels;
+using System.Text.RegularExpressions;
 
 namespace WebApp.Controllers
 {
@@ -26,10 +30,13 @@ namespace WebApp.Controllers
         private readonly IGroupManager groupManager;
         private readonly IPhoneManager phoneManager;
         private readonly IRecipientManager recipientManager;
+        private readonly IRecievedMessageManager recievedMessageManager;
+        private readonly IAnswersCodeManager answersCodeManager;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
-                                 IRecipientManager recipientManager, IPhoneManager phoneManager)
+                                 IRecipientManager recipientManager, IPhoneManager phoneManager,
+                                 IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -38,6 +45,8 @@ namespace WebApp.Controllers
             this.groupManager = groupManager;
             this.phoneManager = phoneManager;
             this.recipientManager = recipientManager;
+            this.recievedMessageManager = recievedMessageManager;
+            this.answersCodeManager = answersCodeManager;
         }
 
         public int GetGroupId()
@@ -305,6 +314,33 @@ namespace WebApp.Controllers
             {
                 return RedirectToAction("SendRecieve", "Company", new { companyId });
             }
+        }
+
+        [HttpGet]
+        public IActionResult Incoming(int companyId)
+        {
+            CompanyViewModel company = companyManager.Get(companyId);
+            IEnumerable<RecievedMessageViewModel> recievedMessages = 
+                recievedMessageManager.GetRecievedMessages(companyId);
+            if (company.Type == 2)
+            {
+                IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
+                foreach (var rm in recievedMessages)
+                {
+
+                    if (Regex.IsMatch(rm.MessageText, @"^\d+$"))
+                        rm.MessageText = answersCodes.First(ac => ac.Code == int.Parse(rm.MessageText)).Answer;
+                }
+            }
+            ViewBag.RecievedMessages = recievedMessages;
+            ViewData["companyId"] = companyId;
+            return View();
+        }
+
+        public IActionResult DeleteIncomingMessage(int companyId, int recievedMessageId)
+        {
+            recievedMessageManager.Delete(recievedMessageId);
+            return RedirectToAction("Incoming", "Company", new { companyId });
         }
     }
 }

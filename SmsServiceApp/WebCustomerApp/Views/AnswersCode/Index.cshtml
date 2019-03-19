@@ -5,39 +5,48 @@
     ViewData["Title"] = "Answer's Codes";
 }
 
-<h2>Answer's Codes</h2>
 
-<a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
-<div class="container">
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Code)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Answer)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Answer's Codes</title>
+</head>
+<body>
+    <h2>Answer's Codes</h2>
+
+    <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
+    <div class="container">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Code)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Answer)
-                    </td>
-                    <td>
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Answer)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <a class="btn btn-primary" asp-controller="Company" asp-action="Index">Back to Companies</a>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Answer)
+                        </td>
+                        <td>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-primary" asp-controller="Company" asp-action="Index">Back to Companies</a>
+    </div>
+</body>
+</html>

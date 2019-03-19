@@ -27,6 +27,13 @@ namespace BAL.Managers
         {
             IEnumerable<RecievedMessage> recievedMessages = unitOfWork.RecievedMessages
                 .Get(filter: c => c.CompanyId == companyId);
+            foreach (var rc in recievedMessages)
+            {
+                Company company = unitOfWork.Companies.GetById(rc.CompanyId);
+                company.Phone = unitOfWork.Phones.GetById((int)company.PhoneId);
+                rc.Company = company;
+                rc.Phone = unitOfWork.Phones.GetById(rc.PhoneId);
+            }
             return mapper.Map<IEnumerable<RecievedMessage>, IEnumerable<RecievedMessageViewModel>>(recievedMessages);
         }
 
