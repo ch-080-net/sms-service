@@ -1,6 +1,6 @@
 ﻿using BAL.Managers;
 using Microsoft.AspNetCore.Mvc;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

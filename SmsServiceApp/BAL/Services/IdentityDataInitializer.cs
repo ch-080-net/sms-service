@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using BAL.Managers;
 using Model.ViewModels.OperatorViewModels;

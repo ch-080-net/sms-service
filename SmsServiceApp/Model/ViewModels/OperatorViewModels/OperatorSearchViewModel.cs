@@ -7,6 +7,7 @@ namespace Model.ViewModels.OperatorViewModels
 {
     public class OperatorSearchViewModel
     {
+        [Display(Name ="SearchQuerry")]
         public string SearchQuerry { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using System.Linq.Expressions;
 using System.Linq;
 using AutoMapper;
@@ -15,7 +15,8 @@ namespace BAL.Managers
     /// Inherited from BaseManager and have additional methods.
     /// </summary>
     public class ContactManager : BaseManager, IContactManager
-    {
+    {   
+
         public ContactManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }

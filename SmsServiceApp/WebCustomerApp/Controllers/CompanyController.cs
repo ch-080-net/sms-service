@@ -10,7 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using WebCustomerApp.Models;
+using WebApp.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using BAL.Interfaces;
 using Model.ViewModels.RecievedMessageViewModel;
 using Model.ViewModels.AnswersCodeViewModels;
@@ -153,15 +154,16 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Send(SendViewModel item)
         {
-            if (ModelState.IsValid)
+            
+            if (!ModelState.IsValid)
             {
-                if(item.SendingTime < DateTime.Now)
+                if (item.SendingTime < DateTime.Now)
                 {
                     item.SendingTime = DateTime.Now.AddMinutes(1);
                 }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Company");
             }
             item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
             return View(item);
@@ -413,7 +415,7 @@ namespace WebApp.Controllers
             CompanyViewModel company = companyManager.Get(companyId);
             IEnumerable<RecievedMessageViewModel> recievedMessages =
                 recievedMessageManager.GetRecievedMessages(companyId);
-            if (company.Type == CompanyType.Recieve)
+            if (company.Type == CompanyType.Recieve || company.Type == CompanyType.SendAndRecieve)
             {
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)

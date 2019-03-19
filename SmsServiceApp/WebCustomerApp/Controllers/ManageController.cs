@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WebCustomerApp.Models;
-using WebCustomerApp.Models.ManageViewModels;
-using WebCustomerApp.Services;
+using WebApp.Models;
+using Model.ViewModels.ManageViewModels;
+using WebApp.Services;
 
-namespace WebCustomerApp.Controllers
+namespace WebApp.Controllers
 {
 	[Authorize]
     [Route("[controller]/[action]")]

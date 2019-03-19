@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using Model.Interfaces;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
-using WebCustomerApp.Data;
+using WebApp.Data;
 
 namespace DAL.Repositories
 {

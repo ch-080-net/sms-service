@@ -1,5 +1,9 @@
-﻿@{
-    ViewData["Title"] = "Contact manager";
+﻿@using Model.ViewModels.ContactViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model ContactViewModel;
+@{
+    ViewData["Title"] = Localizer["Contact Manager"];
 }
 <!DOCTYPE html>
 <html>
@@ -19,16 +23,16 @@
 
 </head>
 <body>
-    <h3>Contact Manager</h3>
+    <h3>@Localizer["Contact Manager"]</h3>
     <form style="padding-left:0em;">
         <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()"
-               value="Add new contact" />
+               value="@Localizer["Add new contact"]" />
         <div id="AddContactForm" style="display: none">
             <br />
             <table>
                 <tr>
                     <td>
-                        <label> Phone number </label>
+                        <label asp-for="PhonePhoneNumber"></label>
                     </td>
                     <td>
                         <input id="phoneNumber" type="text" />
@@ -36,7 +40,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Name </label>
+                        <label asp-for="Name"></label>
                     </td>
                     <td>
                         <input id="name" type="text" />
@@ -44,7 +48,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Surname </label>
+                        <label asp-for="Surname"></label>
                     </td>
                     <td>
                         <input id="surname" type="text" />
@@ -52,7 +56,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Birth date </label>
+                        <label asp-for="BirthDate"></label>
                     </td>
                     <td>
                         <input id="birthDate" width="175" />
@@ -63,26 +67,27 @@
                 </tr>
                 <tr>
                     <td>
-                        <label> Gender </label>
+                        <label asp-for="Gender"></label>
                     </td>
                     <td>
-                        <input type="radio" name="gender" checked id="genderMale" value="Male">Male
+                        <input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
                         <br>
-                        <input type="radio" name="gender" id="genderFemale" value="Female">Female
+                        <input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
                         <br>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label> Notes </label>
+                        <label asp-for="Notes"></label>
                     </td>
                     <td>
                         <input id="notes" type="text" />
+
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label> Keywords </label>
+                        <label asp-for="KeyWords"></label>
                     </td>
                     <td>
                         <input id="keywords" type="text" />
@@ -91,7 +96,7 @@
                 <tr>
                     <td>
                         <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
-                            <span class='glyphicon glyphicon-plus' /> ADD
+                            <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
                         </button>
                     </td>
                 </tr>
@@ -101,7 +106,7 @@
         <div id="msg"></div>
         <div>
             <br />
-            Page Size:
+            @Localizer["Page Size"]:
             <select id="pageSizeSelector" onchange="pageSizeChange(this)">
                 <option>1</option>
                 <option>2</option>
@@ -128,20 +133,20 @@
         <div>
             <input id="searchField" type="text" />
             <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
-                <span class='glyphicon glyphicon-search' /> Search
+                <span class='glyphicon glyphicon-search' /> @Localizer["Search"]
             </button>
         </div>
 
         <table class="table table-hover" id="contactTable">
             <thead class="thead-dark">
                 <tr>
-                    <td><label> Phone number </label></td>
-                    <td><label> Name </label></td>
-                    <td><label> Surname </label></td>
-                    <td><label> Birth date </label></td>
-                    <td><label> Gender </label></td>
-                    <td><label> Notes </label></td>
-                    <td><label> Keywords </label></td>
+                    <td><label asp-for="PhonePhoneNumber"></label></td>
+                    <td><label asp-for="Name"></label></td>
+                    <td><label asp-for="Surname"> </label></td>
+                    <td><label asp-for="BirthDate"> </label></td>
+                    <td><label asp-for="Gender"></label></td>
+                    <td><label asp-for="Notes"></label></td>
+                    <td><label asp-for="KeyWords"></label></td>
                     <td> </td>
                 </tr>
             </thead>

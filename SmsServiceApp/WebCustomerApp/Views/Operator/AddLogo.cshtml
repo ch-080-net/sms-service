@@ -1,4 +1,6 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model LogoViewModel
 
 <form asp-action="AddLogo" asp-controller="Operator" method="post" enctype="multipart/form-data">
@@ -24,12 +26,12 @@
         <div class="file-upload-content">
             <img class="file-upload-image" src="#" alt="your image" />
             <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                <button type="button" onclick="removeUpload()" class="remove-image">@Localizer["Remove"] <span class="image-title">@Localizer["Uploaded Image"]</span></button>
 
 
             </div>
             <button type="submit" class="btn btn-primary active control-fileupload ">
-                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>Save
+                <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>@Localizer["Save"]
             </button>
         </div>
 

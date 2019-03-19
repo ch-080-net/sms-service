@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.DTOs;
 using System.Threading.Tasks;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
 namespace Model.Interfaces
 {

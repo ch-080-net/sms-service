@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
-using WebCustomerApp.Services;
+using WebApp.Data;
+using WebApp.Models;
+using WebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Model.Interfaces;
 using DAL.Repositories;
@@ -18,9 +18,18 @@ using BAL.Managers;
 using AutoMapper;
 using BAL.Services;
 using BAL.Jobs;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using WebApp;
+using Microsoft.Extensions.Localization;
+using System.Reflection;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
 using BAL.Interfaces;
 
-namespace WebCustomerApp
+namespace WebApp
 {
     public class Startup
     {
@@ -49,7 +58,26 @@ namespace WebCustomerApp
             services.AddTransient<IMailingRepository, MailingRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 
-			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                    {
+                        new CultureInfo("en-US"),
+                        new CultureInfo("uk-UA")
+                    };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
+            });
+
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => {options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");});
             // Auto Mapper Configurations
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -91,7 +119,15 @@ namespace WebCustomerApp
                 options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied  
                 options.SlidingExpiration = true;
             });
-            services.AddMvc();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            services.AddMvc()
+               .AddDataAnnotationsLocalization()   
+               .AddViewLocalization();
+                
+
+
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICompanyManager, CompanyManager>();
             services.AddScoped<IRecipientManager, RecipientManager>();
@@ -101,12 +137,14 @@ namespace WebCustomerApp
             services.AddScoped<IStopWordManager, StopWordManager>();
             services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
-            services.AddScoped<ICodeManager, CodeManager>();
+            services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
             services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
+
+           
 
             // Start scheduler
 
@@ -117,6 +155,7 @@ namespace WebCustomerApp
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+
         }
        
         public void Configure(IApplicationBuilder app, 
@@ -132,9 +171,16 @@ namespace WebCustomerApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            var supportedCultures = new[]
+           {
+                new CultureInfo("en-US"),
+                new CultureInfo("uk-UA")
+            };
+ 
+            app.UseRequestLocalization(); 
             app.UseStaticFiles();
             app.UseAuthentication();
+
 
             // Configure sessions
 
