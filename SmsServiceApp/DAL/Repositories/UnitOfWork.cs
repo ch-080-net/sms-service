@@ -14,7 +14,7 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private ICompanyRepository companyRepo;
-        private IBaseRepository<Operator> operatorRepo;
+        private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
@@ -64,13 +64,13 @@ namespace DAL.Repositories
             }
         }
 
-        public IBaseRepository<Operator> Operators
+        public IOperatorRepository Operators
         {
             get
             {
                 if (operatorRepo == null)
                 {
-                    operatorRepo = new BaseRepository<Operator>(context);
+                    operatorRepo = new OperatorRepository(context);
                 }
                 return operatorRepo;
             }

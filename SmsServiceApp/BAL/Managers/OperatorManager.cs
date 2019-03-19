@@ -83,6 +83,8 @@ namespace BAL.Managers
             var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
                 return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
+            else if (oper.Tariffs.Any())
+                return new TransactionResultDTO() { Success = false, Details = "Operator cannot be removed when he have tariffs" };
             try
             {
                 unitOfWork.Operators.Delete(oper);

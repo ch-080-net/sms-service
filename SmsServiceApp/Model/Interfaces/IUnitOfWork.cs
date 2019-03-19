@@ -12,7 +12,7 @@ namespace Model.Interfaces
         IContactRepository Contacts { get; }
         IBaseRepository<Phone> Phones { get; }
         ICompanyRepository Companies { get; }
-        IBaseRepository<Operator> Operators { get; }
+        IOperatorRepository Operators { get; }
         IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
