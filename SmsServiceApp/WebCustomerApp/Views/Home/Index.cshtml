@@ -62,7 +62,7 @@
                         <div id="myNav" class="overlay">
                             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                             <div class="overlay-content">
-                                <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Compaigns"]</a>
+                                <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
                                 <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                 {
@@ -76,13 +76,11 @@
                                 @await Html.PartialAsync("_LoginPartial")
 
                             </div>
-                            <div class="container body-content">
-                                <footer id="footer">
+                                <div id="LanguageSwitcher">
                                     <div align="right">
                                         @await Html.PartialAsync("_SelectLanguagePartial")
                                     </div>
-                                </footer>
-                            </div>
+                                </div>
                         </div>
                         <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
                     </div>

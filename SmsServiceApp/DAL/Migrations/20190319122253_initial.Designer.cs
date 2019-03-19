@@ -12,8 +12,8 @@ using WebApp.Models;
 namespace DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190318113759_init")]
-    partial class init
+    [Migration("20190319122253_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

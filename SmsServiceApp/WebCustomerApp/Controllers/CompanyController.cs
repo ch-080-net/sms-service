@@ -142,15 +142,16 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Send(SendViewModel item)
         {
-            if (ModelState.IsValid)
+            
+            if (!ModelState.IsValid)
             {
-                if(item.SendingTime < DateTime.Now)
+                if (item.SendingTime < DateTime.Now)
                 {
                     item.SendingTime = DateTime.Now.AddMinutes(1);
                 }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Company");
             }
             item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
             return View(item);

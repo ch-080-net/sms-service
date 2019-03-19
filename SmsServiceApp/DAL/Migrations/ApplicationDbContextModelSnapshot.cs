@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
+using WebApp.Data;
+using WebApp.Models;
 
 namespace DAL.Migrations
 {
@@ -129,7 +129,7 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.AnswersCode", b =>
+            modelBuilder.Entity("WebApp.Models.AnswersCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -147,7 +147,7 @@ namespace DAL.Migrations
                     b.ToTable("AnswersCodes");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.ApplicationGroup", b =>
+            modelBuilder.Entity("WebApp.Models.ApplicationGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -165,7 +165,7 @@ namespace DAL.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -222,7 +222,7 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Code", b =>
+            modelBuilder.Entity("WebApp.Models.Code", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -242,7 +242,7 @@ namespace DAL.Migrations
                     b.ToTable("Codes");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Company", b =>
+            modelBuilder.Entity("WebApp.Models.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -279,7 +279,7 @@ namespace DAL.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
+            modelBuilder.Entity("WebApp.Models.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -309,7 +309,7 @@ namespace DAL.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Operator", b =>
+            modelBuilder.Entity("WebApp.Models.Operator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -325,7 +325,7 @@ namespace DAL.Migrations
                     b.ToTable("Operators");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Phone", b =>
+            modelBuilder.Entity("WebApp.Models.Phone", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -338,7 +338,7 @@ namespace DAL.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.RecievedMessage", b =>
+            modelBuilder.Entity("WebApp.Models.RecievedMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -360,7 +360,7 @@ namespace DAL.Migrations
                     b.ToTable("RecievedMessages");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Recipient", b =>
+            modelBuilder.Entity("WebApp.Models.Recipient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -400,7 +400,7 @@ namespace DAL.Migrations
                     b.ToTable("Recipients");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.StopWord", b =>
+            modelBuilder.Entity("WebApp.Models.StopWord", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -413,7 +413,7 @@ namespace DAL.Migrations
                     b.ToTable("StopWords");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Tariff", b =>
+            modelBuilder.Entity("WebApp.Models.Tariff", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -446,7 +446,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser")
+                    b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -454,7 +454,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser")
+                    b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -467,7 +467,7 @@ namespace DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser")
+                    b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -475,102 +475,102 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationUser")
+                    b.HasOne("WebApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.AnswersCode", b =>
+            modelBuilder.Entity("WebApp.Models.AnswersCode", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Company", "Company")
+                    b.HasOne("WebApp.Models.Company", "Company")
                         .WithMany("AnswersCodes")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.ApplicationGroup", b =>
+            modelBuilder.Entity("WebApp.Models.ApplicationGroup", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                    b.HasOne("WebApp.Models.Phone", "Phone")
                         .WithOne("ApplicationGroup")
-                        .HasForeignKey("WebCustomerApp.Models.ApplicationGroup", "PhoneId")
+                        .HasForeignKey("WebApp.Models.ApplicationGroup", "PhoneId")
                         .OnDelete(DeleteBehavior.SetNull);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("WebApp.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
+                    b.HasOne("WebApp.Models.ApplicationGroup", "ApplicationGroup")
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("ApplicationGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Code", b =>
+            modelBuilder.Entity("WebApp.Models.Code", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Operator", "Operator")
+                    b.HasOne("WebApp.Models.Operator", "Operator")
                         .WithMany("Codes")
                         .HasForeignKey("OperatorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Company", b =>
+            modelBuilder.Entity("WebApp.Models.Company", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
+                    b.HasOne("WebApp.Models.ApplicationGroup", "ApplicationGroup")
                         .WithMany("Companies")
                         .HasForeignKey("ApplicationGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                    b.HasOne("WebApp.Models.Phone", "Phone")
                         .WithMany("Companies")
                         .HasForeignKey("PhoneId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("WebCustomerApp.Models.Tariff", "Tariff")
+                    b.HasOne("WebApp.Models.Tariff", "Tariff")
                         .WithMany("Companies")
                         .HasForeignKey("TariffId");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Contact", b =>
+            modelBuilder.Entity("WebApp.Models.Contact", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.ApplicationGroup", "ApplicationGroup")
+                    b.HasOne("WebApp.Models.ApplicationGroup", "ApplicationGroup")
                         .WithMany("Contacts")
                         .HasForeignKey("ApplicationGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                    b.HasOne("WebApp.Models.Phone", "Phone")
                         .WithMany("Contacts")
                         .HasForeignKey("PhoneId");
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.RecievedMessage", b =>
+            modelBuilder.Entity("WebApp.Models.RecievedMessage", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Company", "Company")
+                    b.HasOne("WebApp.Models.Company", "Company")
                         .WithMany("RecievedMessages")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                    b.HasOne("WebApp.Models.Phone", "Phone")
                         .WithMany("RecievedMessages")
                         .HasForeignKey("PhoneId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Recipient", b =>
+            modelBuilder.Entity("WebApp.Models.Recipient", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Company", "Company")
+                    b.HasOne("WebApp.Models.Company", "Company")
                         .WithMany("Recipients")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebCustomerApp.Models.Phone", "Phone")
+                    b.HasOne("WebApp.Models.Phone", "Phone")
                         .WithMany("Recipients")
                         .HasForeignKey("PhoneId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("WebCustomerApp.Models.Tariff", b =>
+            modelBuilder.Entity("WebApp.Models.Tariff", b =>
                 {
-                    b.HasOne("WebCustomerApp.Models.Operator", "Operator")
+                    b.HasOne("WebApp.Models.Operator", "Operator")
                         .WithMany("Tariffs")
                         .HasForeignKey("OperatorId")
                         .OnDelete(DeleteBehavior.Cascade);
