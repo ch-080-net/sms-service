@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using WebCustomerApp.Models;
 
 namespace Model.ViewModels.CompanyViewModels
 {
@@ -20,7 +21,7 @@ namespace Model.ViewModels.CompanyViewModels
         public string Description { get; set; }  
         [Required]
         [Display(Name = "Type of compaign")]
-        public int Type { get; set; }
+        public CompanyType Type { get; set; }
         public int ApplicationGroupId { get; set; }
         public int PhoneId { get; set; }
         public int TariffId { get; set; }
