@@ -31,8 +31,9 @@ namespace WebCustomerApp
                     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 					var operatorManager = serviceProvider.GetRequiredService<IOperatorManager>();
 					var codeManager = serviceProvider.GetRequiredService<ICodeManager>();
+					var tariffManager = serviceProvider.GetRequiredService<ITariffManager>();
 
-					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager);
+					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager);
                 }
                 catch
                 {
