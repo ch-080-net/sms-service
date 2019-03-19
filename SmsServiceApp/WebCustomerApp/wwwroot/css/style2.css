@@ -282,12 +282,12 @@
     display: flex;
     margin-left: 30px;
     margin-right: 30px;
-    min-width:360px;
     height: 30vh;
-    width:80vh;
+    width: 80vh;
     background-repeat: no-repeat;
     background-image: url('../images/landing/photo_tariff.jpg');
-  background-size:cover;
+    min-width: 300px;
+    background-size: cover;
 }
 
   .app_content {
@@ -316,7 +316,7 @@
     align-items: center;
     margin: 0 0 19px;
     margin: 10px;
-    width: 300px;
+    padding: 0 50px;
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
@@ -520,4 +520,13 @@
 .main__menu {
     position: center;
 }
-  
+@media (max-width: 750px) {
+    .app_content {
+        width: 100%;
+    }
+    .app.second {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}

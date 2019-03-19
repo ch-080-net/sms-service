@@ -57,9 +57,20 @@
         right: 35px;
     }
 }
-.main__menu {
-    float: left;
-    font-size: 30px;
-    color: whitesmoke;
-    
+.link_partial {
+    font-family: "Source Sans Pro",Calibri,Candara,Arial,sans-serif;
+    padding: 3px;
+    text-decoration: none;
+    font-size: 29px;
+    color: #818181;
 }
+    .link_partial:hover {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .main__menu {
+        float: left;
+        font-size: 30px;
+        color: whitesmoke;
+    }

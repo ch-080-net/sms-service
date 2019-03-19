@@ -1278,8 +1278,15 @@ a.move-top span.fa{
 
     }
 }
+.link_partial {
+    font-family: "Source Sans Pro",Calibri,Candara,Arial,sans-serif;
+    padding: 3px;
+    text-decoration: none;
+    font-size: 29px;
+    color: #818181;
+}
 @media(max-width:375px) {
-	.style-banner h2 {
+    .style-banner h2 {
 		font-size: 29px;
 	}
 	.team-grids {

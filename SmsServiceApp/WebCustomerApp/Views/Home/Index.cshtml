@@ -52,31 +52,33 @@
 
         <nav class="menu">
             <ul class="menu_list">
-                <li >
-                    <div class="container">
-                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                <li>
+                   
+                        <div class="container-fluid">
+                            <div class="navbar-header">
 
-                        </a>
-                        <div id="myNav" class="overlay">
-                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                            <div class="overlay-content">
-                                <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                                <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
-                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                {
-                                    <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
-                                    <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
-                                }
-                                @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                                {
-                                    <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
-                                }
-                                @await Html.PartialAsync("_LoginPartial")
+                                <div id="myNav" class="overlay">
+                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                                    <div class="overlay-content">
+                                        <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                        {
+                                            <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
+                                            <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
+                                        }
+                                        @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                                        {
+                                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                                        }
+                                        @await Html.PartialAsync("_LoginPartial")
+                                    </div>
+                                </div>
+                                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
                             </div>
                         </div>
-                        <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                    </div>
-
+                   
                 </li>
 
             </ul>
@@ -160,9 +162,9 @@
 
 
         <div class="app_content">
-            <div class="app_content">
                 <h1 class="section_title ">Personalized SMS</h1>
-                <p class="app_description">
+                <p class="app_description">
+            <div class="app_content">
                     Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
                 </p>
               
@@ -173,13 +175,12 @@
                     </p>
 
 
-                </div>
 
             </div>
 </section>
-    <section class="section_tariff">
-        <ul class="tariff_content">
-            <li>
+    <section class="section_tariff">ff_content">
+ 
+                </div>           <li>
                 <h2 class="section_title tariff_main">Tariff</h2>
                 <h3 class="tariff_main_content">There are many tariffs at affordable prices,</h3>
                 <h3 class="tariff_main_content"> and tariifs are easy to use.</h3>
