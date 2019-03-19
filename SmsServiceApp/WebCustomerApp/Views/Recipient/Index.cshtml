@@ -1,16 +1,14 @@
 ﻿@using Model.ViewModels.RecipientViewModels;
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@model IEnumerable<RecipientViewModel>
-    ;
-
+@model IEnumerable<RecipientViewModel> 
     @{
     ViewData["Title"] = Localizer["Index"];
     }
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Index</title>
+        <title>@Localizer["Index"]</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
@@ -20,7 +18,7 @@
         @if (ViewData["warningMessage"] == null)
         {
         <p>
-            <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData[" CompanyId"]">Create New</a>
+            <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Create New"]</a>
         </p>
         }
         else
@@ -81,14 +79,14 @@
                             @Html.DisplayFor(modelItem => item.KeyWords)
                         </td>
                         <td>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData[" CompanyId"]">Edit</a> |
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData[" CompanyId"]">Delete</a>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Edit"]</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Delete"]</a>
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>
-            <a class="btn btn-primary" asp-controller="Company" asp-action="RedirectByType" asp-route-companyId="@ViewData[" CompanyId"]">Back to Company</a>
+            <a class="btn btn-primary" asp-controller="Company" asp-action="RedirectByType" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to Company"]</a>
         </div>
     </body>
 </html>

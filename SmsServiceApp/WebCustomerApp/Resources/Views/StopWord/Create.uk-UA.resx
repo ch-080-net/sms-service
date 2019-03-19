@@ -123,6 +123,9 @@
   <data name="Create" xml:space="preserve">
     <value>Створити</value>
   </data>
+  <data name="Enter stop word" xml:space="preserve">
+    <value>Введіть слово зупинки</value>
+  </data>
   <data name="Stop Word" xml:space="preserve">
     <value>Слово зупинки</value>
   </data>

@@ -22,7 +22,7 @@
     <hr />
     <div class="row">
 
-        <form asp-action="Create" asp-controller="Recipient" asp-route-companyId="@ViewData[" CompanyId"]">
+        <form asp-action="Create" asp-controller="Recipient" asp-route-companyId="@ViewData["CompanyId"]">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-md-5">
                 <div class="form-group">
@@ -85,7 +85,7 @@
     </div>
 
     <div>
-        <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@ViewData[" CompanyId"]">Back to List</a>
+        <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@ViewData["CompanyId"]">Back to List</a>
     </div>
 </body>
 </html>

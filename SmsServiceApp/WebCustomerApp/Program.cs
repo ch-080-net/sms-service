@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Model.Interfaces;
 using WebApp.Models;
-using static WebCustomerApp.Startup;
+using static WebApp.Startup;
 
 namespace WebApp
 {
