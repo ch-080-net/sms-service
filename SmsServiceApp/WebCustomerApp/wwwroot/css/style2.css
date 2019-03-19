@@ -68,13 +68,14 @@
      padding:0;
      margin:0;
   }
-  .menu_list {
+
+.menu_list {
     display: flex;
     align-items: flex-start;
     height: 100%;
     margin-left: auto;
     padding: 0;
-  }
+}
   .menu_item {
     list-style: none;
     margin-right: 30px;
@@ -270,6 +271,8 @@
 
 .tariff_photo {
     display: flex;
+    margin-left:20px;
+    margin-right:20px;
     width: 600px;
     height: 300px;
     background-repeat: no-repeat;
@@ -370,9 +373,13 @@
     padding: 10px 5px 10px;
     color: rgba(255, 255, 255, 0.8);
 }
-/tariff_main_content {
-    padding: 0px 5px 30px;
+.tariff_main_content {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
     color: rgba(255, 255, 255, 0.7);
+  
 }
 .section_tariff {
     box-sizing: border-box;
@@ -385,7 +392,7 @@
     background: 50%;
     background-image: url('../images/landing/wallpaper2you_30315.jpg');
     min-height: 700px;
-    display: flex;
+  
 }
 .log_section {
     box-sizing: border-box;
@@ -398,23 +405,76 @@
     background: 50%;
     background-image: url('../images/landing/wallpaper2you_30315.jpg');
     min-height: 700px;
-    display: flex;
     color: black;
 }
-.section_description {
+.section_chart {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-around;
     text-align: center;
     padding: 100px 1% 50px;
     background: 100%;
     background-image: url('../images/landing/white-background-9b1.jpg');
     min-height: 700px;
-    display: flex;
 }
-
+.chart_main_content {
+    margin: 10px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    color: #161616;
+}
+.chart_img_main {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+}
+.chart_img1 {
+    display: flex;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 500px;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-image: url('../images/landing/chart1.png');
+    background-size: contain;
+    
+}
+.chart_img2 {
+    display: flex;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 600px;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-image: url('../images/landing/chart2.png');
+    background-size: contain;
+  
+}
+.chart_content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: column;
+    text-align: center;
+    font-weight: 300;
+    margin: 10px;
+    font-size: 20px;
+    line-height: 20px;
+    color: #333
+}
+.chart_description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    min-width: 360px;
+}
 .start {
     /*image-rendering: 100%;*/
     height: 100%;
