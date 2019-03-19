@@ -47,20 +47,23 @@
     </div>
 </div>
 
-@switch (Model.Selection)
-{
-    case ChartSelection.MailingDetails:
-        break;
-    case ChartSelection.VotesDetails:
-        if (Model.PieChart != null)
+@section Scripts
     {
-        await Html.RenderPartialAsync("VotesDistribution", Model.PieChart);
-    }
-    break;
-    case ChartSelection.VotesDetailsByTime:
-        if (Model.StackedChart != null)
+    @switch (Model.Selection)
     {
-        await Html.RenderPartialAsync("VotesDistributionByTime", Model.StackedChart);
+        case ChartSelection.MailingDetails:
+            break;
+        case ChartSelection.VotesDetails:
+            if (Model.PieChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistribution", Model.PieChart);
+            }
+            break;
+        case ChartSelection.VotesDetailsByTime:
+            if (Model.StackedChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistributionByTime", Model.StackedChart);
+            }
+            break;
     }
-    break;
-}
+    }
