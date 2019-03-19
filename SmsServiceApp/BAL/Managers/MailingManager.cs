@@ -6,7 +6,7 @@ using AutoMapper;
 using Model.DTOs;
 using System.Threading.Tasks;
 using System.Linq;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
 namespace BAL.Managers
 {
@@ -26,7 +26,8 @@ namespace BAL.Managers
         public IEnumerable<MessageDTO> GetUnsentMessages()
         {
             var recipients = unitOfWork.Mailings.Get(r => r.MessageState == MessageState.NotSent
-                                                        && r.Company.SendingTime >= DateTime.UtcNow);
+                                                        && r.Company.SendingTime >= DateTime.UtcNow
+                                                        && !r.Company.ApplicationGroup.phoneGroupUnsubscribtions.Any(pgu => pgu.PhoneId == r.PhoneId));
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
             return result;
         }

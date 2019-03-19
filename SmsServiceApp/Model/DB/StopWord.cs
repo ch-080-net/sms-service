@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     public class StopWord
     {

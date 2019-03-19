@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using AutoMapper;
@@ -72,6 +72,12 @@ namespace BAL.Managers
             var oper = unitOfWork.Operators.GetById(id);
             return mapper.Map<OperatorViewModel>(oper);
         }
+
+		public OperatorViewModel GetByName (string name)
+		{
+			var oper = unitOfWork.Operators.Get(o => o.Name == name);
+			return mapper.Map<OperatorViewModel>(oper.FirstOrDefault());
+		}
 
         /// <summary>
         /// Remove entry from Operators table with corresponding <paramref name="id"/>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     /// <summary>
     /// Recipient entity, which belongs to company and include phone

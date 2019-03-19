@@ -1,10 +1,12 @@
 ﻿@using Model.ViewModels.RecievedMessageViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model RecievedMessageViewModel
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Incoming Messages</title>
+    <title>@Localizer["Incoming Messages"]</title>
 </head>
 <body>
 <h2>Incoming Messages</h2>
@@ -40,8 +42,8 @@
                             @item.TimeOfRecieve
                         </td>
                         <td class="col-md-1">
-                            <a class="btn btn-success" asp-action="DeleteIncomingMessage" 
-                            asp-route-companyId="@ViewData["companyId"]" asp-route-recievedMessageId="@item.Id">Delete</a>
+                            <a class="btn btn-success" asp-action="DeleteIncomingMessage"
+                               asp-route-companyId="@ViewData["companyId"]" asp-route-recievedMessageId="@item.Id">@Localizer["Delete"]</a>
                         </td>
                     </tr>
                 }
@@ -50,7 +52,7 @@
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">Back to Details</a>
+    <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">@Localizer["Back to Details"]</a>
 </div>
 </body>
 </html>

@@ -9,7 +9,8 @@ namespace Model.Interfaces
     public interface IOperatorManager
     {
         OperatorViewModel GetById(int id);
-        TransactionResultDTO Add(OperatorViewModel newOperator);
+		OperatorViewModel GetByName(string name);
+		TransactionResultDTO Add(OperatorViewModel newOperator);
         TransactionResultDTO Update(OperatorViewModel updatedOperator);
         TransactionResultDTO Remove(int id);
         IEnumerable<OperatorViewModel> GetAll();

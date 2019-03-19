@@ -1,4 +1,6 @@
 ﻿@using Model.ViewModels.AnswersCodeViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model IEnumerable<AnswersCodeViewModel>;
 
 @{
@@ -9,12 +11,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Answer's Codes</title>
+    <title>@Localizer["Answer's Codes"]</title>
 </head>
 <body>
-    <h2>Answer's Codes</h2>
+    <h2>@Localizer["Answer's Codes"]</h2>
 
-    <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">Create New</a>
+    <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Create New"]</a>
+
     <div class="container">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -39,14 +42,14 @@
                             @Html.DisplayFor(modelItem => item.Answer)
                         </td>
                         <td>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Edit</a> |
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">Delete</a>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Edit"]</a> |
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Delete"]</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <a class="btn btn-primary" asp-controller="Company" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">Back to Details</a>
+        <a class="btn btn-primary" asp-controller="Company" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">@Localizer["Back to Details"]</a>
     </div>
 </body>
 </html>

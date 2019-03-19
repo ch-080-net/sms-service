@@ -9,11 +9,11 @@ using System.IO;
 using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using BAL.Managers;
 using BAL.Interfaces;
 
-namespace WebCustomerApp.Services
+namespace WebApp.Services
 {
 	/// <summary>
 	/// Sets the connection with emulator for sending messages

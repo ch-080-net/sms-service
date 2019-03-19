@@ -9,8 +9,9 @@ namespace Model.ViewModels.OperatorViewModels
     {
         public int Id { get; set; }
         //[Required]
+        [Display(Name="Name")]
         public string Name { get; set; }
-
+        [Display(Name = "Logo")]
         public string Logo { get; set; }
     }
 }

@@ -13,11 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Model.ViewModels.GroupViewModels;
-using WebCustomerApp.Models;
-using WebCustomerApp.Models.AccountViewModels;
-using WebCustomerApp.Services;
+using WebApp.Models;
+using WebApp.Models.AccountViewModels;
+using WebApp.Services;
+using WebApp.Controllers;
+using Model.ViewModels.AccountViewModels;
 
-namespace WebCustomerApp.Controllers
+namespace WebApp.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

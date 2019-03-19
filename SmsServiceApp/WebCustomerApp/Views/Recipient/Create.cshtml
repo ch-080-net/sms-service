@@ -1,5 +1,10 @@
 ﻿@using Model.ViewModels.RecipientViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model RecipientViewModel;
+@{
+    ViewData["Title"] = Localizer["Create"];
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +17,8 @@
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <h2>Create</h2>
-    <h4>Recipient</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Recipient"]</h4>
     <hr />
     <div class="row">
 
@@ -40,8 +45,8 @@
                     <input asp-for="BirthDate" class="form-control" id="birthDate" type="text" />
                     <span asp-validation-for="BirthDate" class="text-danger"></span>
                     <script>
-                        $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        $('#birthDate').val(new Date().toLocaleString());
+                    $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                    $('#birthDate').val(new Date().toLocaleString());
                     </script>
                 </div>
             </div>
@@ -56,13 +61,14 @@
                 <div class="form-group">
                     <label asp-for="Priority" class="control-label"></label>
                     @Html.DropDownListFor(model => model.Priority,
-                      new List<SelectListItem> {
-                           new SelectListItem { Value = "Low" , Text = "Low" },
-                           new SelectListItem { Value = "Medium" , Text = "Medium" },
-                           new SelectListItem { Value = "High" , Text = "High" }
+                    new List<SelectListItem>
+                        {
+                        new SelectListItem { Value = "Low" , Text = "Low" },
+                        new SelectListItem { Value = "Medium" , Text = "Medium" },
+                        new SelectListItem { Value = "High" , Text = "High" }
                         },
-                      new { @class="myselect"})
-                    <span asp-validation-for="Priority" class="text-danger"></span>
+                        new { @class="myselect"})
+                        <span asp-validation-for="Priority" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="KeyWords" class="control-label"></label>
@@ -83,6 +89,6 @@
     </div>
 </body>
 </html>
-@section Scripts {
+    @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    }

@@ -1,9 +1,9 @@
-﻿using WebCustomerApp.Models;
+﻿using WebApp.Models;
 using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Data;
+using WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Repositories

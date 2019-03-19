@@ -1,8 +1,10 @@
-﻿@{
-    ViewData["Title"] = "SMS-service";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["SMS-service"];
     Layout = null;
 }
-@using WebCustomerApp.Models
+@using WebApp.Models
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -33,7 +35,7 @@
 
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 
     <link rel="stylesheet" href="~/css/style2.css">
 </head>
@@ -42,7 +44,7 @@
     <div class="" id="pagefirst">
 
         <div class="" id="text_preloader"></div>
-      
+
     </div>
         </div>
     <header class="header">
@@ -57,28 +59,33 @@
                         <div class="container-fluid">
                             <div class="navbar-header">
 
-                                <div id="myNav" class="overlay">
-                                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                                    <div class="overlay-content">
-                                        <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
-                                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                        {
-                                            <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
-                                            <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
-                                        }
-                                        @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                                        {
-                                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
-                                        }
-                                        @await Html.PartialAsync("_LoginPartial")
+                        </a>
+                        <div id="myNav" class="overlay">
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                            <div class="overlay-content">
+                                <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
+                                    <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
+                                }
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+                                {
+                                    <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
+                                }
+                                @await Html.PartialAsync("_LoginPartial")
+
+                            </div>
+                                <div id="LanguageSwitcher">
+                                    <div align="right">
+                                        @await Html.PartialAsync("_SelectLanguagePartial")
                                     </div>
                                 </div>
-                                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
-                            </div>
                         </div>
-                   
+                        <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                    </div>
+
                 </li>
 
             </ul>
@@ -89,68 +96,64 @@
     </header>
     <section class="main">
         <h1 class="main_title">SMS on 150 mobile networks no matter where you are <span class="main_title-big">sms service</span></h1>
-        <a href="#log" class="main_button anchor">get started</a>
-        @*<p class="main_description">some text <a href="#">some link</a>!</p>*@
+        <a href="#log" class="main_button anchor">@Localizer["get started"]</a>
+        @*<p class="main_description">some text <a href="#">@Localizer["some link"]</a>!</p>*@
     </section>
     <!--/.main-->
     <section class="second">
 
-        <section class="features">
-            <!-- <img src="styles/images/text1.svg" class="start"> -->
-            <ul class="features_list">
+    <section class="features">
+        <!-- <img src="styles/images/text1.svg" class="start"> -->
+        <ul class="features_list">
 
-                <li class="features_item features_item--sms_tools_1">
-                    <h3 class="section_title">STATISTICS</h3>
-                    <p class="features_description">
-                        Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out.
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_2">
-                    <h3 class="section_title">API INTEGRATION</h3>
-                    <p class="features_description">
-                        Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow.
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_3">
-                    <h3 class="section_title">SMS AUTORESPONDERS</h3>
-                    <p class="features_description">
-                        Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
-                    </p>
-                </li>
-            </ul>
-        </section>
-
-
-        <section class="features">
-            <ul class="features_list">
-                <li class="features_item features_item--sms_tools_4">
-                    <h3 class="section_title">SUBSCRIPTION FORMS</h3>
-                    <p class="features_description">
-                        Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo.
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_5">
-                    <h3 class="section_title">UNSUBSCRIBE LINKS</h3>
-                    <p class="features_description">
-                        Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like.
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_6">
-                    <h3 class="section_title">EXCEPTION LIST</h3>
-                    <p class="features_description">
-                        You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list.
-                    </p>
-                </li>
-            </ul>
-        </section>
+            <li class="features_item features_item--sms_tools_1">
+                <h3 class="section_title">@Localizer["STATISTICS"]</h3>
+                <p class="features_description">
+                   @Localizer["Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out."]
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_2">
+                <h3 class="section_title">@Localizer["API INTEGRATION"]</h3>
+                <p class="features_description">
+                    @Localizer["Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow."]
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_3">
+                <h3 class="section_title">@Localizer["SMS AUTORESPONDERS"]</h3>
+                <p class="features_description">
+                    @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
+                </p>
+            </li>
+        </ul>
     </section>
-
+    <section class="features">
+        <ul class="features_list">
+            <li class="features_item features_item--sms_tools_4">
+                <h3 class="section_title">@Localizer["SUBSCRIPTION FORMS"]</h3>
+                <p class="features_description">
+                    @Localizer["Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo."]
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_5">
+                <h3 class="section_title">@Localizer["UNSUBSCRIBE LINKS"]</h3>
+                <p class="features_description">
+                    @Localizer["Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like."]
+                </p>
+            </li>
+            <li class="features_item features_item--sms_tools_6">
+                <h3 class="section_title">@Localizer["EXCEPTION LIST"]</h3>
+                <p class="features_description">
+                    @Localizer["You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list."]
+                </p>
+            </li>
+        </ul>
+    </section>
     <section class="log_section" id="log">
         <p class="app_description">
             <h2 class="app_description_title">SMS SERVICE AT AFFORDABLE PRICE</h2>
-            <h4 class="app_description_welcome">Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices.</h4>
+            <h4 class="app_description_welcome">@Localizer["Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices."]</h4>
             <div class="app_description_link app_button  ">
-                <a href="Account/NewLogin" class="app_link  ">Log in</a>
+                <a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
             </div>
            
         </p>
@@ -162,17 +165,17 @@
 
 
         <div class="app_content">
-                <h1 class="section_title ">Personalized SMS</h1>
-                <p class="app_description">
-            <div class="app_content">
-                    Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other.
-                </p>
-              
 
-                    <h1 class="section_title ">Sender name</h1>
-                    <p class="app_description">
-                        Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries.
-                    </p>
+            <h1 class="section_title ">@Localizer["Personalized SMS"]</h1>
+            <p class="app_description">
+               @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
+            </p>
+            <div class="app_content">
+
+                <h1 class="section_title ">@Localizer["Sender name"]</h1>
+                <p class="app_description">
+                    @Localizer["Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries."]
+                </p>
 
 
 
@@ -208,7 +211,7 @@
     <!--/.footer -->
     <footer>
         <div class="footer_content">
-            All rights reserved &copy; 2019
+            @Localizer["All rights reserved"] &copy; 2019
             <div>
 
             </div>

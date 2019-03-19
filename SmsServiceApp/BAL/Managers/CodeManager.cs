@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using Model.ViewModels.CodeViewModels;
 using AutoMapper;
 using System.Linq;
 using Model.DTOs;
+
 
 namespace BAL.Managers
 {
@@ -28,7 +29,7 @@ namespace BAL.Managers
         public TransactionResultDTO Add(CodeViewModel newCode)
         {
             if (newCode.OperatorCode == null || newCode.OperatorCode == "")
-                return new TransactionResultDTO() {Success = false, Details = "Code cannot be empty" };
+                return new TransactionResultDTO() { Success = false, Details = "Code cannot be empty" };
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == newCode.OperatorCode).FirstOrDefault();
             if (check != null)
                 return new TransactionResultDTO() { Success = false, Details = "Code belongs to another operator" };

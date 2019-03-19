@@ -1,0 +1,74 @@
+﻿@using System.Globalization;
+@using Microsoft.AspNetCore.Builder;
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOps
+
+@{
+    var requestCultures = Context.Features.Get<IRequestCultureFeature>();
+    var requestCulture = CultureInfo.CurrentCulture;
+    var supportedCultures = LocOps.Value.SupportedUICultures
+        .Select(c => new SelectListItem
+        {
+            Value = c.Name,
+            Text = $"{c.TwoLetterISOLanguageName}"
+        }).ToList();
+
+    var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+    var url = location.AbsoluteUri;
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var routeData = new Dictionary<string, string>();
+
+    if (Context.Request.QueryString.HasValue)
+    {
+        returnUrl = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+    }
+
+    // capture all route parameters
+    // necessary for "Page Route" opioon
+    foreach (var r in ViewContext.RouteData.Values)
+    {
+        routeData.Add(r.Key, r.Value.ToString());
+    }
+}
+<!Doctype html>
+<html>
+<head>
+    <link href="~/css/menunav.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+
+    <form id="form" asp-controller="Home" name="form" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
+
+        <ul class="language-switcher">
+            <li class="selected">
+
+                <a style=" font-size:13px; ">
+                    @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
+                </a>
+
+            </li>
+            <li>
+                @foreach (var culture in supportedCultures)
+                {
+                    if (culture.Value.ToLower() != requestCulture.Name.ToLower())
+                    {
+                        routeData["culture"] = culture.Value;
+
+                        <a href="#" onclick="document.getElementById('form').submit();" style=" font-size:13px;">
+                            @culture.Text.ToUpper()
+                        </a>
+
+                        <input type="hidden" name="culture" value="@culture.Value" />
+                    }
+                }
+            </li>
+        </ul>
+
+    </form>
+</body>
+</html>
+

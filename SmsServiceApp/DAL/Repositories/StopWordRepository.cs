@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WebCustomerApp.Data;
-using WebCustomerApp.Models;
+using WebApp.Data;
+using WebApp.Models;
 
 namespace DAL.Repositories
 {

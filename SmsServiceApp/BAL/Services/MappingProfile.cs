@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.ViewModels.StopWordViewModels;
 using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
@@ -106,10 +106,15 @@ namespace BAL.Services
         private string ReplaceHashtags(Recipient recipient)
         {
             string result = recipient.Company.Message;
-            result = result.Replace("#name", recipient.Name)
-                .Replace("#surname", recipient.Surname)
-                .Replace("#company", recipient.Company.Name)
-                .Replace("#birthday", recipient.BirthDate.ToShortDateString());
+            if (recipient.Name != null)
+                result = result.Replace("#name", recipient.Name);
+            if (recipient.Company.Name != null)
+                result = result.Replace("#company", recipient.Company.Name);
+            if (recipient.Surname != null)
+                result = result.Replace("#surname", recipient.Surname);
+            if (recipient.BirthDate != null)
+                result = result.Replace("#birthday", recipient.BirthDate.ToShortDateString());
+
             return result;
         }
 

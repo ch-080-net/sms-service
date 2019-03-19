@@ -12,8 +12,9 @@ namespace Model.ViewModels.CodeViewModels
         [Required]
         public int OperatorId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Operator Code field is required.")]
         [RegularExpression(@"^\+[0-9]{5,6}$", ErrorMessage = "Wrong operator code")]
+        [Display(Name ="OperatorCode")]
         public string OperatorCode { get; set; }
 
     }

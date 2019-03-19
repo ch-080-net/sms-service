@@ -503,7 +503,6 @@
     color: #fff;
     border-top: 2px solid silver;
     margin-top: 10vh;
-  
     }
 
   
@@ -530,3 +529,14 @@
         justify-content: space-around;
     }
 }
+
+#LanguageSwitcher {
+    position: absolute;
+    height: auto;
+    width: 100%;
+    bottom:0;
+    float: left;
+    padding: 1%;
+    margin-top: 10vh;
+}
+  
