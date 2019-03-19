@@ -152,10 +152,6 @@ namespace WebCustomerApp.Data
                 .Property(com => com.Name)
                 .IsRequired();
 
-            builder.Entity<Company>()
-                .Property(com => com.Message)
-                .IsRequired();
-
             builder.Entity<Phone>()
                 .Property(p => p.PhoneNumber)
                 .IsRequired();
@@ -181,6 +177,13 @@ namespace WebCustomerApp.Data
                 .IsRequired();
 
             #endregion
+
+
+            // Optional fields
+
+            builder.Entity<Company>()
+                .Property(com => com.Message)
+                .IsRequired(false);
 
             // Unique indexes
 

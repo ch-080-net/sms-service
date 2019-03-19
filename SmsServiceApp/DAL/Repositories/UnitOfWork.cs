@@ -13,25 +13,28 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
-        private IBaseRepository<Company> companyRepo;
+        private ICompanyRepository companyRepo;
         private IBaseRepository<Operator> operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
+        private IBaseRepository<RecievedMessage> recievedMessagesRepo;
+        private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
+        private IChartsRepository ChartsRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public IBaseRepository<Company> Companies
+        public ICompanyRepository Companies
         {
             get
             {
-                if (companyRepo == null) { companyRepo = new BaseRepository<Company>(context); }
+                if (companyRepo == null) { companyRepo = new CompanyRepository(context); }
                 return companyRepo;
             }
         }
@@ -96,6 +99,24 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<RecievedMessage> RecievedMessages
+        {
+            get
+            {
+                if (recievedMessagesRepo == null) { recievedMessagesRepo = new BaseRepository<RecievedMessage>(context); }
+                return recievedMessagesRepo;
+            }
+        }
+
+        public IBaseRepository<AnswersCode> AnswersCodes
+        {
+            get
+            {
+                if (answersCodeRepo == null) { answersCodeRepo = new BaseRepository<AnswersCode>(context); }
+                return answersCodeRepo;
+            }
+        }
+
         public IBaseRepository<Code> Codes
         {
             get
@@ -117,6 +138,18 @@ namespace DAL.Repositories
                     mailingRepo = new MailingRepository(context);
                 }
                 return mailingRepo;
+            }
+        }
+
+        public IChartsRepository Charts
+        {
+            get
+            {
+                if (ChartsRepo == null)
+                {
+                    ChartsRepo = new ChartsRepository(context);
+                }
+                return ChartsRepo;
             }
         }
 

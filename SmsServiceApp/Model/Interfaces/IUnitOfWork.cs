@@ -11,15 +11,18 @@ namespace Model.Interfaces
         IBaseRepository<Recipient> Recipients { get; }
         IContactRepository Contacts { get; }
         IBaseRepository<Phone> Phones { get; }
-        IBaseRepository<Company> Companies { get; }
+        ICompanyRepository Companies { get; }
         IBaseRepository<Operator> Operators { get; }
         IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
         IMailingRepository Mailings { get; }
+        IChartsRepository Charts { get; }
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
+        IBaseRepository<RecievedMessage> RecievedMessages { get; }
+        IBaseRepository<AnswersCode> AnswersCodes { get; }
      
         int Save();
     }

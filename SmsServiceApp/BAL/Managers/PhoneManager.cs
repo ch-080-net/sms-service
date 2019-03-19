@@ -2,6 +2,7 @@
 using Model.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebCustomerApp.Models;
 
@@ -17,9 +18,20 @@ namespace BAL.Managers
             return unitOfWork.Phones.GetById(Id);
         }
 
+        public string GetPhoneNumber(int Id)
+        {
+            return unitOfWork.Phones.GetById(Id).PhoneNumber;
+        }
+
         public IEnumerable<Phone> GetPhones()
         {
             return unitOfWork.Phones.GetAll();
+        }
+
+        public void Insert(Phone item)
+        {
+            unitOfWork.Phones.Insert(item);
+            unitOfWork.Save();
         }
     }
 }

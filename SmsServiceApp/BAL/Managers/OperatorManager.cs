@@ -8,6 +8,8 @@ using AutoMapper;
 using System.Linq;
 using System.IO;
 using Model.DTOs;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace BAL.Managers
 {
@@ -73,6 +75,7 @@ namespace BAL.Managers
 
         /// <summary>
         /// Remove entry from Operators table with corresponding <paramref name="id"/>
+        /// Also remove Logo from OperatorLogo folder
         /// </summary>
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Remove(int id)
@@ -83,6 +86,7 @@ namespace BAL.Managers
             try
             {
                 unitOfWork.Operators.Delete(oper);
+                File.Delete("wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(id) + ".png");
                 unitOfWork.Save();
             }
             catch
@@ -157,30 +161,68 @@ namespace BAL.Managers
             return result;
         }
 
-        public bool AddLogo(LogoViewModel logo)
+
+        /// <summary>
+        /// Resize logo and write to .png file
+        /// </summary>
+        /// <param name="logo"> Should contain not 0 OperatorId and not null Logo</param>
+        /// <returns></returns>
+        public TransactionResultDTO AddLogo(LogoViewModel logo)
         {
             if (logo.Logo == null)
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "No logo sent" };
 
-            var oper = unitOfWork.Operators.GetById(logo.OperatorId);
-            if (oper == null)
-                return false;
+            if (logo.OperatorId == 0)
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
 
-            byte[] imgData = null;
-            using (var binReader = new BinaryReader(logo.Logo.OpenReadStream()))
-            {
-                imgData = binReader.ReadBytes((int)logo.Logo.Length);
-            }
-            oper.Logo = imgData;
+            // Create bitmap
+            var stream = logo.Logo.OpenReadStream();
+            Bitmap image;
             try
             {
-                unitOfWork.Save();
+                image = new Bitmap(stream);
+                image = new Bitmap(image, 43, 43);
+                // .setResolution() doesnt work. Bug, possibly
             }
-            catch
+            catch(ArgumentException)
             {
-                return false;
+                return new TransactionResultDTO() { Success = false, Details = "Image data corrupted" };
             }
-            return true;
+            catch(Exception)
+            {
+                return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
+            }
+
+            if(!Directory.Exists("wwwroot/images/OperatorLogo/"))
+            {
+                try
+                {
+                    Directory.CreateDirectory("wwwroot/images/OperatorLogo/");
+                }
+                catch (Exception)
+                {
+                    return new TransactionResultDTO() { Success = false, Details = "Can't create directory for logos" };
+                }
+            }
+
+            try
+            {
+                image.Save("wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(logo.OperatorId) + ".png", ImageFormat.Png);
+            }
+            catch(ArgumentNullException)
+            {
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+            }
+            catch (System.Runtime.InteropServices.ExternalException)
+            {
+                return new TransactionResultDTO() { Success = false, Details = "Saving destination cannot be reached" };
+            }
+            catch (Exception)
+            {
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+            }
+
+            return new TransactionResultDTO() { Success = true };
         }
     }
 }

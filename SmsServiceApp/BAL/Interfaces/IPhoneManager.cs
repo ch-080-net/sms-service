@@ -9,5 +9,7 @@ namespace BAL.Managers
     {
         IEnumerable<Phone> GetPhones();
         Phone GetPhoneById(int Id);
+        string GetPhoneNumber(int Id);
+        void Insert(Phone item);
     }
 }

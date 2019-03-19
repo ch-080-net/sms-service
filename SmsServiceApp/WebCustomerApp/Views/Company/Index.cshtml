@@ -20,29 +20,23 @@
                 <th class="col-md-6">
                     @Html.DisplayNameFor(model => model.Description)
                 </th>
-                <th class="col-md-4"></th>
+                <th class="col-md-1"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td class="col-md-6">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-					<td class="col-md-4">
-						<a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@item.Id">Tariff</a> |
-						<a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-						<a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-						@if (item.TariffId != 0)
-						{
-							<a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@item.Id">Add recipients</a>
-						}
-					</td>
-                </tr>
+            <tr>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="col-md-6">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="col-md-1">
+                    <a class="btn btn-success" asp-action="Details" asp-route-companyId="@item.Id">Details</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

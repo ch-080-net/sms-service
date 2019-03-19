@@ -141,7 +141,20 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult AddLogo(LogoViewModel logo)
         {
-            operatorManager.AddLogo(logo);
+            if (ModelState.IsValid)
+            {
+                var result = operatorManager.AddLogo(logo);
+                if (!result.Success)
+                {
+                    TempData["ErrorMessage"] = result.Details;
+                    return RedirectToAction("Operators", "Operator");
+                }
+                else
+                {
+                    return RedirectToAction("Operators", "Operator");
+                }
+            }
+            TempData["ErrorMessage"] = "Internal error";
             return RedirectToAction("Operators", "Operator");
         }
 

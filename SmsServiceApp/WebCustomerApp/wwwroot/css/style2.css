@@ -292,7 +292,7 @@
     background-position: center bottom;
 }
   .app_content {
-    width: 400px;
+    width: 100%;
     margin-left: auto;
     text-align: right;
   }
