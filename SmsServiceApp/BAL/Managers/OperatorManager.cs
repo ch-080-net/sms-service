@@ -73,6 +73,12 @@ namespace BAL.Managers
             return mapper.Map<OperatorViewModel>(oper);
         }
 
+		public OperatorViewModel GetByName (string name)
+		{
+			var oper = unitOfWork.Operators.Get(o => o.Name == name);
+			return mapper.Map<OperatorViewModel>(oper.FirstOrDefault());
+		}
+
         /// <summary>
         /// Remove entry from Operators table with corresponding <paramref name="id"/>
         /// Also remove Logo from OperatorLogo folder
@@ -83,6 +89,8 @@ namespace BAL.Managers
             var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
                 return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
+            else if (oper.Tariffs.Any())
+                return new TransactionResultDTO() { Success = false, Details = "Operator cannot be removed when he have tariffs" };
             try
             {
                 unitOfWork.Operators.Delete(oper);
@@ -166,7 +174,7 @@ namespace BAL.Managers
         /// Resize logo and write to .png file
         /// </summary>
         /// <param name="logo"> Should contain not 0 OperatorId and not null Logo</param>
-        /// <returns></returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO AddLogo(LogoViewModel logo)
         {
             if (logo.Logo == null)

@@ -10,6 +10,7 @@ namespace WebApp.Models
     public class ApplicationGroup
     {
         public int Id { get; set; }
+        public ICollection<PhoneGroupUnsubscribe> phoneGroupUnsubscribtions { get; set; }
         
         /// <summary>
         /// Company name

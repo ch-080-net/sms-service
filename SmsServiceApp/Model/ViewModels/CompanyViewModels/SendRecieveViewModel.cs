@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Model.ViewModels.CompanyViewModels
 {
+    /// <summary>
+    /// View model for SendRecieve info to company
+    /// </summary>
     public class SendRecieveViewModel
     {
         public int Id { get; set; }

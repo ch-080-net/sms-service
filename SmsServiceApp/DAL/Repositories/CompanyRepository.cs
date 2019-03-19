@@ -8,12 +8,20 @@ using WebApp.Models;
 
 namespace DAL.Repositories
 {
+    /// <summary>
+    /// Company storage in db
+    /// </summary>
     public class CompanyRepository : BaseRepository<Company>, ICompanyRepository
     {
         public CompanyRepository(ApplicationDbContext mainDbContext) : base(mainDbContext)
         {
         }
 
+        /// <summary>
+        /// Insert new company to db and return id
+        /// </summary>
+        /// <param name="item">Company entity</param>
+        /// <returns>Id</returns>
         public int InsertWithId(Company item)
         {
             context.Add(item);

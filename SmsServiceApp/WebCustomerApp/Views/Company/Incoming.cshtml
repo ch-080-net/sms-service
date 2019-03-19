@@ -3,7 +3,13 @@
 @inject IViewLocalizer Localizer
 @model RecievedMessageViewModel
 
-<h2>@Localizer["Incoming Messages"]</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Localizer["Incoming Messages"]</title>
+</head>
+<body>
+<h2>Incoming Messages</h2>
 <hr />
 <div class="container">
     <div class="col-lg-9">
@@ -48,3 +54,5 @@
 <div>
     <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">@Localizer["Back to Details"]</a>
 </div>
+</body>
+</html>

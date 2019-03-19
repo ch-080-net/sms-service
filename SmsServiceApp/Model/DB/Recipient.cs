@@ -34,6 +34,8 @@ namespace WebApp.Models
         Delivered,
         Undeliverable,
         Accepted,
-        Rejected
+        Rejected,
+        Unsubscribed
+
     }
 }

@@ -32,5 +32,17 @@ namespace Model.ViewModels.RecipientViewModels
         public string Priority { get; set; }
         [Display(Name = "Keywords")]
         public string KeyWords { get; set; }
+        public MessageState MessageState { get; set; }
+    }
+
+    public enum MessageState
+    {
+        NotSent,
+        Delivered,
+        Undeliverable,
+        Accepted,
+        Rejected,
+        Unsubscribed
+
     }
 }

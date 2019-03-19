@@ -4,13 +4,6 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>aspnet-WebCustomerApp-85942A8D-8932-4A08-808C-60632CB8DAA4</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Views\LandingPage\**" />
-    <Content Remove="Views\LandingPage\**" />
-    <EmbeddedResource Remove="Views\LandingPage\**" />
-    <None Remove="Views\LandingPage\**" />
-  </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
@@ -20,7 +13,6 @@
   <ItemGroup>
     <None Include="wwwroot\css\style2.css" />
     <None Include="wwwroot\css\style2.min.css" />
-    <None Include="wwwroot\images\landing\fond.png" />
     <None Include="wwwroot\images\landing\iconMessage.png" />
     <None Include="wwwroot\images\landing\messages.png" />
     <None Include="wwwroot\images\landing\phone.png" />
@@ -37,14 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\LandingPage\" />
     <Folder Include="Views\CampaignReporting\" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="Views\AnswersCode\Create.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\AnswersCode\Delete.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\AnswersCode\Edit.cshtml">

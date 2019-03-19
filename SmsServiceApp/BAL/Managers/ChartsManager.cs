@@ -11,6 +11,9 @@ using Model.ViewModels.CampaignReportingViewModels;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Contains method for generating chart data
+    /// </summary>
     public class ChartsManager : BaseManager, IChartsManager
     {
         public ChartsManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -18,6 +21,12 @@ namespace BAL.Managers
 
         }
 
+        /// <summary>
+        /// Get chart of specified type
+        /// </summary>
+        /// <param name="campaignDetails">Should contain campaignId and chart type</param>
+        /// <param name="userId">Should not be null</param>
+        /// <returns>Model correct chart selection, chart data, campaign name</returns>
         public CampaignDetailsViewModel GetChart(CampaignDetailsViewModel campaignDetails, string userId)
         {
             if (campaignDetails == null || userId == null)

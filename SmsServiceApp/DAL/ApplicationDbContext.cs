@@ -26,6 +26,7 @@ namespace WebApp.Data
         public DbSet<ApplicationGroup> Groups { get; set; }
         public DbSet<RecievedMessage> RecievedMessages { get; set; }
         public DbSet<AnswersCode> AnswersCodes { get; set; }
+        public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -141,6 +142,21 @@ namespace WebApp.Data
             builder.Entity<Recipient>()
                 .HasIndex(r => new { r.PhoneId, r.CompanyId })
                 .IsUnique();
+
+            builder.Entity<ApplicationGroup>()
+                .HasMany(ag => ag.phoneGroupUnsubscribtions)
+                .WithOne(pgu => pgu.Group)
+                .HasForeignKey(pgu => pgu.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.PhoneGroupUnsubscribtions)
+                .WithOne(pgu => pgu.Phone)
+                .HasForeignKey(pgu => pgu.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PhoneGroupUnsubscribe>()
+                .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
 
             // Required fields
             #region Required fields

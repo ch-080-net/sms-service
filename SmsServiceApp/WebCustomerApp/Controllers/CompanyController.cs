@@ -49,6 +49,10 @@ namespace WebApp.Controllers
             this.answersCodeManager = answersCodeManager;
         }
 
+        /// <summary>
+        /// Method for getting current UserGroupId
+        /// </summary>
+        /// <returns>ApplicationGroupId</returns>
         public int GetGroupId()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -91,10 +95,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var phone = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber);
-                if (phone != null)
+                if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
                 {
-                    item.PhoneId = phone.Id;
+                    item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
                 }
                 else
                 {
@@ -121,6 +124,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Return View of Send details
+        /// </summary>
+        /// <param name="companyId">companyId</param>
+        /// <returns>View of send details</returns>
         [HttpGet]
         public IActionResult Send(int companyId)
         {
@@ -138,6 +146,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Update company in db with send info
+        /// </summary>
+        /// <param name="item">Model from View</param>
+        /// <returns>Index if all valid</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Send(SendViewModel item)
@@ -157,6 +170,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Return View of Recieve details
+        /// </summary>
+        /// <param name="companyId">companyId</param>
+        /// <returns>View of recieve details</returns>
         [HttpGet]
         public IActionResult Recieve(int companyId)
         {
@@ -167,6 +185,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Update company in db with recieve info
+        /// </summary>
+        /// <param name="item">Model from View</param>
+        /// <returns>Index if all valid</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Recieve(RecieveViewModel item)
@@ -187,6 +210,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Return View of SendAndRecieve details
+        /// </summary>
+        /// <param name="companyId">companyId</param>
+        /// <returns>View of sendRecieve details</returns>
         [HttpGet]
         public IActionResult SendRecieve(int companyId)
         {
@@ -204,6 +232,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        /// <summary>
+        /// Update company in db with sendRecieve info
+        /// </summary>
+        /// <param name="item">Model from View</param>
+        /// <returns>Index if all valid</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SendRecieve(SendRecieveViewModel item)
@@ -231,7 +264,11 @@ namespace WebApp.Controllers
             return View(item);
         }
 
-
+        /// <summary>
+        /// Return View with all company info
+        /// </summary>
+        /// <param name="companyId">companyId</param>
+        /// <returns>View Manage company</returns>
         [HttpGet]
         public IActionResult Details(int companyId)
         {
@@ -239,11 +276,23 @@ namespace WebApp.Controllers
             item.PhoneNumber = phoneManager.GetPhoneById(item.PhoneId).PhoneNumber;
             if (item.Type == CompanyType.Send || item.Type == CompanyType.SendAndRecieve)
             {
-                item.Tariff = tariffManager.GetTariffById(item.TariffId).Name;
+                if (item.TariffId <= 0)
+                {
+                    item.Tariff = "Tariff not choosen";
+                }
+                else
+                {
+                    item.Tariff = tariffManager.GetTariffById(item.TariffId).Name;
+                }
             }
             return View(item);
         }
 
+        /// <summary>
+        /// Return view with operators list
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Operators(int companyId)
         {
@@ -291,6 +340,11 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Redirect to action by company type
+        /// </summary>
+        /// <param name="companyId">company id</param>
+        /// <returns>view depended of type</returns>
         public IActionResult RedirectByType(int companyId)
         {
             CompanyViewModel company = companyManager.Get(companyId);
@@ -351,19 +405,24 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        /// <summary>
+        /// Gets IncomingView with Recieved messages from db
+        /// </summary>
+        /// <param name="companyId">Id of company</param>
+        /// <returns>View with incoming messages</returns>
         [HttpGet]
         public IActionResult Incoming(int companyId)
         {
             CompanyViewModel company = companyManager.Get(companyId);
-            IEnumerable<RecievedMessageViewModel> recievedMessages = 
+            IEnumerable<RecievedMessageViewModel> recievedMessages =
                 recievedMessageManager.GetRecievedMessages(companyId);
             if (company.Type == CompanyType.Recieve)
             {
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)
                 {
-
-                    if (Regex.IsMatch(rm.MessageText, @"^\d+$"))
+                    AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
+                    if (Regex.IsMatch(rm.MessageText, @"^\d+$") && answersCode != null)
                         rm.MessageText = answersCodes.First(ac => ac.Code == int.Parse(rm.MessageText)).Answer;
                 }
             }
@@ -372,6 +431,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Delete selected message from db
+        /// </summary>
+        /// <param name="companyId">id of company</param>
+        /// <param name="recievedMessageId">id of message to delete</param>
+        /// <returns>Redirect to View with incoming messages</returns>
         public IActionResult DeleteIncomingMessage(int companyId, int recievedMessageId)
         {
             recievedMessageManager.Delete(recievedMessageId);

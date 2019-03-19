@@ -23,6 +23,9 @@ namespace WebApp.Controllers
             this.operatorManager = oper;
         }
         
+        /// <summary>
+        /// Get Operator input form and list
+        /// </summary>
         [HttpGet]
         public IActionResult Operators(PageState pageState)
         {
@@ -38,6 +41,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
+        /// <summary>
+        /// Add new Operator to DB
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Operators(OperatorViewModel newOper, PageState pageState)
@@ -59,6 +65,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
+        /// <summary>
+        /// Remove operator with specified Id. Uses pageStateJson for simplicity
+        /// </summary>
         public IActionResult Remove(int operatorId, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
@@ -74,6 +83,9 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Edit operator
+        /// </summary>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public IActionResult Operator(OperatorViewModel editedOper, PageState pageState)
@@ -107,6 +119,9 @@ namespace WebApp.Controllers
             return Redirect(Url.Action("Operators", pageState));
         }
 
+        /// <summary>
+        /// Got to specified page. Uses pageStateJson for simplicity
+        /// </summary>
         public IActionResult SelectPage(int page, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
@@ -114,6 +129,9 @@ namespace WebApp.Controllers
             return Redirect(Url.Action("Operators", pageState));
         }
 
+        /// <summary>
+        /// Search operator with specified querry
+        /// </summary>
         [HttpPost]
         public IActionResult SearchOperators(OperatorSearchViewModel search, PageState pageState)
         {
@@ -126,6 +144,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
+        /// <summary>
+        /// Redirect to code editor for Operator with specfied Id. Uses TempData for id transmission
+        /// </summary>        
         public IActionResult EditCodes(int id)
         {
             TempData["OperatorId"] = id;

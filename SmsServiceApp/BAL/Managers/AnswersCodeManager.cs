@@ -15,25 +15,44 @@ namespace BAL.Managers
         {
         }
 
+        /// <summary>
+        /// Delete AnswersCode in db
+        /// </summary>
+        /// <param name="id">id of AnswersCode for deleting</param>
         public void Delete(int id)
         {
-            AnswersCode recipient = unitOfWork.AnswersCodes.GetById(id);
-            unitOfWork.AnswersCodes.Delete(recipient);
+            AnswersCode answersCode = unitOfWork.AnswersCodes.GetById(id);
+            unitOfWork.AnswersCodes.Delete(answersCode);
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Get AnswersCode by id
+        /// </summary>
+        /// <param name="id">id of AnswersCode</param>
+        /// <returns>AnswersCodeViewModel</returns>
         public AnswersCodeViewModel GetAnswersCodeById(int id)
         {
             AnswersCode answersCode = unitOfWork.AnswersCodes.GetById(id);
             return mapper.Map<AnswersCodeViewModel>(answersCode);
         }
 
+        /// <summary>
+        /// Get AnswersCodes by company id
+        /// </summary>
+        /// <param name="companyId">id of company</param>
+        /// <returns>List of AnswersCodeViewModel</returns>
         public IEnumerable<AnswersCodeViewModel> GetAnswersCodes(int companyId)
         {
             IEnumerable<AnswersCode> answersCodes = unitOfWork.AnswersCodes.Get(r => r.CompanyId == companyId);
             return mapper.Map<IEnumerable<AnswersCode>, List<AnswersCodeViewModel>>(answersCodes);
         }
 
+        /// <summary>
+        /// Insert new AnswersCode into db
+        /// </summary>
+        /// <param name="item">AnswersCode for inserting</param>
+        /// <param name="companyId"></param>
         public void Insert(AnswersCodeViewModel item, int companyId)
         {
             AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
@@ -42,6 +61,10 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Update AnswersCode
+        /// </summary>
+        /// <param name="item">AnswersCode for updating</param>
         public void Update(AnswersCodeViewModel item)
         {
             AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);

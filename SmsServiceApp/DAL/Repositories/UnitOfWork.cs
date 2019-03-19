@@ -14,12 +14,13 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private ICompanyRepository companyRepo;
-        private IBaseRepository<Operator> operatorRepo;
+        private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
+        private IBaseRepository<PhoneGroupUnsubscribe> phoneGroupUnsubscribe;
         private IBaseRepository<RecievedMessage> recievedMessagesRepo;
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
@@ -45,6 +46,8 @@ namespace DAL.Repositories
                 return recipientRepo;
             }
         }
+
+
         public IBaseRepository<Tariff> Tariffs
         {
             get
@@ -64,13 +67,13 @@ namespace DAL.Repositories
             }
         }
 
-        public IBaseRepository<Operator> Operators
+        public IOperatorRepository Operators
         {
             get
             {
                 if (operatorRepo == null)
                 {
-                    operatorRepo = new BaseRepository<Operator>(context);
+                    operatorRepo = new OperatorRepository(context);
                 }
                 return operatorRepo;
             }
@@ -129,6 +132,17 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<PhoneGroupUnsubscribe> PhoneGroupUnsubscribes
+        {
+            get
+            {
+                if (phoneGroupUnsubscribe == null)
+                {
+                    phoneGroupUnsubscribe = new BaseRepository<PhoneGroupUnsubscribe>(context);
+                }
+                return phoneGroupUnsubscribe;
+            }
+        }
         public IMailingRepository Mailings
         {
             get

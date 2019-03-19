@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BAL.Managers;
 using BAL.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Model.Interfaces;
 using WebApp.Models;
+using static WebCustomerApp.Startup;
 
 namespace WebApp
 {
@@ -26,10 +29,13 @@ namespace WebApp
                 try
                 {
                     var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
                     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+					var operatorManager = serviceProvider.GetRequiredService<IOperatorManager>();
+					var codeManager = serviceProvider.GetRequiredService<ICodeManager>();
+					var tariffManager = serviceProvider.GetRequiredService<ITariffManager>();
+					var stopWordManager = serviceProvider.GetRequiredService<IStopWordManager>();
 
-                    IdentityDataInitializer.SeedData(userManager, roleManager);
+					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager);
                 }
                 catch
                 {

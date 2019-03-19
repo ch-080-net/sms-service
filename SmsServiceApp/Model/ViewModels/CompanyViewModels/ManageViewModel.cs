@@ -7,6 +7,9 @@ using WebApp.Models;
 
 namespace Model.ViewModels.CompanyViewModels
 {
+    /// <summary>
+    /// View model with full info about company 
+    /// </summary>
     public class ManageViewModel
     {
         public int Id { get; set; }

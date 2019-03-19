@@ -1,49 +1,59 @@
 ﻿@using Model.ViewModels.UserViewModels;
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@model IEnumerable<UserViewModel>;
+@model IEnumerable<UserViewModel>
+    ;
 
-@{
+    @{
     ViewData["Title"] = Localizer["Index"];
     var group = Model.FirstOrDefault().GroupName;
-}
+    }
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Index</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h2>@Localizer["Users in"] @group</h2>
 
-<h2>@Localizer["Users in"] @group</h2>
-
-<p>
-    <a class="btn btn-success" asp-action="AddUsers">@Localizer["Add users"]</a>
-</p>
-<div class="container col-lg-6">
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th class="col-md-3">
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th class="col-md-2">
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </th>
-                <th class="col-md-1"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td class="col-md-3">
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td class="col-md-2">
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    </td>
-                    <td class="col-md-1">
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        <p>
+            <a class="btn btn-success" asp-action="AddUsers">Add users</a>
+        </p>
+        <div class="container col-lg-6">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="col-md-3">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th class="col-md-2">
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td class="col-md-3">
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td class="col-md-2">
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td class="col-md-1">
+                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+        @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
