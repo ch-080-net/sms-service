@@ -31,8 +31,6 @@ namespace BAL.Services
         /// <param name="Content">message that came back</param>
         public void SearchStopWordInMeaasge(string Originator, string Destination, string Content)
         {
-            Content = Content.Substring(Content.IndexOf(" Text: ") + 7);//7=" Text: " size
-
             var words = stopWordManager.GetStopWords().FirstOrDefault(c => c.Word == Content);//"STOP"==Content
 
             if (words != null)
