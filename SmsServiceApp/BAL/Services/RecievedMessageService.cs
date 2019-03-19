@@ -31,7 +31,7 @@ namespace BAL.Services
             var words = stopWordManager.GetStopWords().FirstOrDefault(c => c.Word == Content);//"STOP"==Content
 
             if (words != null)
-            {
+            {/*
                 Phone phoneDestination = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == Destination);
 
                 var companies = companyManager.GetCompaniesByPhone(phoneDestination);
@@ -51,7 +51,7 @@ namespace BAL.Services
                         }
                     }
                 }
-
+                */
             }
 
         }

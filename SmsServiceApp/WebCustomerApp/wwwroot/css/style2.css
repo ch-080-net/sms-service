@@ -33,8 +33,10 @@
 .logo {
     display: flex;
     align-items: flex-start;
-    min-height: 80px;
-    min-width: 100px;
+    max-height: 100px;
+    max-width: 160px;
+    min-height:80px;
+    min-width:100px;
     height: 100px;
     width: auto;
 }
@@ -64,10 +66,13 @@
     align-items: left;
   }
   /*menu*/
-  .menu {
-     padding:0;
-     margin:0;
-  }
+.menu {
+    padding: 0;
+    margin: 0;
+    margin-top:2vh;
+    display: flex;
+    align-items: center;
+}
 
 .menu_list {
     display: flex;
@@ -250,20 +255,24 @@
     color: #8b8b8b;
 }
 .app {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
     padding: 180px 10% 50px;
     background-color: #f7f7f7;
     min-height: 700px;
     display: flex;
 }
 
-/*.app_image{
 
-}*/
 .app_image_phone {
-    width: 450px;
+    width: 40vh;
+    height:45vh;
     margin-top: -60px;
     background-repeat: no-repeat;
-    background-image: url('../images/landing/phoneview.png');
+    background-image: url('../images/landing/placeholder.png');
     background-size: contain;
     background-position: top;
 }
@@ -271,30 +280,20 @@
 
 .tariff_photo {
     display: flex;
-    margin-left:20px;
-    margin-right:20px;
-    width: 600px;
-    height: 300px;
+    margin-left: 30px;
+    margin-right: 30px;
+    min-width:360px;
+    height: 30vh;
+    width:80vh;
     background-repeat: no-repeat;
     background-image: url('../images/landing/photo_tariff.jpg');
-    background-size: contain;
-   
+  background-size:cover;
 }
-.app_image_message {
-    display: flex;
-    width: 380px;
-    height: 225px;
-    margin-top: 400px;
-    margin-left:30px;
-    background-repeat: no-repeat;
-    background-image: url('../images/landing/messageview.png');
-    background-size: contain;
-    background-position: center bottom;
-}
+
   .app_content {
-    width: 100%;
+    width: 50%;
     margin-left: auto;
-    text-align: right;
+    text-align: center;
   }
 .tariff_content {
     margin: 0;
@@ -310,14 +309,20 @@
 }
 
 .app_description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0 19px;
     margin: 10px;
+    width: 300px;
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
     color: #8b8b8b;
 }
 .app_description_link {
-    
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;
@@ -344,7 +349,7 @@
 }
 .app_description_welcome {
     color:rgba(255, 255, 255, 0.7);
-    max-width: 800px;
+    max-width: 500px;
     text-align: center;
     margin-bottom: 40px;
 }
@@ -389,7 +394,7 @@
     flex-direction: column;
     text-align: center;
     padding: 100px 1% 50px;
-    background: 50%;
+    background: 100%;
     background-image: url('../images/landing/wallpaper2you_30315.jpg');
     min-height: 700px;
   
@@ -416,7 +421,7 @@
     padding: 100px 1% 50px;
     background: 100%;
     background-image: url('../images/landing/white-background-9b1.jpg');
-    min-height: 700px;
+    min-height: 900px;
 }
 .chart_main_content {
     margin: 10px;
