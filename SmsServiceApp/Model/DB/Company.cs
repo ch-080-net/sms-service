@@ -24,9 +24,16 @@ namespace WebApp.Models
         public int? TariffId { get; set; }
         public Tariff Tariff { get; set; }
         public string Message { get; set; }
-        public int Type { get; set; }
+        public CompanyType Type { get; set; }
         public DateTime SendingTime { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+    }
+
+    public enum CompanyType
+    {
+        Send,
+        Recieve,
+        SendAndRecieve
     }
 }

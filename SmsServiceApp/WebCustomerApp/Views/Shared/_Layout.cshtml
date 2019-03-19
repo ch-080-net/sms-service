@@ -8,11 +8,12 @@
     <title>@ViewData["Title"] - SmsService</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/css/menunav.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
+
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -21,10 +22,10 @@
     </environment>
 </head>
 <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+    <nav class="navbar navbar-default ">
+        <div class="container-fluid">
+            <div class="navbar-header">
 
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmsService</a>
                 <div id="myNav" class="overlay">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="overlay-content">
@@ -40,29 +41,18 @@
                             <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
                         }
                         @await Html.PartialAsync("_LoginPartial")
-
-
                     </div>
-                    <div class="container body-content">     
-                        <footer id="fotter">
-                            <div align="right">
-                                @await Html.PartialAsync("_SelectLanguagePartial")
-                            </div>
-                        </footer>
-                    </div>
-                    </div>
-                    <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
                 </div>
+                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
 
-        </nav>
-        <div class="container body-content">
-            @RenderBody()
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
 
             <link href="~/css/site.css" rel="stylesheet" />
-            <footer id="footer">
-                <p align="center">&copy; Copyright 2019</p>
-             
-            </footer>
         </div>
 
     <environment include="Development">

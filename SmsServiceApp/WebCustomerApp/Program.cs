@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BAL.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApp.Models;
-using static WebApp.Startup;
 
 namespace WebApp
 {
@@ -29,7 +29,7 @@ namespace WebApp
 
                     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                    MyIdentityDataInitializer.SeedData(userManager, roleManager);
+                    IdentityDataInitializer.SeedData(userManager, roleManager);
                 }
                 catch
                 {

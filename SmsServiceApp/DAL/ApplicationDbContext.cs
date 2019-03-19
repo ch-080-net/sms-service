@@ -152,7 +152,6 @@ namespace WebApp.Data
                 .Property(com => com.Name)
                 .IsRequired();
 
-
             builder.Entity<Phone>()
                 .Property(p => p.PhoneNumber)
                 .IsRequired();

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using WebApp.Models;
 
 namespace Model.ViewModels.CompanyViewModels
 {
@@ -22,7 +23,7 @@ namespace Model.ViewModels.CompanyViewModels
         public string Description { get; set; }  
         [Required(ErrorMessage = "The Type field is required.")]
         [Display(Name = "Type of campaign")]
-        public int Type { get; set; }
+        public CompanyType Type { get; set; }
         public int ApplicationGroupId { get; set; }
         public int PhoneId { get; set; }
         public int TariffId { get; set; }

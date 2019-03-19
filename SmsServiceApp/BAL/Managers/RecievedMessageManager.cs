@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using WebApp.Models;
 using System.Linq;
+using Model.ViewModels.RecievedMessageViewModel;
 
 namespace BAL.Managers
 {
@@ -16,17 +17,24 @@ namespace BAL.Managers
         {
         }
 
-        public RecievedMessageDTO Get(int id)
+        public RecievedMessageViewModel Get(int id)
         {
             RecievedMessage recievedMessage = unitOfWork.RecievedMessages.GetById(id);
-            return mapper.Map<RecievedMessage, RecievedMessageDTO>(recievedMessage);
+            return mapper.Map<RecievedMessage, RecievedMessageViewModel>(recievedMessage);
         }
 
-        public IEnumerable<RecievedMessageDTO> GetRecievedMessages(int companyId)
+        public IEnumerable<RecievedMessageViewModel> GetRecievedMessages(int companyId)
         {
             IEnumerable<RecievedMessage> recievedMessages = unitOfWork.RecievedMessages
                 .Get(filter: c => c.CompanyId == companyId);
-            return mapper.Map<IEnumerable<RecievedMessage>, IEnumerable<RecievedMessageDTO>>(recievedMessages);
+            foreach (var rc in recievedMessages)
+            {
+                Company company = unitOfWork.Companies.GetById(rc.CompanyId);
+                company.Phone = unitOfWork.Phones.GetById((int)company.PhoneId);
+                rc.Company = company;
+                rc.Phone = unitOfWork.Phones.GetById(rc.PhoneId);
+            }
+            return mapper.Map<IEnumerable<RecievedMessage>, IEnumerable<RecievedMessageViewModel>>(recievedMessages);
         }
 
         public void Insert(RecievedMessageDTO item)

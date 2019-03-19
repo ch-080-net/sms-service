@@ -23,14 +23,15 @@ namespace BAL.Managers
             return unitOfWork.Phones.GetById(Id).PhoneNumber;
         }
 
-        public int GetPhoneId(string number)
-        {
-            return unitOfWork.Phones.GetAll().FirstOrDefault(p => p.PhoneNumber == number).Id;
-        }
-
         public IEnumerable<Phone> GetPhones()
         {
             return unitOfWork.Phones.GetAll();
+        }
+
+        public void Insert(Phone item)
+        {
+            unitOfWork.Phones.Insert(item);
+            unitOfWork.Save();
         }
     }
 }

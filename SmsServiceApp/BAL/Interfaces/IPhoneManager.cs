@@ -10,6 +10,6 @@ namespace BAL.Managers
         IEnumerable<Phone> GetPhones();
         Phone GetPhoneById(int Id);
         string GetPhoneNumber(int Id);
-        int GetPhoneId(string number);
+        void Insert(Phone item);
     }
 }

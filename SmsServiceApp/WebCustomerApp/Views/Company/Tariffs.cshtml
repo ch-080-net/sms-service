@@ -1,7 +1,7 @@
 ﻿@using Model.ViewModels.TariffViewModels
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@model TariffViewModel
+@model TariffsViewModel
 
 @{
     ViewData["Title"] = Localizer["Tariffs"];
@@ -15,40 +15,40 @@
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-2">
-                        @Html.DisplayNameFor(model => model.Name)
+                        Tariff
                     </th>
                     <th class="col-md-4">
-                        @Html.DisplayNameFor(model => model.Description)
+                        Description
                     </th>
                     <th class="col-md-1">
-                        @Html.DisplayNameFor(model => model.Price)
+                        Price
                     </th>
                     <th class="col-md-1">
-                        @Html.DisplayNameFor(model => model.Limit)
+                        Limit
                     </th>
                     <th class="col-md-1"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ViewBag.tariffs)
+                @foreach (var item in Model.TariffsList)
                 {
-                    <tr>
-                        <td class="col-md-2">
-                            @item.Name
-                        </td>
-                        <td class="col-md-4">
-                            @item.Description
-                        </td>
-                        <td class="col-md-1">
-                            @item.Price
-                        </td>
-                        <td class="col-md-1">
-                            @item.Limit
-                        </td>
-                        <td class="col-md-1">
-                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">@Localizer["Choose"]</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="col-md-2">
+                        @item.Name
+                    </td>
+                    <td class="col-md-4">
+                        @item.Description
+                    </td>
+                    <td class="col-md-1">
+                        @item.Price
+                    </td>
+                    <td class="col-md-1">
+                        @item.Limit
+                    </td>
+                    <td class="col-md-1">
+                        <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData[" companyId"]" asp-route-tariffId="@item.Id">@Localizer["Choose"]</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
