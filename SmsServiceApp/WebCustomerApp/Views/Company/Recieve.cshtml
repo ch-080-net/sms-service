@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Create";
 }
+<!DOCTYPE html>
+<html>
 <head>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -10,8 +12,8 @@
 
     <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Company</title>
 </head>
 <body>
@@ -24,18 +26,20 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="StartTime" class="control-label"></label>
-                    <input asp-for="StartTime" id="TimeStart" width="185">
+                    <input asp-for="StartTime" id="TimeStart" type="text">
                     <script>
-                        $('#TimeStart').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                        $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                        $('#TimeStart').val(new Date().toLocaleString());
                     </script>
                     <span asp-validation-for="StartTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="hidden" asp-for="Id" />
                     <label asp-for="EndTime" class="control-label"></label>
-                    <input asp-for="EndTime" id="TimeEnd" width="185">
+                    <input asp-for="EndTime" id="TimeEnd" type="text">
                     <script>
-                        $('#TimeEnd').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                        $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                        $('#TimeEnd').val(new Date().toLocaleString());
                     </script>
                     <span asp-validation-for="EndTime" class="text-danger"></span>
                 </div>
@@ -48,7 +52,7 @@
         </div>
     </div>
 </body>
-       
+</html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

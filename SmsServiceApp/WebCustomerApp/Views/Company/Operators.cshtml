@@ -1,44 +1,48 @@
 ﻿@using Model.ViewModels.OperatorViewModels
-@model OperatorViewModel
-
-<h2>Operators</h2>
-<hr />
-
-<div class="container">
-    <div class="col-lg-4">
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th class="col-md-3">
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th class="col-md-1"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.operators)
-            {
-                <tr>
-                    <td class="col-md-3">
-                        @item.Name
-                    </td>
-                    <td class="col-md-1">
-                        <a class="btn btn-success" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariff</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+@model OperatorsViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Operators</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h2>Operators</h2>
+    <hr />
+    <div class="container">
+        <div class="col-lg-4">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="col-md-3">
+                            @Html.DisplayNameFor(model => model.OperatorsList)
+                        </th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OperatorsList)
+                    {
+                        <tr>
+                            <td class="col-md-3">
+                                @item.Name
+                            </td>
+                            <td class="col-md-1">
+                                <a class="btn btn-success" asp-action="Tariffs" asp-route-companyId="@ViewData["companyId"]" asp-route-id="@item.Id">Tariffs</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<div>
-    <a class="btn btn-primary" asp-action="Index">Back to Companies</a>
-</div>
-
-
-
-
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Back to Companies</a>
+    </div>
+</body>
+</html>
+    @section Scripts {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }

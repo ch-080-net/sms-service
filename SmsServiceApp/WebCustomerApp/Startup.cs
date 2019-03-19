@@ -18,6 +18,7 @@ using BAL.Managers;
 using AutoMapper;
 using BAL.Services;
 using BAL.Jobs;
+using BAL.Interfaces;
 
 namespace WebCustomerApp
 {
@@ -103,6 +104,9 @@ namespace WebCustomerApp
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
+            services.AddScoped<IChartsManager, ChartsManager>();
+            services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
+            services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
 
             // Start scheduler
 
@@ -115,8 +119,6 @@ namespace WebCustomerApp
             services.AddSession();
         }
        
-       
-
         public void Configure(IApplicationBuilder app, 
                               IHostingEnvironment env)
         {

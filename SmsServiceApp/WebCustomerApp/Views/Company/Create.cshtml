@@ -1,7 +1,11 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
 @model CompanyViewModel
+<!DOCTYPE html>
+<html>
 <head>
     <title>Company</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
     <h2>Create</h2>
@@ -37,15 +41,15 @@
                     <div class="col-sm-10">
                         <div class="mt-2">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" value=1 />
+                                <input class="form-check-input" asp-for="Type" type="radio" value=0 />
                                 <label class="form-check-label" for="Type">Send</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" value=2 />
+                                <input class="form-check-input" asp-for="Type" type="radio" value=1 />
                                 <label class="form-check-label" for="Type">Recieve</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" value=3 />
+                                <input class="form-check-input" asp-for="Type" type="radio" value=2 />
                                 <label class="form-check-label" for="Type">Send and Recieve</label>
                             </div>
                         </div>
@@ -64,6 +68,7 @@
         </div>
     </div>
 </body>
+</html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

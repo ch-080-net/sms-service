@@ -3,105 +3,16 @@
 @{
     ViewData["Title"] = "Create";
 }
+<!DOCTYPE html>
+<html>
 <head>
-
-    <style>
-        #messagePreview::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-            background-color: #F5F5F5;
-        }
-
-        #messagePreview::-webkit-scrollbar {
-            width: 6px;
-            background-color: #F5F5F5;
-        }
-
-        #messagePreview::-webkit-scrollbar-thumb {
-            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-            background-color: #555;
-        }
-    </style>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="~/js/MessagePreview.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
     <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <script>
-        var CursorPosition = 0;
-        var hashTagWords = ["#name", "#surname", "#birthday", "#company"];
-        var hashTagWordsRaplacer = ["ClientName", "ClientSurname", "ClientBirthday", "CompanyName"];
-        function AddWord(word) {
-            var v = $('#message').val();
-            var textBefore = v.substring(0, CursorPosition);
-            var textAfter = v.substring(CursorPosition, v.length);
-            var tmpCursorPosition = CursorPosition;
-            $('#message').val(textBefore + word + textAfter);
-            MessagePreview($('#message'));
-            CursorPosition = tmpCursorPosition + word.length;
-        }
-        function hashTagWordReplaceByPosition(position, word) {
-            var v = $('#message').val();
-            var hashTagWordIndex = hashTagWords.findIndex(function (val) { return val == word; });
-            var textBefore = v.substring(0, position);
-            var textAfter = v.substring(position + word.length + 1, v.length);
-            v = textBefore + hashTagWordsRaplacer[hashTagWordIndex] + textAfter;
-            $('#messagePreview').val(v);
-        }
-        function MessagePreview(item) {
-            CursorPosition = $(item).prop('selectionStart') + 1;
-            var v = $(item).val();
-            var meetHashTag = false;
-            var hashTagPosition = -1;
-            var hashTagWord = "";
-            for (var i = 0; i < v.length; i++) {
-                if (!meetHashTag) {
-                    if (v[i] == "#") {
-                        meetHashTag = true;
-                        hashTagPosition = i;
-                        hashTagWord += v[i];
-                    }
-                }
-                else {
-                    if (v[i] == "#") {
-                        hashTagWord = "";
-                        hashTagPosition = i;
-                    }
-                    if (v[i] == " ") {
-                        meetHashTag = false;
-                        hashTagPosition = -1;
-                        hashTagWord = "";
-                    }
-                    else {
-                        hashTagWord += v[i];
-                        var isHashTagWord = false;
-                        var hashTagWordIndex = -1;
-                        for (var j = 0; j < hashTagWords.length; j++) {
-                            if (hashTagWord == hashTagWords[j]) {
-                                isHashTagWord = true;
-                                hashTagWordIndex = j;
-                            }
-                        }
-                        if (isHashTagWord) {
-                            var textBefore = v.substring(0, hashTagPosition);
-                            var textAfter = v.substring(i + 1, v.length);
-                            v = textBefore + hashTagWordsRaplacer[hashTagWordIndex] + textAfter;
-                            i += hashTagWordsRaplacer[hashTagWordIndex].length - hashTagWord.length;
-                            meetHashTag = false;
-                            hashTagPosition = -1;
-                            hashTagWord = "";
-                        }
-                    }
-                }
-            }
-            $('#messagePreview').text(v);
-        }
-        function ClickPosition(item) {
-            CursorPosition = $(item).prop('selectionStart');
-        }
-
-    </script>
+    <link href="~/css/MessagePreview.css" rel="stylesheet" type="text/css" />
     <title>Company</title>
 </head>
 <body>
@@ -120,13 +31,16 @@
                         <br />
                         <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Choose Tariff</a>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label asp-for="RecipientViewModels" class="control-label"></label>
-                        <br />
-                        <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
-                        <br />
-                        <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
-                    </div>
+                    @if (Model.TariffId > 0)
+                    {
+                        <div class="form-group col-md-12">
+                            <label asp-for="RecipientViewModels" class="control-label"></label>
+                            <br />
+                            <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
+                            <br />
+                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
+                        </div>
+                    }
                     <div class="form-group col-md-12">
                         <label asp-for="Message" class="control-label"></label>
                         <textarea rows="7" style="resize:none; width:100%"
@@ -134,26 +48,26 @@
                                   onkeyup="MessagePreview(this)"></textarea>
                         <span asp-validation-for="Message" class="text-danger"></span>
                         <div>
-                            <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
-                            <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
-                            <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
-                            <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
+                            <input type="button" class="btn btn-default btn-xs" value="#name" onclick='AddWord(" #name ")'>
+                            <input type="button" class="btn btn-default btn-xs" value="#surname" onclick='AddWord(" #surname ")'>
+                            <input type="button" class="btn btn-default btn-xs" value="#birthday" onclick='AddWord(" #birthday ")'>
+                            <input type="button" class="btn btn-default btn-xs" value="#company" onclick='AddWord(" #company ")'>
                         </div>
                     </div>
                     <div class="form-group col-md-12">
                         <label asp-for="StartTime" class="control-label"></label>
-                        <input asp-for="StartTime" id="TimeStart">
-                        <script>
-                            $('#TimeStart').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        </script>
+                        <input asp-for="StartTime" id="TimeStart" type="text">
                         <span asp-validation-for="StartTime" class="text-danger"></span>
+                        <script>
+                            $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                            $('#TimeStart').val(new Date().toLocaleString());</script>
                     </div>
                     <div class="form-group col-md-12">
                         <label asp-for="EndTime" class="control-label"></label>
-                        <input asp-for="EndTime" id="TimeEnd">
+                        <input asp-for="EndTime" id="TimeEnd" type="text">
                         <script>
-                            $('#TimeEnd').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        </script>
+                            $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                            $('#TimeEnd').val(new Date().toLocaleString());</script>
                         <span asp-validation-for="EndTime" class="text-danger"></span>
                     </div>
                 </div>
@@ -166,11 +80,11 @@
                     </div>
                     <div class="form-group" id="SendLater">
                         <label asp-for="SendingTime" class="control-label"></label>
-                        <input asp-for="SendingTime" class="form-control" id="sendTime" />
-                        <span asp-validation-for="SendingTime" class="text-danger"></span>
+                        <input asp-for="SendingTime" class="form-control" id="sendTime" type="text" />
                         <script>
-                                $('#sendTime').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
-                        </script>
+                            $('#sendTime').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
+                            $('#sendTime').val(new Date().toLocaleString());</script>
+                        <span asp-validation-for="SendingTime" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">
@@ -180,35 +94,34 @@
                 </div>
             </form>
         </div>
-        <div class="form-group col-md-4" style="background: url(/images/iphone.png)no-repeat; background-size:contain;
-                height: 60vh;">
-            <div style="position:relative; height:auto !important; " contenteditable>
-                <div id="messageView" class="form-group" style="content:url(/images/iphonemessage.png);
-                margin-top: 64%; margin-left: 9%; width: 82%; height: 160vh; position:absolute; height:auto !important;">
-                </div>
-                <div style="position:absolute; height:auto !important; ">
-                    <textarea rows="8" readonly class="form-control" id="messagePreview" style="z-index:10; border: none; border: none; overflow: auto;
-                    margin-top: 105%; margin-left: 19.5%; font-family: '-apple-system','HelveticaNeue'; line-height: 100%;
-                    width: 156%; background-color:rgb(14, 209, 96); -webkit-border-radius: 20px; -moz-border-radius: 20px;
-                    resize: none; color: white;"></textarea>
+        <div>
+            <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
+                <div style="position:absolute; height:auto !important;">
+                    <div rows="1" readonly class="form-control" id="messagePreview">
+                        ::before
+                    </div>
                 </div>
             </div>
+            <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
+                <span class="glyphicon glyphicon-phone"></span>
+            </button>
         </div>
     </div>
+    <script>
+        document.getElementById("SendLater").style.display = 'none';
+        function ShowDate() {
+            var sendNow = document.getElementById("SendNowRadio");
+            var sendLater = document.getElementById("SendLaterRadio");
+            if (sendLater.checked) {
+                document.getElementById("SendLater").style.display = 'block';
+            }
+            if (sendNow.checked) {
+                document.getElementById("SendLater").style.display = 'none';
+            }
+        }
+    </script>
 </body>
-<script>
-    document.getElementById("SendLater").style.display = 'none';
-    function ShowDate() {
-        var sendNow = document.getElementById("SendNowRadio");
-        var sendLater = document.getElementById("SendLaterRadio");
-        if (sendLater.checked) {
-            document.getElementById("SendLater").style.display = 'block';
-        }
-        if (sendNow.checked) {
-            document.getElementById("SendLater").style.display = 'none';
-        }
-    }
-</script>
+</html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

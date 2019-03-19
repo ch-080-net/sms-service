@@ -50,11 +50,8 @@
     <div class="container body-content">
         @RenderBody()
 
-        <link href="~/css/site.css" rel="stylesheet" />
-        <footer id="footer">
-            <p align="center">&copy; Copyright 2019</p>
-        </footer>
-    </div>
+            <link href="~/css/site.css" rel="stylesheet" />
+        </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -76,7 +73,6 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
 
     @RenderSection("Scripts", required: false)
 </body>

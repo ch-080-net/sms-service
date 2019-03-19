@@ -23,16 +23,17 @@ namespace BAL.Services
 			SeedStopWords(stopWordManager);
 		}
 
-        public static void SeedUsers(UserManager<ApplicationUser> userManager)
-        {
-            if (userManager.FindByNameAsync("User@gmail.com").Result == null)
+
+            public static void SeedUsers(UserManager<ApplicationUser> userManager)
             {
-                Phone phone = new Phone() { PhoneNumber = "+380111111111" };
-                ApplicationUser user = new ApplicationUser();
-                ApplicationGroup group = new ApplicationGroup() { Phone = phone };
-                user.UserName = "User@gmail.com";
-                user.Email = "User@gmail.com";
-                user.ApplicationGroup = group;
+                if (userManager.FindByNameAsync("User@gmail.com").Result == null)
+                {
+                    Phone phone = new Phone() { PhoneNumber = "+380111111111" };
+                    ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "TestUserGroup" };
+                    user.UserName = "User@gmail.com";
+                    user.Email = "User@gmail.com";
+                    user.ApplicationGroup = group;
 
                 IdentityResult result = userManager.CreateAsync(user, "1234ABCD").Result;
                 if (result.Succeeded)
@@ -41,14 +42,15 @@ namespace BAL.Services
                 }
             }
 
-            if (userManager.FindByNameAsync("Admin@gmail.com").Result == null)
-            {
-                Phone phone = new Phone() { PhoneNumber = "+380777777777" };
-                ApplicationUser user = new ApplicationUser();
-                ApplicationGroup group = new ApplicationGroup() { Phone = phone };
-                user.UserName = "Admin@gmail.com";
-                user.Email = "Admin@gmail.com";
-                user.ApplicationGroup = group;
+
+                if (userManager.FindByNameAsync("Admin@gmail.com").Result == null)
+                {
+                    Phone phone = new Phone() { PhoneNumber = "+380777777777" };
+                    ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "AdminGroup" };
+                    user.UserName = "Admin@gmail.com";
+                    user.Email = "Admin@gmail.com";
+                    user.ApplicationGroup = group;
 
                 IdentityResult result;
                 result = userManager.CreateAsync(user, "1234ABCD").Result;
@@ -59,14 +61,14 @@ namespace BAL.Services
                 }
             }
 
-            if (userManager.FindByNameAsync("CorporateUser@gmail.com").Result == null)
-            {
-                Phone phone = new Phone() { PhoneNumber = "+380666666666" };
-                ApplicationUser user = new ApplicationUser();
-                ApplicationGroup group = new ApplicationGroup() { Phone = phone };
-                user.UserName = "CorporateUser@gmail.com";
-                user.Email = "CorporateUser@gmail.com";
-                user.ApplicationGroup = group;
+                if (userManager.FindByNameAsync("CorporateUser@gmail.com").Result == null)
+                {
+                    Phone phone = new Phone() { PhoneNumber = "+380666666666" };
+                    ApplicationUser user = new ApplicationUser();
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "TestGroup" };
+                    user.UserName = "CorporateUser@gmail.com";
+                    user.Email = "CorporateUser@gmail.com";
+                    user.ApplicationGroup = group;
 
                 IdentityResult result;
                 result = userManager.CreateAsync(user, "1234ABCD").Result;

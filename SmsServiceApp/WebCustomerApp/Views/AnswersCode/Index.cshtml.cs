@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WebApp.Views.LandingPage
+namespace WebApp.Views.AnswersCode
 {
-    public class LandingPageModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {
