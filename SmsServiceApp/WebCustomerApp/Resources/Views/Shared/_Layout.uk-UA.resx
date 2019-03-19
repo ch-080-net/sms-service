@@ -123,6 +123,9 @@
   <data name="Contacts" xml:space="preserve">
     <value>Контакти</value>
   </data>
+  <data name="Group" xml:space="preserve">
+    <value>Групи</value>
+  </data>
   <data name="Operators" xml:space="preserve">
     <value>Оператор</value>
   </data>

@@ -187,9 +187,12 @@
     <value>Використовуйте наш API для інтеграції SMS-повідомлень з вашим веб-сайтом, додатком, програмним забезпеченням або системою CRM. Багато розробників вже реалізували його, щоб полегшити робочий процес для оповіщення.</value>
   </data>
   <data name="Users Group" xml:space="preserve">
-    <value>Групи</value>
+    <value>Групи користувача</value>
   </data>
   <data name="You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list." xml:space="preserve">
     <value>Ви можете виключити телефонні номери з списку одержувачів. Використовуйте цю функцію, коли ви не хочете надсилати повідомлення до всього списку.</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Групи</value>
   </data>
 </root>
