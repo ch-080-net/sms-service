@@ -24,6 +24,9 @@ namespace DAL.Repositories
         {
             var result = from r in context.Recipients
                          .Include(r => r.Company)
+                         .ThenInclude(com => com.ApplicationGroup)
+                         .ThenInclude(ag => ag.phoneGroupUnsubscribtions)
+                         .Include(r => r.Company)
                          .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone)
                          select r;
@@ -38,6 +41,9 @@ namespace DAL.Repositories
             string includeProperties = "")
         {
             IQueryable<Recipient> query = context.Recipients
+                         .Include(r => r.Company)
+                         .ThenInclude(com => com.ApplicationGroup)
+                         .ThenInclude(ag => ag.phoneGroupUnsubscribtions)
                          .Include(r => r.Company)
                          .ThenInclude(ag => ag.Phone)
                          .Include(r => r.Phone);
