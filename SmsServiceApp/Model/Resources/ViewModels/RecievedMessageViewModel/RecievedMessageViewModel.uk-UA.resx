@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to List" xml:space="preserve">
-    <value>Назад до списку</value>
+  <data name="Message Text" xml:space="preserve">
+    <value>Текст повідомлення</value>
   </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Розсилку</value>
+  <data name="Recipient Phone" xml:space="preserve">
+    <value>Телефон отримувача</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редагувати</value>
+  <data name="Sender Phone" xml:space="preserve">
+    <value>Телефон відправника</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Зберегти</value>
+  <data name="Time Of Recieve" xml:space="preserve">
+    <value>Час отримання</value>
   </data>
 </root>

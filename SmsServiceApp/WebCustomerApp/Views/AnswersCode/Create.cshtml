@@ -1,14 +1,16 @@
 ﻿@using Model.ViewModels.AnswersCodeViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model AnswersCodeViewModel;
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create</title>
+    <title>@Localizer["Create"]</title>
 </head>
 <body>
-    <h2>Create</h2>
-    <h4>Answer's Code</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Answer's Code"]</h4>
     <hr />
     <div class="row">
 
@@ -26,14 +28,14 @@
                     <span asp-validation-for="Answer" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-success" />
+                    <input type="submit" value="@Localizer["Create"]" class="btn btn-success" />
                 </div>
             </div>
         </form>
     </div>
 
     <div>
-        <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@ViewData["CompanyId"]">Back to List</a>
+        <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to List"]</a>
     </div>
 </body>
 </html>

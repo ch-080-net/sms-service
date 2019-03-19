@@ -1,11 +1,13 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model CompanyViewModel;
 
 <head>
-    <title>Edit</title>
+    <title>@Localizer["Edit"]</title>
 </head>
-<h2>Edit</h2>
-<h4>Company</h4>
+<h2>@Localizer["Edit"]</h2>
+<h4>@Localizer["Campaign"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -42,7 +44,7 @@
     </div>
 </div>
 <div>
-    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
