@@ -219,11 +219,7 @@ namespace WebApp.Controllers
             return View(item);
         }
 
-        /// <summary>
-        /// Get Delete Confirmation View with company information
-        /// </summary>
-        /// <param name="id">Id of selected item</param>
-        /// <returns>View with selected company info</returns>
+
         [HttpGet]
         public IActionResult Details(int companyId)
         {
@@ -271,7 +267,8 @@ namespace WebApp.Controllers
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);
-            companyManager.Update(currentCompany, GetGroupId(), tariffId);
+            currentCompany.TariffId = tariffId;
+            companyManager.Update(currentCompany);
             if (currentCompany.Type == CompanyType.Send)
             {
                 return RedirectToAction("Send", "Company", new { companyId });
@@ -293,6 +290,53 @@ namespace WebApp.Controllers
             {
                 return RedirectToAction("SendRecieve", "Company", new { companyId });
             }
+        }
+
+        /// <summary>
+        /// Delete selected item from db
+        /// </summary>
+        /// <param name="id">Id of Company which select to delete</param>
+        /// <returns>Company Index View</returns>
+        [HttpPost, ActionName("Delete")]
+        public IActionResult Delete(int companyId)
+        {
+            companyManager.Delete(companyId);
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Gets EditView with Company info from db
+        /// </summary>
+        /// <param name="id">Id of company which need to edit</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Edit(int companyId)
+        {
+            CompanyViewModel company = companyManager.Get(companyId);
+            company.PhoneNumber = phoneManager.GetPhoneNumber(company.PhoneId);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+
+        /// <summary>
+        /// Send updated Company to db
+        /// </summary>
+        /// <param name="id">Id of company which need to edit</param>
+        /// <param name="company">ViewModel of Company from View</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CompanyViewModel company)
+        {
+            if (ModelState.IsValid)
+            {
+                companyManager.Update(company);
+                return RedirectToAction("Index");
+            }
+            return View(company);
         }
     }
 }

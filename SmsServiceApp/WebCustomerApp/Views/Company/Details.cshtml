@@ -24,42 +24,55 @@
                 </dd>
                 @if (Model.Type == CompanyType.Send || Model.Type == CompanyType.SendAndRecieve)
                 {
-                <dt>
-                    @Html.DisplayNameFor(model => model.Tariff)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Tariff)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.SendingTime)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.SendingTime)
-                </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Tariff)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Tariff)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.SendingTime)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.SendingTime)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Message)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Message)
+                    </dd>
                 }
                 @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
                 {
-                <dt>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.StartTime)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.EndTime)
-                </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.StartTime)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EndTime)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.EndTime)
+                    </dd>
                 }
             </dl>
         </div>
         <div class="col-md-5">
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Reporting</a></div>            <br />
+            @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
+            {
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Incoming</a></div>            <br />
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Answer codes</a></div>            <br />
+            }
             <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Edit">Edit</a></div> <br />
-            <div class="row"><a class="btn btn-danger" style="width: 120px;"  asp-route-companyId="@Model.Id" asp-action="Delete">Delete</a></div> <br />
+            <div class="row">
+            <form asp-action="Delete" asp-route-companyId="@Model.Id">
+           <button type="submit" class="btn btn-danger" style="width: 120px;">Delete</button>
+</form>
+            </div>
         </div>
     </div>
     <div class="row">

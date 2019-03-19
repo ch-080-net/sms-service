@@ -118,41 +118,46 @@
                         <br />
                         <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Choose Tariff</a>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label asp-for="RecipientViewModels" class="control-label"></label>
-                        <br />
-                        <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
-                        <br />
-                        <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label asp-for="Message" class="control-label"></label>
-                        <textarea rows="7" style="resize:none; width:100%"
-                                  asp-for="Message" class="form-control" id="message" onclick="ClickPosition(this)"
-                                  onkeyup="MessagePreview(this)"></textarea>
-                        <span asp-validation-for="Message" class="text-danger"></span>
-                        <div>
-                            <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
-                            <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
-                            <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
-                            <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
+                    @if (Model.TariffId > 0)
+                    {
+                        <div class="form-group col-md-12">
+                            <label asp-for="RecipientViewModels" class="control-label"></label>
+                            <br />
+                            <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
+                            <br />
+                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
+                        </div>
+                    }
+                        <div class="form-group col-md-12">
+                            <label asp-for="Message" class="control-label"></label>
+                            <textarea rows="7" style="resize:none; width:100%"
+                                      asp-for="Message" class="form-control" id="message" onclick="ClickPosition(this)"
+                                      onkeyup="MessagePreview(this)"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                            <div>
+                                <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
+                                <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
+                                <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
+                                <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="StartTime" class="control-label"></label>
+                            <input asp-for="StartTime" id="TimeStart" type="text">
+                            <span asp-validation-for="StartTime" class="text-danger"></span>
+                            <script>
+    $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                                $('#TimeStart').val(new Date().toLocaleString());</script>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="EndTime" class="control-label"></label>
+                            <input asp-for="EndTime" id="TimeEnd" type="text">
+                            <script>
+    $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                                $('#TimeEnd').val(new Date().toLocaleString());</script>
+                            <span asp-validation-for="EndTime" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="form-group col-md-12">
-                        <label asp-for="StartTime" class="control-label"></label>
-                        <input asp-for="StartTime" id="TimeStart" type="text">
-                        <span asp-validation-for="StartTime" class="text-danger"></span>
-                        <script>  $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                            $('#TimeStart').val(new Date().toLocaleString());</script>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label asp-for="EndTime" class="control-label"></label>
-                        <input asp-for="EndTime" id="TimeEnd" type="text">
-                        <script>   $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                            $('#TimeEnd').val(new Date().toLocaleString());</script>
-                        <span asp-validation-for="EndTime" class="text-danger"></span>
-                    </div>
-                </div>
                 <div class="form-group col-md-12">
                     <div class="form-group col-md-12">
                         <label class="control-label">Send Now</label>

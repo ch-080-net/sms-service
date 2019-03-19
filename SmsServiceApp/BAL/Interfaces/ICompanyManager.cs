@@ -16,7 +16,7 @@ namespace BAL.Managers
 		int GetTariffLimit(int companyId);
         int InsertWithId(CompanyViewModel item);
 		void Insert(CompanyViewModel item);
-		void Update(CompanyViewModel item, int groupId, int tariffId);
+		void Update(CompanyViewModel item);
 		void Delete(int id);
         void AddSend(SendViewModel item);
         void AddRecieve(RecieveViewModel item);

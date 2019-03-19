@@ -26,7 +26,7 @@
                     <input asp-for="StartTime" id="TimeStart" type="text">
                     <script>
                         $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        $('#sendTime').val(new Date().toLocaleString());
+                        $('#TimeStart').val(new Date().toLocaleString());
                     </script>
                     <span asp-validation-for="StartTime" class="text-danger"></span>
                 </div>
@@ -36,7 +36,7 @@
                     <input asp-for="EndTime" id="TimeEnd" type="text">
                     <script>
                         $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        $('#sendTime').val(new Date().toLocaleString());
+                        $('#TimeEnd').val(new Date().toLocaleString());
                     </script>
                     <span asp-validation-for="EndTime" class="text-danger"></span>
                 </div>
