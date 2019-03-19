@@ -6,7 +6,7 @@ using BAL.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using Newtonsoft.Json;
 

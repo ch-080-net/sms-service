@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebApp.Models;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     /// <summary>
     /// ApplicationGroup entity

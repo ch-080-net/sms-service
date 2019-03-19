@@ -1,17 +1,23 @@
-﻿
+﻿<!DOCTYPE html>
 @using Model.ViewModels.StopWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model StopWordViewModel
 @{
     ViewData["Title"] = "Edit";
     Layout = "_Layout";
 }
+
+
 <!DOCTYPE html>
 <html>
+
 <body>
     <header>
-    <h2>Create</h2>
-    <h4>Stop Word</h4>
+        <h2>@Localizer["Create"]</h2>
+        <h4>@Localizer["Stop Word"]</h4>
     </header>
+
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -19,19 +25,18 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Word" class="control-label"></label>
-                    <input asp-for="Word" class="form-control" placeholder="Enter stop word" />
+                    <input asp-for="Word" class="form-control" placeholder="@Localizer["Enter stop word"]" />
                     <span asp-validation-for="Word" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-success" />
                     <a class="btn btn-primary" asp-action="Index">Back to List</a>
-                </div>
 
             </form>
         </div>
     </div>
 </body>
- </html>
+    </html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

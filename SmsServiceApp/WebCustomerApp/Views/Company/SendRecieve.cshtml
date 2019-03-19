@@ -1,7 +1,9 @@
 ﻿@using Model.ViewModels.CompanyViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model SendRecieveViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Localizer["Create"];
 }
 <!DOCTYPE html>
 <html>
@@ -16,8 +18,8 @@
     <title>Company</title>
 </head>
 <body>
-    <h2>Create</h2>
-    <h4>Company</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Campaign"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -29,7 +31,7 @@
                         <input asp-for="Tariff" class="form-control" readonly />
                         <input type="hidden" asp-for="Id" />
                         <br />
-                        <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Choose Tariff</a>
+                        <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">@Localizer["Choose Tariff"]</a>
                     </div>
                     @if (Model.TariffId > 0)
                     {
@@ -38,7 +40,7 @@
                             <br />
                             <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
                             <br />
-                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
+                            <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">@Localizer["Add recipients"]</a>
                         </div>
                     }
                     <div class="form-group col-md-12">
@@ -73,9 +75,9 @@
                 </div>
                 <div class="form-group col-md-12">
                     <div class="form-group col-md-12">
-                        <label class="control-label">Send Now</label>
+                        <label class="control-label">@Localizer["Send Now"]</label>
                         <input type="radio" id="SendNowRadio" checked="checked" name="Send" value=" " onclick="ShowDate()" />
-                        <label class="control-label">Send Later </label>
+                        <label class="control-label">@Localizer["Send Later"]</label>
                         <input type="radio" id="SendLaterRadio" name="Send" value=" " onclick="ShowDate()" />
                     </div>
                     <div class="form-group" id="SendLater">
@@ -89,7 +91,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <input type="submit" value="Send" class="btn btn-success" />
+                        <input type="submit" value="@Localizer["Send"]" class="btn btn-success" />
                     </div>
                 </div>
             </form>

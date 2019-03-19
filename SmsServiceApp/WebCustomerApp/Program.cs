@@ -12,10 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Model.Interfaces;
-using WebCustomerApp.Models;
-using static WebCustomerApp.Startup;
+using WebApp.Models;
+using static WebApp.Startup;
 
-namespace WebCustomerApp
+namespace WebApp
 {
     public class Program
     {

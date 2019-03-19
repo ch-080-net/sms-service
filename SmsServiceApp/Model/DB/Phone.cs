@@ -2,7 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace WebCustomerApp.Models
+
+namespace WebApp.Models
 {
     public class Phone
     {        

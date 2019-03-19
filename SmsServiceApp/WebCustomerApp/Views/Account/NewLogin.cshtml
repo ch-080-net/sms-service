@@ -1,31 +1,34 @@
 ﻿@using System.Linq
+@using Model.ViewModels.AccountViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-	Layout = null;
+    Layout = null;
 }
 
 <!DOCTYPE HTML>
 <html>
 
 <head>
-	<title>Log in</title>
+    <title>@Localizer["Log in"]</title>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
-	<script>
-		addEventListener("load", function () {
-			setTimeout(hideURLbar, 0);
-		}, false);
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	</script>
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
 
-	<link rel="stylesheet" href="~/css/style_login.css" />
+    <link rel="stylesheet" href="~/css/style_login.css" />
 
-	<link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
 
 </head>
 
@@ -36,22 +39,22 @@
         <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
             <div class="agile-field-txt">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" id="email" placeholder="Enter your login" />
-                <span asp-validation-for="Email" class="agile-right"></span>
+                <input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Enter your login"]" />
+                @*<span asp-validation-for="Email" class="agile-right"></span>*@
             </div>
             <div class="agile-field-txt">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" id="pass" class="form-control" placeholder="Enter your password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <input asp-for="Password" id="pass" class="form-control" placeholder="@Localizer["Enter your password"]" />
+                @*<span asp-validation-for="Password" class="text-danger"></span>*@
                 <div asp-validation-summary="All" class="agile_label" style="color : red"></div>
             </div>
             <div class="agile-field-txt">
                 <div class="agile_label">
-                    <input id="check3" name="check3" type="checkbox" value="show password" onclick="ShowPassword()">
-                    <label class="check" for="check3">Show password</label>
+                    <input id="check3" name="check3" type="checkbox" value="@Localizer["show password"]" onclick="ShowPassword()">
+                    <label class="check" for="check3">@Localizer["Show password"]</label>
                 </div>
                 <div class="agile-right">
-                    <a asp-action="ForgotPassword">Forgot your password?</a>
+                    <a asp-action="ForgotPassword">@Localizer["Forgot your password?"]</a>
                 </div>
             </div>
             <div class="w3ls-bot">
@@ -65,11 +68,11 @@
             </div>
             <div class="agile-field-txt">
                 <p>
-                    <input type="submit" value="SIGN IN">
+                    <input type="submit" value="@Localizer["SIGN IN"]">
                 </p>
             </div>
             <div class="agile-right">
-                <a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">REGISTRATION</a>
+                <a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["REGISTRATION"]</a>
             </div>
         </form>
     </div>
@@ -84,16 +87,16 @@
 </html>
 
 <script>
-	function ShowPassword() {
-		var x = document.getElementById("pass");
-		if (x.type === "password") {
-			x.type = "text";
-		} else {
-			x.type = "password";
-		}
-	}
+    function ShowPassword() {
+        var x = document.getElementById("pass");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
 </script>
 
 @section Scripts {
-	@await Html.PartialAsync("_ValidationScriptsPartial")
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
