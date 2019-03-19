@@ -13,7 +13,6 @@
   <ItemGroup>
     <None Include="wwwroot\css\style2.css" />
     <None Include="wwwroot\css\style2.min.css" />
-    <None Include="wwwroot\images\landing\fond.png" />
     <None Include="wwwroot\images\landing\iconMessage.png" />
     <None Include="wwwroot\images\landing\messages.png" />
     <None Include="wwwroot\images\landing\phone.png" />

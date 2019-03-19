@@ -240,13 +240,14 @@
 .features_item--sms_tools_6:before {
     background-image: url('../images/landing/sms_tools_6.png');
 }
-  .features_description {
+
+.features_description {
     margin: 0;
     font-size: 16px;
     font-weight: 300;
     line-height: 18px;
     color: #8b8b8b;
-  }
+}
 .app {
     padding: 180px 10% 50px;
     background-color: #f7f7f7;
@@ -267,6 +268,15 @@
 }
 
 
+.tariff_photo {
+    display: flex;
+    width: 600px;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-image: url('../images/landing/photo_tariff.jpg');
+    background-size: contain;
+   
+}
 .app_image_message {
     display: flex;
     width: 380px;
@@ -283,7 +293,18 @@
     margin-left: auto;
     text-align: right;
   }
-
+.tariff_content {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    list-style: none;
+    min-width: 360px;
+    font-size: 16px;
+    font-weight: 300;
+  
+}
 
 .app_description {
     margin: 10px;
@@ -291,7 +312,6 @@
     font-weight: 300;
     line-height: 20px;
     color: #8b8b8b;
-
 }
 .app_description_link {
     
@@ -346,6 +366,27 @@
     font-weight: 700;
     margin-bottom: 40px;
 }
+.tariff_main{
+    padding: 10px 5px 10px;
+    color: rgba(255, 255, 255, 0.8);
+}
+/tariff_main_content {
+    padding: 0px 5px 30px;
+    color: rgba(255, 255, 255, 0.7);
+}
+.section_tariff {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 100px 1% 50px;
+    background: 50%;
+    background-image: url('../images/landing/wallpaper2you_30315.jpg');
+    min-height: 700px;
+    display: flex;
+}
 .log_section {
     box-sizing: border-box;
     display: flex;
@@ -353,14 +394,26 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    padding: 180px 1% 50px;
+    padding: 100px 1% 50px;
     background: 50%;
     background-image: url('../images/landing/wallpaper2you_30315.jpg');
-    min-height: 500px;
+    min-height: 700px;
     display: flex;
     color: black;
 }
-
+.section_description {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 100px 1% 50px;
+    background: 100%;
+    background-image: url('../images/landing/white-background-9b1.jpg');
+    min-height: 700px;
+    display: flex;
+}
 
 .start {
     /*image-rendering: 100%;*/
