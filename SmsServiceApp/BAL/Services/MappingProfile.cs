@@ -17,6 +17,8 @@ using BAL.Managers;
 using Model.DTOs;
 using Model.ViewModels.AnswersCodeViewModels;
 using Model.ViewModels.RecievedMessageViewModel;
+using System.Linq;
+using Model.ViewModels.CampaignReportingViewModels;
 
 namespace BAL.Services
 {
@@ -65,9 +67,18 @@ namespace BAL.Services
 
             CreateMap<Recipient, MessageDTO>()
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Phone.PhoneNumber))
-                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Company.Phone.PhoneNumber))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => ReplaceHashtags(r)))
                 .ForMember(m => m.RecipientId, opt => opt.MapFrom(r => r.Id));
+
+            CreateMap<Company, PieChart>()
+                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForPieChart(com)))
+                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
+
+            CreateMap<Company, StackedChart>()
+                .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => SetTimeFrameForStackedChart(com)))
+                .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
+                .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForStackedChart(com)));
 
             CreateMap<RecievedMessage, RecievedMessageViewModel>()
                 .ForMember(dest => dest.RecipientPhone, opt => opt.MapFrom(src => src.Company.Phone.PhoneNumber))
@@ -103,5 +114,71 @@ namespace BAL.Services
             else
                 return null;
         }
+
+        private IEnumerable<Tuple<string, int>> PopulateCategoriesForPieChart(Company company)
+        {
+            var result = new List<Tuple<string, int>>();
+            foreach (var code in company.AnswersCodes)
+            {
+                var messages = from rm in company.RecievedMessages
+                               where rm.Message == Convert.ToString(code.Code)
+                               select rm;
+                result.Add(new Tuple<string, int>(code.Answer, messages.Count()));
+            }
+            return result;
+        }
+
+        private IEnumerable<string> SetTimeFrameForStackedChart(Company company)
+        {
+            DateTime beginning = company.StartTime;
+            DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
+            
+            var result = new List<string>();
+
+            foreach (var i in GetInterimTimes(beginning, ending))
+            {
+                result.Add(i.ToString());
+            }
+            return result;                
+        }
+
+        private IEnumerable<DateTime> GetInterimTimes(DateTime beginning, DateTime ending, int slices = 7)
+        {
+            if (beginning >= ending)
+                return new List<DateTime>();
+
+            if (slices < 2)
+                slices = 2;
+            TimeSpan span = (ending - beginning) / (slices - 1);
+            var result = new List<DateTime>();
+            for (int i = 0; i < slices; i++)
+            {
+                result.Add(beginning + span * i);
+            }
+            return result;
+        }
+
+        private IEnumerable<Tuple<string, IEnumerable<int>>> PopulateCategoriesForStackedChart(Company company)
+        {
+            var result = new List<Tuple<string, IEnumerable<int>>>();
+            var timeGates = GetInterimTimes(company.StartTime, company.EndTime);
+
+            foreach (var code in company.AnswersCodes)
+            {
+                var counts = new List<int>() { 0 };
+                for (int i = 0; i < timeGates.Count() - 1; i++)
+                {
+                    var numOfMessages = (from rm in company.RecievedMessages
+                                   where rm.Message == Convert.ToString(code.Code) &&
+                                   rm.RecievedTime >= timeGates.ElementAt(i) &&
+                                   rm.RecievedTime < timeGates.ElementAt(i + 1)                        
+                                   select rm).Count();
+                    counts.Add(numOfMessages + counts.LastOrDefault());
+                }
+                result.Add(new Tuple<string, IEnumerable<int>>(code.Answer, counts));
+            }
+            return result;
+        }
+
     }
 }

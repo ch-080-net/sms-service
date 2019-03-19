@@ -178,6 +178,13 @@ namespace WebApp.Data
 
             #endregion
 
+
+            // Optional fields
+
+            builder.Entity<Company>()
+                .Property(com => com.Message)
+                .IsRequired(false);
+
             // Unique indexes
 
             builder.Entity<Operator>()

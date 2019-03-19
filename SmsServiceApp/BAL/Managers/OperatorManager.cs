@@ -181,7 +181,7 @@ namespace BAL.Managers
             try
             {
                 image = new Bitmap(stream);
-                image = new Bitmap(image, 32, 32);
+                image = new Bitmap(image, 43, 43);
                 // .setResolution() doesnt work. Bug, possibly
             }
             catch(ArgumentException)
@@ -191,6 +191,18 @@ namespace BAL.Managers
             catch(Exception)
             {
                 return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
+            }
+
+            if(!Directory.Exists("wwwroot/images/OperatorLogo/"))
+            {
+                try
+                {
+                    Directory.CreateDirectory("wwwroot/images/OperatorLogo/");
+                }
+                catch (Exception)
+                {
+                    return new TransactionResultDTO() { Success = false, Details = "Can't create directory for logos" };
+                }
             }
 
             try

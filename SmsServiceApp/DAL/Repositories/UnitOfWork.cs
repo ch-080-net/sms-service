@@ -23,6 +23,7 @@ namespace DAL.Repositories
         private IBaseRepository<RecievedMessage> recievedMessagesRepo;
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
+        private IChartsRepository ChartsRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -137,6 +138,18 @@ namespace DAL.Repositories
                     mailingRepo = new MailingRepository(context);
                 }
                 return mailingRepo;
+            }
+        }
+
+        public IChartsRepository Charts
+        {
+            get
+            {
+                if (ChartsRepo == null)
+                {
+                    ChartsRepo = new ChartsRepository(context);
+                }
+                return ChartsRepo;
             }
         }
 

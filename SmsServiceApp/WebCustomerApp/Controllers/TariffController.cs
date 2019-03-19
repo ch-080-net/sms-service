@@ -19,12 +19,17 @@ namespace WebApp.Controllers
     public class TariffController : Controller
     {
         private readonly ITariffManager tariffManager;
-
+        
         public TariffController(ITariffManager tariff)
         {
             this.tariffManager = tariff;
         }
-       
+
+        /// <summary>
+        /// Get all Tariffs
+        /// </summary>
+        /// <param name="OperatorId">The operator for which we show the tariff</param>
+        /// <returns>Index View</returns>
         [Route("~/Tariff/Index")]
         public IActionResult Index( int OperatorId)
         {

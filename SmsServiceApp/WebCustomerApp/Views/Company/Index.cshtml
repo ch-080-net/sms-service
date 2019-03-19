@@ -36,8 +36,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td class="col-md-4">
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a> |
-                    <a class="btn btn-success" asp-action="Details" asp-route-id="@item.Id">@Localizer["Details"]</a>
+                    <a class="btn btn-success" asp-action="Details" asp-route-companyId="@item.Id">@Localizer["Details"]</a>
                 </td>
             </tr>
             }

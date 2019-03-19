@@ -140,6 +140,7 @@ namespace WebApp
             services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
+            services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
 
@@ -157,8 +158,6 @@ namespace WebApp
 
         }
        
-       
-
         public void Configure(IApplicationBuilder app, 
                               IHostingEnvironment env)
         {

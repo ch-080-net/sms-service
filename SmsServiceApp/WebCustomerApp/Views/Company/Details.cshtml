@@ -61,7 +61,7 @@
             </dl>
         </div>
         <div class="col-md-5">
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Reporting</a></div>            <br />
+            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-campaignId="@Model.Id" asp-controller="CampaignReporting" asp-action="GetChart">Reporting</a></div>            <br />
             @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
             {
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Incoming">Incoming</a></div>            <br />

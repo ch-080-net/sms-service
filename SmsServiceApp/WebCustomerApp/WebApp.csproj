@@ -6,10 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\LandingPage\**" />
-    <Content Remove="Views\LandingPage\**" />
-    <EmbeddedResource Remove="Views\LandingPage\**" />
-    <None Remove="Views\LandingPage\**" />
+    <None Remove="Views\LandingPage\b.jpg" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
@@ -37,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\OperatorLogo\" />
+    <Folder Include="Views\LandingPage\" />
+    <Folder Include="Views\CampaignReporting\" />
   </ItemGroup>
 
   <ItemGroup>
