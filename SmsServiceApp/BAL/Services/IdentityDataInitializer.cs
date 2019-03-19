@@ -5,17 +5,20 @@ using BAL.Managers;
 using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
 using Model.ViewModels.TariffViewModels;
+using Model.ViewModels.StopWordViewModels;
 
 namespace BAL.Services
 {
     public static class IdentityDataInitializer
     {
         public static void SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, 
-				IOperatorManager operatorManager, ICodeManager codeManager, ITariffManager tariffManager)
+				IOperatorManager operatorManager, ICodeManager codeManager, ITariffManager tariffManager,
+				IStopWordManager stopWordManager)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
 			SeedOperators(operatorManager, codeManager, tariffManager);
+			SeedStopWords(stopWordManager);
 		}
 
         public static void SeedUsers(UserManager<ApplicationUser> userManager)
@@ -125,7 +128,7 @@ namespace BAL.Services
 				OperatorViewModel oper2 = new OperatorViewModel();
 				oper2.Name = "Kyivstar";
 				operatorManager.Add(oper2);
-				oper2 = operatorManager.GetByName("Vodafone");
+				oper2 = operatorManager.GetByName("Kyivstar");
 
 				CodeViewModel code4 = new CodeViewModel() { OperatorId = oper2.Id, OperatorCode = "+38097" };
 				CodeViewModel code5 = new CodeViewModel() { OperatorId = oper2.Id, OperatorCode = "+38067" };
@@ -142,21 +145,21 @@ namespace BAL.Services
 		public static void SeedTariffs(ITariffManager tariffManager, int operatorId)
 		{
 			TariffViewModel tariff1 = new TariffViewModel();
-			tariff1.Name = "Econom";
+			tariff1.Name = "Low";
 			tariff1.Description = "Cheap tariff";
 			tariff1.OperatorId = operatorId;
 			tariff1.Price = 35;
 			tariff1.Limit = 3;
 
 			TariffViewModel tariff2 = new TariffViewModel();
-			tariff2.Name = "Standart";
+			tariff2.Name = "Medium";
 			tariff2.Description = "Better choise";
 			tariff2.OperatorId = operatorId;
 			tariff2.Price = 55;
 			tariff2.Limit = 5;
 
 			TariffViewModel tariff3 = new TariffViewModel();
-			tariff3.Name = "Mega";
+			tariff3.Name = "High";
 			tariff3.Description = "All inclusive";
 			tariff3.OperatorId = operatorId;
 			tariff3.Price = 80;
@@ -166,6 +169,21 @@ namespace BAL.Services
 			tariffManager.Insert(tariff2);
 			tariffManager.Insert(tariff3);
 		}
+
+		public static void SeedStopWords(IStopWordManager stopWordManager)
+		{
+			StopWordViewModel stopWord1 = new StopWordViewModel();
+			StopWordViewModel stopWord2 = new StopWordViewModel();
+			StopWordViewModel stopWord3 = new StopWordViewModel();
+
+			stopWord1.Word = "stop";
+			stopWord2.Word = "astanavites";
+			stopWord3.Word = "block";
+
+			stopWordManager.Insert(stopWord1);
+			stopWordManager.Insert(stopWord2);
+			stopWordManager.Insert(stopWord3);
+		}
 	}
-    }
+}
 
