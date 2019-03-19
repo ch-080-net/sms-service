@@ -12,6 +12,7 @@ namespace WebCustomerApp.Models
         public ApplicationGroup ApplicationGroup { get; set; }
         public ICollection<RecievedMessage> RecievedMessages { get; set; }
         public ICollection<Company> Companies { get; set; }
+        public ICollection<PhoneGroupUnsubscribe> PhoneGroupUnsubscribtions { get; set; }
 
         public string PhoneNumber { get; set; }
 

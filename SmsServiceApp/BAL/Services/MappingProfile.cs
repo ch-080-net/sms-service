@@ -92,6 +92,10 @@ namespace BAL.Services
 
             CreateMap<AnswersCode, AnswersCodeViewModel>();
             CreateMap<AnswersCodeViewModel, AnswersCode>();
+               
+            CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
+                .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
+             .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
         }
 
         /// <summary>

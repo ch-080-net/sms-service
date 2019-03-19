@@ -35,9 +35,9 @@ namespace BAL.Managers
         /// </summary>
         /// <param phone="Destination">getting all the companies that have this phone</param>
         /// <returns>IEnumerable of mapped to ViewModel objects</returns>
-        public IEnumerable<CompanyViewModel> GetCompaniesByPhone(Phone phone)
+        public IEnumerable<CompanyViewModel> GetCompaniesByPhoneId(int phoneId)
         {
-            IEnumerable<Company> companies = unitOfWork.Companies.Get(p => p.PhoneId == phone.Id);
+            IEnumerable<Company> companies = unitOfWork.Companies.Get(p => p.PhoneId == phoneId);
             return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
         }
 

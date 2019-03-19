@@ -42,6 +42,7 @@
 #messagePreviewContainer {
     transition: 0.9s;
     background: url(/images/iphone.png)no-repeat;
+    background-color:none;
     background-size: cover;
     border-left: none;
     border-radius: 0 0 8px;
