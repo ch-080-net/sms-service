@@ -102,10 +102,15 @@ namespace BAL.Services
         private string ReplaceHashtags(Recipient recipient)
         {
             string result = recipient.Company.Message;
-            result = result.Replace("#name", recipient.Name)
-                .Replace("#surname", recipient.Surname)
-                .Replace("#company", recipient.Company.Name)
-                .Replace("#birthday", recipient.BirthDate.ToShortDateString());
+            if (recipient.Name != null)
+                result = result.Replace("#name", recipient.Name);
+            if (recipient.Company.Name != null)
+                result = result.Replace("#company", recipient.Company.Name);
+            if (recipient.Surname != null)
+                result = result.Replace("#surname", recipient.Surname);
+            if (recipient.BirthDate != null)
+                result = result.Replace("#birthday", recipient.BirthDate.ToShortDateString());
+
             return result;
         }
 
