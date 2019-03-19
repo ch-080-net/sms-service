@@ -34,8 +34,9 @@ namespace WebApp
 					var codeManager = serviceProvider.GetRequiredService<ICodeManager>();
 					var tariffManager = serviceProvider.GetRequiredService<ITariffManager>();
 					var stopWordManager = serviceProvider.GetRequiredService<IStopWordManager>();
+                    var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
 
-					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager);
+					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
                 }
                 catch
                 {
