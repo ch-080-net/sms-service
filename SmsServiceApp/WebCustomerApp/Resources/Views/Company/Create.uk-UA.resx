@@ -132,7 +132,7 @@
   <data name="Next" xml:space="preserve">
     <value>Далі</value>
   </data>
-  <data name="Receive" xml:space="preserve">
+  <data name="Recieve" xml:space="preserve">
     <value>Отримати</value>
   </data>
   <data name="Select campaign type" xml:space="preserve">
@@ -141,7 +141,7 @@
   <data name="Send" xml:space="preserve">
     <value>Надіслати</value>
   </data>
-  <data name="Send and Receive" xml:space="preserve">
+  <data name="Send and Recieve" xml:space="preserve">
     <value>Надіслати та отримати</value>
   </data>
 </root>
