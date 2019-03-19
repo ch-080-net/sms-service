@@ -22,6 +22,9 @@ namespace WebApp.Controllers
             this.operatorManager = operatorManager;
         }
 
+        /// <summary>
+        /// Returns page with Code input form and list
+        /// </summary>
         [HttpGet]
         public IActionResult Codes(PageState pageState)
         {
@@ -40,6 +43,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
+        /// <summary>
+        /// Add new Code
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Codes(CodeViewModel newCode, PageState pageState)
@@ -62,6 +68,9 @@ namespace WebApp.Controllers
             return RedirectToAction("Operators", "Operator");
         }
 
+        /// <summary>
+        /// Remove code with specified codeId. Uses pageStateJson for simplicity
+        /// </summary>
         public IActionResult Remove(int codeId, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
@@ -77,6 +86,9 @@ namespace WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Edit existing operator
+        /// </summary>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public IActionResult Code(CodeViewModel editedCode, PageState pageState)
@@ -111,6 +123,9 @@ namespace WebApp.Controllers
             return Redirect(Url.Action("Codes", pageState));
         }
 
+        /// <summary>
+        /// Select specified page. Uses pageStateJson for simplicity
+        /// </summary>
         public IActionResult SelectPage(int page, string pageStateJson)
         {
             PageState pageState = JsonConvert.DeserializeObject<PageState>(pageStateJson);
@@ -118,6 +133,9 @@ namespace WebApp.Controllers
             return Redirect(Url.Action("Codes", pageState));
         }
 
+        /// <summary>
+        /// Search codes
+        /// </summary>
         [HttpPost]
         public IActionResult SearchCodes(CodeSearchViewModel search, PageState pageState)
         {

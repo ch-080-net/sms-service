@@ -21,6 +21,9 @@ namespace WebApp.Controllers
             this.chartsManager = ChartsManager;
         }
 
+        /// <summary>
+        /// Used for referring, redirects to ShowChart
+        /// </summary>
         [HttpGet]
         public IActionResult GetChart(int campaignId)
         {
@@ -29,6 +32,10 @@ namespace WebApp.Controllers
             return RedirectToAction("ShowChart", result);
         }
 
+        /// <summary>
+        /// Return view with chart
+        /// </summary>
+        /// <param name="campaignDetails"> Should contain CampaignId </param>
         public IActionResult ShowChart(CampaignDetailsViewModel campaignDetails)
         {
             if (ModelState.IsValid)
@@ -42,6 +49,11 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Company");
         }
 
+        /// <summary>
+        /// Changes ChartSelection and redirects for ShowChart()
+        /// </summary>
+        /// <param name="campaignDetails"></param>
+        /// <returns></returns>
         public IActionResult Mailing(CampaignDetailsViewModel campaignDetails)
         {
             if (ModelState.IsValid)
@@ -52,6 +64,11 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Company");
         }
 
+        /// <summary>
+        /// Changes ChartSelection and redirects for ShowChart()
+        /// </summary>
+        /// <param name="campaignDetails"></param>
+        /// <returns></returns>
         public IActionResult Voting(CampaignDetailsViewModel campaignDetails)
         {
             if (ModelState.IsValid)
@@ -62,6 +79,11 @@ namespace WebApp.Controllers
             return RedirectToAction("Index", "Company");
         }
 
+        /// <summary>
+        /// Changes ChartSelection and redirects for ShowChart()
+        /// </summary>
+        /// <param name="campaignDetails"></param>
+        /// <returns></returns>
         public IActionResult VotingByTime(CampaignDetailsViewModel campaignDetails)
         {
             if (ModelState.IsValid)

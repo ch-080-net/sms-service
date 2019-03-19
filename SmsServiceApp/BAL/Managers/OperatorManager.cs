@@ -168,7 +168,7 @@ namespace BAL.Managers
         /// Resize logo and write to .png file
         /// </summary>
         /// <param name="logo"> Should contain not 0 OperatorId and not null Logo</param>
-        /// <returns></returns>
+        /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO AddLogo(LogoViewModel logo)
         {
             if (logo.Logo == null)
