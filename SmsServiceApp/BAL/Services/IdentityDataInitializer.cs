@@ -8,6 +8,7 @@ using Model.ViewModels.TariffViewModels;
 using Model.ViewModels.StopWordViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace BAL.Services
 {
@@ -15,12 +16,13 @@ namespace BAL.Services
     {
         public static void SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, 
 				IOperatorManager operatorManager, ICodeManager codeManager, ITariffManager tariffManager,
-				IStopWordManager stopWordManager)
+				IStopWordManager stopWordManager, IUnitOfWork unitOfWork)
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
 			SeedOperators(operatorManager, codeManager, tariffManager);
 			SeedStopWords(stopWordManager);
+            SeedCampaigns(unitOfWork);
 		}
 
 
@@ -193,6 +195,60 @@ namespace BAL.Services
 				stopWordManager.Insert(stopWord3);
 			}
 		}
+
+        public static void SeedCampaigns(IUnitOfWork unitOfWork)
+        {
+            if (unitOfWork.Companies.Get(com => com.Name == "Great campaign!").Any())
+                return;
+
+            var company = new Company();
+            var tariff = new Tariff() { Limit = 15, Price = 10, Name = "Intermidiate", Description = "For good people!", Operator = 
+                new Operator() { Name = "UMC" } };
+            company.Tariff = tariff;
+            company.Type = CompanyType.SendAndRecieve;
+            company.StartTime = DateTime.Parse("2019.02.15");
+            company.EndTime = DateTime.Parse("2019.02.21");
+            company.SendingTime = DateTime.Parse("2019.02.15");
+            company.Phone = new Phone() { PhoneNumber = "+380333333333" };
+            company.Name = "Great campaign!";
+            company.Message = "Hello, world!";
+            company.Description = "For great people only";
+            company.ApplicationGroup = unitOfWork.ApplicationGroups.Get(ag => ag.Name == "AdminGroup").FirstOrDefault();
+
+            var answerCodes = new List<AnswersCode>();
+            answerCodes.Add(new AnswersCode() { Code = 0, Answer = "Yes" });
+            answerCodes.Add(new AnswersCode() { Code = 1, Answer = "Of course!" });
+            answerCodes.Add(new AnswersCode() { Code = 2, Answer = "Hell yeah!" });
+            company.AnswersCodes = answerCodes;
+
+            var recipients = new List<Recipient>();
+            recipients.Add(new Recipient() { Phone = new Phone() { PhoneNumber = "+380673458746" }, MessageState = MessageState.NotSent });
+            recipients.Add(new Recipient() { Phone = new Phone() { PhoneNumber = "+380673483746" }, MessageState = MessageState.NotSent });
+            company.Recipients = recipients;
+
+            var recievedMessages = new List<RecievedMessage>();
+            recievedMessages.Add(new RecievedMessage() { Message = "1", Phone = 
+                new Phone() { PhoneNumber = "+380673404646" }, RecievedTime = DateTime.Parse("2019.02.15") });
+            recievedMessages.Add(new RecievedMessage() { Message = "1", Phone = 
+                new Phone() { PhoneNumber = "+380683404646" }, RecievedTime = DateTime.Parse("2019.02.16") });
+            recievedMessages.Add(new RecievedMessage() { Message = "1", Phone = 
+                new Phone() { PhoneNumber = "+380693404646" }, RecievedTime = DateTime.Parse("2019.02.18") });
+
+            recievedMessages.Add(new RecievedMessage() { Message = "0", Phone = 
+                new Phone() { PhoneNumber = "+380073404646" }, RecievedTime = DateTime.Parse("2019.02.15") });
+            recievedMessages.Add(new RecievedMessage() { Message = "0", Phone = 
+                new Phone() { PhoneNumber = "+380173404646" }, RecievedTime = DateTime.Parse("2019.02.19") });
+
+            recievedMessages.Add(new RecievedMessage() { Message = "2", Phone = 
+                new Phone() { PhoneNumber = "+380673404646" }, RecievedTime = DateTime.Parse("2019.02.19") });
+            recievedMessages.Add(new RecievedMessage() { Message = "2", Phone = 
+                new Phone() { PhoneNumber = "+380673404646" }, RecievedTime = DateTime.Parse("2019.02.20") });
+
+            company.RecievedMessages = recievedMessages;
+
+            unitOfWork.Companies.Insert(company);
+            unitOfWork.Save();
+        }
 	}
 }
 
