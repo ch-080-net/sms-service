@@ -13,7 +13,6 @@
   <ItemGroup>
     <None Include="wwwroot\css\style2.css" />
     <None Include="wwwroot\css\style2.min.css" />
-    <None Include="wwwroot\images\landing\fond.png" />
     <None Include="wwwroot\images\landing\iconMessage.png" />
     <None Include="wwwroot\images\landing\messages.png" />
     <None Include="wwwroot\images\landing\phone.png" />
@@ -31,7 +30,16 @@
 
   <ItemGroup>
     <Folder Include="Views\LandingPage\" />
-    <Folder Include="wwwroot\images\OperatorLogo\" />
+    <Folder Include="Views\CampaignReporting\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\AnswersCode\Create.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AnswersCode\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

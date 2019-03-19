@@ -80,7 +80,13 @@
             </div>
             <div class="agile-right">
                 <a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">LOGIN</a>
+             
+                <div style="margin-top:20px;">
+                    <a asp-area="" asp-controller="Home" asp-action="Index">Back to List</a>
+                </div>
+
             </div>
+            
         </form>
     </div>
 

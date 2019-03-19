@@ -10,7 +10,8 @@ using Model.Interfaces;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WebCustomerApp.Models;
-using BAL.Services;
+using BAL.Managers;
+using BAL.Interfaces;
 
 namespace WebCustomerApp.Services
 {
@@ -26,6 +27,7 @@ namespace WebCustomerApp.Services
 
         private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private IServiceScopeFactory serviceScopeFactory;
+        private IRecievedMessageManager recievedMessageManager;
 
 		/// <summary>
 		/// Create SMPP client, add event handlers 
@@ -34,9 +36,10 @@ namespace WebCustomerApp.Services
 		/// </summary>
 		/// <param name="KeepAliveInterval">Property for changing connection time(seconds) with server</param>
 		/// <param name="serviceScopeFactory">instance of static service</param>
-		public SmsSender(IServiceScopeFactory serviceScopeFactory)
+		public SmsSender(IServiceScopeFactory serviceScopeFactory, IRecievedMessageManager recievedMessageManager)
 		{
             this.serviceScopeFactory = serviceScopeFactory;
+            this.recievedMessageManager = recievedMessageManager;
 			clientSMPP = new SMSCclientSMPP();
 			clientSMPP.KeepAliveInterval = 60;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
@@ -158,7 +161,18 @@ namespace WebCustomerApp.Services
 			{
 				sw.WriteLine(report);
 			}
-		}
+
+            RecievedMessageDTO recievedMessage = new RecievedMessageDTO();
+            recievedMessage.SenderPhone = e.Originator;
+            recievedMessage.RecipientPhone = e.Destination;
+            recievedMessage.MessageText = e.Content;
+            recievedMessage.TimeOfRecieve = DateTime.UtcNow;
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var recievedMessageManager = scope.ServiceProvider.GetService<IRecievedMessageManager>();
+                recievedMessageManager.Insert(recievedMessage);
+            }
+        }
 
 		/// <summary>
 		/// Add message id from SMPP according to sequence number
