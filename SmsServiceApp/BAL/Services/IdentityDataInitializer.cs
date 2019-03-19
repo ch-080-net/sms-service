@@ -6,6 +6,8 @@ using Model.ViewModels.OperatorViewModels;
 using Model.ViewModels.CodeViewModels;
 using Model.ViewModels.TariffViewModels;
 using Model.ViewModels.StopWordViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BAL.Services
 {
@@ -172,17 +174,22 @@ namespace BAL.Services
 
 		public static void SeedStopWords(IStopWordManager stopWordManager)
 		{
-			StopWordViewModel stopWord1 = new StopWordViewModel();
-			StopWordViewModel stopWord2 = new StopWordViewModel();
-			StopWordViewModel stopWord3 = new StopWordViewModel();
+			IEnumerable<StopWordViewModel> stopWords = stopWordManager.GetStopWords();
 
-			stopWord1.Word = "stop";
-			stopWord2.Word = "astanavites";
-			stopWord3.Word = "block";
+			if (!stopWords.Any())
+			{
+				StopWordViewModel stopWord1 = new StopWordViewModel();
+				StopWordViewModel stopWord2 = new StopWordViewModel();
+				StopWordViewModel stopWord3 = new StopWordViewModel();
 
-			stopWordManager.Insert(stopWord1);
-			stopWordManager.Insert(stopWord2);
-			stopWordManager.Insert(stopWord3);
+				stopWord1.Word = "stop";
+				stopWord2.Word = "astanavites";
+				stopWord3.Word = "block";
+
+				stopWordManager.Insert(stopWord1);
+				stopWordManager.Insert(stopWord2);
+				stopWordManager.Insert(stopWord3);
+			}
 		}
 	}
 }
