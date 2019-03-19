@@ -155,7 +155,7 @@ namespace WebApp.Controllers
         public IActionResult Send(SendViewModel item)
         {
             
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 if (item.SendingTime < DateTime.Now)
                 {
