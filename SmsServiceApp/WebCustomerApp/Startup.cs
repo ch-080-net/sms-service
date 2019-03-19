@@ -104,6 +104,7 @@ namespace WebCustomerApp
             services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
+            services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
 
@@ -118,8 +119,6 @@ namespace WebCustomerApp
             services.AddSession();
         }
        
-       
-
         public void Configure(IApplicationBuilder app, 
                               IHostingEnvironment env)
         {

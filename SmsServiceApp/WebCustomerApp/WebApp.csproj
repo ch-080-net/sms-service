@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Views\LandingPage\" />
-    <Folder Include="wwwroot\images\OperatorLogo\" />
+    <Folder Include="Views\CampaignReporting\" />
   </ItemGroup>
 
   <ItemGroup>

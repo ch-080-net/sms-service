@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebCustomerApp.Models;
+using static WebCustomerApp.Startup;
 
 namespace WebCustomerApp
 {

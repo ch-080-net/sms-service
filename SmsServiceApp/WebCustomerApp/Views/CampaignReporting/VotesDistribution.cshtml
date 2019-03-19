@@ -1,0 +1,63 @@
+﻿@using Model.ViewModels.CampaignReportingViewModels
+@model PieChart
+
+<script src="~/js/highcharts.js"></script>
+<script src="~/js/no-data-to-display.js"></script>
+
+<script type="text/javascript">
+    Highcharts.chart('container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie',
+            backgroundColor: '#eeeeee'
+        },
+        title: {
+            @*text: '@Model.Description'*@
+            text: ''
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: false,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Votes',
+            colorByPoint: true,
+            data: [
+            @if (Model.Categories.Any())
+                {
+                    WriteLiteral("{" +
+                    "name: '" + @Model.Categories.First().Item1 + "', " +
+                        "y: " + @Model.Categories.First().Item2 + ", " +
+                        "sliced: false, " +
+                        "selected: false" +
+                        " }");
+
+                    @foreach (var i in Model.Categories.Skip(1))
+                    {
+                        WriteLiteral(", {" +
+                            "name: '" + i.Item1 +
+                            "', y: " + i.Item2 +
+                            "}");
+                    }
+            }
+            ]
+        }]
+    });
+
+
+</script>
+

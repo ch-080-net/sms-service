@@ -14,7 +14,7 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private ICompanyRepository companyRepo;
-        private IBaseRepository<Operator> operatorRepo;
+        private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
@@ -23,6 +23,7 @@ namespace DAL.Repositories
         private IBaseRepository<RecievedMessage> recievedMessagesRepo;
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
+        private IChartsRepository ChartsRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -63,13 +64,13 @@ namespace DAL.Repositories
             }
         }
 
-        public IBaseRepository<Operator> Operators
+        public IOperatorRepository Operators
         {
             get
             {
                 if (operatorRepo == null)
                 {
-                    operatorRepo = new BaseRepository<Operator>(context);
+                    operatorRepo = new OperatorRepository(context);
                 }
                 return operatorRepo;
             }
@@ -137,6 +138,18 @@ namespace DAL.Repositories
                     mailingRepo = new MailingRepository(context);
                 }
                 return mailingRepo;
+            }
+        }
+
+        public IChartsRepository Charts
+        {
+            get
+            {
+                if (ChartsRepo == null)
+                {
+                    ChartsRepo = new ChartsRepository(context);
+                }
+                return ChartsRepo;
             }
         }
 

@@ -1,53 +1,63 @@
 ﻿@using Model.ViewModels.TariffViewModels
 @model TariffsViewModel
-
-<h2>Tariffs</h2>
-<hr />
-<div class="container">
-    <div class="col-lg-9">
-        <table class="table table-striped ">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="col-md-2">
-                        Tariff
-                    </th>
-                    <th class="col-md-4">
-						Description
-                    </th>
-                    <th class="col-md-1">
-                        Price
-                    </th>
-                    <th class="col-md-1">
-                        Limit
-                    </th>
-                    <th class="col-md-1"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.TariffsList)
-                {
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tariff</title>
+    <title>Tariff List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h2>Tariffs</h2>
+    <hr />
+    <div class="container">
+        <div class="col-lg-9">
+            <table class="table table-striped ">
+                <thead class="thead-dark">
                     <tr>
-                        <td class="col-md-2">
-                            @item.Name
-                        </td>
-                        <td class="col-md-4">
-                            @item.Description
-                        </td>
-                        <td class="col-md-1">
-                            @item.Price
-                        </td>
-                        <td class="col-md-1">
-                            @item.Limit
-                        </td>
-                        <td class="col-md-1">
-                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
-                        </td>
+                        <th class="col-md-2">
+                            Tariff
+                        </th>
+                        <th class="col-md-4">
+                            Description
+                        </th>
+                        <th class="col-md-1">
+                            Price
+                        </th>
+                        <th class="col-md-1">
+                            Limit
+                        </th>
+                        <th class="col-md-1"></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TariffsList)
+                    {
+                        <tr>
+                            <td class="col-md-2">
+                                @item.Name
+                            </td>
+                            <td class="col-md-4">
+                                @item.Description
+                            </td>
+                            <td class="col-md-1">
+                                @item.Price
+                            </td>
+                            <td class="col-md-1">
+                                @item.Limit
+                            </td>
+                            <td class="col-md-1">
+                                <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">Choose</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Back to Operators</a>
     </div>
-<div>
-	<a class="btn btn-primary" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Back to Operators</a>
-</div>
+</body>
+</html>

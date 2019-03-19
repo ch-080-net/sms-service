@@ -83,6 +83,8 @@ namespace BAL.Managers
             var oper = unitOfWork.Operators.GetById(id);
             if (oper == null)
                 return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
+            else if (oper.Tariffs.Any())
+                return new TransactionResultDTO() { Success = false, Details = "Operator cannot be removed when he have tariffs" };
             try
             {
                 unitOfWork.Operators.Delete(oper);
@@ -181,7 +183,7 @@ namespace BAL.Managers
             try
             {
                 image = new Bitmap(stream);
-                image = new Bitmap(image, 32, 32);
+                image = new Bitmap(image, 43, 43);
                 // .setResolution() doesnt work. Bug, possibly
             }
             catch(ArgumentException)
@@ -191,6 +193,18 @@ namespace BAL.Managers
             catch(Exception)
             {
                 return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
+            }
+
+            if(!Directory.Exists("wwwroot/images/OperatorLogo/"))
+            {
+                try
+                {
+                    Directory.CreateDirectory("wwwroot/images/OperatorLogo/");
+                }
+                catch (Exception)
+                {
+                    return new TransactionResultDTO() { Success = false, Details = "Can't create directory for logos" };
+                }
             }
 
             try
