@@ -64,8 +64,8 @@
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Reporting</a></div>            <br />
             @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
             {
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Incoming</a></div>            <br />
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Index">Answer codes</a></div>            <br />
+            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Incoming">Incoming</a></div>            <br />
+            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-controller="AnswersCode" asp-action="Index">Answer codes</a></div>            <br />
             }
             <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Edit">Edit</a></div> <br />
             <div class="row">

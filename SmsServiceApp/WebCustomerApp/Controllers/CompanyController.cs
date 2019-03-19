@@ -356,7 +356,7 @@ namespace WebApp.Controllers
             CompanyViewModel company = companyManager.Get(companyId);
             IEnumerable<RecievedMessageViewModel> recievedMessages = 
                 recievedMessageManager.GetRecievedMessages(companyId);
-            if (company.Type == 2)
+            if (company.Type == CompanyType.Recieve)
             {
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)
