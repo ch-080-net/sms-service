@@ -16,6 +16,5 @@ namespace BAL.Managers
         void Insert(RecipientViewModel item, int companyId);
         void Update(RecipientViewModel item);
         void Delete(int id);
-        bool IsRecipientExist(int phoneId);
     }
 }

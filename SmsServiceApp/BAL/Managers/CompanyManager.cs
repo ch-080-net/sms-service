@@ -55,9 +55,9 @@ namespace BAL.Managers
 		}
 
         /// <summary>
-        /// Update Company in db
+        /// Update base entity of Company
         /// </summary>
-        /// <param name="item">ViewModel wich need to update in db</param>
+        /// <param name="item">CompanyViewModel item from view</param>
         public void Update(CompanyViewModel item)
         {
             Company company = unitOfWork.Companies.GetById(item.Id);
@@ -75,6 +75,11 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Find base entity of company from db
+        /// and add Send info from view
+        /// </summary>
+        /// <param name="item">SendViewModel from send view</param>
         public void AddSend(SendViewModel item)
         {
             Company company = unitOfWork.Companies.GetById(item.Id);
@@ -85,6 +90,11 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Find base entity of company from db
+        /// and add Recieve info from view
+        /// </summary>
+        /// <param name="item">RecieveViewModel from view</param>
         public void AddRecieve(RecieveViewModel item)
         {
             Company company = unitOfWork.Companies.GetById(item.Id);
@@ -94,6 +104,11 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Find base entity of company from db
+        /// and add SendAndRecieve info from view
+        /// </summary>
+        /// <param name="item">SendRecieveViewModel from view</param>
         public void AddSendRecieve(SendRecieveViewModel item)
         {
             Company company = unitOfWork.Companies.GetById(item.Id);
@@ -117,6 +132,11 @@ namespace BAL.Managers
             return mapper.Map<Company, CompanyViewModel>(company);
         }
 
+        /// <summary>
+        /// Get full info about company from db
+        /// </summary>
+        /// <param name="id">id of company</param>
+        /// <returns>ManageViewModel with full info about compaign</returns>
         public ManageViewModel GetDetails(int id)
         {
             Company company = unitOfWork.Companies.GetById(id);
@@ -134,6 +154,11 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        /// <summary>
+        /// Insert company entity to db and return Id
+        /// </summary>
+        /// <param name="item">CompanyViewModel that we isert to db</param>
+        /// <returns>Id of inserted company</returns>
         public int InsertWithId(CompanyViewModel item)
         {
             Company company = mapper.Map<CompanyViewModel, Company>(item);

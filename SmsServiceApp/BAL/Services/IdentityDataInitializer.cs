@@ -18,7 +18,7 @@ namespace BAL.Services
                 {
                     Phone phone = new Phone() { PhoneNumber = "+380111111111" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "TestUserGroup" };
                     user.UserName = "User@gmail.com";
                     user.Email = "User@gmail.com";
                     user.ApplicationGroup = group;
@@ -35,7 +35,7 @@ namespace BAL.Services
                 {
                     Phone phone = new Phone() { PhoneNumber = "+380777777777" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "AdminGroup" };
                     user.UserName = "Admin@gmail.com";
                     user.Email = "Admin@gmail.com";
                     user.ApplicationGroup = group;
@@ -53,7 +53,7 @@ namespace BAL.Services
                 {
                     Phone phone = new Phone() { PhoneNumber = "+380666666666" };
                     ApplicationUser user = new ApplicationUser();
-                    ApplicationGroup group = new ApplicationGroup() { Phone = phone };
+                    ApplicationGroup group = new ApplicationGroup() { Phone = phone, Name = "TestGroup" };
                     user.UserName = "CorporateUser@gmail.com";
                     user.Email = "CorporateUser@gmail.com";
                     user.ApplicationGroup = group;
