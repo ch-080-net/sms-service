@@ -42,9 +42,6 @@
     <Content Update="Views\AnswersCode\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\AnswersCode\Delete.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\AnswersCode\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

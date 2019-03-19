@@ -350,19 +350,24 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        /// <summary>
+        /// Gets IncomingView with Recieved messages from db
+        /// </summary>
+        /// <param name="companyId">Id of company</param>
+        /// <returns>View with incoming messages</returns>
         [HttpGet]
         public IActionResult Incoming(int companyId)
         {
             CompanyViewModel company = companyManager.Get(companyId);
-            IEnumerable<RecievedMessageViewModel> recievedMessages = 
+            IEnumerable<RecievedMessageViewModel> recievedMessages =
                 recievedMessageManager.GetRecievedMessages(companyId);
             if (company.Type == CompanyType.Recieve)
             {
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)
                 {
-
-                    if (Regex.IsMatch(rm.MessageText, @"^\d+$"))
+                    AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
+                    if (Regex.IsMatch(rm.MessageText, @"^\d+$") && answersCode != null)
                         rm.MessageText = answersCodes.First(ac => ac.Code == int.Parse(rm.MessageText)).Answer;
                 }
             }
@@ -371,6 +376,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Delete selected message from db
+        /// </summary>
+        /// <param name="companyId">id of company</param>
+        /// <param name="recievedMessageId">id of message to delete</param>
+        /// <returns>Redirect to View with incoming messages</returns>
         public IActionResult DeleteIncomingMessage(int companyId, int recievedMessageId)
         {
             recievedMessageManager.Delete(recievedMessageId);

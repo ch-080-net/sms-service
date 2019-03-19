@@ -1,6 +1,12 @@
 ﻿@using Model.ViewModels.RecievedMessageViewModel
 @model RecievedMessageViewModel
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Incoming Messages</title>
+</head>
+<body>
 <h2>Incoming Messages</h2>
 <hr />
 <div class="container">
@@ -46,3 +52,5 @@
 <div>
     <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">Back to Details</a>
 </div>
+</body>
+</html>

@@ -11,18 +11,31 @@ using Model.ViewModels.RecievedMessageViewModel;
 
 namespace BAL.Managers
 {
+    /// <summary>
+    /// Manager for RecievedMessage
+    /// </summary>
     public class RecievedMessageManager : BaseManager, IRecievedMessageManager
     {
         public RecievedMessageManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 
+        /// <summary>
+        /// Get Recieved Messages by id
+        /// </summary>
+        /// <param name="id">id of recieved message</param>
+        /// <returns>RecievedMessageViewModel</returns>
         public RecievedMessageViewModel Get(int id)
         {
             RecievedMessage recievedMessage = unitOfWork.RecievedMessages.GetById(id);
             return mapper.Map<RecievedMessage, RecievedMessageViewModel>(recievedMessage);
         }
 
+        /// <summary>
+        /// Get list of Recieved Messages
+        /// </summary>
+        /// <param name="companyId">id of company</param>
+        /// <returns>List of RecievedMessagesViewModel</returns>
         public IEnumerable<RecievedMessageViewModel> GetRecievedMessages(int companyId)
         {
             IEnumerable<RecievedMessage> recievedMessages = unitOfWork.RecievedMessages
@@ -37,6 +50,10 @@ namespace BAL.Managers
             return mapper.Map<IEnumerable<RecievedMessage>, IEnumerable<RecievedMessageViewModel>>(recievedMessages);
         }
 
+        /// <summary>
+        /// insert new Recieved Message in bd
+        /// </summary>
+        /// <param name="item">RecievedMessageDTO for inserting</param>
         public void Insert(RecievedMessageDTO item)
         {
             RecievedMessage recievedMessage = mapper.Map<RecievedMessageDTO, RecievedMessage>(item);
@@ -74,7 +91,11 @@ namespace BAL.Managers
             unitOfWork.RecievedMessages.Insert(recievedMessage);
             unitOfWork.Save();
         }
-
+        
+        /// <summary>
+        /// Delete Recieved Message from db
+        /// </summary>
+        /// <param name="id">id of recieved message for deleting</param>
         public void Delete(int id)
         {
             RecievedMessage recievedMessage = unitOfWork.RecievedMessages.GetById(id);

@@ -1,0 +1,62 @@
+﻿#messagePreview::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 38px;
+    height: 26px;
+    border-color: inherit;
+    border-style: solid;
+    border-radius: 50%;
+    border-width: 0 10px;
+    z-index: 99;
+    left: 23px;
+    color: #e5e5ea;
+    clip: rect(10px,40px,30px,21px) !important;
+}
+
+#messagePreview {
+    z-index: 10;
+    border: none;
+    margin-top: 140px;
+    margin-left: 50px;
+    font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    line-height: 100%;
+    width: 230px;
+    background-color: #e5e5ea;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    resize: none;
+    overflow: hidden;
+    display: none;
+}
+
+#messagePreviewSwitcher span {
+    display: block;
+    width: 21px;
+    margin: auto;
+    margin-top: 5px;
+    font-size: 25px;
+    height: 30px;
+}
+
+#messagePreviewContainer {
+    transition: 0.9s;
+    background: url(/images/iphone.png)no-repeat;
+    background-size: cover;
+    border-left: none;
+    border-radius: 0 0 8px;
+    padding-right: 0px;
+    height: 320px;
+    width: 0px;
+    margin-top: 0px;
+    overflow: hidden;
+    position: relative;
+    padding-left: 0px;
+}
+
+#messagePreviewSwitcher {
+    border-radius: 0 8px 8px 0;
+    border-width: 0px;
+    text-align: center;
+    height: 50px;
+}
