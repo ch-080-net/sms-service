@@ -12,36 +12,41 @@
 </div>
 
 <div class="row">
-    <ul class="nav nav-pills nav-stacked col-sm-4 col-md-3" role="group">
-        @if (Model.HaveVoting)
-        {
-            @switch (Model.Selection)
+    <div class="col-sm-4 col-md-3">
+        <ul class="nav nav-pills nav-stacked row" role="group">
+            @if (Model.HaveVoting)
             {
-                case ChartSelection.MailingDetails:
-                    WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
-                    break;
-                case ChartSelection.VotesDetails:
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
-                    WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
-                    break;
-                case ChartSelection.VotesDetailsByTime:
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
-                    WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
-                    WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
-                    break;
+                @switch (Model.Selection)
+                {
+                    case ChartSelection.MailingDetails:
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
+                        break;
+                    case ChartSelection.VotesDetails:
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
+                        break;
+                    case ChartSelection.VotesDetailsByTime:
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>Voting statistics</a></li>");
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>Voting by time</a></li>");
+                        break;
+                }
             }
-        }
-        else
-        {
-            WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
-            WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting statistics</a></li>");
-            WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting by time</a></li>");
-        }
-    </ul>
+            else
+            {
+                WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting statistics</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting by time</a></li>");
+            }            
+            <br />
+            <li role="presentation"><a role="button" asp-controller="Company" asp-action="Details" asp-route-companyId="@Model.CampaignId">Return to details</a></li>
+        </ul>
 
+            
+    </div>
     <div class="col-sm-8 col-md-9">
         <div id="container" style="margin: 0 auto"></div>
     </div>

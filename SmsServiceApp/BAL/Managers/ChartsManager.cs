@@ -29,7 +29,7 @@ namespace BAL.Managers
                 return null;
 
             campaignDetails.CampaignName = campaign.Name;
-            if (campaign.Type == 1)
+            if (campaign.Type == CompanyType.Send)
             {
                 campaignDetails.HaveVoting = false;
                 campaignDetails.Selection = ChartSelection.MailingDetails;

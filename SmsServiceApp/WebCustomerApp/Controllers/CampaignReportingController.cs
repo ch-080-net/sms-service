@@ -22,10 +22,10 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetChart(int CampaignId)
+        public IActionResult GetChart(int campaignId)
         {
             var result = new CampaignDetailsViewModel() { Selection = ChartSelection.MailingDetails,
-                CampaignId = CampaignId };
+                CampaignId = campaignId };
             return RedirectToAction("ShowChart", result);
         }
 
