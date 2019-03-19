@@ -17,7 +17,7 @@
             border-radius: 50%;
             border-width: 0 10px;
             z-index: 99;
-            left: 8px;
+            left: 23px;
             color: #e5e5ea;
             clip: rect(10px,40px,30px,21px) !important;
         }
@@ -26,10 +26,10 @@
             z-index: 10;
             border: none;
             margin-top: 140px;
-            margin-left: 35px;
+            margin-left: 50px;
             font-family: 'Nunito Sans','Avenir Next','Segoe UI','Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
             line-height: 100%;
-            width: 210px;
+            width: 230px;
             background-color: #e5e5ea;
             -webkit-border-radius: 20px;
             -moz-border-radius: 20px;
@@ -59,6 +59,7 @@
             margin-top: 50px;
             overflow: hidden;
             position: relative;
+            padding-left: 0px;
         }
 
         #messagePreviewSwitcher {
@@ -70,7 +71,6 @@
     </style>
 
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -153,6 +153,8 @@
                         <br />
                         <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">Choose Tariff</a>
                     </div>
+                    @if (Model.TariffId > 0)
+                    {
                     <div class="form-group col-md-12">
                         <label asp-for="RecipientViewModels" class="control-label"></label>
                         <br />
@@ -160,6 +162,7 @@
                         <br />
                         <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">Add recipients</a>
                     </div>
+                    }
                         <div class="form-group col-md-12">
                             <label asp-for="Message" class="control-label"></label>
                             <textarea rows="7" style="resize:none; width:100%"
