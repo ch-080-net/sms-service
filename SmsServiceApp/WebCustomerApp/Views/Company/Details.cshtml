@@ -4,9 +4,17 @@
 @{
     ViewData["Title"] = "Details";
 }
-<h2>@Model.Name</h2>
-<h4>@Model.Description</h4>
-<hr />
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h2>@Model.Name</h2>
+    <h4>@Model.Description</h4>
+    <hr />
     <div class="row">
         <div class="col-md-5">
             <dl class="dl-horizontal">
@@ -64,19 +72,20 @@
             <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-campaignId="@Model.Id" asp-controller="CampaignReporting" asp-action="GetChart">Reporting</a></div>            <br />
             @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
             {
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Incoming">Incoming</a></div>            <br />
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-controller="AnswersCode" asp-action="Index">Answer codes</a></div>            <br />
+                <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Incoming">Incoming</a></div> <br />
+                <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-controller="AnswersCode" asp-action="Index">Answer codes</a></div> <br />
             }
             <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Edit">Edit</a></div> <br />
             <div class="row">
-            <form asp-action="Delete" asp-route-companyId="@Model.Id">
-           <button type="submit" class="btn btn-danger" style="width: 120px;">Delete</button>
-</form>
+                <form asp-action="Delete" asp-route-companyId="@Model.Id">
+                    <button type="submit" class="btn btn-danger" style="width: 120px;">Delete</button>
+                </form>
             </div>
         </div>
     </div>
     <div class="row">
-            <input type="hidden" asp-for="Id" />
-            <a class="btn btn-success" asp-action="Index">Back to List</a>
+        <input type="hidden" asp-for="Id" />
+        <a class="btn btn-success" asp-action="Index">Back to List</a>
     </div>
-
+</body>
+</html>

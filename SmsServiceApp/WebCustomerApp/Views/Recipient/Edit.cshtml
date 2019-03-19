@@ -3,41 +3,49 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
-<link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-<h2>Edit</h2>
-<h4>Recipient</h4>
-<hr />
-<div class="row">
-    <form asp-action="Edit">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-md-5">
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" readonly ="@true"/>
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h2>Edit</h2>
+    <h4>Recipient</h4>
+    <hr />
+    <div class="row">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-md-5">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" readonly="@true" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname" class="control-label"></label>
+                    <input asp-for="Surname" class="form-control" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BirthDate" class="control-label"></label>
+                    <input asp-for="BirthDate" class="form-control" id="birthDate" />
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    <script>
+                        $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                        $('#birthDate').val(new Date().toLocaleString());
+                    </script>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" id="birthDate" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-                <script>
-                    $('#birthDate').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                    $('#birthDate').val(new Date().toLocaleString());
-                </script>
-            </div>
-        </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="Gender" class="control-label"></label><br>
@@ -65,13 +73,15 @@
                     <input type="submit" value="Edit" class="btn btn-warning" />
                 </div>
             </div>
-         
-</form>
+
+        </form>
     </div>
 
-<div>
-    <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@Model.CompanyId">Back to List</a>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <div>
+        <a class="btn btn-primary" asp-action="Index" asp-route-companyId="@Model.CompanyId">Back to List</a>
+    </div>
+</body>
+</html>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
