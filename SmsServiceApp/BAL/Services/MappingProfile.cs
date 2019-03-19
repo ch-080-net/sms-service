@@ -76,7 +76,7 @@ namespace BAL.Services
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
 
             CreateMap<Company, StackedChart>()
-                .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => SetTimeFrameForStackedChart(com)))
+                .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => GetTimeFrameForStackedChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
                 .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForStackedChart(com)));
 
@@ -94,6 +94,11 @@ namespace BAL.Services
             CreateMap<AnswersCodeViewModel, AnswersCode>();
         }
 
+        /// <summary>
+        /// Replaces Hashtags in message for recipient with corresponding data
+        /// </summary>
+        /// <param name="recipient">Should include Company entity</param>
+        /// <returns>Message with replaced hashtags</returns>
         private string ReplaceHashtags(Recipient recipient)
         {
             string result = recipient.Company.Message;
@@ -104,6 +109,10 @@ namespace BAL.Services
             return result;
         }
 
+        /// <summary>
+        /// Get logo path for specified Operator
+        /// </summary>
+        /// <returns> Path to logo for Operator or null, if not exist </returns>
         private string GetLogo(Operator oper)
         {
             string filePath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(oper.Id) + ".png";
@@ -115,6 +124,10 @@ namespace BAL.Services
                 return null;
         }
 
+        /// <summary>
+        /// Get data for pie chart of specified pool campaign
+        /// </summary>
+        /// <returns> Neccessary data for pie chart construction </returns>
         private IEnumerable<Tuple<string, int>> PopulateCategoriesForPieChart(Company company)
         {
             var result = new List<Tuple<string, int>>();
@@ -128,7 +141,11 @@ namespace BAL.Services
             return result;
         }
 
-        private IEnumerable<string> SetTimeFrameForStackedChart(Company company)
+        /// <summary>
+        /// Get current time frame for specified campaign
+        /// </summary>
+        /// <returns> Enumeration of strings with time points for campaign </returns>
+        private IEnumerable<string> GetTimeFrameForStackedChart(Company company)
         {
             DateTime beginning = company.StartTime;
             DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
@@ -142,6 +159,9 @@ namespace BAL.Services
             return result;                
         }
 
+        /// <summary>
+        /// Produces specified quantity of interim DateTimes for specified time gates
+        /// </summary>
         private IEnumerable<DateTime> GetInterimTimes(DateTime beginning, DateTime ending, int slices = 7)
         {
             if (beginning >= ending)
@@ -158,6 +178,10 @@ namespace BAL.Services
             return result;
         }
 
+        /// <summary>
+        /// Get data for staced chart of specified pool campaign
+        /// </summary>
+        /// <returns> Neccessary data for pie chart construction </returns>
         private IEnumerable<Tuple<string, IEnumerable<int>>> PopulateCategoriesForStackedChart(Company company)
         {
             var result = new List<Tuple<string, IEnumerable<int>>>();
