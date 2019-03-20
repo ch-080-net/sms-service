@@ -195,4 +195,28 @@
   <data name="Group" xml:space="preserve">
     <value>Групи</value>
   </data>
+  <data name="and tariffs are easy to use." xml:space="preserve">
+    <value>та тарифи прості у використанні.</value>
+  </data>
+  <data name="SMS on 150 mobile networks no matter where you are" xml:space="preserve">
+    <value>SMS на 150 мобільних мережах незалежно від того, де ви знаходитесь</value>
+  </data>
+  <data name="SMS SERVICE AT AFFORDABLE PRICE" xml:space="preserve">
+    <value>SMS-СЛУЖБА ПО ДОСТУПНІЙ ЦІНІ</value>
+  </data>
+  <data name="Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices." xml:space="preserve">
+    <value>Sms Service є одним з лідерів послуг електронної пошти, тому ми пропонуємо низькі ціни. Чи збираєтеся ви відправити велику абонентську базу? Добре, ми можемо запропонувати план за оптовими цінами.</value>
+  </data>
+  <data name="Statistic" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="Tariff" xml:space="preserve">
+    <value>Тариф</value>
+  </data>
+  <data name="There are many tariffs at affordable prices," xml:space="preserve">
+    <value>Існує багато тарифів за доступними цінами,</value>
+  </data>
+  <data name="Track not server uptime, but indexing status of the most important messages." xml:space="preserve">
+    <value>Відстеження часу роботи сервера та статус індексування найважливіших повідомлень.</value>
+  </data>
 </root>

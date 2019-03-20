@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to Company" xml:space="preserve">
-    <value>Назад до Компаній</value>
-  </data>
-  <data name="Create New" xml:space="preserve">
-    <value>Створити</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Видалити</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редагувати</value>
-  </data>
-  <data name="Index" xml:space="preserve">
-    <value>Головна</value>
-  </data>
-  <data name="Recipients" xml:space="preserve">
-    <value>Отримувачі</value>
+  <data name="Operator" xml:space="preserve">
+    <value>Оператор</value>
   </data>
 </root>

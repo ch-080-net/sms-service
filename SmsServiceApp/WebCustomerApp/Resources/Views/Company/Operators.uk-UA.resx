@@ -126,4 +126,7 @@
   <data name="Tariff" xml:space="preserve">
     <value>Тариф</value>
   </data>
+  <data name="Tariffs" xml:space="preserve">
+    <value>Тарифи</value>
+  </data>
 </root>

@@ -39,9 +39,9 @@
             }
             else
             {
-                WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>Mailing statistics</a></li>");
-                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting statistics</a></li>");
-                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>Voting by time</a></li>");
+                WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>"); @Localizer["Mailing statistics"];WriteLiteral("</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>");@Localizer["Voting statistics"];WriteLiteral("</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>"); @Localizer["Voting by time"];WriteLiteral("</a></li>");
             }
             <br />
             <li role="presentation"><a role="button" asp-controller="Company" asp-action="Details" asp-route-companyId="@Model.CampaignId">@Localizer["Return to details"]</a></li>

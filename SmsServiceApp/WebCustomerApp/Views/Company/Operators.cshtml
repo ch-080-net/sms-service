@@ -1,5 +1,4 @@
 ﻿@using Model.ViewModels.OperatorViewModels
-
 @model OperatorsViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
@@ -48,7 +47,7 @@
     </div>
 
     <div>
-        <a class="btn btn-primary" asp-action="Index">Back to Companies</a>
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Companies"]</a>
     </div>
 </body>
 </html>
