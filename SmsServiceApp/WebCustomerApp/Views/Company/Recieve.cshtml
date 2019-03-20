@@ -28,21 +28,13 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="StartTime" class="control-label"></label>
-                    <input asp-for="StartTime" id="TimeStart" type="text">
-                    <script>
-                        $('#TimeStart').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
-                        $('#TimeStart').val(new Date().toLocaleString());
-                    </script>
+                    <input asp-for="StartTime" id="TimeStart">
                     <span asp-validation-for="StartTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="hidden" asp-for="Id" />
                     <label asp-for="EndTime" class="control-label"></label>
-                    <input asp-for="EndTime" id="TimeEnd" type="text">
-                    <script>
-                        $('#TimeEnd').datetimepicker({ footer: true, modal: true, format: 'dd.mm.yyyy H:MM' });
-                        $('#TimeEnd').val(new Date().toLocaleString());
-                    </script>
+                    <input asp-for="EndTime" id="TimeEnd">
                     <span asp-validation-for="EndTime" class="text-danger"></span>
                 </div>
                 <div class="row">
