@@ -123,6 +123,18 @@
   <data name="Choose" xml:space="preserve">
     <value>Вибрати</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="Limit" xml:space="preserve">
+    <value>Ліміт</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Назва</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Ціна</value>
+  </data>
   <data name="Tariffs" xml:space="preserve">
     <value>Тарифи</value>
   </data>
