@@ -112,7 +112,7 @@ namespace BAL.Services
                 result = result.Replace("#company", recipient.Company.Name);
             if (recipient.Surname != null)
                 result = result.Replace("#surname", recipient.Surname);
-            if (recipient.BirthDate != null)
+            if (recipient.BirthDate != DateTime.MinValue)
                 result = result.Replace("#birthday", recipient.BirthDate.ToShortDateString());
 
             return result;

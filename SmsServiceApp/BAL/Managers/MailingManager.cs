@@ -45,7 +45,10 @@ namespace BAL.Managers
                     tempRecipient.MessageState = messageState;
             }
             try { unitOfWork.Save(); }
-            finally { }
+            finally
+            {
+                // Attempt to set state will be repeated after next mailing
+            }
         }
 
         public void MarkAs(MessageDTO messages, MessageState messageState)
@@ -54,7 +57,10 @@ namespace BAL.Managers
             if (tempRecipient != null)
                 tempRecipient.MessageState = messageState;
             try { unitOfWork.Save(); }
-            finally { }
+            finally
+            {
+                // Attempt to set state will be repeated after next mailing
+            }
         }
     }
 }
