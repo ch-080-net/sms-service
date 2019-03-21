@@ -22,12 +22,12 @@ namespace WebApp.Services
 	/// </summary>
 	public class SmsSender : ISmsSender 
 	{
-		public SMSCclientSMPP clientSMPP;
-		public List<uint> messageNumbers;
+		private readonly SMSCclientSMPP clientSMPP;
+		private List<uint> messageNumbers;
 
-        private ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
-        private IServiceScopeFactory serviceScopeFactory;
-        private IRecievedMessageManager recievedMessageManager;
+        private readonly ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
+        private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly IRecievedMessageManager recievedMessageManager;
 
 		/// <summary>
 		/// Create SMPP client, add event handlers 
@@ -85,25 +85,6 @@ namespace WebApp.Services
 			if (sessionStatus != 0)
 				throw new Exception("Invalid SMPP connection data");
         }
-
-		/// <summary>
-		/// Close current session
-		/// </summary>
-		/// <returns>True - if session are closet correctly</returns>
-		//private void CloseSession()
-		//{
-		//	try { clientSMPP.smppFinalizeSession(); }
-		//	finally { }
-		//}
-
-		/// <summary>
-		/// Close connection with service
-		/// </summary>
-		//private void Disconnect()
-		//{
-		//	try { clientSMPP.tcpDisconnect(); }
-		//	finally { }
-		//}
 		#endregion
 
 		#region Message sending
@@ -167,11 +148,7 @@ namespace WebApp.Services
             recievedMessage.RecipientPhone = e.Destination;
             recievedMessage.MessageText = e.Content;
             recievedMessage.TimeOfRecieve = DateTime.UtcNow;
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                var recievedMessageManager = scope.ServiceProvider.GetService<IRecievedMessageManager>();
-                recievedMessageManager.Insert(recievedMessage);
-            }
+            recievedMessageManager.Insert(recievedMessage);
         }
 
 		/// <summary>
@@ -181,6 +158,9 @@ namespace WebApp.Services
 		/// <param name="e">event object</param>
 		private void SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived(object Sender, smppSubmitResponseAsyncReceivedEventArgs e)
 		{
+			if (e.Status != 0)
+				return;
+
 			MessageDTO message;
 			do
 				message = messagesForSend.FirstOrDefault(s => s.SequenceNumber == e.SequenceNumber);
@@ -242,10 +222,6 @@ namespace WebApp.Services
 					scope.ServiceProvider.GetService<IMailingManager>().MarkAs(temp, messageState);
 				}
 				messagesForSend.Remove(temp);
-			}
-			else
-			{
-				throw new Exception("Report for unknown message");
 			}
 		}
 		#endregion
