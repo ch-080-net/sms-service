@@ -6,6 +6,8 @@
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    font-family: sans-serif;
+    background-color: #eeeeee;
 }
 
 #footer {
@@ -50,10 +52,6 @@ body {
 .logo {
         width:43px;
         height:43px;
-}
-body {
-    font-family: sans-serif;
-    background-color: #eeeeee;
 }
 
 .file-upload {

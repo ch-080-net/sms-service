@@ -74,12 +74,6 @@
         font-size: 30px;
         color: whitesmoke;
     }
-.main__menu {
-    float: left;
-    font-size: 30px;
-    color: whitesmoke;
-    
-}
 
 #LanguageSwitcher {
     position: absolute;
