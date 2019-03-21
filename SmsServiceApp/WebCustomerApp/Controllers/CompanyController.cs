@@ -178,7 +178,6 @@ namespace WebApp.Controllers
         public IActionResult Recieve(int companyId)
         {
             ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
             RecieveViewModel item = new RecieveViewModel();
             item.Id = companyId;
             return View(item);
@@ -379,10 +378,6 @@ namespace WebApp.Controllers
         {
             CompanyViewModel company = companyManager.Get(companyId);
             company.PhoneNumber = phoneManager.GetPhoneNumber(company.PhoneId);
-            if (company == null)
-            {
-                return NotFound();
-            }
             return View(company);
         }
 

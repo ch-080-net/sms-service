@@ -88,10 +88,6 @@ namespace WebApp.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             var email = user.Email;
             if (model.Email != email)
