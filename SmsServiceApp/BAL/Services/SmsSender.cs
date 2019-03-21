@@ -167,11 +167,7 @@ namespace WebApp.Services
             recievedMessage.RecipientPhone = e.Destination;
             recievedMessage.MessageText = e.Content;
             recievedMessage.TimeOfRecieve = DateTime.UtcNow;
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                var recievedMessageManager = scope.ServiceProvider.GetService<IRecievedMessageManager>();
-                recievedMessageManager.Insert(recievedMessage);
-            }
+            recievedMessageManager.Insert(recievedMessage);
         }
 
 		/// <summary>
