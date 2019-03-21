@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp.Models;
 using BAL.Managers;
 using BAL.Interfaces;
+using BAL.Exceptions;
 
 namespace WebApp.Services
 {
@@ -46,7 +47,7 @@ namespace WebApp.Services
 			clientSMPP.OnSmppStatusReportReceived += SMSCclientSMPP_OnSmppStatusReportReceived;
 			clientSMPP.OnSmppSubmitResponseAsyncReceived += SMSCclientSMPP_OnSmppSubmitResponseAsyncReceived;
 
-			Connect();
+			Task.Run(() => Connect());
 		}
 
 		#region Connection methods
@@ -83,7 +84,7 @@ namespace WebApp.Services
 			int sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, "");
 
 			if (sessionStatus != 0)
-				throw new Exception("Invalid SMPP connection data");
+				throw new InvalidSMPPUserDataException("Invalid SMPP connection data");
         }
 		#endregion
 
