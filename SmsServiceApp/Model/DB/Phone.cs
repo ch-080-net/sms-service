@@ -2,7 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace WebCustomerApp.Models
+
+namespace WebApp.Models
 {
     public class Phone
     {        
@@ -12,6 +13,7 @@ namespace WebCustomerApp.Models
         public ApplicationGroup ApplicationGroup { get; set; }
         public ICollection<RecievedMessage> RecievedMessages { get; set; }
         public ICollection<Company> Companies { get; set; }
+        public ICollection<PhoneGroupUnsubscribe> PhoneGroupUnsubscribtions { get; set; }
 
         public string PhoneNumber { get; set; }
 

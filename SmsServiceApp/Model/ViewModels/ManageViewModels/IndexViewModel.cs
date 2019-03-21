@@ -4,19 +4,22 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebCustomerApp.Models.ManageViewModels
+namespace Model.ViewModels.ManageViewModels
 {
     /// <summary>
     /// ViewModel of ApplicationUser for profile
     /// </summary>
     public class IndexViewModel
     {
+        [Display(Name = "Username")]
         public string Username { get; set; }
 
+        [Display(Name = "IsEmailConfirmed")]
         public bool IsEmailConfirmed { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Phone]

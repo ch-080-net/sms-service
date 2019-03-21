@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebApp.Models;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     /// <summary>
     /// ApplicationGroup entity
@@ -10,6 +11,7 @@ namespace WebCustomerApp.Models
     public class ApplicationGroup
     {
         public int Id { get; set; }
+        public ICollection<PhoneGroupUnsubscribe> phoneGroupUnsubscribtions { get; set; }
         
         /// <summary>
         /// Company name

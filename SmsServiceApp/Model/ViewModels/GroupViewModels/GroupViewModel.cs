@@ -13,7 +13,9 @@ namespace Model.ViewModels.GroupViewModels
     {
         public int Id { get; set; }
         [StringLength(100)]
+        [Display(Name="Name")]
         public string Name { get; set; }
+        public int PhoneId { get; set; }
         public List<UserViewModel> ApplicationUsers { get; set; }
     }
 }

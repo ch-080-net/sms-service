@@ -1,11 +1,13 @@
 ﻿@using Model.ViewModels.OperatorViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @using static Newtonsoft.Json.JsonConvert
 @model OperatorViewModel
 
-@{ 
-    ViewData["Title"] = "Operators";
+@{
+    ViewData["Title"] = Localizer["Operators"];
 }
-<h2>Operators</h2>
+<h2>@Localizer["Operators"]</h2>
 <hr />
 
 @if (TempData.ContainsKey("ErrorMessage"))
@@ -13,24 +15,24 @@
     <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
 }
 
-<h4>Add operator</h4>
+<h4>@Localizer["Add operator"]</h4>
 
 <div class="row">
     <div class="col-md-4">
         <form action="@Url.Action("Operators", "Operator", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
             <div class="form-group">
-                <input asp-for="Name" class="form-control" placeholder="New operator name" />
+                <input asp-for="Name" class="form-control" placeholder="@Localizer["New operator name"]" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> @Localizer["Add"]
             </button>
         </form>
     </div>
 </div>
 
 <hr />
-<h4>Operators list</h4>
+<h4>@Localizer["Operators list"]</h4>
 
 @{await Html.RenderPartialAsync("SearchOperators", new OperatorSearchViewModel() { SearchQuerry = ViewBag.PageState.SearchQuerry });}
 

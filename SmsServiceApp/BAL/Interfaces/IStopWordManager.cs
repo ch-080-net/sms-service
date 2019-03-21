@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
 namespace BAL.Managers
 {
@@ -12,6 +12,6 @@ namespace BAL.Managers
         void Insert(StopWordViewModel item);
         void Update(StopWordViewModel item);
         void Delete(int item);
-        void SetStateModified(StopWordViewModel item);
+      
     }
 }

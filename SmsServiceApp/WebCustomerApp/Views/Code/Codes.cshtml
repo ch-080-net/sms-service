@@ -1,12 +1,14 @@
 ﻿@using Model.ViewModels.CodeViewModels
 @using static Newtonsoft.Json.JsonConvert
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 @model CodeViewModel
 
 @{
-    ViewData["Title"] = ViewBag.PageState.OperatorName + " codes";
+        ViewData["Title"] = ViewBag.PageState.OperatorName + "codes";
 }
 
-<h2>Codes for @ViewBag.PageState.OperatorName</h2>
+<h2>@Localizer["Codes for"] @ViewBag.PageState.OperatorName</h2>
 <hr />
 
 @if (TempData.ContainsKey("ErrorMessage"))
@@ -14,26 +16,27 @@
     <div class="alert alert-danger" role="alert">@TempData["ErrorMessage"]</div>
 }
 
-<h4>Add Code</h4>
+<h4>@Localizer["Add Code"]</h4>
 <div class="row">
     <div class="col-md-4">
         <form action="@Url.Action("Codes", "Code", ViewBag.PageState as PageState)" method="post" asp-antiforgery="true">
             <div class="form-group">
-                <input asp-for="OperatorCode" class="form-control code" placeholder="Example: +38066" />
+   
+                <input asp-for="OperatorCode" class="form-control code" placeholder="@Localizer["Example"]: +38066" />
                 <span asp-validation-for="OperatorCode" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> @Localizer["Add"]
             </button>
             <a class="btn btn-success" role="button" asp-action="Operators" asp-controller="Operator">
-                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span> Back
+                <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span> @Localizer["Back"]
             </a>
         </form>
     </div>
 </div>
 
 <hr />
-<h4>Codes list</h4>
+<h4>@Localizer["Codes list"]</h4>
 
 @{await Html.RenderPartialAsync("SearchCodes", new CodeSearchViewModel() { SearchQuerry = ViewBag.PageState.SearchQuerry });}
 

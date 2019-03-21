@@ -1,8 +1,0 @@
-{    
-    "less.compile": {
-      "main": ["${workspaceRoot}/styles/index.less"],
-      "compress":  false,
-      "sourceMap": false,
-      "out": "${workspaceRoot}/style.css"
-    }
-}

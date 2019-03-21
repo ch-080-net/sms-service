@@ -1,34 +1,36 @@
 ﻿@using Model.ViewModels.StopWordViewModels;
-    @model StopWordViewModel
-    @{
-        ViewData["Title"] = "Edit";
-    }
-    <h2>Edit</h2>
-    <h4>Stop Word</h4>
-    <hr />
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model StopWordViewModel
+@{
+    ViewData["Title"] = Localizer["Edit"];
+}
+<h2>@Localizer["Edit"]</h2>
+<h4>@Localizer["Stop Word"]</h4>
+<hr />
 
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="Word" class="control-label"></label>
-                    <input asp-for="Word" class="form-control" />
-                    <span asp-validation-for="Word" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-success" />
-                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
-                </div>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Word" class="control-label"></label>
+                <input asp-for="Word" class="form-control" />
+                <span asp-validation-for="Word" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">@Localizer["Back to List"]</a>
+            </div>
+        </form>
     </div>
-    <div>
-      
-    </div>
+</div>
+<div>
 
-    @section Scripts
+</div>
+
+@section Scripts
     {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

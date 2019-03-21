@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,11 +8,12 @@
     <title>@ViewData["Title"] - SmsService</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/css/menunav.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
+
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
@@ -19,38 +22,42 @@
     </environment>
 </head>
 <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+    <nav class="navbar navbar-default ">
+        <div class="container-fluid">
+            <div class="navbar-header">
 
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SmsService</a>
                 <div id="myNav" class="overlay">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="overlay-content">
-                        <a asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">Contacts</a>
+                        <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
+                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
-                            <a asp-area="" asp-controller="Operator" asp-action="Operators">Operators</a>
-                            <a asp-area="" asp-controller="StopWord" asp-action="Index">Stop Words</a>
+                            <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
+                            <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
                         }
                         @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
                         {
-                            <a asp-area="" asp-controller="Group" asp-action="Index">Group</a>
+                            <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
                         }
-                            @await Html.PartialAsync("_LoginPartial")
-                        </div>
+                        @await Html.PartialAsync("_LoginPartial")
+                    </div>
+                        <div id="LanguageSwitcher">
+                            <div align="right">
+                                @await Html.PartialAsync("_SelectLanguagePartial")
+                            </div>
+                        </div>   
                 </div>
                 <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
             </div>
 
-        </nav>
-        <div class="container body-content">
-            @RenderBody()
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
 
             <link href="~/css/site.css" rel="stylesheet" />
-            <footer id="footer">
-                <p align="center">&copy; Copyright 2019</p>
-            </footer>
         </div>
 
     <environment include="Development">

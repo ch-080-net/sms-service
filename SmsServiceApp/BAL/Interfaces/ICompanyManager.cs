@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
 namespace BAL.Managers
 {
@@ -13,9 +13,15 @@ namespace BAL.Managers
     {
         CompanyViewModel Get(int id);
         IEnumerable<CompanyViewModel> GetCompanies(int groupId);
+        IEnumerable<CompanyViewModel> GetCompaniesByPhoneId(int phoneId);
 		int GetTariffLimit(int companyId);
-		void Insert(CompanyViewModel item, int groupId);
-		void Update(CompanyViewModel item, int groupId, int tariffId);
+        int InsertWithId(CompanyViewModel item);
+		void Insert(CompanyViewModel item);
+		void Update(CompanyViewModel item);
 		void Delete(int id);
+        void AddSend(SendViewModel item);
+        void AddRecieve(RecieveViewModel item);
+        void AddSendRecieve(SendRecieveViewModel item);
+        ManageViewModel GetDetails(int id);
     }
 }

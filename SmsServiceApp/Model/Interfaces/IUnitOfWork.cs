@@ -1,4 +1,4 @@
-﻿using WebCustomerApp.Models;
+﻿using WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,15 +11,19 @@ namespace Model.Interfaces
         IBaseRepository<Recipient> Recipients { get; }
         IContactRepository Contacts { get; }
         IBaseRepository<Phone> Phones { get; }
-        IBaseRepository<Company> Companies { get; }
-        IBaseRepository<Operator> Operators { get; }
+        ICompanyRepository Companies { get; }
+        IOperatorRepository Operators { get; }
         IBaseRepository<Code> Codes { get; }
         IBaseRepository<Tariff> Tariffs { get; }
         IBaseRepository<StopWord> StopWords { get; }
+        IBaseRepository<PhoneGroupUnsubscribe> PhoneGroupUnsubscribes { get; }
         IMailingRepository Mailings { get; }
+        IChartsRepository Charts { get; }
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
+        IBaseRepository<RecievedMessage> RecievedMessages { get; }
+        IBaseRepository<AnswersCode> AnswersCodes { get; }
      
         int Save();
     }

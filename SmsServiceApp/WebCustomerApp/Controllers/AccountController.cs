@@ -13,11 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Model.ViewModels.GroupViewModels;
-using WebCustomerApp.Models;
-using WebCustomerApp.Models.AccountViewModels;
-using WebCustomerApp.Services;
+using WebApp.Models;
+using WebApp.Models.AccountViewModels;
+using WebApp.Services;
+using WebApp.Controllers;
+using Model.ViewModels.AccountViewModels;
 
-namespace WebCustomerApp.Controllers
+namespace WebApp.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -27,17 +29,19 @@ namespace WebCustomerApp.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IPhoneManager _phoneManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, IPhoneManager phoneManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _phoneManager = phoneManager;
         }
 
         [TempData]
@@ -246,7 +250,17 @@ namespace WebCustomerApp.Controllers
 
                 if (groupId == 0)
                 {
-                    ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName };
+                    var phone = _phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == model.Phone);
+                    ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName};
+                    if(phone != null)
+                    {
+                        group.PhoneId = phone.Id;
+                    }
+                    else
+                    {
+                        Phone newPhone = new Phone { PhoneNumber = model.Phone };
+                        group.Phone = newPhone;
+                    }
                     user.ApplicationGroup = group;
                 }
                 else

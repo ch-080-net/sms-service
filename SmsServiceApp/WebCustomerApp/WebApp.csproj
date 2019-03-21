@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\LandingPage\b.jpg" />
+    <Compile Remove="Views\LandingPage\**" />
+    <Content Remove="Views\LandingPage\**" />
+    <EmbeddedResource Remove="Views\LandingPage\**" />
+    <None Remove="Views\LandingPage\**" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
@@ -17,7 +20,6 @@
   <ItemGroup>
     <None Include="wwwroot\css\style2.css" />
     <None Include="wwwroot\css\style2.min.css" />
-    <None Include="wwwroot\images\landing\fond.png" />
     <None Include="wwwroot\images\landing\iconMessage.png" />
     <None Include="wwwroot\images\landing\messages.png" />
     <None Include="wwwroot\images\landing\phone.png" />
@@ -34,8 +36,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\LandingPage\" />
-    <Folder Include="wwwroot\images\OperatorLogo\" />
+    <Folder Include="Views\CampaignReporting\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\AnswersCode\Create.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AnswersCode\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

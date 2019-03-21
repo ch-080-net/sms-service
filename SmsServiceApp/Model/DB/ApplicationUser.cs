@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace WebCustomerApp.Models
+namespace WebApp.Models
 {
     /// <summary>
     /// Application user, inherited from IdentityUser

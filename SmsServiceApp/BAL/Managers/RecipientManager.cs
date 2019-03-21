@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Models;
+using WebApp.Models;
 using Model.Interfaces;
 using AutoMapper;
 using Model.ViewModels.RecipientViewModels;
@@ -42,6 +42,8 @@ namespace BAL.Managers
             recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
             return mapper.Map<Recipient, RecipientViewModel>(recipient);
         }
+
+
 
         /// <summary>
         /// Method for getting all recipients which belong to specified company

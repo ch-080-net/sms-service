@@ -1,9 +1,9 @@
-﻿using WebCustomerApp.Models;
+﻿using WebApp.Models;
 using Model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WebCustomerApp.Data;
+using WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Repositories
@@ -13,25 +13,29 @@ namespace DAL.Repositories
         private readonly ApplicationDbContext context;
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
-        private IBaseRepository<Company> companyRepo;
-        private IBaseRepository<Operator> operatorRepo;
+        private ICompanyRepository companyRepo;
+        private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
         private IBaseRepository<Tariff> tariffRepo;
         private IBaseRepository<Code> codeRepo;
         private IBaseRepository<ApplicationGroup> groupRepo;
+        private IBaseRepository<PhoneGroupUnsubscribe> phoneGroupUnsubscribe;
+        private IBaseRepository<RecievedMessage> recievedMessagesRepo;
+        private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
+        private IChartsRepository ChartsRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public IBaseRepository<Company> Companies
+        public ICompanyRepository Companies
         {
             get
             {
-                if (companyRepo == null) { companyRepo = new BaseRepository<Company>(context); }
+                if (companyRepo == null) { companyRepo = new CompanyRepository(context); }
                 return companyRepo;
             }
         }
@@ -42,6 +46,8 @@ namespace DAL.Repositories
                 return recipientRepo;
             }
         }
+
+
         public IBaseRepository<Tariff> Tariffs
         {
             get
@@ -61,13 +67,13 @@ namespace DAL.Repositories
             }
         }
 
-        public IBaseRepository<Operator> Operators
+        public IOperatorRepository Operators
         {
             get
             {
                 if (operatorRepo == null)
                 {
-                    operatorRepo = new BaseRepository<Operator>(context);
+                    operatorRepo = new OperatorRepository(context);
                 }
                 return operatorRepo;
             }
@@ -96,6 +102,24 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<RecievedMessage> RecievedMessages
+        {
+            get
+            {
+                if (recievedMessagesRepo == null) { recievedMessagesRepo = new BaseRepository<RecievedMessage>(context); }
+                return recievedMessagesRepo;
+            }
+        }
+
+        public IBaseRepository<AnswersCode> AnswersCodes
+        {
+            get
+            {
+                if (answersCodeRepo == null) { answersCodeRepo = new BaseRepository<AnswersCode>(context); }
+                return answersCodeRepo;
+            }
+        }
+
         public IBaseRepository<Code> Codes
         {
             get
@@ -108,6 +132,17 @@ namespace DAL.Repositories
             }
         }
 
+        public IBaseRepository<PhoneGroupUnsubscribe> PhoneGroupUnsubscribes
+        {
+            get
+            {
+                if (phoneGroupUnsubscribe == null)
+                {
+                    phoneGroupUnsubscribe = new BaseRepository<PhoneGroupUnsubscribe>(context);
+                }
+                return phoneGroupUnsubscribe;
+            }
+        }
         public IMailingRepository Mailings
         {
             get
@@ -117,6 +152,18 @@ namespace DAL.Repositories
                     mailingRepo = new MailingRepository(context);
                 }
                 return mailingRepo;
+            }
+        }
+
+        public IChartsRepository Charts
+        {
+            get
+            {
+                if (ChartsRepo == null)
+                {
+                    ChartsRepo = new ChartsRepository(context);
+                }
+                return ChartsRepo;
             }
         }
 

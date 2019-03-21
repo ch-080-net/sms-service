@@ -1,0 +1,76 @@
+﻿@using Model.ViewModels.CampaignReportingViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model CampaignDetailsViewModel
+
+
+@{
+    ViewData["Title"] = Model.CampaignName;
+}
+
+<div class="row">
+    <h2>@Localizer["Reporting for"] @Model.CampaignName</h2>
+    <hr />
+</div>
+
+<div class="row">
+    <div class="col-sm-4 col-md-3">
+        <ul class="nav nav-pills nav-stacked row" role="group">
+            @if (Model.HaveVoting)
+            {
+                @switch (Model.Selection)
+                {
+                    case ChartSelection.MailingDetails:
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>"); @Localizer["Mailing statistics"]; WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>");@Localizer["Voting statistics"];WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>"); @Localizer["Voting by time"];WriteLiteral("</a></li>");
+                        break;
+                    case ChartSelection.VotesDetails:
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>"); @Localizer["Mailing statistics"];WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>");@Localizer["Voting statistics"];WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>"); @Localizer["Voting by time"];WriteLiteral("</a></li>");
+                        break;
+                    case ChartSelection.VotesDetailsByTime:
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>"); @Localizer["Mailing statistics"];WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation'><a href='" + @Url.Action("Voting", "CampaignReporting", Model) + "'>"); @Localizer["Voting statistics"];WriteLiteral("</a></li>");
+                        WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("VotingByTime", "CampaignReporting", Model) + "'>");@Localizer["Voting by time"];WriteLiteral("</a></li>");
+                        break;
+                }
+            }
+            else
+            {
+                WriteLiteral("<li role='presentation' class='active'><a href='" + @Url.Action("Mailing", "CampaignReporting", Model) + "'>"); @Localizer["Mailing statistics"];WriteLiteral("</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>");@Localizer["Voting statistics"];WriteLiteral("</a></li>");
+                WriteLiteral("<li class='disabled' role='presentation'><a href='#'>"); @Localizer["Voting by time"];WriteLiteral("</a></li>");
+            }
+            <br />
+            <li role="presentation"><a role="button" asp-controller="Company" asp-action="Details" asp-route-companyId="@Model.CampaignId">@Localizer["Return to details"]</a></li>
+        </ul>
+
+
+    </div>
+    <div class="col-sm-8 col-md-9">
+        <div id="container" style="margin: 0 auto"></div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    @switch (Model.Selection)
+    {
+        case ChartSelection.MailingDetails:
+            break;
+        case ChartSelection.VotesDetails:
+            if (Model.PieChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistribution", Model.PieChart);
+            }
+            break;
+        case ChartSelection.VotesDetailsByTime:
+            if (Model.StackedChart != null)
+            {
+                await Html.RenderPartialAsync("VotesDistributionByTime", Model.StackedChart);
+            }
+            break;
+    }
+}

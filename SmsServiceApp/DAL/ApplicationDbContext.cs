@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using WebCustomerApp.Models;
+using WebApp.Models;
 
-namespace WebCustomerApp.Data
+namespace WebApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -26,6 +26,7 @@ namespace WebCustomerApp.Data
         public DbSet<ApplicationGroup> Groups { get; set; }
         public DbSet<RecievedMessage> RecievedMessages { get; set; }
         public DbSet<AnswersCode> AnswersCodes { get; set; }
+        public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -142,6 +143,21 @@ namespace WebCustomerApp.Data
                 .HasIndex(r => new { r.PhoneId, r.CompanyId })
                 .IsUnique();
 
+            builder.Entity<ApplicationGroup>()
+                .HasMany(ag => ag.phoneGroupUnsubscribtions)
+                .WithOne(pgu => pgu.Group)
+                .HasForeignKey(pgu => pgu.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Phone>()
+                .HasMany(p => p.PhoneGroupUnsubscribtions)
+                .WithOne(pgu => pgu.Phone)
+                .HasForeignKey(pgu => pgu.PhoneId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PhoneGroupUnsubscribe>()
+                .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
+
             // Required fields
             #region Required fields
             builder.Entity<Code>()
@@ -150,10 +166,6 @@ namespace WebCustomerApp.Data
 
             builder.Entity<Company>()
                 .Property(com => com.Name)
-                .IsRequired();
-
-            builder.Entity<Company>()
-                .Property(com => com.Message)
                 .IsRequired();
 
             builder.Entity<Phone>()
@@ -181,6 +193,13 @@ namespace WebCustomerApp.Data
                 .IsRequired();
 
             #endregion
+
+
+            // Optional fields
+
+            builder.Entity<Company>()
+                .Property(com => com.Message)
+                .IsRequired(false);
 
             // Unique indexes
 

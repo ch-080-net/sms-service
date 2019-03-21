@@ -3,6 +3,7 @@ using BAL.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
 using System;
@@ -11,8 +12,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using WebCustomerApp.Models;
-using WebCustomerApp.Services;
+using WebApp.Models;
+using WebApp.Services;
 
 namespace WebApp.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApp.Controllers
         private readonly IGroupManager groupManager;
         private readonly IMapper mapper;
         private readonly IEmailSender emailSender;
+       
 
         public GroupController(UserManager<ApplicationUser> userManager, IMapper mapper, IGroupManager groupManager, IEmailSender emailSender)
         {

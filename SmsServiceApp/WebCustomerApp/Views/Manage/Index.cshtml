@@ -1,10 +1,13 @@
-﻿@model IndexViewModel
+﻿@using Model.ViewModels.ManageViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IndexViewModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = Localizer["Profile"];
     ViewData.AddActivePage(ManageNavPages.Index);
 }
 
-<h4>@ViewData["Title"]</h4>
+<h4>@ViewData["@Localizer[Title]"]</h4>
 @Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-6">
@@ -26,7 +29,7 @@
                 else
                 {
                     <input asp-for="Email" class="form-control" />
-                    <button asp-action="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                    <button asp-action="SendVerificationEmail" class="btn btn-link">@Localizer["Send verification email"]</button>
                 }
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
@@ -43,11 +46,11 @@
             @if (Model.IsIvited)
             {
             <div class="form-group" id="invite">
-                <button class="btn btn-success" name="IviteConfirm" value="true" onclick="ShowIvite()">Accept</button>
-                <button class="btn btn-danger" name="IviteConfirm" value="false" onclick="ShowIvite()">Decline</button>
+                <button class="btn btn-success" name="IviteConfirm" value="true" onclick="ShowIvite()">@Localizer["Accept"]</button>
+                <button class="btn btn-danger" name="IviteConfirm" value="false" onclick="ShowIvite()">@Localizer["Decline"]</button>
             </div>
             }
-                <button type="submit" class="btn btn-default">Save</button>
+                <button type="submit" class="btn btn-default">@Localizer["Save"]</button>
         </form>
     </div>
 </div>
