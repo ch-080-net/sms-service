@@ -14,12 +14,10 @@ namespace WebApp.Controllers
     public class CodeController : Controller
     {
         private readonly ICodeManager codeManager;
-        private readonly IOperatorManager operatorManager;
 
         public CodeController(ICodeManager codeManager, IOperatorManager operatorManager)
         {
             this.codeManager = codeManager;
-            this.operatorManager = operatorManager;
         }
 
         /// <summary>

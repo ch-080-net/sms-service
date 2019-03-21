@@ -30,11 +30,11 @@
             {
                 <tr>
 
-                    <td scope="row">
+                    <td>
                         @Html.DisplayFor(modelItem => item.Word)
                     </td>
 
-                    <td scope="row">
+                    <td>
                         <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
                         <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
                     </td>

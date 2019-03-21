@@ -183,10 +183,10 @@ function onAddContact(item) {
     options.success = function (msg) {
         $("#msg").html(msg);
         GetContactData();
-    },
-        options.error = function () {
+    };
+    options.error = function () {
             $("#msg").html("Error while calling the Web API!");
-        };
+    };
     $.ajax(options);
     $("#phoneNumber").val("");
     $("#name").val("");
