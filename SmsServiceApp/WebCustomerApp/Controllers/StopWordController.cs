@@ -133,25 +133,5 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id">Id of StopWord which select to show</param>
-        /// <returns>StopWord</returns>
-        [HttpGet]
-        public IActionResult StopWordDetails(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
-
-            if (word == null)
-            {
-                return NotFound();
-            }
-            return View(word);
-        }
     }
 }
