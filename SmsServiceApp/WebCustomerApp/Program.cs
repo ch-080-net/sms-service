@@ -21,7 +21,6 @@ namespace WebApp
     {
         public static void Main(string[] args)
         {
-            //BuildWebHost(args).Run();
             var host = BuildWebHost(args);
             using (var scope = host.Services.CreateScope())
             {
@@ -38,9 +37,9 @@ namespace WebApp
 
 					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
                 }
-                catch
+                catch(Exception ex)
                 {
-
+                    Console.WriteLine(ex);
                 }
             }
             host.Run();
