@@ -63,7 +63,7 @@
     background-color: #f69679;
   }
   .section_title--left {
-    align-items: left;
+    align-items: flex-start ;
   }
   /*menu*/
 .menu {
@@ -263,7 +263,6 @@
     padding: 180px 10% 50px;
     background-color: #f7f7f7;
     min-height: 700px;
-    display: flex;
 }
 
 

@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-@using Model.ViewModels.StopWordViewModels;
+﻿@using Model.ViewModels.StopWordViewModels;
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @model StopWordViewModel
@@ -7,12 +6,14 @@
     ViewData["Title"] = "Edit";
     Layout = "_Layout";
 }
-
-
 <!DOCTYPE html>
 <html>
 
+<head>
+    <title>@Localizer["Stop Word"]</title>
+</head>
 <body>
+   
     <header>
         <h2>@Localizer["Create"]</h2>
         <h4>@Localizer["Stop Word"]</h4>
