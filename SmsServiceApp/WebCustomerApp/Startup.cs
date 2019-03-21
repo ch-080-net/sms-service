@@ -169,11 +169,7 @@ namespace WebApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            var supportedCultures = new[]
-           {
-                new CultureInfo("en-US"),
-                new CultureInfo("uk-UA")
-            };
+           
  
             app.UseRequestLocalization(); 
             app.UseStaticFiles();

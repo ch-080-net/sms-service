@@ -19,12 +19,10 @@ namespace WebApp.Controllers
     {
         private readonly IContactManager contactManager;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IGroupManager groupManager;
 
-        public ContactController(IContactManager contactManager, UserManager<ApplicationUser> userManager, IGroupManager groupManager)
+        public ContactController(IContactManager contactManager, UserManager<ApplicationUser> userManager)
         {
             this.contactManager = contactManager;
-            this.groupManager = groupManager;
             this.userManager = userManager;
         }
 
@@ -48,7 +46,7 @@ namespace WebApp.Controllers
             try
             {
                 if (!User.Identity.IsAuthenticated)
-                    return null;
+                    return new List<ContactViewModel>();
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 int groupId = userManager.Users.FirstOrDefault(u => u.Id == userId).ApplicationGroupId;
                 if (searchValue == null)
@@ -58,7 +56,7 @@ namespace WebApp.Controllers
             }
             catch
             {
-                return null;
+                return new List<ContactViewModel>();
             }
         }
 

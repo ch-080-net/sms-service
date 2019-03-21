@@ -67,14 +67,12 @@ namespace WebApp.Controllers
         public IActionResult Create(TariffViewModel item)
         {
             if (ModelState.IsValid) { 
-            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Tariff tariff = new Tariff();
             tariffManager.Insert(item);
             return RedirectToAction("Operators", "Operator");
             }
             else
             {
-                return new ObjectResult("Fill in all fields"); ;
+                return new ObjectResult("Fill in all fields"); 
             }
         }
 

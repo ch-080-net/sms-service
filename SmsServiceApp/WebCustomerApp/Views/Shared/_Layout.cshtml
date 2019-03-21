@@ -42,10 +42,8 @@
                         }
                         @await Html.PartialAsync("_LoginPartial")
                     </div>
-                        <div id="LanguageSwitcher">
-                            <div align="right">
-                                @await Html.PartialAsync("_SelectLanguagePartial")
-                            </div>
+                        <div id="LanguageSwitcher">                        
+                                @await Html.PartialAsync("_SelectLanguagePartial")           
                         </div>   
                 </div>
                 <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>

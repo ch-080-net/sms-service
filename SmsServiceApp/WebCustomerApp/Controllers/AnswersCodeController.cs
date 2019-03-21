@@ -14,12 +14,10 @@ namespace WebApp.Controllers
     public class AnswersCodeController : Controller
     {
         private readonly IAnswersCodeManager answersCodeManager;
-        private readonly ICompanyManager companyManager;
 
-        public AnswersCodeController(IAnswersCodeManager answersCodeManager, ICompanyManager companyManager)
+        public AnswersCodeController(IAnswersCodeManager answersCodeManager)
         {
             this.answersCodeManager = answersCodeManager;
-            this.companyManager = companyManager;
         }
 
         /// <summary>
@@ -111,7 +109,6 @@ namespace WebApp.Controllers
         /// <returns>View with AnswersCode</returns>
         public IActionResult Delete(int id, int companyId)
         {
-            AnswersCodeViewModel answersCode = answersCodeManager.GetAnswersCodeById(id);
             answersCodeManager.Delete(id);
             return RedirectToAction("Index", "AnswersCode", new { companyId });
         }

@@ -74,12 +74,7 @@
         font-size: 30px;
         color: whitesmoke;
     }
-.main__menu {
-    float: left;
-    font-size: 30px;
-    color: whitesmoke;
-    
-}
+
 
 #LanguageSwitcher {
     position: absolute;
@@ -99,9 +94,9 @@
     padding: 0;
 }
 
-    .language-switcher li.selected {
+.language-switcher li.selected {
         background-color: #ffffff;
-    }
+  }
 
     .language-switcher li a {
         color: #aaa;
@@ -113,7 +108,7 @@
 
     .language-switcher li {
         display: inline-block;
-        font-family: OpenSans;
+        font-family: "Open Sans", sans-serif;
         text-transform: uppercase;
         padding: 2px;
         margin: 1px;
