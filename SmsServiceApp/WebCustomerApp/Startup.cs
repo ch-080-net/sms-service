@@ -50,8 +50,14 @@ namespace WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+			services.AddAuthentication().AddFacebook(facebookOptions =>
+			{
+				facebookOptions.AppId = "650976532012853";
+				facebookOptions.AppSecret = "bafe321bce69a757c812991f4468597e";
+			});
+
+			// Add application services.
+			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<ICompanyRepository, CompanyRepository>();

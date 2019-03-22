@@ -1,32 +1,96 @@
 ﻿@model ExternalLoginViewModel
 @{
-    ViewData["Title"] = "Register";
+	ViewData["Title"] = "Register";
 }
+<!DOCTYPE HTML>
+<html>
 
-<h2>@ViewData["Title"]</h2>
-<h4>Associate your @ViewData["LoginProvider"] account.</h4>
-<hr />
+<head>
+	<title>Login with @ViewData["LoginProvider"]</title>
 
-<p class="text-info">
-    You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
-    </div>
-</div>
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+	</script>
+
+	<link rel="stylesheet" href="~/css/style_login.css" />
+
+	<link href="//fonts.googleapis.com/css?family=Poiret+One&amp;subset=cyrillic,latin-ext" rel="stylesheet">
+
+</head>
+
+<body>
+	<div class="back_image"></div>
+	<div class="w3ls-login box box--big">
+		<h1 class="title-page">Associate your @ViewData["LoginProvider"] account</h1>
+		<form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+			<p class="agile-field-txt">
+				You've successfully authenticated with @ViewData["LoginProvider"].
+				Please enter your personal data for this site below and click the Register button to finish
+				logging in.
+			</p>
+			<div class="agile-field-txt">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" id="email" placeholder="Enter your login" />
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Phone"></label>
+				<input asp-for="Phone" class="form-control" id="phone" placeholder="Your phone" />
+				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+			</div>
+			<div class="w3ls-bot">
+				<div class="switch-agileits">
+					<label class="switch">
+						<input type="checkbox" asp-for="CorporateUser" id="corporate" onclick="ShowCompany()">
+						@Html.DisplayNameFor(m => m.CorporateUser)
+						<span class="slider round"></span>
+					</label>
+				</div>
+			</div>
+			<div class="agile-field-txt" id="company">
+				<label asp-for="CompanyName"></label>
+				<input asp-for="CompanyName" class="form-control" placeholder="Your company" />
+			</div>
+			<div class="agile-field-txt">
+				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+			</div>
+			<div class="agile-field-txt">
+				<p>
+					<input type="submit" value="SIGN IN">
+				</p>
+			</div>
+		</form>
+	</div>
+
+	<div class="copy-wthree">
+		<p>
+			© 2019 | SMS-service
+		</p>
+	</div>
+
+</body>
+</html>
+
+<script>
+	document.getElementById("company").style.display = 'none';
+	function ShowCompany() {
+		var chboxs = document.getElementById("corporate");
+		if (chboxs.checked) {
+			document.getElementById("company").style.display = 'block';
+		}
+		if (!chboxs.checked) {
+			document.getElementById("company").style.display = 'none';
+		}
+	}
+</script>
 
 @section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
+	@await Html.PartialAsync("_ValidationScriptsPartial")
 }

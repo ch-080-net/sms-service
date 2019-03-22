@@ -297,6 +297,9 @@ h1 {
     margin-right: 3px;
     color: #363af4;
 }
+p.agile-field-txt {
+	color: #00ba9d;
+}
 
 .w3ls-login input[type="text"],
 .w3ls-login input[type="password"],

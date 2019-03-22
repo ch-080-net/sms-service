@@ -366,7 +366,7 @@ namespace WebApp.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.Phone, ApplicationGroup = new ApplicationGroup() };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

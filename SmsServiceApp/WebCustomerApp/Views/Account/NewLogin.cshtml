@@ -33,55 +33,86 @@
 </head>
 
 <body>
-    <div class="back_image"></div>
-    <div class="w3ls-login box box--big">
-        <h1 class="title-page">Sign In </h1>
-        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-            <div class="agile-field-txt">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Enter your login"]" />
-                @*<span asp-validation-for="Email" class="agile-right"></span>*@
-            </div>
-            <div class="agile-field-txt">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" id="pass" class="form-control" placeholder="@Localizer["Enter your password"]" />
-                @*<span asp-validation-for="Password" class="text-danger"></span>*@
-                <div asp-validation-summary="All" class="agile_label" style="color : red"></div>
-            </div>
-            <div class="agile-field-txt">
-                <div class="agile_label">
-                    <input id="check3" name="check3" type="checkbox" value="@Localizer["show password"]" onclick="ShowPassword()">
-                    <label class="check" for="check3">@Localizer["Show password"]</label>
-                </div>
-                <div class="agile-right">
-                    <a asp-action="ForgotPassword">@Localizer["Forgot your password?"]</a>
-                </div>
-            </div>
-            <div class="w3ls-bot">
-                <div class="switch-agileits">
-                    <label class="switch">
-                        <input asp-for="RememberMe">
-                        @Html.DisplayNameFor(m => m.RememberMe)
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="agile-field-txt">
-                <p>
-                    <input type="submit" value="@Localizer["SIGN IN"]">
-                </p>
-            </div>
-            <div class="agile-right">
-                <a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["REGISTRATION"]</a>
-            </div>
-        </form>
-    </div>
+	<div class="back_image"></div>
+	<div class="w3ls-login box box--big">
+		<h1 class="title-page">Sign In </h1>
+		<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+			<div class="agile-field-txt">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Enter your login"]" />
+				@*<span asp-validation-for="Email" class="agile-right"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Password"></label>
+				<input asp-for="Password" id="pass" class="form-control" placeholder="@Localizer["Enter your password"]" />
+				@*<span asp-validation-for="Password" class="text-danger"></span>*@
+				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+			</div>
+			<div class="agile-field-txt">
+				<div class="agile_label">
+					<input id="check3" name="check3" type="checkbox" value="@Localizer["show password"]" onclick="ShowPassword()">
+					<label class="check" for="check3">@Localizer["Show password"]</label>
+				</div>
+				<div class="agile-right">
+					<a asp-action="ForgotPassword">@Localizer["Forgot your password?"]</a>
+				</div>
+			</div>
+			<div class="w3ls-bot">
+				<div class="switch-agileits">
+					<label class="switch">
+						<input asp-for="RememberMe">
+						@Html.DisplayNameFor(m => m.RememberMe)
+						<span class="slider round"></span>
+					</label>
+				</div>
+			</div>
+			<div class="agile-field-txt">
+				<p>
+					<input type="submit" value="@Localizer["SIGN IN"]">
+				</p>
+			</div>
+		</form>
+		<div>
+			<section>
+				<h4>Use another service to log in.</h4>
+				<hr />
+				@{
+					var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+					if (loginProviders.Count == 0)
+					{
+						<div>
+							<p>
+								There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+								for details on setting up this ASP.NET application to support logging in via external services.
+							</p>
+						</div>
+					}
+					else
+					{
+						<form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+							<div>
+								<p>
+									@foreach (var provider in loginProviders)
+									{
+										<button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+									}
+								</p>
+							</div>
+						</form>
+					}
+				}
+			</section>
+		</div>
+		<div class="agile-right">
+			<a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["REGISTRATION"]</a>
+		</div>
+	</div>
 
-    <div class="copy-wthree">
-        <p>
-            © 2019 | SMS-service
-        </p>
-    </div>
+	<div class="copy-wthree">
+		<p>
+			© 2019 | SMS-service
+		</p>
+	</div>
 
 </body>
 </html>
