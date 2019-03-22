@@ -25,6 +25,7 @@ namespace DAL.Repositories
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
         private IChartsRepository ChartsRepo;
+        private ICampaignChartRepository chartsCampaingRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -164,6 +165,17 @@ namespace DAL.Repositories
                     ChartsRepo = new ChartsRepository(context);
                 }
                 return ChartsRepo;
+            }
+        }
+        public ICampaignChartRepository ChartsCampaing
+        {
+            get
+            {
+                if (chartsCampaingRepo == null)
+                {
+                    chartsCampaingRepo = new CampaignChartRepository(context);
+                }
+                return chartsCampaingRepo;
             }
         }
 
