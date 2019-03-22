@@ -2,10 +2,10 @@
 @model TariffViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-
 @{
     ViewData["Title"] = Localizer["Edit Tariff"];
 }
+
 <h2>@Localizer["Edit Tariff"]</h2>
 
 
@@ -47,9 +47,9 @@
                 @Html.ValidationMessageFor(model => model.Limit, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group" style="display:inline-block; position:relative; left: 40%;">
-            <button type="submit" class="btn btn-default col-md-2" style="width: 140px;" asp-action="Update">@Localizer["Change Tariff"]</button>
-            <a class="btn btn-info col-md-2" style="width: 160px; margin-left: 10px;" asp-action="Operators" asp-controller="Operator">@Localizer["Back to List"]</a>
+        <div class="form-group tariff-submit">
+            <button type="submit" class="btn btn-default col-md-2 btn-tariff"  asp-action="Update">@Localizer["Change Tariff"]</button>
+            <a class="btn btn-info col-md-2 a-tariffUpdate"  asp-action="Operators" asp-controller="Operator">@Localizer["Back to List"]</a>
         </div>
         <div id="msg"></div>
 
