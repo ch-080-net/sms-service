@@ -11,6 +11,72 @@
         <title>@Localizer["Index"]</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        var options = {
+	valueNames: [
+		'name',
+		'description',
+		'address',
+		{ data: ['gender']}
+	],
+	page: 3,
+	pagination: true
+};
+var userList = new List('users', options);
+
+function resetList(){
+	userList.search();
+	userList.filter();
+	userList.update();
+	$(".filter-all").prop('checked', true);
+	$('.filter').prop('checked', false);
+	$('.search').val('');
+	//console.log('Reset Successfully!');
+};
+  
+function updateList(){
+  var values_gender = $("input[name=gender]:checked").val();
+	var values_address = $("input[name=address]:checked").val();
+	console.log(values_gender, values_address);
+
+	userList.filter(function (item) {
+		var genderFilter = false;
+		var addressFilter = false;
+		
+		if(values_gender == "all")
+		{ 
+			genderFilter = true;
+		} else {
+			genderFilter = item.values().gender == values_gender;
+			
+		}
+		if(values_address == null)
+		{ 
+			addressFilter = true;
+		} else {
+			addressFilter = item.values().address.indexOf(values_address) >= 0;
+		}
+		return addressFilter && genderFilter
+	});
+	userList.update();
+	//console.log('Filtered: ' + values_gender);
+}
+                               
+$(function(){
+  //updateList();
+  $("input[name=gender]").change(updateList);
+	$('input[name=address]').change(updateList);
+	
+	userList.on('updated', function (list) {
+		if (list.matchingItems.length > 0) {
+			$('.no-result').hide()
+		} else {
+			$('.no-result').show()
+		}
+	});
+});
+    </script>
+    
     </head>
     <body>
         <h2>@Localizer["Campaign"]</h2>
@@ -19,6 +85,9 @@
             <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
         </p>
         <div class="container">
+            <div class="form-group col-xs-12 col-sm-12 col-md-4">
+                <input type="text" class="search form-control" placeholder="Search" />
+            </div>
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -34,17 +103,17 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td class="col-md-2">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td class="col-md-6">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td class="col-md-4">
-                            <a class="btn btn-success" asp-action="Details" asp-route-companyId="@item.Id">@Localizer["Details"]</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="col-md-6">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td class="col-md-4">
+                                <a class="btn btn-success" asp-action="Details" asp-route-companyId="@item.Id">@Localizer["Details"]</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
