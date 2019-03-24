@@ -26,6 +26,8 @@
         <label class="text-danger">@ViewData["warningMessage"]</label>
         }
         <div class="container">
+            <input type="text" id="inputTable" onkeyup="FilterRecipient()" placeholder="Search for ..." title="Type in a some" >
+
             <table class="table table-striped table-bordered">
                 <thead class="thead-dark">
                     <tr>
@@ -53,40 +55,41 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableR">
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Surname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BirthDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Gender)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Priority)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.KeyWords)
-                        </td>
-                        <td>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Edit"]</a> |
-                            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Delete"]</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Surname)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BirthDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Gender)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.KeyWords)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Edit"]</a> |
+                                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Delete"]</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
             <a class="btn btn-primary" asp-controller="Company" asp-action="RedirectByType" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to Company"]</a>
         </div>
+        <script src="~/js/SearchRecipient.js"></script>
     </body>
 </html>
