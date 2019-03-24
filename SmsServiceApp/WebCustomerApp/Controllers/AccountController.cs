@@ -366,11 +366,35 @@ namespace WebApp.Controllers
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.Phone, ApplicationGroup = new ApplicationGroup() };
-                var result = await _userManager.CreateAsync(user);
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.Phone};
+
+				var phone = _phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == model.Phone);
+				ApplicationGroup group = new ApplicationGroup { Name = model.CompanyName };
+				if (phone != null)
+				{
+					group.PhoneId = phone.Id;
+				}
+				else
+				{
+					Phone newPhone = new Phone { PhoneNumber = model.Phone };
+					group.Phone = newPhone;
+				}
+				user.ApplicationGroup = group;
+
+				var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+					_logger.LogInformation("User created a new account with password.");
+					var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+					var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+					await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+					
+					if (model.CorporateUser)
+						await _userManager.AddToRoleAsync(user, "CorporateUser");
+					else
+						await _userManager.AddToRoleAsync(user, "User");
+
+					result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);

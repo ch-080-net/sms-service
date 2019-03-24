@@ -141,7 +141,10 @@ table {
 /*--start editing from here--*/
 
 a {
-    text-decoration: none;
+	text-decoration: none;
+	color: #aaa;
+	font-weight: 600;
+	letter-spacing: 2px;
 }
 
 .txt-rt {
@@ -283,7 +286,7 @@ h1 {
     font-weight: 600;
     margin-bottom: 15px;
     text-transform: capitalize;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
 }
 
 .agile-field-txt {
