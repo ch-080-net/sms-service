@@ -120,6 +120,9 @@
   <data name="Email" xml:space="preserve">
     <value>Електронна Адресса</value>
   </data>
+  <data name="Group member" xml:space="preserve">
+    <value>Член групи</value>
+  </data>
   <data name="IsEmailConfirmed" xml:space="preserve">
     <value>Підтвердження ел. адреси</value>
   </data>

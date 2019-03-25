@@ -98,23 +98,26 @@
         background-color: #ffffff;
   }
 
-    .language-switcher li a {
+.language-switcher li a {
         color: #aaa;
         text-decoration: none;
         text-decoration-line: none;
         text-decoration-style: initial;
         text-decoration-color: initial;
-    }
+}
 
-    .language-switcher li {
+.language-switcher li {
         display: inline-block;
         font-family: "Open Sans", sans-serif;
         text-transform: uppercase;
         padding: 2px;
         margin: 1px;
         border-radius: 5px;
-    }
+}
 
 li {
     display: list-item;
+}
+a.linkLanguage{
+    font-size: 13px;
 }

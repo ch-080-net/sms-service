@@ -172,3 +172,16 @@ body {
     margin-top: 50px;
 }
 
+.tariff-submit {
+    display: inline-block;
+    position: relative;
+    left: 40%;
+}
+
+.btn-tariff {
+    width: 140px;
+}
+.a-tariffUpdate {
+    width: 160px;
+    margin-left: 10px;
+}

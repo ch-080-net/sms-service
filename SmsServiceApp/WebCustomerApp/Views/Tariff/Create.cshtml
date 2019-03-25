@@ -15,38 +15,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-    <script>
-        var Tariff = {
-            id: 0,
-            name: "",
-            description: "",
-            price: "",
-            limit: "",
-            operatorId: ""
+<script >
+         var Tariff = {
+         id: 0,
+         name: "",
+         description: "",
+         price: "",
+         limit: "",
+         operatorId: ""
+};
+function onAddTariff(item) {
+    var options = {};
+    options.url = "/Tariff/Create";
+    options.type = "POST";
+    var obj = Tariff;
+    obj.name = $("#name").val();
+    obj.description = $("#description").val();
+    obj.price = $("#price").val();
+    obj.limit = $("#limit").val();
+    obj.operatorId = '@ViewData["OperatorId"]';
+    console.log(obj);
+    console.dir(obj);
+    options.data = obj;
+    options.success = function (msg) {
+        $("#msg").html(msg);
+    },
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
         };
-        function onAddTariff(item) {
-            var options = {};
-            options.url = "/Tariff/Create";
-            options.type = "POST";
-            var obj = Tariff;
-            obj.name = $("#name").val();
-            obj.description = $("#description").val();
-            obj.price = $("#price").val();
-            obj.limit = $("#limit").val();
-            obj.operatorId = '@ViewData["OperatorId"]';
-            console.log(obj);
-            console.dir(obj);
-            options.data = obj;
-            options.success = function (msg) {
-                $("#msg").html(msg);
-            },
-                options.error = function () {
-                    $("#msg").html("Error while calling the Web API!");
-                };
-            $.ajax(options);
-        }
-    </script>
+    $.ajax(options);
+}
+</script>
 </head>
 <body>
     <form>
@@ -80,6 +79,7 @@
             </div>
         </div>
     </form>
+
 </body>
 </html>
 

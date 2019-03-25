@@ -7,10 +7,10 @@
 @{
     ViewData["Title"] = Localizer["Delete Tariff"];
 }
-<h2>Delete</h2>
-<h3>Are you sure you want to delete this?</h3>
+<h2>@Localizer["Are you sure you want to delete this?"]</h2>
 <div>
-    <h4>Tariffs</h4>
+    <h3>@Localizer["Tariff"]</h3>
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.OperatorId)
