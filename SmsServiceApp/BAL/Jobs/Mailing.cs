@@ -8,6 +8,8 @@ using Model.DTOs;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BAL.Jobs
 {
@@ -16,19 +18,26 @@ namespace BAL.Jobs
     /// </summary>
     public class Mailing : IJob
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public Mailing(IServiceProvider serviceProvider)
+        public Mailing(IServiceScopeFactory serviceScopeFactory)
         {
-            this.serviceProvider = serviceProvider;
+            this.serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-			var service = serviceProvider.GetService<ISmsSender>();
-			var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
-            if (result.Any())
-                await service.SendMessages(result);
+            var connection = new HubConnectionBuilder().WithUrl("http://localhost:53399/notificationHub").Build();
+            await connection.StartAsync();
+            await connection.InvokeAsync("SendNotification");
+            await connection.StopAsync();
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var service = scope.ServiceProvider.GetService<ISmsSender>();
+                var result = scope.ServiceProvider.GetService<IMailingManager>().GetUnsentMessages();
+                if (result.Any())
+                    await service.SendMessages(result);
+            }
         }
     }
 }
