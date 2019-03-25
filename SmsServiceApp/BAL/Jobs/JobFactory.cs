@@ -11,26 +11,23 @@ namespace BAL.Jobs
     /// </summary>
     public class JobFactory : IJobFactory
     {
-        protected readonly IServiceScopeFactory serviceScopeFactory;
+        protected readonly IServiceScope serviceScope;
 
         /// <param name="serviceProvider">Should contain entries to resolve instance of IJob</param>
-        public JobFactory(IServiceScopeFactory serviceScopeFactory)
+        public JobFactory(IServiceProvider serviceProvider)
         {
-            this.serviceScopeFactory = serviceScopeFactory;
+            this.serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
         }
 
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
-        {
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                var job = scope.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
-                return job;
-            }
-            
+        {                        
+            var job = serviceScope.ServiceProvider.GetService(bundle.JobDetail.JobType) as IJob;
+            return job;
         }
 
         public void ReturnJob(IJob job)
         {
+            serviceScope.Dispose();
         }
     }
 }

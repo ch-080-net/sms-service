@@ -28,7 +28,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using BAL.Interfaces;
-using BAL.Hubs;
 
 namespace WebApp
 {
@@ -155,10 +154,6 @@ namespace WebApp
             services.AddDistributedMemoryCache();
             services.AddSession();
 
-            // Configure hubs
-
-            services.AddSignalR();
-
         }
        
         public void Configure(IApplicationBuilder app, 
@@ -184,10 +179,6 @@ namespace WebApp
             // Configure sessions
 
             app.UseSession();
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<NotificationHub>("/notificationHub");
-            });
 
             app.UseMvc(routes =>
             {

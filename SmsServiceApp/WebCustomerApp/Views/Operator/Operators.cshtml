@@ -101,17 +101,4 @@
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
-    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-
-    <script type="text/javascript">
-        "use strict";
-
-        var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
-        connection.on("GetNotification", function (message) {
-            alert(message);
-        });
-
-        connection.start();
-    </script>
 }
