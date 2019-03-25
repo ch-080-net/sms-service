@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Quartz;
-using Model.Interfaces;
+using BAL.Managers;
 using AutoMapper;
 using WebApp.Services;
 using Model.DTOs;
