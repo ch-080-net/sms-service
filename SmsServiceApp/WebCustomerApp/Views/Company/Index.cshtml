@@ -11,6 +11,9 @@
     <title>@Localizer["Index"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
 </head>
 <body>
     <h2>@Localizer["Campaign"]</h2>
@@ -19,7 +22,7 @@
         <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
     </p>
     <div class="container">
-        
+        <a class="btn btn-primary" asp-action="Get"></a>
         <input type="text" id="inputTable" onkeyup="FilterNameDesc()" placeholder="Search for ..." title="Type in a name and description">
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
@@ -48,5 +51,6 @@
         </table>
     </div>
     <script src="~/js/Search.js"></script>
+    <script src="~/js/CompanyTable.js"></script>
 </body>
 </html>

@@ -70,6 +70,16 @@ namespace WebApp.Controllers
             return View(companyManager.GetCompanies(GetGroupId()));
         }
 
+        [HttpGet]
+        public List<CompanyViewModel> Get()
+        {
+            return companyManager.GetCompanies(GetGroupId()).ToList();
+        }
+        [HttpPost]
+        public IActionResult Index([FromBody] CompanyViewModel company)
+        {
+            return View();
+        }
         /// <summary>
         /// View for creation new Company
         /// </summary>
