@@ -5,22 +5,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
-    public static class MailingScheduler
+    public static class NotificationScheduler
     {
-        /// <summary>
-        /// Start scheduler for Mailing
-        /// </summary>
-        /// <param name="serviceProvider">Method calls custom implementation of IJobFactory which uses serviceProvider
-        /// to create instance of IJob</param>
         public static async void Start(IServiceProvider serviceProvider)
         {
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
             await scheduler.Start();
 
-            IJobDetail jobDetail = JobBuilder.Create<Mailing>().Build();
+            IJobDetail jobDetail = JobBuilder.Create<Notification>().Build();
             ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("MailingTrigger", "default")
+                .WithIdentity("NotificationTrigger", "default")
                 .StartNow()
                 .WithSimpleSchedule(x => x
                 .WithIntervalInMinutes(1)

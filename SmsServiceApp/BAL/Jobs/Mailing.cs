@@ -8,8 +8,6 @@ using Model.DTOs;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BAL.Jobs
 {
@@ -27,10 +25,6 @@ namespace BAL.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var connection = new HubConnectionBuilder().WithUrl("http://localhost:53399/notificationHub").Build();
-            await connection.StartAsync();
-            await connection.InvokeAsync("SendNotification");
-            await connection.StopAsync();
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 var service = scope.ServiceProvider.GetService<ISmsSender>();
