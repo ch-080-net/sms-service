@@ -21,14 +21,17 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name ="Message")]
         public string Message { get; set; }
         [Display(Name = "Time for send")]
+        [DataType(DataType.DateTime)]
         public DateTime SendingTime { get; set; }
         [Display(Name = "Recipients")]
         public IEnumerable<RecipientViewModel> RecipientViewModels { get; set; }
         [Required(ErrorMessage = "The Start time field is required.")]
         [Display(Name = "Start time")]
+        [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
         [Required(ErrorMessage = "The End time is required.")]
         [Display(Name = "End time")]
+        [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
 
     }
