@@ -152,9 +152,8 @@ namespace WebApp.Controllers
         /// <returns>Index if all valid</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Send(SendViewModel item)
+        public IActionResult Send(SendViewModel item, int companyId)
         {
-            
             if (ModelState.IsValid)
             {
                 if (item.SendingTime < DateTime.Now)
@@ -165,7 +164,15 @@ namespace WebApp.Controllers
                 companyManager.AddSend(item);
                 return RedirectToAction("Index","Company");
             }
-            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
+            ViewData["companyId"] = companyId;
+            CompanyViewModel company = companyManager.Get(companyId);
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.TariffId = company.TariffId;
+            if (item.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(item.TariffId).Name;
+                item.Tariff = tariff;
+            }
             return View(item);
         }
 
@@ -237,7 +244,7 @@ namespace WebApp.Controllers
         /// <returns>Index if all valid</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SendRecieve(SendRecieveViewModel item)
+        public IActionResult SendRecieve(SendRecieveViewModel item, int companyId)
         {
             if (item.StartTime <= DateTime.Now)
             {
@@ -258,7 +265,15 @@ namespace WebApp.Controllers
                 companyManager.AddSendRecieve(item);
                 return RedirectToAction("Index");
             }
-            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
+            ViewData["companyId"] = companyId;
+            CompanyViewModel company = companyManager.Get(companyId);
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.TariffId = company.TariffId;
+            if (item.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(item.TariffId).Name;
+                item.Tariff = tariff;
+            }
             return View(item);
         }
 

@@ -13,9 +13,11 @@ namespace Model.ViewModels.CompanyViewModels
         public int Id { get; set; }
         [Required(ErrorMessage = "The Start time field is required.")]
         [Display(Name = "Start time")]
+        [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
         [Required(ErrorMessage = "The End time field is required.")]
         [Display(Name = "End time")]
+        [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
     }
 }
