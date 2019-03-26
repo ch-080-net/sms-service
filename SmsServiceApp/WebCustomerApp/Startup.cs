@@ -157,7 +157,7 @@ namespace WebApp
             services.AddTransient<JobFactory>();
 
             services.AddScoped<Mailing>();
-            services.AddScoped<Notification>();
+            services.AddScoped<BAL.Jobs.Notification>();
 
         }
        

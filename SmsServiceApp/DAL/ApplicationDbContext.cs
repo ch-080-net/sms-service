@@ -27,6 +27,7 @@ namespace WebApp.Data
         public DbSet<RecievedMessage> RecievedMessages { get; set; }
         public DbSet<AnswersCode> AnswersCodes { get; set; }
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -113,6 +114,12 @@ namespace WebApp.Data
                 .HasMany(c => c.RecievedMessages)
                 .WithOne(rm => rm.Company)
                 .HasForeignKey(rm => rm.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.Notifications)
+                .WithOne(n => n.ApplicationUser)
+                .HasForeignKey(n => n.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
@@ -216,7 +223,6 @@ namespace WebApp.Data
             builder.Entity<Recipient>()
                 .Property(r => r.MessageState)
                 .HasDefaultValue(MessageState.NotSent);
-
         }
     }
 }

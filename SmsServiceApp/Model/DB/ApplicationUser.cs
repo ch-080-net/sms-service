@@ -14,6 +14,7 @@ namespace WebApp.Models
     {
         public int ApplicationGroupId { get; set; }
         public ApplicationGroup ApplicationGroup { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
 
         /// <summary>
         /// Invite ID
