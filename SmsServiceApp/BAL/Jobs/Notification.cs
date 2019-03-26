@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SignalR;
 using BAL.Hubs;
+using BAL.Managers;
 
 namespace BAL.Jobs
 {
@@ -25,10 +26,27 @@ namespace BAL.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
+            await SendEmails();
+        }
+
+        private async Task SendEmails()
+        {
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
-                await hub.Clients.All.SendAsync("GetNotification", "Hi!");
+                //var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
+                //await hub.Clients.All.SendAsync("GetNotification", "Hi!");
+
+                var manager = scope.ServiceProvider.GetService<INotificationManager>();
+                var sender = scope.ServiceProvider.GetService<IEmailSender>();
+
+                var emailNotifications = manager.GetAllEmailNotifications();
+
+                foreach (var iter in emailNotifications)
+                {
+                    await sender.SendEmailAsync(iter.Email, iter.Title, iter.Message);
+                }
+
+                manager.SetAsSent(emailNotifications);
             }
         }
     }

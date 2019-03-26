@@ -142,6 +142,7 @@ namespace WebApp
             services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
+            services.AddScoped<INotificationManager, NotificationManager>();
 
             // Configure sessions
 

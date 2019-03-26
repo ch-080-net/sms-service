@@ -12,13 +12,14 @@ namespace WebApp.Models
         public NotificationType Type { get; set; }
         public DateTime Time { get; set; }
         public bool BeenSent { get; set; }
+        public string Title { get; set; }
         public string Message { get; set; }
     }
 
     public enum NotificationType
     {
         Site,
-        EMail,
+        Email,
         SMS
     }
 }

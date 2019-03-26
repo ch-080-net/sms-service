@@ -96,6 +96,9 @@ namespace BAL.Services
             CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
+
+            CreateMap<Notification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email));
         }
 
         /// <summary>
