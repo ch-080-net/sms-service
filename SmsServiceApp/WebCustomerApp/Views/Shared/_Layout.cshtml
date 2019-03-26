@@ -29,6 +29,7 @@
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="overlay-content">
                         <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
+                        <a asp-area="" asp-controller="SMSEmulator" asp-action="Index">@Localizer["SMSEmulator"]</a>
                         <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
