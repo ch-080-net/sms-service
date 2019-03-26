@@ -211,6 +211,22 @@ nav.horizontal ul li {
     display: inline-block;
 }
 
+#facebook {
+	background: url(../images/facebook.svg)no-repeat;
+	width: 20em;
+	height: 4em;
+	border: none;
+	margin: 0.2vw;
+}
+
+#google {
+	background: url(../images/google.svg)no-repeat;
+	width: 20em;
+	height: 4em;
+	border: none;
+	margin: 0.2vw;
+}
+
 /* horizontal menu */
 
 img {
@@ -265,18 +281,20 @@ h1 {
 }
 
 .w3ls-login form {
-    position: relative;
-    max-width: 500px;
-    margin: 0 5vw;
-    padding: 3.5vw;
-    border: none;
-    box-sizing: border-box;
-    display: flex;
-    border-left: 4px solid #00ba9d;
-    flex-wrap: wrap;
-    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+	position: relative;
+	max-width: 500px;
+	margin: 0 5vw;
+	padding: 2.5vw;
+	padding-top: 1.5vw;
+	padding-bottom: 1.5vw;
+	border: none;
+	box-sizing: border-box;
+	display: flex;
+	border-left: 4px solid #00ba9d;
+	flex-wrap: wrap;
+	-webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
 }
 
 .w3ls-login label {

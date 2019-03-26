@@ -36,6 +36,7 @@
 	<div class="back_image"></div>
 	<div class="w3ls-login box box--big">
 		<h1 class="title-page">Sign In </h1>
+		<div class="form">
 		<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 			<div class="agile-field-txt">
 				<label asp-for="Email"></label>
@@ -76,14 +77,6 @@
 					<a asp-action="NewRegister" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["REGISTRATION"]</a>
 				</div>
 			</div>
-			<div class="agile-field-txt">
-				<div class="agile_label">
-					<a asp-controller="Home" asp-action="Index">BACK TO START PAGE</a>
-				</div>
-			</div>
-			<div class="agile-field-txt">
-				<label>Use another service to log in</label>
-			</div>
 		</form>
 		@{
 			var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -91,16 +84,28 @@
 			{
 				<form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 					<div>
+						<div class="agile-field-txt">
+							<label>Use another service to log in</label>
+						</div>
 						<p>
 							@foreach (var provider in loginProviders)
 							{
-								<button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+								if (provider.Name == "Facebook")
+								{
+									<button type="submit" class="btn btn-default" name="provider" id="facebook" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+								}
+
+								if (provider.Name == "Google")
+								{
+									<button type="submit" class="btn btn-default" name="provider" id="google" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+								}
 							}
 						</p>
 					</div>
 				</form>
 			}
 		}
+		</div>
 	</div>
 </body>
 </html>
