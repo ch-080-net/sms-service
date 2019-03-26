@@ -6,14 +6,17 @@ using Model.Interfaces;
 using AutoMapper;
 using System.Linq;
 using Model.DTOs;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace BAL.Managers
 {
     public class NotificationManager : BaseManager, INotificationManager
     {
-        public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        UserManager<ApplicationUser> userManager;
+        public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager) : base(unitOfWork, mapper)
         {
-
+            this.userManager = userManager;
         }
 
         public IEnumerable<EmailNotificationDTO> GetAllEmailNotifications()
@@ -22,6 +25,19 @@ namespace BAL.Managers
                                                                 && n.Time <= DateTime.UtcNow
                                                                 && n.Type == NotificationType.Email);
             var result = mapper.Map<IEnumerable<Notification>, IEnumerable<EmailNotificationDTO>>(notifications);
+            return result;
+        }
+
+        public async Task<IEnumerable<SmsNotificationDTO>> GetAllSmsNotification()
+        {
+            var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
+                                                                && n.Time <= DateTime.UtcNow
+                                                                && n.Type == NotificationType.Sms);
+            var senders = await userManager.GetUsersInRoleAsync("Admin");
+            string senderPhone = senders.FirstOrDefault().PhoneNumber;
+
+            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<SmsNotificationDTO>>(notifications, opt =>
+                opt.AfterMap((src, dest) => (dest as SmsNotificationDTO).SenderPhone = senderPhone));
             return result;
         }
 

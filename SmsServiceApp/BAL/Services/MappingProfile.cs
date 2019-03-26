@@ -99,6 +99,15 @@ namespace BAL.Services
 
             CreateMap<Notification, EmailNotificationDTO>()
                 .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email));
+
+            CreateMap<Notification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber));
+
+            CreateMap<SmsNotificationDTO, MessageDTO>()
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.SenderPhone))
+                .ForMember(sn => sn.RecepientPhone, opt => opt.MapFrom(n => n.RecieverPhone))
+                .ForMember(sn => sn.MessageText, opt => opt.MapFrom(n => n.Message))
+                .ForMember(sn => sn.RecipientId, opt => opt.MapFrom(n => 0));
         }
 
         /// <summary>

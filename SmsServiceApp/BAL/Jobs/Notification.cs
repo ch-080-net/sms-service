@@ -27,6 +27,7 @@ namespace BAL.Jobs
         public async Task Execute(IJobExecutionContext context)
         {
             await SendEmails();
+            await SendSms();
         }
 
         private async Task SendEmails()
@@ -47,6 +48,25 @@ namespace BAL.Jobs
                 }
 
                 manager.SetAsSent(emailNotifications);
+            }
+        }
+
+        private async Task SendSms()
+        {
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                //var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
+                //await hub.Clients.All.SendAsync("GetNotification", "Hi!");
+
+                var manager = scope.ServiceProvider.GetService<INotificationManager>();
+                var mapper = scope.ServiceProvider.GetService<IMapper>();
+
+                var smsNotifications = await manager.GetAllSmsNotification();
+
+                var smsMessages = mapper.Map<IEnumerable<SmsNotificationDTO>, IEnumerable<MessageDTO>>(smsNotifications);
+
+                await scope.ServiceProvider.GetService<ISmsSender>().SendMessages(smsMessages);                
+                manager.SetAsSent(smsNotifications);
             }
         }
     }

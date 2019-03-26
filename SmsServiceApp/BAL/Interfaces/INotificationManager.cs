@@ -11,6 +11,8 @@ namespace BAL.Managers
     {
         IEnumerable<EmailNotificationDTO> GetAllEmailNotifications();
 
+        Task<IEnumerable<SmsNotificationDTO>> GetAllSmsNotification();
+
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
         void SetAsSent(NotificationDTO notification);
     }

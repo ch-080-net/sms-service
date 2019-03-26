@@ -20,6 +20,6 @@ namespace WebApp.Models
     {
         Site,
         Email,
-        SMS
+        Sms
     }
 }
