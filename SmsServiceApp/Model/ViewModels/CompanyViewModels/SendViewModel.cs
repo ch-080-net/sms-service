@@ -21,6 +21,7 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name ="Message")]
         public string Message { get; set; }
         [Display(Name = "Time for send")]
+        [DataType(DataType.DateTime)]
         public DateTime SendingTime { get; set; }
         [Display(Name = "Recipients")]
         public IEnumerable<RecipientViewModel> RecipientViewModels { get; set; }

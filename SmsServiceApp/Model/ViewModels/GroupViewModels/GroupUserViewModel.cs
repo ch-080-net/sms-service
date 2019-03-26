@@ -10,6 +10,7 @@ namespace Model.ViewModels.GroupViewModels
     /// </summary>
     public class GroupUserViewModel
     {
+        [Required(ErrorMessage = "The Email field is required.")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

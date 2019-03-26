@@ -120,4 +120,7 @@
   <data name="Email" xml:space="preserve">
     <value>Електронна адреса</value>
   </data>
+  <data name="The Email field is required." xml:space="preserve">
+    <value>Поле електронної пошти обов'язкове.</value>
+  </data>
 </root>
