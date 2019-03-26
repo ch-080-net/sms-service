@@ -12,8 +12,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    
+
 </head>
 <body>
     <h2>@Localizer["Campaign"]</h2>
@@ -22,9 +23,36 @@
         <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
     </p>
     <div class="container">
+        @*<input type="text" v-model.lazy.trim="name" class="form-control" placeholder="Search for ..." />*@
         <a class="btn btn-primary" asp-action="Get"></a>
+
         <input type="text" id="inputTable" onkeyup="FilterNameDesc()" placeholder="Search for ..." title="Type in a name and description">
-        <table class="table table-striped table-bordered">
+
+
+        <div id="tables" >
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr >
+                        <td>Name</td>
+                        <td>Description</td>
+                        <td>Id</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in timestorege">
+                        <td>{{item.name}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.id}}</td>
+                        <td><a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id">@Localizer["Details"]</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+         
+            @*<a class="btn btn-success" asp-action="Details" asp-route-companyId={{timestorege[14].id}}>@Localizer["Details"]</a>*@
+        
+        </div>
+        @*<table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
                     <th class="col-md-2">
@@ -36,7 +64,7 @@
                     <th class="col-md-1"></th>
                 </tr>
             </thead>
-            <tbody id="tables">
+            <tbody >
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -48,9 +76,44 @@
                     </tr>
                 }
             </tbody>
-        </table>
+        </table>*@
     </div>
+   
+    <script>
+     
+
+        var Vue1 = new Vue({
+
+            el: "#tables",
+            data: {
+                timestorege: []
+            },
+            filters: {},
+            mounted() {
+                
+                        axios({
+                            method: 'get',
+                            url: '/Company/Get/',
+                            data: {
+                            }
+                        })
+                            .then(Companies => {
+                                this.timestorege = Companies.data;
+                                console.log(Companies.data);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                    
+                
+            }
+
+        });
+
+
+    </script>
     <script src="~/js/Search.js"></script>
-    <script src="~/js/CompanyTable.js"></script>
+    @*<script src="~/js/CompanyTable.js"></script>*@
 </body>
 </html>
