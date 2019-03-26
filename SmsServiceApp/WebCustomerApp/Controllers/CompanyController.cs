@@ -110,6 +110,7 @@ namespace WebApp.Controllers
                 if (item.Type == CompanyType.Send)
                 {
                     return RedirectToAction("Send", new { companyId });
+
                 }
                 if (item.Type == CompanyType.Recieve)
                 {
