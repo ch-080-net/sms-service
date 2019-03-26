@@ -9,7 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.SignalR.Client;
+using BAL.Hubs;
 
 namespace BAL.Jobs
 {
@@ -25,10 +25,11 @@ namespace BAL.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var connection = new HubConnectionBuilder().WithUrl("http://localhost:51238/notificationHub").Build();
-            await connection.StartAsync();
-            await connection.InvokeAsync("SendNotification");
-            await connection.StopAsync();
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
+                await hub.Clients.All.SendAsync("GetNotification", "Hi!");
+            }
         }
     }
 }

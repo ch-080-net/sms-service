@@ -143,18 +143,6 @@ namespace WebApp
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
 
-
-
-            // Start scheduler
-
-            services.AddTransient<JobFactory>();
-
-            services.AddScoped<Mailing>();
-            services.AddScoped<Notification>();
-
-            MailingScheduler.Start(services.BuildServiceProvider());
-            NotificationScheduler.Start(services.BuildServiceProvider());
-
             // Configure sessions
 
             services.AddDistributedMemoryCache();
@@ -163,6 +151,13 @@ namespace WebApp
             // Configure hubs
 
             services.AddSignalR();
+
+            // Register Jobs and JobFactory
+
+            services.AddTransient<JobFactory>();
+
+            services.AddScoped<Mailing>();
+            services.AddScoped<Notification>();
 
         }
        
