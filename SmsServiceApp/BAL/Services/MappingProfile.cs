@@ -75,6 +75,10 @@ namespace BAL.Services
                 .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForPieChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
 
+            CreateMap<Company, CompaingPieChart>()
+               .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => MailingsCategoriesForPieChart(com)))
+               .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
+
             CreateMap<Company, StackedChart>()
                 .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => GetTimeFrameForStackedChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
@@ -149,7 +153,27 @@ namespace BAL.Services
             }
             return result;
         }
+        private IEnumerable<Tuple<string, int>> MailingsCategoriesForPieChart(Company company)
+        {
+            var resultState = new List<Tuple<string, int>>();
 
+            int accepted = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Accepted);
+            int delivered = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Delivered);
+            int notSent = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.NotSent);
+            int reject = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Rejected);
+            int undeliverable = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Undeliverable);
+            int unsubscribed = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Unsubscribed);
+            
+
+            resultState.Add(new Tuple<string, int>("Accepted", accepted));
+            resultState.Add(new Tuple<string, int>("Delivered", delivered));
+            resultState.Add(new Tuple<string, int>("NotSent", notSent));
+            resultState.Add(new Tuple<string, int>("Rejected", reject));
+            resultState.Add(new Tuple<string, int>("Undeliverable", undeliverable));
+            resultState.Add(new Tuple<string, int>("Unsubscribed", unsubscribed));
+           // return Json(resultState, JsonRequestBehovior.AllowGet);
+            return resultState;
+        }
         /// <summary>
         /// Get current time frame for specified campaign
         /// </summary>

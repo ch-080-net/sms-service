@@ -55,6 +55,9 @@ namespace BAL.Managers
                 case ChartSelection.VotesDetailsByTime:
                     campaignDetails.StackedChart = mapper.Map<Company, StackedChart>(campaign);
                     break;
+                case ChartSelection.MailingDetails:
+                    campaignDetails.CompaingPieChart = mapper.Map<Company, CompaingPieChart>(campaign);
+                    break;
                 default:
                     return campaignDetails;
             }

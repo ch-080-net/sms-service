@@ -13,7 +13,7 @@ namespace Model.ViewModels.CampaignReportingViewModels
 
         [Required]
         public int CampaignId { get; set; }
-        
+        public CompaingPieChart CompaingPieChart { get; set; }
         public PieChart PieChart { get; set; }
         public StackedChart StackedChart { get; set; }
     }
