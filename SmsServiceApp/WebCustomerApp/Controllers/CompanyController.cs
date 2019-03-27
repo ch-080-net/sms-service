@@ -16,6 +16,8 @@ using BAL.Interfaces;
 using Model.ViewModels.RecievedMessageViewModel;
 using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
+using BAL.Services;
+using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -31,11 +33,13 @@ namespace WebApp.Controllers
         private readonly IRecipientManager recipientManager;
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
+        private readonly ILoggerManager logger;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
-                                 IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager)
+                                 IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
+                                 ILoggerManager loggerManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -46,6 +50,7 @@ namespace WebApp.Controllers
             this.recipientManager = recipientManager;
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
+            this.logger = loggerManager;
         }
 
         /// <summary>
@@ -67,7 +72,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(companyManager.GetCompanies(GetGroupId()));
+            logger.LogInfo("Fetching all the Campaigns from the storage");
+                var companies = companyManager.GetCompanies(GetGroupId());
+                logger.LogInfo($"Returning {companies.Count()} companies.");
+                return View(companies);
         }
 
         /// <summary>
@@ -77,10 +85,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            CompanyViewModel company = new CompanyViewModel();
-            var phoneId = groupManager.Get(GetGroupId()).PhoneId;
-            company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
-            return View(company);
+                CompanyViewModel company = new CompanyViewModel();
+                var phoneId = groupManager.Get(GetGroupId()).PhoneId;
+                company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+                return View(company);
         }
 
         /// <summary>
@@ -94,31 +102,34 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
-                {
-                    item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
-                }
-                else
-                {
-                    Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.PhoneNumber;
-                    phoneManager.Insert(newPhone);
-                    item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
-                }
-                item.ApplicationGroupId = GetGroupId();
-                int companyId = companyManager.InsertWithId(item);
-                if (item.Type == CompanyType.Send)
-                {
-                    return RedirectToAction("Send", new { companyId });
-                }
-                if (item.Type == CompanyType.Recieve)
-                {
-                    return RedirectToAction("Recieve", new { companyId });
-                }
-                if (item.Type == CompanyType.SendAndRecieve)
-                {
-                    return RedirectToAction("SendRecieve", new { companyId });
-                }
+                    if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
+                    {
+                        item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
+                    }
+                    else
+                    {
+                        Phone newPhone = new Phone();
+                        newPhone.PhoneNumber = item.PhoneNumber;
+                        phoneManager.Insert(newPhone);
+                        item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
+                        logger.LogInfo($"New phone {item.PhoneId} added to db");
+                    }
+                    item.ApplicationGroupId = GetGroupId();
+                    int companyId = companyManager.InsertWithId(item);
+                    logger.LogInfo($"New campaign {companyId} was added to db");
+                    if (item.Type == CompanyType.Send)
+                    {
+                        return RedirectToAction("Send", new { companyId });
+                    }
+                    if (item.Type == CompanyType.Recieve)
+                    {
+                        return RedirectToAction("Recieve", new { companyId });
+                    }
+                    if (item.Type == CompanyType.SendAndRecieve)
+                    {
+                        return RedirectToAction("SendRecieve", new { companyId });
+                    }
+
             }
             return View(item);
         }
@@ -162,6 +173,7 @@ namespace WebApp.Controllers
                 }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
+                logger.LogInfo($"Campaign {item.Id} was updated to choosen type");
                 return RedirectToAction("Index","Company");
             }
             ViewData["companyId"] = companyId;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,30 +9,29 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Model.Interfaces;
 using DAL.Repositories;
 using BAL.Managers;
 using AutoMapper;
 using BAL.Services;
 using BAL.Jobs;
-using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using WebApp;
-using Microsoft.Extensions.Localization;
-using System.Reflection;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Http;
-using System.Threading;
 using BAL.Interfaces;
+using Microsoft.Extensions.Logging;
+using NLog;
+using System.IO;
+using BAL.Exceptions;
+using WebApp.Extensions;
 
 namespace WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -51,6 +48,7 @@ namespace WebApp
                 .AddDefaultTokenProviders();
 
             // Add application services.
+            services.AddSingleton<ILoggerManager, LoggerManager>();
             services.AddTransient<IEmailSender, EmailSender>();
 			services.AddTransient<ITariffRepository, TariffRepository>();
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
@@ -157,7 +155,7 @@ namespace WebApp
         }
        
         public void Configure(IApplicationBuilder app, 
-                              IHostingEnvironment env)
+                              IHostingEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -169,8 +167,7 @@ namespace WebApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-           
- 
+            app.ConfigureCustomExceptionMiddleware();
             app.UseRequestLocalization(); 
             app.UseStaticFiles();
             app.UseAuthentication();
