@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BAL.Interfaces;
-using DAL.Repositories;
 using Model.Interfaces;
 using Model.ViewModels.EmailCampaignViewModels;
 using System;

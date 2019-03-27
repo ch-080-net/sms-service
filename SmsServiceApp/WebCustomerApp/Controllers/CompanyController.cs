@@ -167,7 +167,6 @@ namespace WebApp.Controllers
             item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
@@ -268,7 +267,6 @@ namespace WebApp.Controllers
             }
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
