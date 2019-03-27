@@ -34,63 +34,59 @@
     <div class="back_image"></div>
     <div class="w3ls-login box box--big">
         <h1 class="title-page">@Localizer["Registration"]</h1>
-        <form asp-route-returnurl="@ViewData["ReturnUrl"]" asp-route-groupId="@ViewData["GroupId"]" method="post">
-            <div class="agile-field-txt">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Your e-mail adress"]" />
-                @*<span asp-validation-for="Email" class="text-danger"></span>*@
-            </div>
-            <div class="agile-field-txt">
-                <label asp-for="Phone"></label>
-                <input asp-for="Phone" class="form-control" id="phone" placeholder="@Localizer["Your phone"]" />
-                @*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
-            </div>
-            <div class="w3ls-bot">
-                <div class="switch-agileits">
-                    <label class="switch">
-                        <input type="checkbox" asp-for="CorporateUser" id="corporate" onclick="ShowCompany()">
-                        @Html.DisplayNameFor(m => m.CorporateUser)
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="agile-field-txt" id="company">
-                <label asp-for="CompanyName"></label>
-                <input asp-for="CompanyName" class="form-control" placeholder="@Localizer["Your company"]" />
-                @*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
-            </div>
-            <div class="agile-field-txt">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" id="confirm" class="form-control" placeholder="@Localizer["Enter your password"]" />
-                @*<span asp-validation-for="Password" class="text-danger"></span>*@
-            </div>
-            <div class="agile-field-txt">
-                <label asp-for="ConfirmPassword">Confirm password</label>
-                <input asp-for="ConfirmPassword" id="pass" class="form-control" placeholder="@Localizer["Confirm password"]" />
-                @*<span asp-validation-for="ConfirmPassword" class="text-danger"></span>*@
-                <div asp-validation-summary="All" class="agile_label" style="color : red"></div>
-            </div>
-            <div class="agile-field-txt">
-                <div class="agile_label">
-                    <input id="check3" name="check3" type="checkbox" value="@Localizer["show password"]" onclick="ShowPassword()">
-                    <label class="check" for="check3">@Localizer["Show password"]</label>
-                </div>
-            </div>
-            <div class="agile-field-txt">
-                <p>
-                    <input type="submit" value="@Localizer["REGISTER"]">
-                </p>
-            </div>
-            <div class="agile-right">
-                <a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["LOGIN"]</a>
-             
-                <div style="margin-top:20px;">
-                    <a asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Back to List"]</a>
-                </div>
-
-            </div>
-            
-        </form>
+		<form asp-route-returnurl="@ViewData["ReturnUrl"]" asp-route-groupId="@ViewData["GroupId"]" method="post">
+			<div class="agile-field-txt">
+				<label asp-for="Email"></label>
+				<input asp-for="Email" class="form-control" id="email" placeholder="@Localizer["Your e-mail adress"]" />
+				@*<span asp-validation-for="Email" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Phone"></label>
+				<input asp-for="Phone" class="form-control" id="phone" placeholder="@Localizer["Your phone"]" />
+				@*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
+			</div>
+			<div class="w3ls-bot">
+				<div class="switch-agileits">
+					<label class="switch">
+						<input type="checkbox" asp-for="CorporateUser" id="corporate" onclick="ShowCompany()">
+						@Html.DisplayNameFor(m => m.CorporateUser)
+						<span class="slider round"></span>
+					</label>
+				</div>
+			</div>
+			<div class="agile-field-txt" id="company">
+				<label asp-for="CompanyName"></label>
+				<input asp-for="CompanyName" class="form-control" placeholder="@Localizer["Your company"]" />
+				@*<span asp-validation-for="PhoneNumber" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="Password"></label>
+				<input asp-for="Password" id="confirm" class="form-control" placeholder="@Localizer["Enter your password"]" />
+				@*<span asp-validation-for="Password" class="text-danger"></span>*@
+			</div>
+			<div class="agile-field-txt">
+				<label asp-for="ConfirmPassword">Confirm password</label>
+				<input asp-for="ConfirmPassword" id="pass" class="form-control" placeholder="@Localizer["Confirm password"]" />
+				@*<span asp-validation-for="ConfirmPassword" class="text-danger"></span>*@
+				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
+			</div>
+			<div class="agile-field-txt">
+				<div class="agile_label">
+					<input id="check3" name="check3" type="checkbox" value="@Localizer["show password"]" onclick="ShowPassword()">
+					<label class="check" for="check3">@Localizer["Show password"]</label>
+				</div>
+			</div>
+			<div class="agile-field-txt">
+				<p>
+					<input type="submit" value="@Localizer["REGISTER"]">
+				</p>
+			</div>
+			<div class="agile-field-txt">
+				<div class="agile_label">
+					<a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">LOGIN</a>
+				</div>
+			</div>
+		</form>
     </div>
 
 </body>

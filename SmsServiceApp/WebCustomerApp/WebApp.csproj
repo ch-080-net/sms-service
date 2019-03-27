@@ -41,6 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.45" />
+    <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.45" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
   </ItemGroup>
 

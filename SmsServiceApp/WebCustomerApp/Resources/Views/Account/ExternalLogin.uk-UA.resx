@@ -117,31 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add recipients" xml:space="preserve">
-    <value>Додати одержувачів</value>
+  <data name="account" xml:space="preserve">
+    <value>аккаунт</value>
   </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Розсилку</value>
+  <data name="Associate your" xml:space="preserve">
+    <value>Прив'яжіть ваш</value>
   </data>
-  <data name="Choose Tariff" xml:space="preserve">
-    <value>Вибрати Тариф</value>
+  <data name="Enter your mail" xml:space="preserve">
+    <value>Введіть вашу пошту</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Створити</value>
+  <data name="Please enter your personal data for this site below and click the Register button to finish logging in." xml:space="preserve">
+    <value>Будь ласка, введіть ваші дані для цього сайту і натисніть на кнопку реєстрації для завершення реєстрації</value>
   </data>
-  <data name="Select" xml:space="preserve">
-    <value>Вибрати</value>
+  <data name="SIGN IN" xml:space="preserve">
+    <value>УВІЙТИ</value>
   </data>
-  <data name="Select Date and Time" xml:space="preserve">
-    <value>Виберіть дату та час</value>
+  <data name="You've successfully authenticated with" xml:space="preserve">
+    <value>Ви успішно авторизувались через</value>
   </data>
-  <data name="Send" xml:space="preserve">
-    <value>Відправити</value>
+  <data name="Your company" xml:space="preserve">
+    <value>Ваша компанія</value>
   </data>
-  <data name="Send Later" xml:space="preserve">
-    <value>Надіслати пізніше</value>
-  </data>
-  <data name="Send Now" xml:space="preserve">
-    <value>Відправити зараз</value>
+  <data name="Your phone" xml:space="preserve">
+    <value>Ваш телефон</value>
   </data>
 </root>
