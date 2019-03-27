@@ -56,6 +56,7 @@ namespace WebApp
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IMailingRepository, MailingRepository>();
+            services.AddTransient<IEmailCampaignRepository, EmailCampaignRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 
             services.Configure<RequestLocalizationOptions>(options =>
@@ -135,12 +136,15 @@ namespace WebApp
             services.AddScoped<IStopWordManager, StopWordManager>();
             services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
-            services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
+            services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
             services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
+            services.AddScoped<IEmailManager, EmailManager>();
+            services.AddScoped<IEmailCampaignManager, EmailCampaignManager>();
+            services.AddScoped<IEmailRecipientManager, EmailRecipientManager>();
 
            
 

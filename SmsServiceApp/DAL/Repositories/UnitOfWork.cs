@@ -25,6 +25,9 @@ namespace DAL.Repositories
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
         private IChartsRepository ChartsRepo;
+        private IBaseRepository<EmailRecipient> emailRecipientRepo;
+        private IEmailCampaignRepository emailCampaignRepo;
+        private IBaseRepository<Email> emailRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -164,6 +167,42 @@ namespace DAL.Repositories
                     ChartsRepo = new ChartsRepository(context);
                 }
                 return ChartsRepo;
+            }
+        }
+
+        public IBaseRepository<EmailRecipient> EmailRecipients
+        {
+            get
+            {
+                if (emailRecipientRepo == null)
+                {
+                    emailRecipientRepo = new BaseRepository<EmailRecipient>(context);
+                }
+                return emailRecipientRepo;
+            }
+        }
+
+        public IEmailCampaignRepository EmailCampaigns
+        {
+            get
+            {
+                if ( emailCampaignRepo == null)
+                {
+                    emailCampaignRepo = new EmailCampaignRepository(context);
+                }
+                return emailCampaignRepo;
+            }
+        }
+
+        public IBaseRepository<Email> Emails
+        {
+            get
+            {
+                if (emailRepo == null)
+                {
+                    emailRepo = new BaseRepository<Email>(context);
+                }
+                return emailRepo;
             }
         }
 

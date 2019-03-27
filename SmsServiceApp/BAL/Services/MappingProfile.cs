@@ -19,6 +19,8 @@ using Model.ViewModels.AnswersCodeViewModels;
 using Model.ViewModels.RecievedMessageViewModel;
 using System.Linq;
 using Model.ViewModels.CampaignReportingViewModels;
+using Model.ViewModels.EmailRecipientViewModels;
+using Model.ViewModels.EmailCampaignViewModels;
 
 namespace BAL.Services
 {
@@ -96,6 +98,14 @@ namespace BAL.Services
             CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
+
+            CreateMap<EmailRecipient, EmailRecipientViewModel>()
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.EmailAddress));
+            CreateMap<EmailRecipientViewModel, EmailRecipient>();
+
+            CreateMap<EmailCampaign, EmailCampaignViewModel>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));
+            CreateMap<EmailCampaignViewModel, EmailCampaign>();
         }
 
         /// <summary>

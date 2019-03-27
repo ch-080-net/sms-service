@@ -23,6 +23,6 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name = "Time for send")]
         public DateTime SendingTime { get; set; }
         [Display(Name = "Recipients")]
-        public IEnumerable<RecipientViewModel> RecipientViewModels { get; set; }
+        public int RecipientsCount { get; set; }
     }
 }

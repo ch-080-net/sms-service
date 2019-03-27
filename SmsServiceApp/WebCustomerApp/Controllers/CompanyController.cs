@@ -136,7 +136,7 @@ namespace WebApp.Controllers
             SendViewModel item = new SendViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -165,7 +165,7 @@ namespace WebApp.Controllers
                 companyManager.AddSend(item);
                 return RedirectToAction("Index","Company");
             }
-            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             return View(item);
         }
 
@@ -221,7 +221,7 @@ namespace WebApp.Controllers
             SendRecieveViewModel item = new SendRecieveViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -258,7 +258,7 @@ namespace WebApp.Controllers
                 companyManager.AddSendRecieve(item);
                 return RedirectToAction("Index");
             }
-            item.RecipientViewModels = recipientManager.GetRecipients(item.Id);
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             return View(item);
         }
 

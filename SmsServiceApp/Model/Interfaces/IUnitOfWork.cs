@@ -24,7 +24,10 @@ namespace Model.Interfaces
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
         IBaseRepository<RecievedMessage> RecievedMessages { get; }
         IBaseRepository<AnswersCode> AnswersCodes { get; }
-     
+        IBaseRepository<EmailRecipient> EmailRecipients { get; }
+        IEmailCampaignRepository EmailCampaigns { get; }
+        IBaseRepository<Email> Emails { get; }
+
         int Save();
     }
 
