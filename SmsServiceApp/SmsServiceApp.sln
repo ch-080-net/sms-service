@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL", "BAL\BAL.csproj", "{CE7F46CE-5C8C-49BD-A372-4C1FA7364E2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB.Tests", "BAL.Tests\WEB.Tests.csproj", "{1DDF5276-30DE-4189-8451-96AEF179B702}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CE7F46CE-5C8C-49BD-A372-4C1FA7364E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7F46CE-5C8C-49BD-A372-4C1FA7364E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7F46CE-5C8C-49BD-A372-4C1FA7364E2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DDF5276-30DE-4189-8451-96AEF179B702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDF5276-30DE-4189-8451-96AEF179B702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDF5276-30DE-4189-8451-96AEF179B702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDF5276-30DE-4189-8451-96AEF179B702}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
