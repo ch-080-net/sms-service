@@ -41,6 +41,20 @@ namespace BAL.Managers
             return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
         }
 
+        public List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue)
+        {
+            IEnumerable<Company> Campaigns = unitOfWork.Companies.Get(ec => ec.ApplicationGroupId == groupId
+                &&( ec.Name.Contains(searchValue))||(ec.Description.Contains(searchValue)))
+                .Skip((page - 1) * countOnPage).Take(countOnPage);
+            
+            return mapper.Map<IEnumerable<Company>, List<CompanyViewModel>>(Campaigns);
+        }
+
+        public int GetCampaignsCount(int groupId, string searchValue)
+        {
+            return unitOfWork.Companies.Get(ec => ec.ApplicationGroupId == groupId && ec.Name.Contains(searchValue)).Count();
+        }
+
         /// <summary>
         /// Method for inserting new company to db
         /// </summary>

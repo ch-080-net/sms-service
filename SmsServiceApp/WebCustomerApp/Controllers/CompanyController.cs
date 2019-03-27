@@ -70,11 +70,34 @@ namespace WebApp.Controllers
             return View(companyManager.GetCompanies(GetGroupId()));
         }
 
-        [HttpGet]
-        public List<CompanyViewModel> Get()
+       
+
+        public List<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
-            return companyManager.GetCompanies(GetGroupId()).ToList();
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new List<CompanyViewModel>();
+            }
+            return companyManager.GetCampaigns(GetGroupId(), page, countOnPage, searchValue);
         }
+
+        public int GetCampaignsCount(string searchValue)
+             {
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return 0;
+            }
+            return companyManager.GetCampaignsCount(GetGroupId(), searchValue);
+        }
+
         [HttpPost]
         public IActionResult Index([FromBody] CompanyViewModel company)
         {
