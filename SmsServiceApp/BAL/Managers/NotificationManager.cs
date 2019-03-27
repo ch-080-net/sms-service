@@ -36,8 +36,12 @@ namespace BAL.Managers
             var senders = await userManager.GetUsersInRoleAsync("Admin");
             string senderPhone = senders.FirstOrDefault().PhoneNumber;
 
-            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<SmsNotificationDTO>>(notifications, opt =>
-                opt.AfterMap((src, dest) => (dest as SmsNotificationDTO).SenderPhone = senderPhone));
+            var result = new List<SmsNotificationDTO>();
+            foreach (var iter in notifications)
+            {
+                result.Add(mapper.Map<Notification, SmsNotificationDTO>(iter, opt =>
+                    opt.AfterMap((src, dest) => dest.SenderPhone = senderPhone)));
+            }
             return result;
         }
 
