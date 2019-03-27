@@ -40,6 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.45" />
+    <PackageReference Include="Bootstrap.v3.Datetimepicker.CSS" Version="4.17.45" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Views\AnswersCode\Create.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

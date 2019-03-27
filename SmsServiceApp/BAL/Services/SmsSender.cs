@@ -84,7 +84,7 @@ namespace WebApp.Services
 			int sessionStatus = clientSMPP.smppInitializeSessionEx("smppclient1", "password", 1, 1, "", smppBindModeEnum.bmTransceiver, 3, "");
 
 			if (sessionStatus != 0)
-				throw new InvalidSMPPUserDataException("Invalid SMPP connection data");
+				throw new InvalidSmppUserDataException("Invalid SMPP connection data");
         }
 		#endregion
 
