@@ -1,6 +1,9 @@
-﻿@model ExternalLoginViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Model.ViewModels.AccountViewModels
+@inject IViewLocalizer Localizer
+@model ExternalLoginViewModel
 @{
-	ViewData["Title"] = "Register";
+	ViewData["Title"] = Localizer["Register"];
 }
 <!DOCTYPE HTML>
 <html>
@@ -11,13 +14,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
 	<script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
 
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
 	</script>
 
 	<link rel="stylesheet" href="~/css/style_login.css" />
@@ -29,20 +32,19 @@
 <body>
 	<div class="back_image"></div>
 	<div class="w3ls-login box box--big">
-		<h1 class="title-page">Associate your @ViewData["LoginProvider"] account</h1>
+		<h1 class="title-page">@Localizer["Associate your"] @ViewData["LoginProvider"] @Localizer["account"]</h1>
 		<form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 			<p class="agile-field-txt">
-				You've successfully authenticated with @ViewData["LoginProvider"].
-				Please enter your personal data for this site below and click the Register button to finish
-				logging in.
+				@Localizer["You've successfully authenticated with"] @ViewData["LoginProvider"].
+				@Localizer["Please enter your personal data for this site below and click the Register button to finish logging in."]
 			</p>
 			<div class="agile-field-txt">
 				<label asp-for="Email"></label>
-				<input asp-for="Email" class="form-control" id="email" placeholder="Enter your login" />
+				<input asp-for="Email" class="form-control" id="email" placeholder=@Localizer["Enter your mail"] />
 			</div>
 			<div class="agile-field-txt">
 				<label asp-for="Phone"></label>
-				<input asp-for="Phone" class="form-control" id="phone" placeholder="Your phone" />
+				<input asp-for="Phone" class="form-control" id="phone" placeholder=@Localizer["Your phone"] />
 			</div>
 			<div class="w3ls-bot">
 				<div class="switch-agileits">
@@ -55,25 +57,18 @@
 			</div>
 			<div class="agile-field-txt" id="company">
 				<label asp-for="CompanyName"></label>
-				<input asp-for="CompanyName" class="form-control" placeholder="Your company" />
+				<input asp-for="CompanyName" class="form-control" placeholder=@Localizer["Your company"] />
 			</div>
 			<div class="agile-field-txt">
 				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
 			</div>
 			<div class="agile-field-txt">
 				<p>
-					<input type="submit" value="SIGN IN">
+					<input type="submit" value=@Localizer["SIGN IN"]>
 				</p>
 			</div>
 		</form>
 	</div>
-
-	<div class="copy-wthree">
-		<p>
-			© 2019 | SMS-service
-		</p>
-	</div>
-
 </body>
 </html>
 
