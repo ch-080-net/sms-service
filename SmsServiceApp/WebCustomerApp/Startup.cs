@@ -153,7 +153,7 @@ namespace WebApp
 
             services.AddSignalR();
 
-            // Register Jobs and JobFactory
+            // Register Jobs and JobFactory, start mailing scheduler
 
             services.AddTransient<JobFactory>();
 

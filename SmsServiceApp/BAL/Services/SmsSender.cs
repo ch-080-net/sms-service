@@ -28,7 +28,6 @@ namespace WebApp.Services
 
         private readonly ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private readonly IServiceScopeFactory serviceScopeFactory;
-        private readonly IRecievedMessageManager recievedMessageManager;
 
 		/// <summary>
 		/// Create SMPP client, add event handlers 
@@ -37,10 +36,9 @@ namespace WebApp.Services
 		/// </summary>
 		/// <param name="KeepAliveInterval">Property for changing connection time(seconds) with server</param>
 		/// <param name="serviceScopeFactory">instance of static service</param>
-		public SmsSender(IServiceScopeFactory serviceScopeFactory, IRecievedMessageManager recievedMessageManager)
+		public SmsSender(IServiceScopeFactory serviceScopeFactory)
 		{
             this.serviceScopeFactory = serviceScopeFactory;
-            this.recievedMessageManager = recievedMessageManager;
 			clientSMPP = new SMSCclientSMPP();
 			clientSMPP.KeepAliveInterval = 60;
 			clientSMPP.OnSmppMessageReceived += SMSCclientSMPP_OnSmppMessageReceived;
@@ -149,7 +147,10 @@ namespace WebApp.Services
             recievedMessage.RecipientPhone = e.Destination;
             recievedMessage.MessageText = e.Content;
             recievedMessage.TimeOfRecieve = DateTime.UtcNow;
-            recievedMessageManager.Insert(recievedMessage);
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetService<IRecievedMessageManager>().Insert(recievedMessage);
+            }
         }
 
 		/// <summary>

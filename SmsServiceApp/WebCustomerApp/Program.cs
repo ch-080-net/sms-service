@@ -38,10 +38,11 @@ namespace WebApp
 
 					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
 
-                    // Start Quartz schedulers
+                    // Start Notification scheduler
 
                     NotificationScheduler.Start(scope.ServiceProvider);
                     MailingScheduler.Start(scope.ServiceProvider);
+
                 }
                 catch(Exception ex)
                 {
