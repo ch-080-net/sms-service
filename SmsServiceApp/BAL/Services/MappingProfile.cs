@@ -157,7 +157,7 @@ namespace BAL.Services
         private IEnumerable<string> GetTimeFrameForStackedChart(Company company)
         {
             DateTime beginning = company.StartTime;
-            DateTime ending = (company.EndTime < DateTime.UtcNow) ? company.EndTime : DateTime.UtcNow;
+            DateTime ending = (company.EndTime < DateTime.Now) ? company.EndTime : DateTime.Now;
             
             var result = new List<string>();
 
