@@ -45,5 +45,10 @@ namespace WebApp.Controllers
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return emailCampaignManager.GetCampaignsCount(userId, searchValue);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

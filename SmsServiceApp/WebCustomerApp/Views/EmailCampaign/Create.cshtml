@@ -1,5 +1,86 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
 }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Email Campaign</title>
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+    <div id="app">
+
+        <v-app>
+
+            <v-content>
+
+                <v-container>
+                    <v-stepper v-model="step" vertical>
+                        <v-stepper-header>
+                            <v-stepper-step step="1" :complete="step > 1">Main Information</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="2" :complete="step > 2">Select tempalate</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="3" :complete="step > 3">Create mail</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="4" :complete="step > 4">Add recepients</v-stepper-step>
+                            <v-divider></v-divider>
+                            <v-stepper-step step="5">Finish</v-stepper-step>
+                        </v-stepper-header>
+                        <v-stepper-items>
+                            <v-stepper-content step="1">
+
+                                <v-text-field label="Name" v-model="Campaign.Name" required></v-text-field>
+                                <v-text-field label="Email" v-model="Campaign.EmailAddress" required></v-text-field>
+                                <v-textarea label="Description" v-model="Campaign.Description" required></v-textarea>
+
+
+                                <v-btn color="primary" v-on:click.native="step = 2">Continue</v-btn>
+                            </v-stepper-content>
+                            <v-stepper-content step="2">
+
+
+                                <v-btn flat v-on:click.native="step = 1">Previous</v-btn>
+                                <v-btn color="primary" v-on:click.native="step = 3">Continue</v-btn>
+
+                            </v-stepper-content>
+                            <v-stepper-content step="3">
+
+                                <v-btn flat v-on:click.native="step = 2">Previous</v-btn>
+                                <v-btn color="primary" v-on:click.prevent="submit">Save</v-btn>
+
+                            </v-stepper-content>
+                        </v-stepper-items>
+                    </v-stepper>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: () => ({
+                step: 1,
+                Campaign: {
+                    EmailAddress: null,
+                    Name: null,
+                    Message: null,
+                    Description: null,
+                    SendingTime: null,
+                    RecepientsCount: 0
+                },
+            }),
+            methods: {
+                submit() {
+                    alert('This is the post. Blah');
+                }
+            }
+        })
+    </script>
+</body>
+</html>
