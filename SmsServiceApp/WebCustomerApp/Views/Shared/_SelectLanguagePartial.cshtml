@@ -47,7 +47,7 @@
         <ul class="language-switcher">
             <li class="selected">
 
-                <a style=" font-size:13px; ">
+                <a class="linkLanguage" >
                     @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
                 </a>
 
@@ -59,7 +59,7 @@
                     {
                         routeData["culture"] = culture.Value;
 
-                        <a href="#" onclick="document.getElementById('form').submit();" style=" font-size:13px;">
+                        <a href="#" onclick="document.getElementById('form').submit();" class="linkLanguage">
                             @culture.Text.ToUpper()
                         </a>
 

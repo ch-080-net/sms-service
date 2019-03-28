@@ -117,22 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Company name" xml:space="preserve">
+    <value>Назва компанії</value>
+  </data>
+  <data name="Corporation" xml:space="preserve">
+    <value>Корпорація</value>
+  </data>
   <data name="Email" xml:space="preserve">
-    <value>Електронна Адресса</value>
+    <value>Електронна адреса</value>
   </data>
-  <data name="Group member" xml:space="preserve">
-    <value>Член групи</value>
+  <data name="Phone" xml:space="preserve">
+    <value>Мобільний номер</value>
   </data>
-  <data name="IsEmailConfirmed" xml:space="preserve">
-    <value>Підтвердження ел. адреси</value>
+  <data name="The Email field is required." xml:space="preserve">
+    <value>Поле електронної пошти обов'язкове.</value>
   </data>
-  <data name="Phone number" xml:space="preserve">
-    <value>Мобільний Номер</value>
+  <data name="The Phone field is required." xml:space="preserve">
+    <value>Поле "Телефон" обов'язкове.</value>
   </data>
-  <data name="StatusMessage" xml:space="preserve">
-    <value>Статус Повідомлення</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Логін</value>
+  <data name="Wrong phone number" xml:space="preserve">
+    <value>Неправильний номер телефону</value>
   </data>
 </root>
