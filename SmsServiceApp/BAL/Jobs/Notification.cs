@@ -80,7 +80,7 @@ namespace BAL.Jobs
                 var webNotifications = manager.GetAllWebNotification();
                 foreach (var iter in webNotifications)
                 { 
-                    await hubContext.Clients.User(iter.UserId).SendAsync("GetNotification", iter.Message);
+                    await hubContext.Clients.User(iter.UserId).SendAsync("GetNotification", iter);
                 }
             }
         }
