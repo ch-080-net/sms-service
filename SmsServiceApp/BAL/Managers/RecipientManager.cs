@@ -30,6 +30,21 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
+        {
+            IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => ec.CompanyId == companyId
+                && (ec.Name.Contains(searchValue)) || 
+                (ec.Surname.Contains(searchValue))
+                )
+                .Skip((page - 1) * countOnPage).Take(countOnPage);
+
+            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(Recipients);
+        }
+
+        public int GetRecipientsCount(int companyId, string searchValue)
+        {
+            return unitOfWork.Recipients.Get(ec => ec.CompanyId == companyId && ec.Name.Contains(searchValue)).Count();
+        }
 
         /// <summary>
         /// Get one recipient from db by Id
