@@ -61,7 +61,7 @@
         case ChartSelection.MailingDetails:
             if (Model.PieChart != null)
             {
-                await Html.RenderPartialAsync("ShowCampingChart", Model.PieChart);
+                await Html.RenderPartialAsync("ShowCampingChart", Model.CompaingPieChart);
             }
             break;
         case ChartSelection.VotesDetails:
