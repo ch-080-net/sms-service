@@ -26,9 +26,9 @@ namespace BAL.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            await SendEmails();
-            await SendSms();
+            await SendEmails();            
             await SendWebNotification();
+            await SendSms();
         }
 
         private async Task SendEmails()
