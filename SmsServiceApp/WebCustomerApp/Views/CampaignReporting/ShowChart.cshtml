@@ -59,7 +59,7 @@
     @switch (Model.Selection)
     {
         case ChartSelection.MailingDetails:
-            if (Model.PieChart != null)
+            if (Model.CompaingPieChart != null)
             {
                 await Html.RenderPartialAsync("ShowCampingChart", Model.CompaingPieChart);
             }
