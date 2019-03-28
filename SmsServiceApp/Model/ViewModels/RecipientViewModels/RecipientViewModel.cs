@@ -15,7 +15,7 @@ namespace Model.ViewModels.RecipientViewModels
         [Required(ErrorMessage = "The Phone Number field is required.")]
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
-        public string PhoneNumber { get; set; }
+        public string Phonenumber { get; set; }
         [Required(ErrorMessage = "The Name field is required.")]
         [StringLength(100)]
         [Display(Name = "Name")]
@@ -25,13 +25,13 @@ namespace Model.ViewModels.RecipientViewModels
         [Display(Name = "Surname")]
         public string Surname { get; set; }
         [Display(Name = "BirthDate")]
-        public DateTime BirthDate { get; set; }
+        public DateTime Birthdate { get; set; }
         [Display(Name = "Gender")]
         public string Gender { get; set; }
         [Display(Name = "Priority")]
         public string Priority { get; set; }
         [Display(Name = "Keywords")]
-        public string KeyWords { get; set; }
+        public string Keywords { get; set; }
         public MessageState MessageState { get; set; }
     }
 

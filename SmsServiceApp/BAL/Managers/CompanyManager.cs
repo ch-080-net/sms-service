@@ -43,8 +43,8 @@ namespace BAL.Managers
 
         public List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue)
         {
-            IEnumerable<Company> Campaigns = unitOfWork.Companies.Get(ec => ec.ApplicationGroupId == groupId
-                &&( ec.Name.Contains(searchValue))||(ec.Description.Contains(searchValue)))
+            IEnumerable<Company> Campaigns = unitOfWork.Companies.GetAll().Where(c => (c.ApplicationGroupId == groupId)
+                &&( c.Name.Contains(searchValue)||c.Description.Contains(searchValue)))
                 .Skip((page - 1) * countOnPage).Take(countOnPage);
             
             return mapper.Map<IEnumerable<Company>, List<CompanyViewModel>>(Campaigns);
@@ -52,7 +52,7 @@ namespace BAL.Managers
 
         public int GetCampaignsCount(int groupId, string searchValue)
         {
-            return unitOfWork.Companies.Get(ec => ec.ApplicationGroupId == groupId && ec.Name.Contains(searchValue)).Count();
+            return unitOfWork.Companies.Get(ec =>( ec.ApplicationGroupId == groupId) && ec.Name.Contains(searchValue)).Count();
         }
 
         /// <summary>

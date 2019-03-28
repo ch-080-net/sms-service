@@ -32,18 +32,23 @@ namespace BAL.Managers
 
         public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
         {
-            IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => ec.CompanyId == companyId
-                && (ec.Name.Contains(searchValue)) || 
-                (ec.Surname.Contains(searchValue))
-                )
+            IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId)&& (
+                ec.Name.Contains(searchValue)    || 
+                ec.Surname.Contains(searchValue) ||
+                ec.KeyWords.Contains(searchValue)
+                ))
                 .Skip((page - 1) * countOnPage).Take(countOnPage);
+            foreach (var recipient in Recipients)
+            {
+                recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
+            }
 
             return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(Recipients);
         }
 
         public int GetRecipientsCount(int companyId, string searchValue)
         {
-            return unitOfWork.Recipients.Get(ec => ec.CompanyId == companyId && ec.Name.Contains(searchValue)).Count();
+            return unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId) &&( ec.Name.Contains(searchValue))).Count();
         }
 
         /// <summary>
@@ -85,11 +90,11 @@ namespace BAL.Managers
         {
             Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
             recipient.CompanyId = companyId;
-            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
             if (phone.Count == 0)
             {
                 Phone newPhone = new Phone();
-                newPhone.PhoneNumber = item.PhoneNumber;
+                newPhone.PhoneNumber = item.Phonenumber;
                 unitOfWork.Phones.Insert(newPhone);
                 unitOfWork.Save();
                 recipient.Phone = newPhone;
@@ -109,11 +114,11 @@ namespace BAL.Managers
         public void Update(RecipientViewModel item)
         {
             Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
-            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
             if (phone.Count == 0)
             {
                 Phone newPhone = new Phone();
-                newPhone.PhoneNumber = item.PhoneNumber;
+                newPhone.PhoneNumber = item.Phonenumber;
                 unitOfWork.Phones.Insert(newPhone);
                 unitOfWork.Save();
                 recipient.Phone = newPhone;

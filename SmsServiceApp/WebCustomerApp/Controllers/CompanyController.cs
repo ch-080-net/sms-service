@@ -72,7 +72,7 @@ namespace WebApp.Controllers
 
        
 
-        public List<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
+        public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
             if (searchValue == null)
             {

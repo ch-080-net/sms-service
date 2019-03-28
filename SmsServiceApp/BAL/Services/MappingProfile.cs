@@ -37,7 +37,7 @@ namespace BAL.Services
             CreateMap<CompanyViewModel, Company>();
             CreateMap<Company, ManageViewModel>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
-                            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
+                            .ForMember(dest => dest.Phonenumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
 
             CreateMap<Operator, OperatorViewModel>()

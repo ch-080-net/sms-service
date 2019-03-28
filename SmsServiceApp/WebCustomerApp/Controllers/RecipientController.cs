@@ -55,6 +55,7 @@ namespace WebApp.Controllers
             {
                 return new List<RecipientViewModel>();
             }
+           
             return recipientManager.GetRecipients(companyid, page, countOnPage, searchValue);
         }
 
@@ -99,7 +100,7 @@ namespace WebApp.Controllers
                 TempData["companyId"] = companyId;
             }
             TempData.Keep("companyId");
-            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
+            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.Phonenumber == item.Phonenumber);
             if (IsRecipientPhoneExist)
             {
                 ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");
