@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BAL.Interfaces;
 using BAL.Managers;
+using BAL.Services;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.AnswersCodeViewModels;
 
@@ -14,10 +15,12 @@ namespace WebApp.Controllers
     public class AnswersCodeController : Controller
     {
         private readonly IAnswersCodeManager answersCodeManager;
+        private readonly ILoggerManager logger;
 
-        public AnswersCodeController(IAnswersCodeManager answersCodeManager)
+        public AnswersCodeController(IAnswersCodeManager answersCodeManager, ILoggerManager logger)
         {
             this.answersCodeManager = answersCodeManager;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -28,7 +31,10 @@ namespace WebApp.Controllers
         public IActionResult Index(int companyId)
         {
             ViewData["CompanyId"] = companyId;
-            return View(answersCodeManager.GetAnswersCodes(companyId).ToList());
+            logger.LogInfo("Fetching all the AnswerCodes from the storage");
+            var answerCodes = answersCodeManager.GetAnswersCodes(companyId).ToList();
+            logger.LogInfo($"Returning {answerCodes.Count()} answerCodes.");
+            return View(answerCodes);
         }
 
         /// <summary>
@@ -59,6 +65,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 answersCodeManager.Insert(item, (int)TempData.Peek("companyId"));
+                logger.LogInfo($"AnswerCode {item.Code} was inserted to db");
                 return RedirectToAction("Index", "AnswersCode", new { companyId = (int)TempData.Peek("companyId") });
             }
             return View(item);
@@ -96,6 +103,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 answersCodeManager.Update(answersCode);
+                logger.LogInfo($"AnswerCode {id} was updated");
                 return RedirectToAction("Index", "AnswersCode", new { answersCodeToEdit.CompanyId });
             }
             return View(answersCode);
@@ -110,6 +118,7 @@ namespace WebApp.Controllers
         public IActionResult Delete(int id, int companyId)
         {
             answersCodeManager.Delete(id);
+            logger.LogInfo($"AnswerCode {id} was deleted");
             return RedirectToAction("Index", "AnswersCode", new { companyId });
         }
     }

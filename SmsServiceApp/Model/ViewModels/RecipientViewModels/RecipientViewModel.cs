@@ -16,16 +16,15 @@ namespace Model.ViewModels.RecipientViewModels
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
         public string Phonenumber { get; set; }
-        [Required(ErrorMessage = "The Name field is required.")]
         [StringLength(100)]
         [Display(Name = "Name")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "The Surname field is required.")]
         [StringLength(100)]
         [Display(Name = "Surname")]
         public string Surname { get; set; }
         [Display(Name = "BirthDate")]
-        public DateTime Birthdate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
         [Display(Name = "Gender")]
         public string Gender { get; set; }
         [Display(Name = "Priority")]

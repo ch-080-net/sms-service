@@ -45,8 +45,8 @@
                     <input asp-for="Birthdate" class="form-control" id="birthDate" type="text" />
                     <span asp-validation-for="Birthdate" class="text-danger"></span>
                     <script>
-                    $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                    $('#birthDate').val(new Date().toLocaleString());
+                        $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                        $('#birthDate').val(new Date(1901,1,1).toLocaleDateString());
                     </script>
                 </div>
             </div>
