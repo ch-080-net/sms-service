@@ -40,9 +40,6 @@ namespace BAL.Managers
         /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
-            throw new Exception("Hello world");
-            try
-            {
                 var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,
                     filter: item => item.ApplicationGroupId == groupId);
                 foreach (var contact in contacts)
@@ -50,11 +47,6 @@ namespace BAL.Managers
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
                 }
                 return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
