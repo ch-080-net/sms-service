@@ -28,6 +28,7 @@ namespace BAL.Jobs
         {
             await SendEmails();
             await SendSms();
+            await SendWebNotification();
         }
 
         private async Task SendEmails()
@@ -67,6 +68,20 @@ namespace BAL.Jobs
 
                 await scope.ServiceProvider.GetService<ISmsSender>().SendMessages(smsMessages);                
                 manager.SetAsSent(smsNotifications);
+            }
+        }
+
+        private async Task SendWebNotification()
+        {
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var hubContext = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
+                var manager = scope.ServiceProvider.GetService<INotificationManager>();
+                var webNotifications = manager.GetAllWebNotification();
+                foreach (var iter in webNotifications)
+                { 
+                    await hubContext.Clients.User(iter.UserId).SendAsync("GetNotification", iter.Message);
+                }
             }
         }
     }

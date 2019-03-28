@@ -45,6 +45,15 @@ namespace BAL.Managers
             return result;
         }
 
+        public IEnumerable<WebNotificationDTO> GetAllWebNotification()
+        {
+            var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
+                                                                && n.Time <= DateTime.UtcNow
+                                                                && n.Type == NotificationType.Site);
+            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<WebNotificationDTO>>(notifications);
+            return result;
+        }
+
         public void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
             var nots = unitOfWork.Notifications.Get(n => notifications.Any(ndto => ndto.Id == n.Id));

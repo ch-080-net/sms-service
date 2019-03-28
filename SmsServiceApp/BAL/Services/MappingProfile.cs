@@ -108,6 +108,9 @@ namespace BAL.Services
                 .ForMember(sn => sn.RecepientPhone, opt => opt.MapFrom(n => n.RecieverPhone))
                 .ForMember(sn => sn.MessageText, opt => opt.MapFrom(n => n.Message))
                 .ForMember(sn => sn.RecipientId, opt => opt.MapFrom(n => 0));
+
+            CreateMap<Notification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId));
         }
 
         /// <summary>
