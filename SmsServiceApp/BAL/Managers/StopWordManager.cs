@@ -34,9 +34,16 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(StopWordViewModel item)
         {
-            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
-            unitOfWork.StopWords.Insert(word);
-            unitOfWork.Save();
+            try
+            {
+                StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+                unitOfWork.StopWords.Insert(word);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         /// <summary>
         ///  Update stop word in db
@@ -44,9 +51,16 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Update(StopWordViewModel item)
         {
-            StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
-            unitOfWork.StopWords.Update(word);
-            unitOfWork.Save();
+            try
+            {
+                StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
+                unitOfWork.StopWords.Update(word);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
         /// <summary>
         /// delete stop word by db
@@ -54,9 +68,16 @@ namespace BAL.Managers
         /// <param id="item"></param>
         public void Delete(int item)
         {
-            StopWord word = unitOfWork.StopWords.GetById(item);
-            unitOfWork.StopWords.Delete(word);
-            unitOfWork.Save();
+            try
+            {
+                StopWord word = unitOfWork.StopWords.GetById(item);
+                unitOfWork.StopWords.Delete(word);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
 

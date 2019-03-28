@@ -40,6 +40,7 @@ namespace BAL.Managers
         /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
+            throw new Exception("Hello world");
             try
             {
                 var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,

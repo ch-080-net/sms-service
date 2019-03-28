@@ -18,6 +18,7 @@ using WebApp.Models.AccountViewModels;
 using WebApp.Services;
 using WebApp.Controllers;
 using Model.ViewModels.AccountViewModels;
+using BAL.Services;
 
 namespace WebApp.Controllers
 {
@@ -28,14 +29,14 @@ namespace WebApp.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
+        private readonly ILoggerManager _logger;
         private readonly IPhoneManager _phoneManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger, IPhoneManager phoneManager)
+            ILoggerManager logger, IPhoneManager phoneManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -56,7 +57,7 @@ namespace WebApp.Controllers
 
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load two-factor authentication user.");
+                _logger.LogWarn($"Unable to load two-factor authentication for {user.UserName}.");
             }
 
             var model = new LoginWith2faViewModel { RememberMe = rememberMe };
@@ -87,17 +88,17 @@ namespace WebApp.Controllers
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
+                _logger.LogInfo($"User with ID {user.Id} logged in with 2fa.");
                 return RedirectToLocal(returnUrl);
             }
             else if (result.IsLockedOut)
             {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
+                _logger.LogWarn($"User with ID {user.Id} account locked out.");
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID {UserId}.", user.Id);
+                _logger.LogWarn($"Invalid authenticator code entered for user with ID {user.Id}.");
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return View();
             }
@@ -141,17 +142,17 @@ namespace WebApp.Controllers
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
+                _logger.LogInfo($"User with ID {user.Id} logged in with a recovery code.");
                 return RedirectToLocal(returnUrl);
             }
             if (result.IsLockedOut)
             {
-                _logger.LogWarning("User with ID {UserId} account locked out.", user.Id);
+                _logger.LogWarn($"User with ID {user.Id} account locked out.");
                 return RedirectToAction(nameof(Lockout));
             }
             else
             {
-                _logger.LogWarning("Invalid recovery code entered for user with ID {UserId}", user.Id);
+                _logger.LogWarn($"Invalid recovery code entered for user with ID {user.Id}");
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return View();
             }
@@ -188,7 +189,7 @@ namespace WebApp.Controllers
 				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 				if (result.Succeeded)
 				{
-					_logger.LogInformation("User logged in.");
+					_logger.LogInfo("User logged in.");
 					return RedirectToLocal(returnUrl);
 				}
 				if (result.RequiresTwoFactor)
@@ -197,7 +198,7 @@ namespace WebApp.Controllers
 				}
 				if (result.IsLockedOut)
 				{
-					_logger.LogWarning("User account locked out.");
+					_logger.LogWarn("User account locked out.");
 					return RedirectToAction(nameof(Lockout));
 				}
 				else
@@ -272,7 +273,7 @@ namespace WebApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInfo("User created a new account with password.");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
@@ -285,7 +286,7 @@ namespace WebApp.Controllers
                         await _userManager.AddToRoleAsync(user, "User");
                     }
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInfo("User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -302,7 +303,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            _logger.LogInfo("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
@@ -336,7 +337,7 @@ namespace WebApp.Controllers
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
+                _logger.LogInfo($"User logged in with {info.LoginProvider} provider.");
                 return RedirectToLocal(returnUrl);
             }
             if (result.IsLockedOut)
@@ -398,7 +399,7 @@ namespace WebApp.Controllers
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        _logger.LogInfo($"User created an account using {info.LoginProvider} provider.");
                         return RedirectToLocal(returnUrl);
                     }
                 }
