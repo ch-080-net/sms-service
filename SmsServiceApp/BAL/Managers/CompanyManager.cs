@@ -48,9 +48,16 @@ namespace BAL.Managers
         /// <param name="groupId">Id of Group wich create this company</param>
         public void Insert(CompanyViewModel item)
         {
-            Company company = mapper.Map<CompanyViewModel, Company>(item);
-            unitOfWork.Companies.Insert(company);
-            unitOfWork.Save();
+            try
+            {
+                Company company = mapper.Map<CompanyViewModel, Company>(item);
+                unitOfWork.Companies.Insert(company);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -71,19 +78,26 @@ namespace BAL.Managers
         /// <param name="item">CompanyViewModel item from view</param>
         public void Update(CompanyViewModel item)
         {
-            Company company = unitOfWork.Companies.GetById(item.Id);
-            company.Name = item.Name;
-            company.Description = item.Description;
-            if (item.TariffId > 0)
+            try
             {
-                company.TariffId = item.TariffId;
+                Company company = unitOfWork.Companies.GetById(item.Id);
+                company.Name = item.Name;
+                company.Description = item.Description;
+                if (item.TariffId > 0)
+                {
+                    company.TariffId = item.TariffId;
+                }
+                else
+                {
+                    company.TariffId = null;
+                }
+                unitOfWork.Companies.Update(company);
+                unitOfWork.Save();
             }
-            else
+            catch(Exception ex)
             {
-                company.TariffId = null;
+                throw ex;
             }
-            unitOfWork.Companies.Update(company);
-            unitOfWork.Save();
         }
 
         /// <summary>
@@ -93,12 +107,19 @@ namespace BAL.Managers
         /// <param name="item">SendViewModel from send view</param>
         public void AddSend(SendViewModel item)
         {
-            Company company = unitOfWork.Companies.GetById(item.Id);
-            company.TariffId = item.TariffId;
-            company.Message = item.Message;
-            company.SendingTime = item.SendingTime;
-            unitOfWork.Companies.Update(company);
-            unitOfWork.Save();
+            try
+            {
+                Company company = unitOfWork.Companies.GetById(item.Id);
+                company.TariffId = item.TariffId;
+                company.Message = item.Message;
+                company.SendingTime = item.SendingTime;
+                unitOfWork.Companies.Update(company);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -108,11 +129,18 @@ namespace BAL.Managers
         /// <param name="item">RecieveViewModel from view</param>
         public void AddRecieve(RecieveViewModel item)
         {
-            Company company = unitOfWork.Companies.GetById(item.Id);
-            company.StartTime = item.StartTime;
-            company.EndTime = item.EndTime;
-            unitOfWork.Companies.Update(company);
-            unitOfWork.Save();
+            try
+            {
+                Company company = unitOfWork.Companies.GetById(item.Id);
+                company.StartTime = item.StartTime;
+                company.EndTime = item.EndTime;
+                unitOfWork.Companies.Update(company);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -122,14 +150,21 @@ namespace BAL.Managers
         /// <param name="item">SendRecieveViewModel from view</param>
         public void AddSendRecieve(SendRecieveViewModel item)
         {
-            Company company = unitOfWork.Companies.GetById(item.Id);
-            company.TariffId = item.TariffId;
-            company.Message = item.Message;
-            company.SendingTime = item.SendingTime;
-            company.StartTime = item.StartTime;
-            company.EndTime = item.EndTime;
-            unitOfWork.Companies.Update(company);
-            unitOfWork.Save();
+            try
+            {
+                Company company = unitOfWork.Companies.GetById(item.Id);
+                company.TariffId = item.TariffId;
+                company.Message = item.Message;
+                company.SendingTime = item.SendingTime;
+                company.StartTime = item.StartTime;
+                company.EndTime = item.EndTime;
+                unitOfWork.Companies.Update(company);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -160,9 +195,16 @@ namespace BAL.Managers
         /// <param name="id">Id of company wich need to delete</param>
         public void Delete(int id)
         {
-            Company company = unitOfWork.Companies.GetById(id);
-            unitOfWork.Companies.Delete(company);
-            unitOfWork.Save();
+            try
+            {
+                Company company = unitOfWork.Companies.GetById(id);
+                unitOfWork.Companies.Delete(company);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -172,10 +214,17 @@ namespace BAL.Managers
         /// <returns>Id of inserted company</returns>
         public int InsertWithId(CompanyViewModel item)
         {
-            Company company = mapper.Map<CompanyViewModel, Company>(item);
-            company.TariffId = null;
-            int id = unitOfWork.Companies.InsertWithId(company);
-            return id;
+            try
+            {
+                Company company = mapper.Map<CompanyViewModel, Company>(item);
+                company.TariffId = null;
+                int id = unitOfWork.Companies.InsertWithId(company);
+                return id;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
