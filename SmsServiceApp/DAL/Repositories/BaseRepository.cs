@@ -70,10 +70,7 @@ namespace DAL.Repositories
             {
                 dbSet.Attach(item);
             }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
+            catch { }
             finally
             {
                 dbSet.Update(item);

@@ -11,13 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using WebApp.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using BAL.Interfaces;
 using Model.ViewModels.RecievedMessageViewModel;
 using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
 using BAL.Services;
-using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -72,10 +70,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            logger.LogInfo("Fetching all the Campaigns from the storage");
-                var companies = companyManager.GetCompanies(GetGroupId());
-                logger.LogInfo($"Returning {companies.Count()} companies.");
-                return View(companies);
+            var companies = companyManager.GetCompanies(GetGroupId());
+            return View(companies);
         }
 
         /// <summary>
@@ -85,10 +81,10 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-                CompanyViewModel company = new CompanyViewModel();
-                var phoneId = groupManager.Get(GetGroupId()).PhoneId;
-                company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
-                return View(company);
+            CompanyViewModel company = new CompanyViewModel();
+            var phoneId = groupManager.Get(GetGroupId()).PhoneId;
+            company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+            return View(company);
         }
 
         /// <summary>
@@ -112,11 +108,9 @@ namespace WebApp.Controllers
                         newPhone.PhoneNumber = item.PhoneNumber;
                         phoneManager.Insert(newPhone);
                         item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
-                        logger.LogInfo($"New phone {item.PhoneId} added to db");
                     }
                     item.ApplicationGroupId = GetGroupId();
                     int companyId = companyManager.InsertWithId(item);
-                    logger.LogInfo($"New campaign {companyId} was added to db");
                     if (item.Type == CompanyType.Send)
                     {
                         return RedirectToAction("Send", new { companyId });
@@ -173,7 +167,6 @@ namespace WebApp.Controllers
                 }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
-                logger.LogInfo($"Campaign {item.Id} was updated to choosen type");
                 return RedirectToAction("Index","Company");
             }
             ViewData["companyId"] = companyId;
