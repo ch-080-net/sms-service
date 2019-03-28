@@ -24,7 +24,7 @@ namespace Model.ViewModels.RecipientViewModels
         public string Surname { get; set; }
         [Display(Name = "BirthDate")]
         [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        public DateTime Birthdate { get; set; }
         [Display(Name = "Gender")]
         public string Gender { get; set; }
         [Display(Name = "Priority")]

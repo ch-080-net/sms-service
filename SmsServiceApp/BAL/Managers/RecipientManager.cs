@@ -99,11 +99,11 @@ namespace BAL.Managers
             {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
                 recipient.CompanyId = companyId;
-                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
                 if (phone.Count == 0)
                 {
                     Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.PhoneNumber;
+                    newPhone.PhoneNumber = item.Phonenumber;
                     unitOfWork.Phones.Insert(newPhone);
                     unitOfWork.Save();
                     recipient.Phone = newPhone;
@@ -130,11 +130,11 @@ namespace BAL.Managers
             try
             {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
-                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
                 if (phone.Count == 0)
                 {
                     Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.PhoneNumber;
+                    newPhone.PhoneNumber = item.Phonenumber;
                     unitOfWork.Phones.Insert(newPhone);
                     unitOfWork.Save();
                     recipient.Phone = newPhone;
