@@ -7,6 +7,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Models;
+using System.Linq;
 
 namespace BAL.Test.ManagersTests
 {
@@ -35,42 +36,24 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void Add_EmptyOperator_ErrorResult()
 		{
-			#region Arrange
-			//задаємо змінні і результат
 			OperatorViewModel emptyOperator = new OperatorViewModel();
-			#endregion
 
-			#region Act
-			//запускаємо методи, які тестуються
 			var result = manager.Add(emptyOperator);
-			#endregion
 
-			#region Assert
-			//перевіряємо результат
-			Assert.IsFalse(result.Success);
 			TestContext.WriteLine(result.Details);
-			#endregion
+			Assert.IsFalse(result.Success);
 		}
 
 		[TestMethod]
-		public void Add_OperatorObject_SuccessResult()
+		public void Add_OperatorObject_ErrorResult()
 		{
-			#region Arrange
-			//задаємо змінні і результат
 			OperatorViewModel testOperator = new OperatorViewModel();
-			IEnumerable<Operator> operatorsList;
-			#endregion
+			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>() { new Operator() });
 
-			#region Act
-			//запускаємо методи, які тестуються
 			var result = manager.Add(testOperator);
-			//mockUnitOfWork.Setup(m => m.Operators.Get(12)).Returns(operatorsList);
-			#endregion
 
-			#region Assert
-			//перевіряємо результат
-			Assert.IsFalse(result.Success, result.Details);
-			#endregion
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
 		}
 	}
 }
