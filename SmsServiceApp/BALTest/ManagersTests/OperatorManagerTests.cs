@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
+using System;
 
 namespace BAL.Test.ManagersTests
 {
@@ -45,7 +46,7 @@ namespace BAL.Test.ManagersTests
 		}
 
 		[TestMethod]
-		public void Add_OperatorObject_ErrorResult()
+		public void Add_ExistingObject_ErrorResult()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel();
 			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>() { new Operator() });
@@ -54,6 +55,43 @@ namespace BAL.Test.ManagersTests
 
 			TestContext.WriteLine(result.Details);
 			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Add_TestObject_CatchExceptionError()
+		{
+			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
+			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>());
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+
+			var result = manager.Add(testOperator);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Add_NewTestObject_SuccessResult()
+		{
+			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
+			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>());
+			mockUnitOfWork.Setup(n => n.Save());
+
+			var result = manager.Add(testOperator);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsTrue(result.Success);
+		}
+
+		[TestMethod]
+		public void Remove_ValidId_SuccessResult()
+		{
+			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = null});
+
+			var result = manager.Remove(1);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsTrue(result.Success);
 		}
 	}
 }
