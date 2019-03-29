@@ -1,74 +1,327 @@
-﻿@using Model.ViewModels.CompanyViewModels;
+﻿@using Model.ViewModels.StepViewModels
+@model StepViewModel
+
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-@model CompanyViewModel
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@Localizer["Compaigns"]</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <script src="~/js/OperatorTariffs.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f1f1f1;
+        }
+
+        #regForm {
+            background-color: #ffffff;
+            margin: 100px auto;
+            font-family: Raleway;
+            padding: 40px;
+            width: 70%;
+            min-width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-family: Raleway;
+            border: 1px solid #aaaaaa;
+        }
+
+            /* Mark input boxes that gets an error on validation: */
+            input.invalid {
+                background-color: #ffdddd;
+            }
+
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            font-family: Raleway;
+            cursor: pointer;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        #prevBtn {
+            background-color: #bbbbbb;
+        }
+
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbbbbb;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+            .step.active {
+                opacity: 1;
+            }
+
+            /* Mark the steps that are finished and valid: */
+            .step.finish {
+                background-color: #4CAF50;
+            }
+    </style>
 </head>
 <body>
-    <h2>@Localizer["Create"]</h2>
-    <h4>@Localizer["Compaign"]</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label asp-for="PhoneNumber" class="control-label"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
+
+
+    <h1>Register:</h1>
+    <!-- One "tab" for each step in the form: -->
+
+    <div class="tab">
+        @using (Html.BeginForm("Create", "Company", FormMethod.Post))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="CompanyModel.PhoneNumber" class="control-label"></label>
+                    <input asp-for="CompanyModel.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="CompanyModel.PhoneNumber" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="CompanyModel.Name" class="control-label"></label>
+                    <input asp-for="CompanyModel.Name" class="form-control" />
+                    <span asp-validation-for="CompanyModel.Name" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label asp-for="Description" class="control-label"></label>
-                        <textarea rows="3" style="resize:none" asp-for="Description" class="form-control"></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="CompanyModel.Description" class="control-label"></label>
+                    <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" class="form-control"></textarea>
+                    <span asp-validation-for="CompanyModel.Description" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <label asp-for="Type" class="col-sm-6 col-form-label">@Localizer["Select campaign type"]</label>
-                    <div class="col-sm-10">
-                        <div class="mt-2">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" name="path" value=0 />
-                                <label class="form-check-label" for="Type">@Localizer["Send"]</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" name="path" value=1 />
-                                <label class="form-check-label" for="Type">@Localizer["Recieve"]</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" asp-for="Type" type="radio" name="path" value=2 />
-                                <label class="form-check-label" for="Type">@Localizer["Send and Recieve"]</label>
-                            </div>
+            </div>
+            <div class="row">
+                <label asp-for="CompanyModel.Type" class="col-sm-6 col-form-label">@Localizer["Select campaign type"]</label>
+                <div class="col-sm-10">
+                    <div class="mt-2">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=0 />
+                            <label class="form-check-label" for="Type">@Localizer["Send"]</label>
                         </div>
-                        <span asp-validation-for="Type" class="text-danger"></span>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=1 />
+                            <label class="form-check-label" for="Type">@Localizer["Recieve"]</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=2 />
+                            <label class="form-check-label" for="Type">@Localizer["Send and Recieve"]</label>
+                        </div>
                     </div>
+                    <span asp-validation-for="CompanyModel.Type" class="text-danger"></span>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <input type="submit" value="@Localizer["Next"]" class="btn btn-success" />
-                    </div>
-                    <div class="col-md-3">
-                        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
-                    </div>
-                </div>
-            </form>
+            </div>
+          
+        }
+    </div>
+
+    <div class="tab">
+
+        <div class="container">
+            <div class="col-lg-4">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="col-md-3">
+                                @Html.DisplayNameFor(model => model.OperatorModel.OperatorsList)
+                            </th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OperatorModel.OperatorsList)
+                        {
+                            <tr>
+                                <td class="col-md-3">
+                                    @item.Name
+                                </td>
+                                <td class="col-md-1">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" value="@item.Id" name="1radio" onchange="GetTariff(this)" />
+                                        </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <table class="table table-hover" id="tariffTable">
+            <thead class="thead-dark">
+                <tr>
+                    <td><label asp-for="TariffModels.Name"></label></td>
+                    <td><label asp-for="TariffModels.Description"></label></td>
+                    <td><label asp-for="TariffModels.Price"> </label></td>
+                    <td><label asp-for="TariffModels.Limit"> </label></td>        
+                    <td> </td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+            
+
+
+
+
+    <div class="tab">
+        Tariffs:
+        <h2>@Localizer["Tariffs"]</h2>
+        <hr />
+        <div class="container">
+            <div class="col-lg-9">
+                <table id="tariffTable" class="table table-striped ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="col-md-2">
+                                @Localizer["Name"]
+                            </th>
+                            <th class="col-md-4">
+                                @Localizer["Description"]
+                            </th>
+                            <th class="col-md-1">
+                                @Localizer["Price"]
+                            </th>
+                            <th class="col-md-1">
+                                @Localizer["Limit"]
+                            </th>
+                            <th class="col-md-1"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Operators"]</a>
         </div>
     </div>
+    <div class="tab">
+        Login Info:
+        <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
+        <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
+    </div>
+    <div style="overflow:auto;">
+        <div style="float:right;">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+        </div>
+    </div>
+    <!-- Circles which indicates the steps of the form: -->
+    <div style="text-align:center;margin-top:40px;">
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+    </div>
+
+
+    <script>
+
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Submit";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            //... and run a function that will display the correct step indicator:
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 1 && !validateForm()) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                document.getElementById("regForm").submit();
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, i, valid = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            // A loop that checks every input field in the current tab:
+            for (i = 0; i < y.length; i++) {
+                // If a field is empty...
+                if (y[i].value == "") {
+                    // add an "invalid" class to the field:
+                    y[i].className += " invalid";
+                    // and set the current valid status to false
+                    valid = false;
+                }
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class on the current step:
+            x[n].className += " active";
+        }
+    </script>
+
 </body>
 </html>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

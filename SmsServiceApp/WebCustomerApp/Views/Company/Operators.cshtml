@@ -1,5 +1,5 @@
-﻿@using Model.ViewModels.OperatorViewModels
-@model OperatorsViewModel
+﻿@using Model.ViewModels.StepViewModels
+@model StepViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
@@ -24,13 +24,13 @@
                 <thead class="thead-dark">
                     <tr>
                         <th class="col-md-3">
-                            @Html.DisplayNameFor(model => model.OperatorsList)
+                            @Html.DisplayNameFor(model => model.OperatorModel.OperatorsList)
                         </th>
                         <th class="col-md-1"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.OperatorsList)
+                    @foreach (var item in Model.OperatorModel.OperatorsList)
                     {
                     <tr>
                         <td class="col-md-3">

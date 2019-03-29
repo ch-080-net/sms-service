@@ -1,0 +1,69 @@
+﻿@using Model.ViewModels.TariffViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model TariffsViewModel
+
+@{
+    ViewData["Title"] = Localizer["Tariffs"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Localizer["Tariff"]</title>
+    <title>@Localizer["Tariff List"]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h2>@Localizer["Tariffs"]</h2>
+    <hr />
+    <div class="container">
+        <div class="col-lg-9">
+            <table class="table table-striped ">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="col-md-2">
+                            @Localizer["Name"]
+                        </th>
+                        <th class="col-md-4">
+                            @Localizer["Description"]
+                        </th>
+                        <th class="col-md-1">
+                            @Localizer["Price"]
+                        </th>
+                        <th class="col-md-1">
+                            @Localizer["Limit"]
+                        </th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TariffsList)
+                    {
+                    <tr>
+                        <td class="col-md-2">
+                            @item.Name
+                        </td>
+                        <td class="col-md-4">
+                            @item.Description
+                        </td>
+                        <td class="col-md-1">
+                            @item.Price
+                        </td>
+                        <td class="col-md-1">
+                            @item.Limit
+                        </td>
+                        <td class="col-md-1">
+                            <a class="btn btn-success" asp-controller="Company" asp-action="ChangeTariff" asp-route-companyId="@ViewData["companyId"]" asp-route-tariffId="@item.Id">@Localizer["Choose"]</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Operators"]</a>
+    </div>
+</body>
+</html>
