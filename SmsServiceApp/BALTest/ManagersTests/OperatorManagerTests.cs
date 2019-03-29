@@ -4,7 +4,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using Moq;
+using System.Collections.Generic;
 using System.Diagnostics;
+using WebApp.Models;
 
 namespace BAL.Test.ManagersTests
 {
@@ -31,23 +33,43 @@ namespace BAL.Test.ManagersTests
 		}
 
 		[TestMethod]
+		public void Add_EmptyOperator_ErrorResult()
+		{
+			#region Arrange
+			//задаємо змінні і результат
+			OperatorViewModel emptyOperator = new OperatorViewModel();
+			#endregion
+
+			#region Act
+			//запускаємо методи, які тестуються
+			var result = manager.Add(emptyOperator);
+			#endregion
+
+			#region Assert
+			//перевіряємо результат
+			Assert.IsFalse(result.Success);
+			TestContext.WriteLine(result.Details);
+			#endregion
+		}
+
+		[TestMethod]
 		public void Add_OperatorObject_SuccessResult()
 		{
 			#region Arrange
 			//задаємо змінні і результат
-			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator"};
+			OperatorViewModel testOperator = new OperatorViewModel();
+			IEnumerable<Operator> operatorsList;
 			#endregion
 
 			#region Act
 			//запускаємо методи, які тестуються
 			var result = manager.Add(testOperator);
-			mockUnitOfWork.Verify(f => f.Operators);
-			mockUnitOfWork.Verify(f => f.Save());
+			//mockUnitOfWork.Setup(m => m.Operators.Get(12)).Returns(operatorsList);
 			#endregion
 
 			#region Assert
 			//перевіряємо результат
-			Assert.IsTrue(result.Success, result.Details);
+			Assert.IsFalse(result.Success, result.Details);
 			#endregion
 		}
 	}
