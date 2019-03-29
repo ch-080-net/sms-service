@@ -89,5 +89,23 @@ namespace BAL.Managers
                 // Sending will be repeated
             }
         }
+
+        public void SetAsSent(int notificationId, string userId)
+        {
+            var not = unitOfWork.Notifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
+            if (not != null)
+            {
+                not.BeenSent = true;
+            }
+
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+                // Sending will be repeated
+            }
+        }
     }
 }

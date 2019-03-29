@@ -17,6 +17,7 @@ namespace BAL.Managers
 
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
         void SetAsSent(NotificationDTO notification);
+        void SetAsSent(int notificationId, string userId);
 
     }
 }

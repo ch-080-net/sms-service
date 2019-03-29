@@ -3,14 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using Model.DTOs;
+using BAL.Managers;
 
 namespace BAL.Hubs
 {
     public class NotificationHub : Hub
     {
-        public async Task SendNotification()
+        INotificationManager notificationManager;
+        public NotificationHub(INotificationManager notificationManager)
         {
-            await Clients.All.SendAsync("GetNotification", "Hi!");
+            this.notificationManager = notificationManager;
+        }
+
+        public async Task ConfirmReceival(int notificationId)
+        {
+            notificationManager.SetAsSent(notificationId, Context.UserIdentifier);
         }
     }
 }
