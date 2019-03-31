@@ -9,5 +9,12 @@ namespace Model.DTOs
         public int Id { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public NotificationOrigin Origin { get; set; }
+    }
+
+    public enum NotificationOrigin
+    {
+        CampaignReport,
+        PersonalNotification
     }
 }

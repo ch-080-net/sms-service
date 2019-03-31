@@ -28,6 +28,7 @@ namespace WebApp.Data
         public DbSet<AnswersCode> AnswersCodes { get; set; }
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<CampaignNotification> CampaignNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -45,6 +46,8 @@ namespace WebApp.Data
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
             builder.Entity<RecievedMessage>().HasKey(i => i.Id);
             builder.Entity<AnswersCode>().HasKey(i => i.Id);
+            builder.Entity<CampaignNotification>().HasKey(i => i.Id);
+            builder.Entity<Notification>().HasKey(i => i.Id);
 
             // Compound key for Many-To-Many joining table
 
@@ -121,6 +124,18 @@ namespace WebApp.Data
                 .WithOne(n => n.ApplicationUser)
                 .HasForeignKey(n => n.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany(c => c.CampaignNotifications)
+                .WithOne(rm => rm.Campaign)
+                .HasForeignKey(rm => rm.CampaignId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.CampaignNotifications)
+                .WithOne(n => n.ApplicationUser)
+                .HasForeignKey(n => n.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             #endregion
 

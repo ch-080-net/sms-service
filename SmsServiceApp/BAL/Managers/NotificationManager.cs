@@ -28,28 +28,20 @@ namespace BAL.Managers
             return result;
         }
 
-        public async Task<IEnumerable<SmsNotificationDTO>> GetAllSmsNotification()
+        public IEnumerable<SmsNotificationDTO> GetAllSmsNotifications()
         {
             var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
                                                                 && n.Time <= DateTime.UtcNow
                                                                 && n.Type == NotificationType.Sms);
-            var senders = await userManager.GetUsersInRoleAsync("Admin");
-            string senderPhone = senders.FirstOrDefault().PhoneNumber;
-
-            var result = new List<SmsNotificationDTO>();
-            foreach (var iter in notifications)
-            {
-                result.Add(mapper.Map<Notification, SmsNotificationDTO>(iter, opt =>
-                    opt.AfterMap((src, dest) => dest.SenderPhone = senderPhone)));
-            }
+            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<SmsNotificationDTO>>(notifications);
             return result;
         }
 
-        public IEnumerable<WebNotificationDTO> GetAllWebNotification()
+        public IEnumerable<WebNotificationDTO> GetAllWebNotifications()
         {
             var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
                                                                 && n.Time <= DateTime.UtcNow
-                                                                && n.Type == NotificationType.Site);
+                                                                && n.Type == NotificationType.Web);
             var result = mapper.Map<IEnumerable<Notification>, IEnumerable<WebNotificationDTO>>(notifications);
             return result;
         }
@@ -90,21 +82,50 @@ namespace BAL.Managers
             }
         }
 
-        public void SetAsSent(int notificationId, string userId)
+        public void SetAsSent(int notificationId, NotificationOrigin origin, string userId)
         {
-            var not = unitOfWork.Notifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
-            if (not != null)
+            switch (origin)
             {
-                not.BeenSent = true;
-            }
+                case NotificationOrigin.PersonalNotification:
+                    {
+                        var not = unitOfWork.Notifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
+                        if (not != null)
+                        {
+                            not.BeenSent = true;
+                        }
+                        try
+                        {
+                            unitOfWork.Save();
+                        }
+                        catch
+                        {
+                            // Sending will be repeated
+                        }
+                        break;
+                    }
 
-            try
-            {
-                unitOfWork.Save();
-            }
-            catch
-            {
-                // Sending will be repeated
+                case NotificationOrigin.CampaignReport:
+                    {
+                        var not = unitOfWork.CampaignNotification.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
+                        if (not != null)
+                        {
+                            not.BeenSent = true;
+                        }
+                        try
+                        {
+                            unitOfWork.Save();
+                        }
+                        catch
+                        {
+                            // Sending will be repeated
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+
             }
         }
     }

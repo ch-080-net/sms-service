@@ -20,6 +20,7 @@ namespace Model.Interfaces
         IMailingRepository Mailings { get; }
         IChartsRepository Charts { get; }
         INotificationRepository Notifications { get; }
+        ICampaignNotificationRepository CampaignNotification { get; }
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }

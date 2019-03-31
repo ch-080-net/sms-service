@@ -98,10 +98,13 @@ namespace BAL.Services
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
 
             CreateMap<Notification, EmailNotificationDTO>()
-                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email));
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
 
             CreateMap<Notification, SmsNotificationDTO>()
-                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber));
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
 
             CreateMap<SmsNotificationDTO, MessageDTO>()
                 .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.SenderPhone))
@@ -110,7 +113,8 @@ namespace BAL.Services
                 .ForMember(sn => sn.RecipientId, opt => opt.MapFrom(n => 0));
 
             CreateMap<Notification, WebNotificationDTO>()
-                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId));
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
         }
 
         /// <summary>

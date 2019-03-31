@@ -62,7 +62,7 @@ namespace BAL.Jobs
                 var manager = scope.ServiceProvider.GetService<INotificationManager>();
                 var mapper = scope.ServiceProvider.GetService<IMapper>();
 
-                var smsNotifications = await manager.GetAllSmsNotification();
+                var smsNotifications = manager.GetAllSmsNotifications();
 
                 var smsMessages = mapper.Map<IEnumerable<SmsNotificationDTO>, IEnumerable<MessageDTO>>(smsNotifications);
 
@@ -77,7 +77,7 @@ namespace BAL.Jobs
             {
                 var hubContext = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
                 var manager = scope.ServiceProvider.GetService<INotificationManager>();
-                var webNotifications = manager.GetAllWebNotification();
+                var webNotifications = manager.GetAllWebNotifications();
                 foreach (var iter in webNotifications)
                 { 
                     await hubContext.Clients.User(iter.UserId).SendAsync("GetNotification", iter);

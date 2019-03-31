@@ -10,22 +10,24 @@ using WebApp.Data;
 
 namespace DAL.Repositories
 {
-    class NotificationRepository : BaseRepository<Notification>, INotificationRepository
+    public class CampaignNotificationRepository : BaseRepository<CampaignNotification>, ICampaignNotificationRepository
     {
-        public NotificationRepository(ApplicationDbContext mainDbContext) : base(mainDbContext)
+        public CampaignNotificationRepository(ApplicationDbContext mainDbContext) : base(mainDbContext)
         {
 
         }
 
-        public override IEnumerable<Notification> Get(
-            Expression<Func<Notification, bool>> filter = null,
-            Func<IQueryable<Notification>,
-            IOrderedQueryable<Notification>> orderBy = null,
+        public override IEnumerable<CampaignNotification> Get(
+            Expression<Func<CampaignNotification, bool>> filter = null,
+            Func<IQueryable<CampaignNotification>,
+            IOrderedQueryable<CampaignNotification>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<Notification> query = context.Notifications
-                         .Include(n => n.ApplicationUser)
-                         .ThenInclude(au => au.ApplicationGroup);
+            IQueryable<CampaignNotification> query = context.CampaignNotifications
+                         .Include(cn => cn.Campaign)
+                         .ThenInclude(cam => cam.ApplicationGroup)
+                         .ThenInclude(ag => ag.ApplicationUsers)
+                         .Include(cn => cn.ApplicationUser);
 
             if (filter != null)
             {
@@ -47,5 +49,6 @@ namespace DAL.Repositories
                 return query.ToList();
             }
         }
+
     }
 }

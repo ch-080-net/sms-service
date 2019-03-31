@@ -1,0 +1,27 @@
+﻿@using Model.ViewModels.ManageViewModels
+
+@model NotificationsViewModel
+
+@{
+    ViewData["Title"] = "Manage notifications setings";
+    ViewData.AddActivePage(ManageNavPages.Notifications);
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" asp-antiforgery="true">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group form-inline">
+                <input asp-for="SmsNotEnabled" class="checkbox form" />
+                <label asp-for="SmsNotEnabled">Send notifications via SMS</label>
+            </div>
+            <div class="form-group form-inline">
+                <input asp-for="EmailNotEnabled" class="form-control checkbox" />
+                <label asp-for="EmailNotEnabled">Send notifications via SMS Email</label>
+            </div>
+            <button type="submit" class="btn btn-default">Save preferences</button>
+        </form>
+    </div>
+</div>

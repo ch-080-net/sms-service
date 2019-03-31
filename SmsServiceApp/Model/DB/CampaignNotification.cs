@@ -4,22 +4,24 @@ using System.Text;
 
 namespace WebApp.Models
 {
-    public class Notification
+    public class CampaignNotification
     {
         public int Id { get; set; }
+        public int CampaignId { get; set; }
+        public Company Campaign { get; set; }
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-        public NotificationType Type { get; set; }
-        public DateTime Time { get; set; }
-        public bool BeenSent { get; set; }
+        public CampaignNotificationType Type { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public bool BeenSent { get; set; }
+
     }
 
-    public enum NotificationType
+    public enum CampaignNotificationType
     {
         Web,
-        Email,
-        Sms
+        Sms,
+        Email
     }
 }

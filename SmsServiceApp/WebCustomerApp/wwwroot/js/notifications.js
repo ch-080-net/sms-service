@@ -21,7 +21,7 @@ connection.on("GetNotification", function (notification) {
     storedNotifications = JSON.stringify(storedNotifications);
     localStorage.setItem("notifications", storedNotifications);
     fillModal();
-    connection.invoke("ConfirmReceival", notification.id).catch(function (err) {
+    connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
         return console.error(err.toString());
     });
 });

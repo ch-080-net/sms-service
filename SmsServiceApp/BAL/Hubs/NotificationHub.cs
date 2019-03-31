@@ -16,9 +16,9 @@ namespace BAL.Hubs
             this.notificationManager = notificationManager;
         }
 
-        public async Task ConfirmReceival(int notificationId)
+        public async Task ConfirmReceival(int notificationId, NotificationOrigin origin)
         {
-            notificationManager.SetAsSent(notificationId, Context.UserIdentifier);
+            notificationManager.SetAsSent(notificationId, origin, Context.UserIdentifier);
         }
     }
 }

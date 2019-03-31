@@ -26,6 +26,7 @@ namespace DAL.Repositories
         private IMailingRepository mailingRepo;
         private IChartsRepository chartsRepo;
         private INotificationRepository notificationRepo;
+        private ICampaignNotificationRepository campaignNotificationRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -172,11 +173,23 @@ namespace DAL.Repositories
         {
             get
             {
-                if(notificationRepo == null)
+                if (notificationRepo == null)
                 {
                     notificationRepo = new NotificationRepository(context);
                 }
                 return notificationRepo;
+            }
+        }
+
+        public ICampaignNotificationRepository CampaignNotification
+        {
+            get
+            {
+                if (campaignNotificationRepo == null)
+                {
+                    campaignNotificationRepo = new CampaignNotificationRepository(context);
+                }
+                return campaignNotificationRepo;
             }
         }
 
