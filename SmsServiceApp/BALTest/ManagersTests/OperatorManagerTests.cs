@@ -132,5 +132,27 @@ namespace BAL.Test.ManagersTests
 			TestContext.WriteLine(result.Details);
 			Assert.IsTrue(result.Success);
 		}
+
+		[TestMethod]
+		public void Update_EmptyOperator_ErrorResult()
+		{
+			OperatorViewModel test = new OperatorViewModel();
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Update_OperatorWithoutName_ErrorResult()
+		{
+			OperatorViewModel test = new OperatorViewModel() { Name = ""};
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
 	}
 }
