@@ -112,7 +112,7 @@ namespace BAL.Test.ManagersTests
 		public void Remove_OperatorWithoutTariffs_CatchExceptionError()
 		{
 			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>()});
-			mockUnitOfWork.Setup(n => n.Operators.Delete(new Operator() { Name = "name" })).Throws(new Exception());
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
 
 			var result = manager.Remove(1);
 
@@ -147,7 +147,7 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void Update_OperatorWithoutName_ErrorResult()
 		{
-			OperatorViewModel test = new OperatorViewModel() { Name = ""};
+			OperatorViewModel test = new OperatorViewModel() { Name = "" };
 
 			var result = manager.Update(test);
 

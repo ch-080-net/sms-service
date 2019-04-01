@@ -101,7 +101,7 @@ namespace BAL.Managers
                 }
                 catch
                 {
-                    return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                    return new TransactionResultDTO() { Success = false, Details = "Can`t find operator logo" };
                 }
             }
 
@@ -112,7 +112,7 @@ namespace BAL.Managers
             }
             catch
             {
-                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                return new TransactionResultDTO() { Success = false, Details = "Operator delete error" };
             }
             return new TransactionResultDTO() { Success = true };
         }
