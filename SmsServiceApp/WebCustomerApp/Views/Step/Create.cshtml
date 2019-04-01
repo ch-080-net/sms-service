@@ -27,9 +27,11 @@
             position: relative;
         }
 
+
         .stepwizard-step button[disabled] {
             opacity: 1 !important;
             filter: alpha(opacity=100) !important;
+       
         }
 
         .stepwizard-row:before {
@@ -136,7 +138,7 @@
                     <p>Tariff</p>
                 </div>
                 <div class="stepwizard-step">
-                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled" >4</a>
                     <p>Recieve</p>
                 </div>
                 <div class="stepwizard-step">
@@ -200,7 +202,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="For recieved SMS only">
-                                        <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=1>
+                                        <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" id="recieve" value=1>
                                         <div class="icon">
                                             <i class="material-icons">call_received</i>
                                         </div>
@@ -220,13 +222,14 @@
                         </div>
                     </div>
                     <span asp-validation-for="CompanyModel.Type" class="text-danger"></span>
-                    <button class="btn btn-primary nextBtn btn-lg pull-right" id="submit_first" type="button">Next</button>
+                    <button class="btn btn-primary nextBtn btn-lg pull-right"  type="button">Next</button>
+                    <button  id="submit_first" >Next</button>
                 </div>
 
 
 
             </div>
-     
+
             <div class="row setup-content" id="step-1-1">
                 @using (Html.BeginForm("Recieve", "Company", FormMethod.Post))
                 {
@@ -248,14 +251,14 @@
                         </div>
                     </div>
                 }
-   
-                </div>
+
+            </div>
 
             <div class="row setup-content" id="step-3">
                 <h3> Choose Tariff</h3>
                 <div class="container">
                     <div style="float:left;">
-                        <table class="table table-striped table-bordered" style="display: inline-block;" >
+                        <table class="table table-striped table-bordered" style="display: inline-block;">
                             <thead class="thead-dark">
                                 <tr>
                                     <th class="col-md-4">
@@ -365,11 +368,40 @@
                 $(wizard).find('[type="radio"]').removeAttr('checked');
                 $(this).find('[type="radio"]').attr('checked', 'true');
             });
-
         });
 
 
     </script>
+
+    <script>
+        $(document).ready(function () {
+         
+                //step1
+                $('#submit_first').click(function () {
+
+                    var value = $("input[name='path']:checked").val();
+                    console.log(value);
+                    switch (value) {
+                        case 0:
+                            $('#step1-1').show();
+                            break;
+                        case 1:
+                            $('#step1-2').show();
+                            break;
+                        case 2:
+                            $('#step1-3').show();
+                            break;
+
+                        default:
+
+                    }
+                });
+            
+        });
+          
+    </script>
+
+    
 
 </body>
 </html>
