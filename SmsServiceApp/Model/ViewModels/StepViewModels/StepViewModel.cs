@@ -13,5 +13,6 @@ namespace Model.ViewModels.StepViewModels
         public OperatorsViewModel OperatorModel { get; set; }
         public TariffsViewModel TariffModel { get; set; }
         public TariffViewModel TariffModels { get; set; }
+        public RecieveViewModel RecieveModel { get; set; }
     }
 }
