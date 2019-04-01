@@ -25,7 +25,8 @@ namespace DAL.Repositories
         {
             IQueryable<Notification> query = context.Notifications
                          .Include(n => n.ApplicationUser)
-                         .ThenInclude(au => au.ApplicationGroup);
+                         .ThenInclude(au => au.ApplicationGroup)
+                         .ThenInclude(ag => ag.Phone);
 
             if (filter != null)
             {

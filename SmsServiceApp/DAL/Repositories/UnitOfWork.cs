@@ -27,6 +27,7 @@ namespace DAL.Repositories
         private IChartsRepository chartsRepo;
         private INotificationRepository notificationRepo;
         private ICampaignNotificationRepository campaignNotificationRepo;
+        private IBaseRepository<ApplicationUser> appUserRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -181,7 +182,7 @@ namespace DAL.Repositories
             }
         }
 
-        public ICampaignNotificationRepository CampaignNotification
+        public ICampaignNotificationRepository CampaignNotifications
         {
             get
             {
@@ -190,6 +191,18 @@ namespace DAL.Repositories
                     campaignNotificationRepo = new CampaignNotificationRepository(context);
                 }
                 return campaignNotificationRepo;
+            }
+        }
+
+        public IBaseRepository<ApplicationUser> ApplicationUsers
+        {
+            get
+            {
+                if (appUserRepo == null)
+                {
+                    appUserRepo = new BaseRepository<ApplicationUser>(context);
+                }
+                return appUserRepo;
             }
         }
 

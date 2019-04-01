@@ -25,9 +25,9 @@ namespace DAL.Repositories
         {
             IQueryable<CampaignNotification> query = context.CampaignNotifications
                          .Include(cn => cn.Campaign)
-                         .ThenInclude(cam => cam.ApplicationGroup)
-                         .ThenInclude(ag => ag.ApplicationUsers)
-                         .Include(cn => cn.ApplicationUser);
+                         .Include(cn => cn.ApplicationUser)
+                         .ThenInclude(au => au.ApplicationGroup)
+                         .ThenInclude(ag => ag.Phone);
 
             if (filter != null)
             {

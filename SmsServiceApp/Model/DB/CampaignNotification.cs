@@ -12,8 +12,7 @@ namespace WebApp.Models
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public CampaignNotificationType Type { get; set; }
-        public string Title { get; set; }
-        public string Message { get; set; }
+        public CampaignNotificationEvent Event { get; set; }
         public bool BeenSent { get; set; }
 
     }
@@ -23,5 +22,12 @@ namespace WebApp.Models
         Web,
         Sms,
         Email
+    }
+
+    public enum CampaignNotificationEvent
+    {
+        CampaignStart,
+        CampaignEnd,
+        Sending
     }
 }
