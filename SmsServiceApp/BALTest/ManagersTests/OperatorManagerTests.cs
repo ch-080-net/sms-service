@@ -49,7 +49,7 @@ namespace BAL.Test.ManagersTests
 		public void Add_ExistingObject_ErrorResult()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel();
-			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>() { new Operator() });
+			mockUnitOfWork.Setup(m => m.Operators.Get(null, null, "")).Returns(new List<Operator>() { new Operator() });
 
 			var result = manager.Add(testOperator);
 
@@ -154,5 +154,73 @@ namespace BAL.Test.ManagersTests
 			TestContext.WriteLine(result.Details);
 			Assert.IsFalse(result.Success);
 		}
+
+		[TestMethod]
+		public void Update_OperatorObject_ErrorResult()
+		{
+			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
+			mockUnitOfWork.Setup(n => n.Operators.Insert(new Operator() { Name = "name"}));
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Update_OperatorObject_SuccessResult()
+		{
+			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
+			mockUnitOfWork.Setup(n => n.Operators.Insert(new Operator() { Name = "name" }));
+			mockUnitOfWork.Setup(n => n.Save());
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsTrue(result.Success);
+		}
+
+		[TestMethod]
+		public void GetPage_Null_ReturnNull()
+		{
+			var result = manager.GetPage(null);
+
+			Assert.IsNull(result);
+		}
+
+		[TestMethod]
+		public void GetPage_PageState_CurrentPage()
+		{
+			PageState test = new PageState() { };
+			var testOperators = mockUnitOfWork.Setup(n => n.Operators.Get(null,null,"")).Returns(new List<Operator>() { new Operator() { Name = "tst" } });
+
+			var result = manager.GetPage(test);
+
+			Assert.IsNotNull(result);
+		}
+
+		[TestMethod]
+		public void AddLogo_EmptyLogo_ErrorResult()
+		{
+			LogoViewModel logo = new LogoViewModel() { Logo = null };
+
+			var result = manager.AddLogo(logo);
+
+			TestContext.WriteLine(result.Details);
+			Assert..IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void AddLogo_EmptyOperator_ErrorResult()
+		{
+			LogoViewModel logo = new LogoViewModel() { Logo = null };
+
+			var result = manager.AddLogo(logo);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
 	}
 }
