@@ -26,9 +26,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="col-md-5">
                 <div class="form-group">
-                    <label asp-for="PhoneNumber" class="control-label"></label>
-                    <input asp-for="PhoneNumber" class="form-control" />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <label asp-for="Phonenumber" class="control-label"></label>
+                    <input asp-for="Phonenumber" class="form-control" />
+                    <span asp-validation-for="Phonenumber" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Name" class="control-label"></label>
@@ -41,9 +41,9 @@
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="BirthDate" class="control-label"></label>
-                    <input asp-for="BirthDate" class="form-control" id="birthDate" type="text"/>
-                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    <label asp-for="Birthdate" class="control-label"></label>
+                    <input asp-for="Birthdate" class="form-control" id="birthDate" type="text" />
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
                     <script>
                         $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
                         $('#birthDate').val(new Date(1901,1,1).toLocaleDateString());
@@ -71,9 +71,9 @@
                         <span asp-validation-for="Priority" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="KeyWords" class="control-label"></label>
-                    <textarea rows="7" style="resize:none" asp-for="KeyWords" class="form-control" id="message"></textarea>
-                    <span asp-validation-for="KeyWords" class="text-danger"></span>
+                    <label asp-for="Keywords" class="control-label"></label>
+                    <textarea rows="7" style="resize:none" asp-for="Keywords" class="form-control" id="message"></textarea>
+                    <span asp-validation-for="Keywords" class="text-danger"></span>
                 </div>
 
 

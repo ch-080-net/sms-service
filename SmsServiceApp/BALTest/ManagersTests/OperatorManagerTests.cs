@@ -84,14 +84,75 @@ namespace BAL.Test.ManagersTests
 		}
 
 		[TestMethod]
-		public void Remove_ValidId_SuccessResult()
+		public void Remove_InvalidId_ErrorResult()
 		{
-			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = null});
+			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns((Operator)null);
+
+			var result = manager.Remove(1);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Remove_OperatorWithTariffs_ErrorResult()
+		{
+			List<Tariff> tariffs = new List<Tariff>();
+			Tariff t = new Tariff() { Name = "Tariff", Limit = 2, Price = 55 };
+			tariffs.Add(t);
+			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name ="name", Tariffs = tariffs});
+
+			var result = manager.Remove(1);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Remove_OperatorWithoutTariffs_CatchExceptionError()
+		{
+			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>()});
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+
+			var result = manager.Remove(1);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Remove_OperatorWithoutTariffs_SuccessResult()
+		{
+			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>() });
+			mockUnitOfWork.Setup(n => n.Operators.Delete(new Operator() { Name = "name" }));
+			mockUnitOfWork.Setup(n => n.Save());
 
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
 			Assert.IsTrue(result.Success);
+		}
+
+		[TestMethod]
+		public void Update_EmptyOperator_ErrorResult()
+		{
+			OperatorViewModel test = new OperatorViewModel();
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void Update_OperatorWithoutName_ErrorResult()
+		{
+			OperatorViewModel test = new OperatorViewModel() { Name = "" };
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
 		}
 	}
 }

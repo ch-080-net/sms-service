@@ -20,6 +20,7 @@ namespace DAL.Repositories
         {
             var result = from r in context.Companies
                          .Include(com => com.RecievedMessages)
+                         .Include(com => com.Recipients)
                          .Include(com => com.AnswersCodes)
                          .Include(com => com.ApplicationGroup)
                          .ThenInclude(ag => ag.ApplicationUsers)
@@ -35,6 +36,8 @@ namespace DAL.Repositories
         {
             IQueryable<Company> query = context.Companies
                          .Include(com => com.RecievedMessages)
+                         .Include(com => com.Recipients)
+
                          .Include(com => com.AnswersCodes)
                          .Include(com => com.ApplicationGroup)
                          .ThenInclude(ag => ag.ApplicationUsers);

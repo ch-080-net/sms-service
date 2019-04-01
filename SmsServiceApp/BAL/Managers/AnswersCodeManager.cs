@@ -21,9 +21,16 @@ namespace BAL.Managers
         /// <param name="id">id of AnswersCode for deleting</param>
         public void Delete(int id)
         {
-            AnswersCode answersCode = unitOfWork.AnswersCodes.GetById(id);
-            unitOfWork.AnswersCodes.Delete(answersCode);
-            unitOfWork.Save();
+            try
+            {
+                AnswersCode answersCode = unitOfWork.AnswersCodes.GetById(id);
+                unitOfWork.AnswersCodes.Delete(answersCode);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -55,10 +62,17 @@ namespace BAL.Managers
         /// <param name="companyId"></param>
         public void Insert(AnswersCodeViewModel item, int companyId)
         {
-            AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
-            answersCode.CompanyId = companyId;
-            unitOfWork.AnswersCodes.Insert(answersCode);
-            unitOfWork.Save();
+            try
+            {
+                AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
+                answersCode.CompanyId = companyId;
+                unitOfWork.AnswersCodes.Insert(answersCode);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -67,9 +81,16 @@ namespace BAL.Managers
         /// <param name="item">AnswersCode for updating</param>
         public void Update(AnswersCodeViewModel item)
         {
-            AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
-            unitOfWork.AnswersCodes.Update(answersCode);
-            unitOfWork.Save();
+            try
+            {
+                AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
+                unitOfWork.AnswersCodes.Update(answersCode);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
