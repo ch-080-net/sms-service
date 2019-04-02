@@ -7,6 +7,6 @@ namespace Model.DTOs
     public class WebNotificationDTO : NotificationDTO
     {
         public string UserId { get; set; }
-        public DateTime Time { get; set; }
+        public string Time { get; set; }
     }
 }

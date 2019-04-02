@@ -118,7 +118,8 @@ namespace BAL.Services
 
             CreateMap<Notification, WebNotificationDTO>()
                 .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
-                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification))
+                .ForMember(sn => sn.Time, opt => opt.MapFrom(n => n.Time.ToString("G")));
 
             CreateMap<CampaignNotification, EmailNotificationDTO>()
                 .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
@@ -138,7 +139,7 @@ namespace BAL.Services
                 .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
                 .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
-                .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn)));
+                .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
         }
 
         #region Notifications
