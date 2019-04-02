@@ -8,19 +8,15 @@ connection.on("GetNotification", function (notification) {
     storedNotifications = JSON.parse(storedNotifications);
     if (storedNotifications == null) {
         storedNotifications = [];
-        incrementBadge();
     }
     else if (storedNotifications.length > 15) {
-        storedNotifications = storedNotifications.slice(storedNotifications.length - 14);
+        storedNotifications = storedNotifications.slice(0, 15);
     }
-    else {
-        incrementBadge();
-    }
-
     storedNotifications.unshift(notification);
     storedNotifications = JSON.stringify(storedNotifications);
     localStorage.setItem("notifications", storedNotifications);
     fillModal();
+    incrementBadge();
     connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
         return console.error(err.toString());
     });
