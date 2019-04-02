@@ -66,6 +66,7 @@ namespace BAL.Managers
             {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 unitOfWork.Companies.Insert(company);
+                AddNotifications(company);
                 unitOfWork.Save();
             }
             catch(Exception ex)
@@ -233,19 +234,14 @@ namespace BAL.Managers
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 company.TariffId = null;
                 int id = unitOfWork.Companies.InsertWithId(company);
+                AddNotifications(company);
+                unitOfWork.Save();
                 return id;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
-        }
-            Company company = mapper.Map<CompanyViewModel, Company>(item);
-            company.TariffId = null;
-            int id = unitOfWork.Companies.InsertWithId(company);
-            AddNotifications(company);
-            unitOfWork.Save();
-            return id;
         }
 
         private void AddNotifications(Company company)

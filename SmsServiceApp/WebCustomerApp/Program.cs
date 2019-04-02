@@ -42,6 +42,11 @@ namespace WebApp
                         var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
 
                         IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
+
+                        // Start Notification scheduler
+
+                        NotificationScheduler.Start(scope.ServiceProvider);
+                        MailingScheduler.Start(scope.ServiceProvider);
                     }
                     catch (Exception ex)
                     {
@@ -61,21 +66,6 @@ namespace WebApp
                 // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
                 NLog.LogManager.Shutdown();
             }
-        }
-					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
-
-                    // Start Notification scheduler
-
-                    NotificationScheduler.Start(scope.ServiceProvider);
-                    MailingScheduler.Start(scope.ServiceProvider);
-
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
-            host.Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
