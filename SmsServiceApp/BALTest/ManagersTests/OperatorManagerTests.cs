@@ -208,7 +208,7 @@ namespace BAL.Test.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert..IsFalse(result.Success);
+			Assert.IsFalse(result.Success);
 		}
 
 		[TestMethod]
