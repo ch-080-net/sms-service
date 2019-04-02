@@ -31,7 +31,6 @@
         .stepwizard-step button[disabled] {
             opacity: 1 !important;
             filter: alpha(opacity=100) !important;
-       
         }
 
         .stepwizard-row:before {
@@ -61,9 +60,9 @@
             border-radius: 15px;
         }
 
-        .wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .check {
+        /*.wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .check {
             background-color: #9c27b0;
-        }
+        }*/
 
         .wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .circle {
             border-color: #9c27b0;
@@ -79,11 +78,6 @@
             letter-spacing: normal;
             text-transform: none;
             display: inline-block;
-            /* white-space: nowrap; */
-            /* word-wrap: normal; */
-            /* direction: ltr; */
-            /* -webkit-font-feature-settings: 'liga'; */
-            /* -webkit-font-smoothing: antialiased; */
         }
 
         .wizard-card .choice i {
@@ -100,8 +94,8 @@
             color: red;
             margin: 0 auto 20px;
             border: 4px solid #CCCCCC;
-            transition: all 0.2s;
-            -webkit-transition: all 0.2s;
+            /*transition: all 0.2s;
+            -webkit-transition: all 0.2s;*/
         }
 
         .wizard-card[data-color="red"] .choice:hover .icon, .wizard-card[data-color="red"] .choice.active .icon {
@@ -137,8 +131,8 @@
                     <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
                     <p>Tariff</p>
                 </div>
-                <div class="stepwizard-step">
-                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled" >4</a>
+                <div class="stepwizard-step recievestep" >
+                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
                     <p>Recieve</p>
                 </div>
                 <div class="stepwizard-step">
@@ -151,36 +145,36 @@
             <div class="row setup-content" id="step-1">
                 @using (Html.BeginForm("Create", "Company", FormMethod.Post))
                 {
-                    @Html.AntiForgeryToken()
-                    <div>
-                        @Html.ValidationSummary(true)
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label asp-for="CompanyModel.PhoneNumber" class="control-label"></label>
-                                <input asp-for="CompanyModel.PhoneNumber" class="form-control" />
-                                <span asp-validation-for="CompanyModel.PhoneNumber" class="text-danger"></span>
-                            </div>
+                @Html.AntiForgeryToken()
+                <div>
+                    @Html.ValidationSummary(true)
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="CompanyModel.PhoneNumber" class="control-label"></label>
+                            <input asp-for="CompanyModel.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="CompanyModel.PhoneNumber" class="text-danger"></span>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label asp-for="CompanyModel.Name" class="control-label"></label>
-                                <input asp-for="CompanyModel.Name" class="form-control" />
-                                @Html.ValidationMessageFor(x => x.CompanyModel.Name)
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-12">
-                                <label asp-for="CompanyModel.Description" class="control-label"></label>
-                                <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" class="form-control"></textarea>
-                                @Html.ValidationMessageFor(x => x.CompanyModel.Description)
-                            </div>
-                        </div>
-                        <div class="row">
-
-                        </div>
-                        <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
                     </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="CompanyModel.Name" class="control-label"></label>
+                            <input asp-for="CompanyModel.Name" class="form-control" />
+                            @Html.ValidationMessageFor(x => x.CompanyModel.Name)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="CompanyModel.Description" class="control-label"></label>
+                            <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" class="form-control"></textarea>
+                            @Html.ValidationMessageFor(x => x.CompanyModel.Description)
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+                </div>
                 }
             </div>
 
@@ -193,7 +187,7 @@
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div class="col-sm-4">
                                     <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="For sending SMS only">
-                                        <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=0>
+                                        <input asp-for="CompanyModel.Type" type="radio" name="path" value=0>
                                         <div class="icon">
                                             <i class="material-icons">speaker_phone</i>
                                         </div>
@@ -202,7 +196,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="For recieved SMS only">
-                                        <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" id="recieve" value=1>
+                                        <input asp-for="CompanyModel.Type" type="radio" name="path" id="recieve" value=1>
                                         <div class="icon">
                                             <i class="material-icons">call_received</i>
                                         </div>
@@ -211,7 +205,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="For Sending and Recieving SMS">
-                                        <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" name="path" value=2>
+                                        <input asp-for="CompanyModel.Type" type="radio" name="path" value=2>
                                         <div class="icon">
                                             <i class="material-icons">import_export</i>
                                         </div>
@@ -222,8 +216,8 @@
                         </div>
                     </div>
                     <span asp-validation-for="CompanyModel.Type" class="text-danger"></span>
-                    <button class="btn btn-primary nextBtn btn-lg pull-right"  type="button">Next</button>
-                    <button  id="submit_first" >Next</button>
+                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+                    <button id="submit_first">Next</button>
                 </div>
 
 
@@ -233,23 +227,23 @@
             <div class="row setup-content" id="step-1-1">
                 @using (Html.BeginForm("Recieve", "Company", FormMethod.Post))
                 {
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="RecieveModel.StartTime" class="control-label"></label>
-                        <input asp-for="RecieveModel.StartTime" id="TimeStart">
-                        @Html.ValidationMessageFor(x => x.RecieveModel.StartTime)
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="RecieveModel.StartTime" class="control-label"></label>
+                    <input asp-for="RecieveModel.StartTime" id="TimeStart">
+                    @Html.ValidationMessageFor(x => x.RecieveModel.StartTime)
+                </div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="RecieveModel.Id" />
+                    <label asp-for="RecieveModel.EndTime" class="control-label"></label>
+                    <input asp-for="RecieveModel.EndTime" id="TimeEnd">
+                    @Html.ValidationMessageFor(x => x.RecieveModel.EndTime)
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <input type="submit" value="@Localizer[" Save"]" class="btn btn-success" />
                     </div>
-                    <div class="form-group">
-                        <input type="hidden" asp-for="RecieveModel.Id" />
-                        <label asp-for="RecieveModel.EndTime" class="control-label"></label>
-                        <input asp-for="RecieveModel.EndTime" id="TimeEnd">
-                        @Html.ValidationMessageFor(x => x.RecieveModel.EndTime)
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-3">
-                            <input type="submit" value="@Localizer["Save"]" class="btn btn-success" />
-                        </div>
-                    </div>
+                </div>
                 }
 
             </div>
@@ -270,16 +264,16 @@
                             <tbody>
                                 @foreach (var item in Model.OperatorModel.OperatorsList)
                                 {
-                                    <tr>
-                                        <td class="col-md-5">
-                                            @item.Name
-                                        </td>
-                                        <td class="col-md-5">
-                                            <div class="form-check form-check-inline">
-                                                <input type="radio" value="@item.Id" name="1radio" onchange="GetTariff(this)" />
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="col-md-5">
+                                        @item.Name
+                                    </td>
+                                    <td class="col-md-5">
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" value="@item.Id" name="1radio" onchange="GetTariff(this)" />
+                                        </div>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -366,7 +360,8 @@
                 wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
                 $(this).addClass('active');
                 $(wizard).find('[type="radio"]').removeAttr('checked');
-                $(this).find('[type="radio"]').attr('checked', 'true');
+                $(this).find('[type="radio"][name="path"]').prop('checked', true);
+
             });
         });
 
@@ -375,33 +370,34 @@
 
     <script>
         $(document).ready(function () {
-         
-                //step1
-                $('#submit_first').click(function () {
 
-                    var value = $("input[name='path']:checked").val();
-                    console.log(value);
-                    switch (value) {
-                        case 0:
-                            $('#step1-1').show();
-                            break;
-                        case 1:
-                            $('#step1-2').show();
-                            break;
-                        case 2:
-                            $('#step1-3').show();
-                            break;
+            //step1
+            $('#submit_first').click(function () {
 
-                        default:
+                var value = parseInt($("input[name='path']:checked").val());
+                console.log(value);
+                switch (value) {
+                    case 0:
+                        $(".recievestep").css('display' ,'none' );
+                      
+                        break;
+                    case 1:
+                        $('#step-1-1').show();
+                        break;
+                    case 2:
+                        $('#step1-3').show();
+                        break;
 
-                    }
-                });
-            
+                    default:
+
+                }
+            });
+
         });
-          
+
     </script>
 
-    
+
 
 </body>
 </html>
