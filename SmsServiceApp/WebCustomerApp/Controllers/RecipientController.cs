@@ -44,7 +44,35 @@ namespace WebApp.Controllers
 
 			return View(recipientManager.GetRecipients(companyId).ToList());
         }
+       
+        public List<RecipientViewModel> Get(int page, int countOnPage, string searchValue,int companyid)
+        {
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new List<RecipientViewModel>();
+            }
+           
+            return recipientManager.GetRecipients(companyid, page, countOnPage, searchValue);
+        }
 
+     
+        public int getRecipientsCount(string searchValue ,int companyid)
+        {
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return 0;
+            }
+            return recipientManager.GetRecipientsCount(companyid, searchValue);
+        }
+       
         /// <summary>
         /// Create recipient View
         /// </summary>
@@ -72,7 +100,7 @@ namespace WebApp.Controllers
                 TempData["companyId"] = companyId;
             }
             TempData.Keep("companyId");
-            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.PhoneNumber == item.PhoneNumber);
+            bool IsRecipientPhoneExist = recipientManager.GetRecipients(companyId).Any(r => r.Phonenumber == item.Phonenumber);
             if (IsRecipientPhoneExist)
             {
                 ModelState.AddModelError("PhoneNumber", "Recipient with this number already exists");

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Model.Interfaces;
 using WebApp.Models;
 using static WebApp.Startup;
+using NLog.Web;
 
 namespace WebApp
 {
@@ -22,20 +23,45 @@ namespace WebApp
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
-            using (var scope = host.Services.CreateScope())
+            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            try
             {
-                var serviceProvider = scope.ServiceProvider;
-                try
+                logger.Debug("init main");
+                var host = BuildWebHost(args);
+                using (var scope = host.Services.CreateScope())
                 {
-                    var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-					var operatorManager = serviceProvider.GetRequiredService<IOperatorManager>();
-					var codeManager = serviceProvider.GetRequiredService<ICodeManager>();
-					var tariffManager = serviceProvider.GetRequiredService<ITariffManager>();
-					var stopWordManager = serviceProvider.GetRequiredService<IStopWordManager>();
-                    var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
+                    var serviceProvider = scope.ServiceProvider;
+                    try
+                    {
+                        var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                        var operatorManager = serviceProvider.GetRequiredService<IOperatorManager>();
+                        var codeManager = serviceProvider.GetRequiredService<ICodeManager>();
+                        var tariffManager = serviceProvider.GetRequiredService<ITariffManager>();
+                        var stopWordManager = serviceProvider.GetRequiredService<IStopWordManager>();
+                        var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
 
+                        IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, "Stopped program because of exception");
+                    }
+                }
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                //NLog: catch setup errors
+                logger.Error(ex, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+                NLog.LogManager.Shutdown();
+            }
+        }
 					IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
 
                     // Start Notification scheduler
@@ -55,6 +81,6 @@ namespace WebApp
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .Build();
+                .Build();  
     }
 }

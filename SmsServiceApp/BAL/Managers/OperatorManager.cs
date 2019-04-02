@@ -91,10 +91,23 @@ namespace BAL.Managers
                 return new TransactionResultDTO() { Success = false, Details = "Operator already removed" };
             else if (oper.Tariffs.Any())
                 return new TransactionResultDTO() { Success = false, Details = "Operator cannot be removed when he have tariffs" };
+
+            string logoPath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(id) + ".png";
+            if (File.Exists(logoPath))
+            {
+                try
+                {
+                    File.Delete(logoPath);
+                }
+                catch
+                {
+                    return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                }
+            }
+
             try
             {
-                unitOfWork.Operators.Delete(oper);
-                File.Delete("wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(id) + ".png");
+                unitOfWork.Operators.Delete(oper);                
                 unitOfWork.Save();
             }
             catch

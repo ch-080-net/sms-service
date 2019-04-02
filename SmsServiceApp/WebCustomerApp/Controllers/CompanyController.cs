@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using WebApp.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using BAL.Interfaces;
 using Model.ViewModels.RecievedMessageViewModel;
 using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
+using BAL.Services;
 
 namespace WebApp.Controllers
 {
@@ -31,11 +31,13 @@ namespace WebApp.Controllers
         private readonly IRecipientManager recipientManager;
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
+        private readonly ILoggerManager logger;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
-                                 IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager)
+                                 IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
+                                 ILoggerManager loggerManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -46,6 +48,7 @@ namespace WebApp.Controllers
             this.recipientManager = recipientManager;
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
+            this.logger = loggerManager;
         }
 
         /// <summary>
@@ -67,9 +70,43 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View(companyManager.GetCompanies(GetGroupId()));
+            var companies = companyManager.GetCompanies(GetGroupId());
+            return View(companies);
         }
 
+       
+
+        public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
+        {
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return new List<CompanyViewModel>();
+            }
+            return companyManager.GetCampaigns(GetGroupId(), page, countOnPage, searchValue);
+        }
+
+        public int GetCampaignsCount(string searchValue)
+             {
+            if (searchValue == null)
+            {
+                searchValue = "";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return 0;
+            }
+            return companyManager.GetCampaignsCount(GetGroupId(), searchValue);
+        }
+
+        [HttpPost]
+        public IActionResult Index([FromBody] CompanyViewModel company)
+        {
+            return View();
+        }
         /// <summary>
         /// View for creation new Company
         /// </summary>
@@ -94,31 +131,32 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
-                {
-                    item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
-                }
-                else
-                {
-                    Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.PhoneNumber;
-                    phoneManager.Insert(newPhone);
-                    item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
-                }
-                item.ApplicationGroupId = GetGroupId();
-                int companyId = companyManager.InsertWithId(item);
-                if (item.Type == CompanyType.Send)
-                {
-                    return RedirectToAction("Send", new { companyId });
-                }
-                if (item.Type == CompanyType.Recieve)
-                {
-                    return RedirectToAction("Recieve", new { companyId });
-                }
-                if (item.Type == CompanyType.SendAndRecieve)
-                {
-                    return RedirectToAction("SendRecieve", new { companyId });
-                }
+                    if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
+                    {
+                        item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
+                    }
+                    else
+                    {
+                        Phone newPhone = new Phone();
+                        newPhone.PhoneNumber = item.PhoneNumber;
+                        phoneManager.Insert(newPhone);
+                        item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
+                    }
+                    item.ApplicationGroupId = GetGroupId();
+                    int companyId = companyManager.InsertWithId(item);
+                    if (item.Type == CompanyType.Send)
+                    {
+                        return RedirectToAction("Send", new { companyId });
+                    }
+                    if (item.Type == CompanyType.Recieve)
+                    {
+                        return RedirectToAction("Recieve", new { companyId });
+                    }
+                    if (item.Type == CompanyType.SendAndRecieve)
+                    {
+                        return RedirectToAction("SendRecieve", new { companyId });
+                    }
+
             }
             return View(item);
         }

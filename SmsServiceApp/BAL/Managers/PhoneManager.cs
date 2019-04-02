@@ -62,8 +62,15 @@ namespace BAL.Managers
         /// <param name="item">Phone entity</param>
         public void Insert(Phone item)
         {
-            unitOfWork.Phones.Insert(item);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Phones.Insert(item);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>

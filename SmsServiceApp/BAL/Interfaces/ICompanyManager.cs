@@ -14,7 +14,9 @@ namespace BAL.Managers
         CompanyViewModel Get(int id);
         IEnumerable<CompanyViewModel> GetCompanies(int groupId);
         IEnumerable<CompanyViewModel> GetCompaniesByPhoneId(int phoneId);
-		int GetTariffLimit(int companyId);
+        List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue);
+        int GetCampaignsCount(int groupId, string searchValue);
+        int GetTariffLimit(int companyId);
         int InsertWithId(CompanyViewModel item);
 		void Insert(CompanyViewModel item);
 		void Update(CompanyViewModel item);
