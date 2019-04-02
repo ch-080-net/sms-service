@@ -9,6 +9,7 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.Linq.Expressions;
 
 namespace BAL.Test.ManagersTests
 {
@@ -34,19 +35,7 @@ namespace BAL.Test.ManagersTests
             TestContext.WriteLine("Cleanup test data");
         }
 
-        [TestMethod]
-        public void Update_EmptyTariff_ErrorResult()
-        {
-            TariffViewModel emptyTariff = new TariffViewModel();
-
-            var result = manager.Update(emptyTariff);
-
-            if (result)
-            {
-                TestContext.WriteLine("result = true ?!");
-            }
-            Assert.IsFalse(result);
-        }
+    
         [TestMethod]
         public void Update_ExistingObject_ErrorResult()
         {
@@ -55,10 +44,9 @@ namespace BAL.Test.ManagersTests
             mockUnitOfWork.Setup(n => n.Tariffs.Update(new Tariff() { Id=9,Name = "kjn", Limit=4,Price=5, Description="test" , OperatorId=4 }));
             mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
             var result = manager.Update(testTariff);
-            if (result)
-            {
-                TestContext.WriteLine("throw-catch sometimes it works incorrectly or Update does not make Exception");
-            }
+          
+           TestContext.WriteLine("throw-catch sometimes it works incorrectly or Update does not make Exception");
+            
             Assert.IsFalse(result);
         }
 
@@ -69,10 +57,7 @@ namespace BAL.Test.ManagersTests
             mockUnitOfWork.Setup(n => n.Tariffs.Update(new Tariff()));
             mockUnitOfWork.Setup(n => n.Save());
             var result = manager.Update(new TariffViewModel());
-            if (result)
-            {
-                TestContext.WriteLine("?");
-            }
+          
             Assert.IsTrue(result);
         }
 
@@ -86,13 +71,86 @@ namespace BAL.Test.ManagersTests
             mockUnitOfWork.Setup(n => n.Save());
 
             var result = manager.Delete(testTariff, testInt);
-            if (result)
-            {
-                TestContext.WriteLine("?");
-            }
+      
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Delete_EmptyTariff_SuccessResult()
+        {
+            TariffViewModel testTariff = new TariffViewModel();
+
+            mockUnitOfWork.Setup(n => n.Tariffs.GetById(9)).Returns(new Tariff() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 });
+            mockUnitOfWork.Setup(n => n.Tariffs.Delete(new Tariff() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 }));
+            mockUnitOfWork.Setup(n => n.Save());
+            var result = manager.Delete(testTariff, 9);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Delete_ExistingObject_ErrorResult()
+        {
+            TariffViewModel testTariff = new TariffViewModel();
+
+             mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+
+            var result = manager.Delete(testTariff, 9);
 
             Assert.IsFalse(result);
         }
 
+       
+        [TestMethod]
+        public void Insert_EmptyTariffNotNull_ErrorResult()
+        {
+            TariffViewModel testTariff = new TariffViewModel(){Id=2};
+
+            var testList = new List<Tariff> {
+                new Tariff() {
+                    Id = 2,
+                    Description = "test",
+                    Limit = 8,
+                    Name = "testName",
+                    Price = 5,
+                    OperatorId = 4
+                },
+                new Tariff()
+                {
+                    Id=4
+                }
+            };
+
+            var tariff = mockUnitOfWork.Setup(n => n.Tariffs.Get(It.IsAny<Expression<Func<Tariff, bool>>>(), null, "")).Returns(testList);
+            mockUnitOfWork.Setup(n => n.Save());
+            var result = manager.Insert(testTariff);
+        
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Insert_EmptyTariffNull_SuccessResult()
+        {
+            TariffViewModel testTariff = new TariffViewModel();
+
+            var tariff = mockUnitOfWork.Setup(n => n.Tariffs.Get(It.IsAny<Expression<Func<Tariff, bool>>>(), null, "")).Returns(new List<Tariff>(){});
+            mockUnitOfWork.Setup(n => n.Save());
+            var result = manager.Insert(testTariff);
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Insert_SaveTariff_ErrorResult()
+        {
+            TariffViewModel testTariff = new TariffViewModel();
+            var tariff = mockUnitOfWork.Setup(n => n.Tariffs.Get(It.IsAny<Expression<Func<Tariff, bool>>>(), null, "")).Returns(new List<Tariff>() { });
+
+            mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+
+            var result = manager.Insert(testTariff);
+
+            Assert.IsFalse(result);
+        }
     }
 }
