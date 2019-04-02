@@ -9,6 +9,10 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.IO;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace BAL.Test.ManagersTests
 {
@@ -46,10 +50,13 @@ namespace BAL.Test.ManagersTests
 		}
 
 		[TestMethod]
-		public void Add_ExistingObject_ErrorResult()
+		public void Add_ExistingOperator_ErrorResult()
 		{
-			OperatorViewModel testOperator = new OperatorViewModel();
-			mockUnitOfWork.Setup(m => m.Operators.Get(null, null, "")).Returns(new List<Operator>() { new Operator() });
+			var testList = new List<Operator>() {new Operator(){Name = "name"}, new Operator(){Name = "ds"}};
+			OperatorViewModel testOperator = new OperatorViewModel() {Name = "name"};
+			mockUnitOfWork
+				.Setup(m => m.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(), null, ""))
+				.Returns(testList);
 
 			var result = manager.Add(testOperator);
 
@@ -61,8 +68,11 @@ namespace BAL.Test.ManagersTests
 		public void Add_TestObject_CatchExceptionError()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
-			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>());
-			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+			mockUnitOfWork
+				.Setup(m => m.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(), null, ""))
+				.Returns(new List<Operator>());
+			mockUnitOfWork
+				.Setup(n => n.Save()).Throws(new Exception());
 
 			var result = manager.Add(testOperator);
 
@@ -74,8 +84,11 @@ namespace BAL.Test.ManagersTests
 		public void Add_NewTestObject_SuccessResult()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
-			mockUnitOfWork.Setup(m => m.Operators.Get(n => n.Name == "derfk", null, "sdkj")).Returns(new List<Operator>());
-			mockUnitOfWork.Setup(n => n.Save());
+			mockUnitOfWork
+				.Setup(m => m.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(), null, ""))
+				.Returns(new List<Operator>());
+			mockUnitOfWork
+				.Setup(n => n.Save());
 
 			var result = manager.Add(testOperator);
 
@@ -86,7 +99,9 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void Remove_InvalidId_ErrorResult()
 		{
-			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns((Operator)null);
+			mockUnitOfWork
+				.Setup(m => m.Operators.GetById(1))
+				.Returns((Operator)null);
 
 			var result = manager.Remove(1);
 
@@ -98,9 +113,10 @@ namespace BAL.Test.ManagersTests
 		public void Remove_OperatorWithTariffs_ErrorResult()
 		{
 			List<Tariff> tariffs = new List<Tariff>();
-			Tariff t = new Tariff() { Name = "Tariff", Limit = 2, Price = 55 };
-			tariffs.Add(t);
-			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name ="name", Tariffs = tariffs});
+			tariffs.Add(new Tariff() { Name = "Tariff", Limit = 2, Price = 55 });
+			mockUnitOfWork
+				.Setup(m => m.Operators.GetById(1))
+				.Returns(new Operator() { Name ="name", Tariffs = tariffs});
 
 			var result = manager.Remove(1);
 
@@ -111,8 +127,11 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void Remove_OperatorWithoutTariffs_CatchExceptionError()
 		{
-			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>()});
-			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+			mockUnitOfWork
+				.Setup(m => m.Operators.GetById(1))
+				.Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>()});
+			mockUnitOfWork
+				.Setup(n => n.Save()).Throws(new Exception());
 
 			var result = manager.Remove(1);
 
@@ -123,9 +142,13 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void Remove_OperatorWithoutTariffs_SuccessResult()
 		{
-			mockUnitOfWork.Setup(m => m.Operators.GetById(1)).Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>() });
-			mockUnitOfWork.Setup(n => n.Operators.Delete(new Operator() { Name = "name" }));
-			mockUnitOfWork.Setup(n => n.Save());
+			mockUnitOfWork
+				.Setup(m => m.Operators.GetById(1))
+				.Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>() });
+			mockUnitOfWork
+				.Setup(n => n.Operators.Delete(new Operator() { Name = "name" }));
+			mockUnitOfWork
+				.Setup(n => n.Save());
 
 			var result = manager.Remove(1);
 
@@ -156,11 +179,31 @@ namespace BAL.Test.ManagersTests
 		}
 
 		[TestMethod]
+		public void Update_ExistingOperator_ErrorResult()
+		{
+			var testList = new List<Operator>() { new Operator() { Name = "name" }, new Operator() { Name = "ds" } };
+			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
+			mockUnitOfWork
+				.Setup(m => m.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(), null, ""))
+				.Returns(testList);
+
+			var result = manager.Update(test);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
 		public void Update_OperatorObject_ErrorResult()
 		{
 			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
-			mockUnitOfWork.Setup(n => n.Operators.Insert(new Operator() { Name = "name"}));
-			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+			mockUnitOfWork
+				.Setup(m => m.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(), null, ""))
+				.Returns(new List<Operator>());
+			mockUnitOfWork
+				.Setup(n => n.Operators.Update(new Operator() { Name = "name"}));
+			mockUnitOfWork
+				.Setup(n => n.Save()).Throws(new Exception());
 
 			var result = manager.Update(test);
 
@@ -172,8 +215,10 @@ namespace BAL.Test.ManagersTests
 		public void Update_OperatorObject_SuccessResult()
 		{
 			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
-			mockUnitOfWork.Setup(n => n.Operators.Insert(new Operator() { Name = "name" }));
-			mockUnitOfWork.Setup(n => n.Save());
+			mockUnitOfWork
+				.Setup(n => n.Operators.Update(new Operator() { Name = "name" }));
+			mockUnitOfWork
+				.Setup(n => n.Save());
 
 			var result = manager.Update(test);
 
@@ -192,8 +237,10 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void GetPage_PageState_CurrentPage()
 		{
-			PageState test = new PageState() { };
-			var testOperators = mockUnitOfWork.Setup(n => n.Operators.Get(null,null,"")).Returns(new List<Operator>() { new Operator() { Name = "tst" } });
+			PageState test = new PageState() {  Page = 1};
+			mockUnitOfWork
+				.Setup(n => n.Operators.Get(null,null,""))
+				.Returns(new List<Operator>() { new Operator() { Name = "tst" } });
 
 			var result = manager.GetPage(test);
 
@@ -214,9 +261,58 @@ namespace BAL.Test.ManagersTests
 		[TestMethod]
 		public void AddLogo_EmptyOperator_ErrorResult()
 		{
-			LogoViewModel logo = new LogoViewModel() { Logo = null };
+			LogoViewModel logo = new LogoViewModel() {};
 
 			var result = manager.AddLogo(logo);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void AddLogo_NullOperatorId_ErrorResult()
+		{
+			Mock<IFormFile> fileMock = new Mock<IFormFile>();
+			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object};
+
+			var result = manager.AddLogo(logo);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void AddLogo_InvalidStream_CatchArgumentException()
+		{
+			Mock<IFormFile> fileMock = new Mock<IFormFile>();
+			var ms = new MemoryStream();
+			fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4};
+
+			var result = manager.AddLogo(logo);
+
+			TestContext.WriteLine(result.Details);
+			Assert.IsFalse(result.Success);
+		}
+
+		[TestMethod]
+		public void AddLogo_LogoModel_CatchException()
+		{
+			Mock<IFormFile> fileMock = new Mock<IFormFile>();
+			var content = "Hello World from a Fake File";
+			var fileName = "test.pdf";
+			var ms = new MemoryStream();
+			var writer = new StreamWriter(ms);
+			writer.Write(content);
+			writer.Flush();
+			ms.Position = 0;
+			fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+			fileMock.Setup(_ => _.FileName).Returns(fileName);
+			fileMock.Setup(_ => _.Length).Returns(ms.Length);
+
+			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+
+			var result = manager.AddLogo(logo); //bad work
 
 			TestContext.WriteLine(result.Details);
 			Assert.IsFalse(result.Success);
