@@ -43,16 +43,22 @@
                 <thead class="thead-dark">
                     <tr>
                         <td>Name</td>
-                        <td>Description</td>
+	                    <td>Description</td>
+	                    <td>Message state</td>
+						<td></td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="item in Campaigns">
                         <td>{{item.name}}</td>
                         <td>{{item.description}}</td>
-                        <td>
-                            <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id">@Localizer["Details"]</a>
-                        </td>
+	                    <td>
+							<button class="btn btn-warning" v-if="!item.isPaused" id="PauseButton" v-on:click="changeState(item.id, true)">Pause</button>
+		                    <button class="btn btn-dark" v-if="item.isPaused" id="ResumeButton" v-on:click="changeState(item.id, false)">Resume</button>
+	                    </td>
+	                    <td>
+		                    <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id">@Localizer["Details"]</a>
+	                    </td>
                     </tr>
                 </tbody>
             </table>
@@ -66,91 +72,104 @@
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="//unpkg.com/vue-plain-pagination@0.2.1"></script>
-    <script>
+<script>
+
+	var Vue1 = new Vue({
+
+		el: "#tables",
+		data: {
+			Campaigns: [],
+			page: 1,
+			CountOnPage: 5,
+			PageCount: 1,
+			pages: [],
+			searchValue: ""
+		},
+		methods: {
+			getCampaigns() {
+				axios({
+						method: 'post',
+						url: '/Company/Get',
+						params: {
+							page: this.page,
+							countOnPage: this.CountOnPage,
+							searchValue: this.searchValue
+						}
+					})
+					.then(response => {
+						this.Campaigns = response.data;
+					})
+					.catch(error => {
+						console.log(error);
+					})
+					.finally();
+			},
+			getCampaignsCount() {
+				axios({
+						method: 'post',
+						url: '/Company/GetCampaignsCount',
+						params: {
+							searchValue: this.searchValue
+						}
+					})
+					.then(response => {
+						if (response.data % this.CountOnPage == 0)
+							this.PageCount = response.data / this.CountOnPage;
+						else
+							this.PageCount = (response.data / this.CountOnPage) + 1;
+						this.pages = [];
+						for (let i = 1; i <= this.PageCount; i++) {
+							this.pages.push(i);
+						}
+					})
+					.catch(error => {
+						console.log(error);
+					})
+					.finally();
+			},
+			getData() {
+				this.getCampaigns();
+				this.getCampaignsCount();
+			},
+			nextPage() {
+				if (this.page < parseInt(this.PageCount)) {
+					this.page++;
+					this.getData();
+				}
+			},
+			previousPage() {
+				if (this.page > 1) {
+					this.page--;
+					this.getData();
+				}
+			},
+			getPageByNumber(pageNum) {
+				this.page = pageNum;
+				this.getData();
+			},
+			changeState(companyId, state) {
+
+				axios({
+					type: "POST",
+					url: "/Company/ChangeCampaignState/",
+					params: {
+						companyId: companyId,
+						newState: state 
+					}
+				})
+					.then(response => {
+						this.getData();
+					});
+			}
+		},
+		mounted() {
+			this.getData();
+		}
+
+	});
 
 
-        var Vue1 = new Vue({
-
-            el: "#tables",
-            data: {
-                Campaigns: [],
-                page: 1,
-                CountOnPage: 5,
-                PageCount: 1,
-                pages: [],
-                searchValue: ""
-            },
-            methods: {
-                getCampaigns() {
-                    axios({
-                        method: 'post',
-                        url: '/Company/Get',
-                        params: {
-                            page: this.page,
-                            countOnPage: this.CountOnPage,
-                            searchValue: this.searchValue
-                        }
-                    })
-                        .then(response => {
-                            this.Campaigns = response.data;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                        .finally();
-                },
-                getCampaignsCount() {
-                    axios({
-                        method: 'post',
-                        url: '/Company/GetCampaignsCount',
-                        params: {
-                            searchValue: this.searchValue
-                        }
-                    })
-                        .then(response => {
-                            if (response.data % this.CountOnPage == 0)
-                                this.PageCount = response.data / this.CountOnPage;
-                            else
-                                this.PageCount = (response.data / this.CountOnPage) + 1;
-                            this.pages = [];
-                            for (let i = 1; i <= this.PageCount; i++) {
-                                this.pages.push(i);
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                        .finally();
-                },
-                getData() {
-                    this.getCampaigns();
-                    this.getCampaignsCount();
-                },
-                nextPage() {
-                    if (this.page < parseInt(this.PageCount)) {
-                        this.page++;
-                        this.getData();
-                    }
-                },
-                previousPage() {
-                    if (this.page > 1) {
-                        this.page--;
-                        this.getData();
-                    }
-                },
-                getPageByNumber(pageNum) {
-                    this.page = pageNum;
-                    this.getData();
-                }
-            },
-            mounted() {
-                this.getData();
-            }
-
-        });
-
-
-    </script>
+</script>
 
 </body>
 </html>
