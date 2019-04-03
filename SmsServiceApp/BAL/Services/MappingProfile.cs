@@ -19,6 +19,7 @@ using Model.ViewModels.AnswersCodeViewModels;
 using Model.ViewModels.RecievedMessageViewModel;
 using System.Linq;
 using Model.ViewModels.CampaignReportingViewModels;
+using Model.ViewModels.SubscribeWordViewModels;
 
 namespace BAL.Services
 {
@@ -100,6 +101,11 @@ namespace BAL.Services
             CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
+
+            CreateMap<SubscribeWord, SubscribeWordViewModel>()
+                .ForMember(s => s.StopWordId, otp => otp.MapFrom(sw => sw.StopWord.Id))
+                .ForMember(c => c.CompanyId, otp => otp.MapFrom(com => com.Company.Id))
+                .ReverseMap();
 
             CreateMap<Notification, EmailNotificationDTO>()
                 .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
