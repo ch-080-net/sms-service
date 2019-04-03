@@ -98,6 +98,7 @@ namespace BAL.Managers
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.Name = item.Name;
                 company.Description = item.Description;
+                company.IsPaused = item.IsPaused;
                 if (item.TariffId > 0)
                 {
                     company.TariffId = item.TariffId;

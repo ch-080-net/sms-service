@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using System.IO;
 using BAL.Exceptions;
+using StackExchange.Redis;
 using WebApp.Extensions;
 
 namespace WebApp
@@ -145,6 +146,7 @@ namespace WebApp
             services.AddScoped<ITariffManager, TariffManager>();
             services.AddScoped<IPhoneManager, PhoneManager>();
             services.AddScoped<IStopWordManager, StopWordManager>();
+            services.AddScoped<ISubscribeWordManager,SubscribeWordManager>();
             services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
             services.AddScoped<ICodeManager, CodeManager>();

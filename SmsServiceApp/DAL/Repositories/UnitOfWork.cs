@@ -6,6 +6,7 @@ using System.Text;
 using WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
@@ -28,6 +29,7 @@ namespace DAL.Repositories
         private INotificationRepository notificationRepo;
         private ICampaignNotificationRepository campaignNotificationRepo;
         private IBaseRepository<ApplicationUser> appUserRepo;
+        private IBaseRepository<SubscribeWord> subscribeWordRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -144,6 +146,17 @@ namespace DAL.Repositories
                     phoneGroupUnsubscribe = new BaseRepository<PhoneGroupUnsubscribe>(context);
                 }
                 return phoneGroupUnsubscribe;
+            }
+        }
+        public IBaseRepository<SubscribeWord> SubscribeWords
+        {
+            get
+            {
+                if (subscribeWordRepo == null)
+                {
+                    subscribeWordRepo = new BaseRepository<SubscribeWord>(context);
+                }
+                return subscribeWordRepo;
             }
         }
         public IMailingRepository Mailings

@@ -26,6 +26,7 @@ namespace WebApp.Models
         public Tariff Tariff { get; set; }
         public string Message { get; set; }
         public CompanyType Type { get; set; }
+        public bool IsPaused { get; set; } 
         public DateTime SendingTime { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
