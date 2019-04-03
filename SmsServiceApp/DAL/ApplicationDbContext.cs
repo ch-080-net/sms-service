@@ -229,6 +229,10 @@ namespace WebApp.Data
                 .IsRequired(false);
 
             // Unique indexes
+            builder.Entity<StopWord>()
+                .HasIndex(w => w.Word)
+                .IsUnique();
+
 
             builder.Entity<Operator>()
                 .HasIndex(o => o.Name)
