@@ -6,7 +6,9 @@ namespace Model.ViewModels.SubscribeWordViewModels
 {
     public class SubscribeWordViewModel
     {
-        public int StopWordId { get; set; }
+        public  int Id { get; set; }
+
+        public string Word { get; set; }
      
         public int CompanyId { get; set; }
     }
