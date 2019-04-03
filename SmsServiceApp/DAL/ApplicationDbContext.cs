@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -29,6 +30,7 @@ namespace WebApp.Data
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<CampaignNotification> CampaignNotifications { get; set; }
+        public DbSet<SubscribeWord> SubscribeWords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -180,6 +182,9 @@ namespace WebApp.Data
             builder.Entity<PhoneGroupUnsubscribe>()
                 .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
 
+            builder.Entity<SubscribeWord>()
+                .HasKey(sw => new {sw.StopWordId, sw.CompanyId});
+
             // Required fields
             #region Required fields
             builder.Entity<Code>()
@@ -224,6 +229,10 @@ namespace WebApp.Data
                 .IsRequired(false);
 
             // Unique indexes
+            builder.Entity<StopWord>()
+                .HasIndex(w => w.Word)
+                .IsUnique();
+
 
             builder.Entity<Operator>()
                 .HasIndex(o => o.Name)
