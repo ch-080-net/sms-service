@@ -101,6 +101,30 @@
             </table>
             <br />
         </div>
+        <div class="file-upload">
+
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger('click')">Add File
+            </button>
+
+            <div class="image-upload-wrap">
+                <input class="file-upload-input" type='file'  onchange="readURL(this);"  />
+                <div class="drag-text">
+                    <h3>Drag and drop a file or select add Image</h3>
+                </div>
+            </div>
+            <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your file" />
+                <div class="image-title-wrap">
+                    <button type="button" onclick="removeUpload()" class="remove-image">@Localizer["Remove"] <span class="image-title">@Localizer["Uploaded Image"]</span></button>
+
+
+                </div>
+                <button type="submit" class="btn btn-primary active control-fileupload ">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>@Localizer["Save"]
+                </button>
+            </div>
+
+        </div>
         <div id="msg"></div>
         <div>
             <br />
@@ -155,5 +179,6 @@
             <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
         </div>
     </form>
+    
 </body>
 </html>

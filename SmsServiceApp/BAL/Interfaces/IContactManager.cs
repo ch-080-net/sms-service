@@ -1,4 +1,5 @@
-﻿using Model.ViewModels.ContactViewModels;
+﻿using Microsoft.AspNetCore.Http;
+using Model.ViewModels.ContactViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,5 +21,7 @@ namespace BAL.Managers
         bool CreateContact(ContactViewModel contactModel, int groupId);
         void DeleteContact(int id);
         bool UpdateContact(ContactViewModel contactModel, int groupId);
+        void AddContactFromFile(IFormFile file);
+
     }
 }

@@ -7,6 +7,8 @@ using System.Linq.Expressions;
 using System.Linq;
 using AutoMapper;
 using Model.ViewModels.ContactViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace BAL.Managers
 {
@@ -215,5 +217,41 @@ namespace BAL.Managers
                 throw ex;
             }
         }
+
+        public void AddContactFromFile(IFormFile file)
+        {
+            var result = string.Empty;
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                result = reader.ReadToEnd();
+            }
+
+            var contacts = TranslateToContacts(result);
+            foreach (var temp in contacts)
+            {
+                unitOfWork.Contacts.Insert(temp);
+            }
+
+            unitOfWork.Save();
+            
+        }
+
+        private List<Contact> TranslateToContacts(string contacts)
+        {
+            var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
+            var result = new List<Contact>();
+            for (int i = 0; i < splitedContacts.Count/3; i+=3)
+            {
+                var temp=new Contact();
+                temp.Phone = new Phone() {PhoneNumber = splitedContacts.ElementAt(i)};
+                temp.BirthDate = Convert.ToDateTime(splitedContacts.ElementAt(i + 1));
+                temp.Gender = Convert.ToByte(splitedContacts.ElementAt(i+2));
+                result.Add(temp);
+            }
+
+            return result;
+        }
+
+       
     }
 }

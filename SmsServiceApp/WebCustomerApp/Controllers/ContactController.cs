@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Managers;
+using LINQtoCSV;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.ContactViewModels;
@@ -186,5 +189,11 @@ namespace WebApp.Controllers
                 return null;
             }
         }
+
+        public void UploadFile(IFormFile ContactFile)
+        {
+            contactManager.AddContactFromFile(ContactFile);
+        }
+
     }
 }
