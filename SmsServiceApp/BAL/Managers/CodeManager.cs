@@ -59,7 +59,7 @@ namespace BAL.Managers
 
 
         /// <summary>
-        /// Remonve entry in Codes table with <paramref name="id"/>
+        /// Remove entry in Codes table with <paramref name="id"/>
         /// </summary>
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Remove(int id)
