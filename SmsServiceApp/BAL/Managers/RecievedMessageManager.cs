@@ -115,18 +115,34 @@ namespace BAL.Managers
         public void SearchStopWordInMeaasge(RecievedMessageDTO message)
         {
             var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => c.Word == message.MessageText);//"STOP"==Content
-
-            if (words != null)
+            if ((words != null))
             {
                 var orignator = unitOfWork.Phones.Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
-                var destination = unitOfWork.Phones.Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
+                var destination = unitOfWork.Phones.Get(item => item.PhoneNumber == message.RecipientPhone)
+                    .FirstOrDefault();
                 var companies = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
-                if (companies != null)//add check for repetition
+
+                if (words.Word != "START")
                 {
-                    PhoneGroupUnsubscribe phoneGroup = new PhoneGroupUnsubscribe() { GroupId = companies.ApplicationGroupId , PhoneId = orignator.Id};
-                    unitOfWork.PhoneGroupUnsubscribes.Insert(phoneGroup);
-                    unitOfWork.Save();
+                    PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll()
+                        .FirstOrDefault(w => w.GroupId == companies.ApplicationGroupId && w.PhoneId == orignator.Id);
+
+                    unitOfWork.PhoneGroupUnsubscribes.Delete(phoneGroup);
                 }
+                else
+                {
+
+
+                    if (companies != null) //add check for repetition
+                    {
+                        PhoneGroupUnsubscribe phoneGroup = new PhoneGroupUnsubscribe()
+                            {GroupId = companies.ApplicationGroupId, PhoneId = orignator.Id};
+
+                        unitOfWork.PhoneGroupUnsubscribes.Insert(phoneGroup);
+                    }
+                }
+
+                unitOfWork.Save();
             }
 
         }
