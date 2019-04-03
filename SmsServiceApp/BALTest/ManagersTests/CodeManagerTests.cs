@@ -9,6 +9,7 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.Linq.Expressions;
 using Model.ViewModels.CodeViewModels;
 
 namespace BAL.Test.ManagersTests
@@ -50,7 +51,7 @@ namespace BAL.Test.ManagersTests
         public void Add_ExistingCode_ErrorResult()
         {
             var testingCode = new CodeViewModel() {OperatorCode = "+380"};   
-            mockUnitOfWork.Setup(m => m.Codes.Get(null, null, "")).Returns(new List<Code> { new Code() });
+            mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), null, "")).Returns(new List<Code> { new Code() });
 
             var result = manager.Add(testingCode);
 
@@ -59,11 +60,12 @@ namespace BAL.Test.ManagersTests
         }
 
         [TestMethod]
-        public void Add_CodeWithoutOperatorId_ErrorResult()
+        public void Add_CodeObject_SuccessResult()
         {
             var newCode = new CodeViewModel() {OperatorCode = "+380"};
+            mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), null, "")).Returns(new List<Code>());
 
-            var result = manager.Add(newCode);
+			var result = manager.Add(newCode);
 
             TestContext.WriteLine(result.Details);
             Assert.IsTrue(result.Success);
