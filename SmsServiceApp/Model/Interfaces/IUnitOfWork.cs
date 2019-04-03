@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace Model.Interfaces
 {
     public interface IUnitOfWork : IDisposable
@@ -22,7 +23,7 @@ namespace Model.Interfaces
         INotificationRepository Notifications { get; }
         ICampaignNotificationRepository CampaignNotifications { get; }
         IBaseRepository<ApplicationUser> ApplicationUsers { get; }
-
+        IBaseRepository<SubscribeWord> SubscribeWords { get; }
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
         IBaseRepository<RecievedMessage> RecievedMessages { get; }
