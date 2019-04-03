@@ -100,7 +100,97 @@ namespace BAL.Services
             CreateMap<PhoneGroupUnsubscribe, PhoneGroupDTO>()
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
+
+            CreateMap<Notification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
+
+            CreateMap<Notification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
+
+            CreateMap<SmsNotificationDTO, MessageDTO>()
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.SenderPhone))
+                .ForMember(sn => sn.RecepientPhone, opt => opt.MapFrom(n => n.RecieverPhone))
+                .ForMember(sn => sn.MessageText, opt => opt.MapFrom(n => n.Message))
+                .ForMember(sn => sn.RecipientId, opt => opt.MapFrom(n => 0));
+
+            CreateMap<Notification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification))
+                .ForMember(sn => sn.Time, opt => opt.MapFrom(n => n.Time.ToString("G")));
+
+            CreateMap<CampaignNotification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
+                .ForMember(en => en.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<CampaignNotification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<CampaignNotification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
+                .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
         }
+
+        #region Notifications
+
+        private DateTime GetCampaignNotificationTime(CampaignNotification cn)
+        {
+            switch (cn.Event)
+            {
+                case CampaignNotificationEvent.CampaignStart:
+                    {
+                        return cn.Campaign.StartTime;
+                    }
+                case CampaignNotificationEvent.CampaignEnd:
+                    {
+                        return cn.Campaign.EndTime;
+                    }
+                case CampaignNotificationEvent.Sending:
+                    {
+                        return cn.Campaign.SendingTime;
+                    }
+                default:
+                    {
+                        return DateTime.Now;
+                    }
+            }
+        }
+
+        private string GenerateNotificationMessage(CampaignNotification cn)
+        {
+            switch (cn.Event)
+            {
+                case CampaignNotificationEvent.CampaignStart:
+                    {
+                        return "Voting for campaign " + cn.Campaign.Name + " started";
+                    }
+                case CampaignNotificationEvent.CampaignEnd:
+                    {
+                        return "Voting for campaign " + cn.Campaign.Name + " ended";
+                    }
+                case CampaignNotificationEvent.Sending:
+                    {
+                        return "Mailing for campaign " + cn.Campaign.Name + " started";
+                    }
+                default:
+                    {
+                        return "";
+                    }
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Replaces Hashtags in message for recipient with corresponding data
@@ -136,6 +226,8 @@ namespace BAL.Services
             else
                 return null;
         }
+
+        #region Charts
 
         /// <summary>
         /// Get data for pie chart of specified pool campaign
@@ -236,6 +328,8 @@ namespace BAL.Services
             }
             return result;
         }
+
+        #endregion
 
     }
 }

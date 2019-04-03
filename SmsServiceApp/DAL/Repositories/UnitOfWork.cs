@@ -24,7 +24,10 @@ namespace DAL.Repositories
         private IBaseRepository<RecievedMessage> recievedMessagesRepo;
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
-        private IChartsRepository ChartsRepo;
+        private IChartsRepository chartsRepo;
+        private INotificationRepository notificationRepo;
+        private ICampaignNotificationRepository campaignNotificationRepo;
+        private IBaseRepository<ApplicationUser> appUserRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -159,11 +162,47 @@ namespace DAL.Repositories
         {
             get
             {
-                if (ChartsRepo == null)
+                if (chartsRepo == null)
                 {
-                    ChartsRepo = new ChartsRepository(context);
+                    chartsRepo = new ChartsRepository(context);
                 }
-                return ChartsRepo;
+                return chartsRepo;
+            }
+        }
+
+        public INotificationRepository Notifications
+        {
+            get
+            {
+                if (notificationRepo == null)
+                {
+                    notificationRepo = new NotificationRepository(context);
+                }
+                return notificationRepo;
+            }
+        }
+
+        public ICampaignNotificationRepository CampaignNotifications
+        {
+            get
+            {
+                if (campaignNotificationRepo == null)
+                {
+                    campaignNotificationRepo = new CampaignNotificationRepository(context);
+                }
+                return campaignNotificationRepo;
+            }
+        }
+
+        public IBaseRepository<ApplicationUser> ApplicationUsers
+        {
+            get
+            {
+                if (appUserRepo == null)
+                {
+                    appUserRepo = new BaseRepository<ApplicationUser>(context);
+                }
+                return appUserRepo;
             }
         }
         

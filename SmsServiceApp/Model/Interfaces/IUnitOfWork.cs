@@ -19,6 +19,9 @@ namespace Model.Interfaces
         IBaseRepository<PhoneGroupUnsubscribe> PhoneGroupUnsubscribes { get; }
         IMailingRepository Mailings { get; }
         IChartsRepository Charts { get; }
+        INotificationRepository Notifications { get; }
+        ICampaignNotificationRepository CampaignNotifications { get; }
+        IBaseRepository<ApplicationUser> ApplicationUsers { get; }
 
 
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }

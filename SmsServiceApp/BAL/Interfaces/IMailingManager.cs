@@ -5,7 +5,7 @@ using Model.DTOs;
 using System.Threading.Tasks;
 using WebApp.Models;
 
-namespace Model.Interfaces
+namespace BAL.Managers
 {
     public interface IMailingManager
     {
