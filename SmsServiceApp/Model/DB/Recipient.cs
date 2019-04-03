@@ -25,7 +25,6 @@ namespace WebApp.Models
         public string Notes { get; set; }
         public string KeyWords { get; set; }
         public MessageState MessageState { get; set; }
-        public bool IsStopped { get; set; }
     }
 
     public enum MessageState
