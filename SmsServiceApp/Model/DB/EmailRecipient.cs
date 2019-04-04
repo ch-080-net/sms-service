@@ -18,5 +18,6 @@ namespace WebApp.Models
         public byte Gender { get; set; }
         public string Priority { get; set; }
         public string KeyWords { get; set; }
+        public byte IsSend { get; set; }
     }
 }

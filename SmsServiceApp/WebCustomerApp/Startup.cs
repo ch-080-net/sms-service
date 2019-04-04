@@ -160,6 +160,7 @@ namespace WebApp
             services.AddScoped<IEmailCampaignManager, EmailCampaignManager>();
             services.AddScoped<IEmailRecipientManager, EmailRecipientManager>();
             services.AddScoped<INotificationManager, NotificationManager>();
+            services.AddScoped<IEmailMailingManager, EmailMailingManager>();
 
             // Configure sessions
 
