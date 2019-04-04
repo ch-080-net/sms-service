@@ -16,6 +16,7 @@ using Model.ViewModels.RecievedMessageViewModel;
 using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
 using BAL.Services;
+using Model.ViewModels.SubscribeWordViewModels;
 
 namespace WebApp.Controllers
 {
@@ -423,10 +424,16 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+  
+        [HttpGet, ActionName("SubscribeWord")]
         public IActionResult SubscribeWord(int companyId)
         {
             var sword =subscribeWordManager.GetWordsByCompanyId(companyId);
+
+            if (!sword.Any())
+            {
+                return RedirectToAction("Create", "SubscribeWord", new {CompanyId = companyId });
+            }
             return View(sword);
         }
 
