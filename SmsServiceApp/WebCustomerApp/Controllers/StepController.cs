@@ -77,7 +77,8 @@ namespace WebApp.Controllers
             company.OperatorModel = new OperatorsViewModel();
             company.OperatorModel.OperatorsList = operatorManager.GetAll();
             company.TariffModel = new TariffsViewModel();
-            company.TariffModel.TariffsList= tariffManager.GetTariffs(id); 
+            company.TariffModel.TariffsList= tariffManager.GetTariffs(id);
+            company.RecieveModel = new RecieveViewModel();
             return View(company);
         }
 
@@ -197,6 +198,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Recieve(RecieveViewModel item)
         {
+
             if (item.StartTime <= DateTime.Now)
             {
                 ModelState.AddModelError(string.Empty, "The date can not be less than the current");

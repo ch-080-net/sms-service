@@ -57,14 +57,14 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label asp-for="CompanyModel.Name" class="control-label"></label>
-                            <input asp-for="CompanyModel.Name" class="form-control" />
+                            <input asp-for="CompanyModel.Name" required class="form-control" />
                             @Html.ValidationMessageFor(x => x.CompanyModel.Name)
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label asp-for="CompanyModel.Description" class="control-label"></label>
-                            <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" class="form-control"></textarea>
+                            <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description"  class="form-control" required></textarea>
                             @Html.ValidationMessageFor(x => x.CompanyModel.Description)
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div class="col-sm-4">
                                     <div class="choice" data-toggle="wizard-radio" rel="tooltip" title="For sending SMS only">
-                                        <input asp-for="CompanyModel.Type" type="radio" name="path" value=0>
+                                        <input asp-for="CompanyModel.Type" type="radio" name="path" required value=0>
                                         <div class="icon">
                                             <i class="material-icons">speaker_phone</i>
                                         </div>
@@ -125,26 +125,26 @@
             <div class="row setup-content" id="step-1-1">
                 @using (Html.BeginForm("Recieve", "Company", FormMethod.Post))
                 {
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="RecieveModel.StartTime" class="control-label"></label>
-                    <input asp-for="RecieveModel.StartTime" id="TimeStart">
-                    @Html.ValidationMessageFor(x => x.RecieveModel.StartTime)
-                </div>
-                <div class="form-group">
-                    <input type="hidden" asp-for="RecieveModel.Id" />
-                    <label asp-for="RecieveModel.EndTime" class="control-label"></label>
-                    <input asp-for="RecieveModel.EndTime" id="TimeEnd">
-                    @Html.ValidationMessageFor(x => x.RecieveModel.EndTime)
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <input type="submit" value="@Localizer[" Save"]" class="btn btn-success" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="RecieveModel.StartTime" class="control-label"></label>
+                        <input asp-for="RecieveModel.StartTime" id="TimeStart" required>
+                        @Html.ValidationMessageFor(x => x.RecieveModel.StartTime)
                     </div>
-                </div>
+                    <div class="form-group">
+                        <input type="hidden" asp-for="RecieveModel.Id" />
+                        <label asp-for="RecieveModel.EndTime" class="control-label"></label>
+                        <input asp-for="RecieveModel.EndTime" id="TimeEnd" required>
+                        @Html.ValidationMessageFor(x => x.RecieveModel.EndTime)
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <button class="btn btn-success btn-lg pull-right" type="submit" onclick="RecieveCampaign(item);">Finish!</button>
+                        </div>
+                    </div>
                 }
 
-            </div>
+                </div>
 
             <div class="row setup-content" id="step-3">
                 <h3> Choose Tariff</h3>
@@ -209,9 +209,9 @@
     </div>
     <script>
         $(document).ready(function () {
-            /*  Activate the tooltips      */
+ 
+        
             $('[rel="tooltip"]').tooltip();
-
             var navListItems = $('div.setup-panel div a'),
                 allWells = $('.setup-content'),
                 allNextBtn = $('.nextBtn'),
@@ -240,7 +240,7 @@
                     curStep = $(this).closest(".setup-content");
                     curStepBtn = curStep.attr("id"),
                     nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                    curInputs = curStep.find("input[type='text'],input[type='url']"),
+                    curInputs = curStep.find("input[type='text'],input[type='url'],textarea, input[type='radio']"),
                     isValid = true,
                   
                
@@ -254,7 +254,7 @@
                 
 
                 if (isValid)
-                    nextStepWizard.removeAttr('disabled').trigger('click');
+                    nextStepWizard.removeAttr('disabled').trigger('click');  
             });
 
             $('div.setup-panel div a.btn-primary').trigger('click');
@@ -274,17 +274,13 @@
                 
                 switch (value) {
                     case 0:
-                        $(".recievestep").remove();
-                        $(".tariffStep").css('display', '');
+                        $(".recievestep").remove();                   
                         break;
                     case 1:                        
-                        $(".tariffStep").remove();
-                        $(".recievestep").css('display', '');
-                       
+                        $(".tariffStep").remove();                     
                         break;
                     case 2:
                         $(".recievestep").remove();
-                        $(".tariffStep").add();
                         break;
 
                     default:
@@ -292,6 +288,31 @@
                 }
             });
         });
+
+        var Campaign = {
+            id: 48011,
+            Name: "",
+            Description: "",
+            Type: "",
+            StartTime: "",
+            EndTime: ""
+            
+        }
+        function RecieveCampaign(item) {
+            $.ajax({
+                url: '/Company/Recieve/',
+                type: 'POST',
+                data: {
+                    campaign: this.Campaign,
+                },
+                success: function () {
+                    window.location.href = "http://localhost:55555/Step/Index";
+                }
+                
+            });
+        }
+
+
     </script>
 </body>
 </html>
