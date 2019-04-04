@@ -16,10 +16,8 @@ namespace BAL.Managers
     /// </summary>
     public class NotificationManager : BaseManager, INotificationManager
     {
-        UserManager<ApplicationUser> userManager;
         public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager) : base(unitOfWork, mapper)
         {
-            this.userManager = userManager;
         }
 
         /// <summary>

@@ -10,13 +10,13 @@ namespace BAL.Hubs
 {
     public class NotificationHub : Hub
     {
-        INotificationManager notificationManager;
+        private readonly INotificationManager notificationManager;
         public NotificationHub(INotificationManager notificationManager)
         {
             this.notificationManager = notificationManager;
         }
 
-        public async Task ConfirmReceival(int notificationId, NotificationOrigin origin)
+        public void ConfirmReceival(int notificationId, NotificationOrigin origin)
         {
             notificationManager.SetAsSent(notificationId, origin, Context.UserIdentifier);
         }
