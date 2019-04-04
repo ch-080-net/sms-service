@@ -44,8 +44,8 @@ namespace BAL.Managers
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Add(OperatorViewModel newOperator)
         {
-            if (newOperator.Name == null || newOperator.Name == "")
-                return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty"};
+            if (string.IsNullOrEmpty(newOperator.Name))
+				return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty"};
             var check = unitOfWork.Operators.Get(o => o.Name == newOperator.Name).FirstOrDefault();
             if (check != null)
                 return new TransactionResultDTO() { Success = false, Details = "Operator with this name already exist" };
@@ -101,7 +101,7 @@ namespace BAL.Managers
                 }
                 catch
                 {
-                    return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                    return new TransactionResultDTO() { Success = false, Details = "Can`t find operator logo" };
                 }
             }
 
@@ -112,7 +112,7 @@ namespace BAL.Managers
             }
             catch
             {
-                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                return new TransactionResultDTO() { Success = false, Details = "Operator delete error" };
             }
             return new TransactionResultDTO() { Success = true };
         }
@@ -127,7 +127,7 @@ namespace BAL.Managers
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Update(OperatorViewModel updatedOperator)
         {
-            if (updatedOperator.Name == null || updatedOperator.Name == "")
+            if (string.IsNullOrEmpty(updatedOperator.Name))
                 return new TransactionResultDTO() { Success = false, Details = "Operator name cannot be empty" };
             var check = unitOfWork.Operators.Get(o => o.Name == updatedOperator.Name).FirstOrDefault();
             if (check != null)
@@ -194,7 +194,7 @@ namespace BAL.Managers
                 return new TransactionResultDTO() { Success = false, Details = "No logo sent" };
 
             if (logo.OperatorId == 0)
-                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                return new TransactionResultDTO() { Success = false, Details = "Empty operator id" };
 
             // Create bitmap
             var stream = logo.Logo.OpenReadStream();

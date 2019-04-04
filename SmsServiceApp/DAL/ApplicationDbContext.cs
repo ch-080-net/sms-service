@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -29,6 +30,7 @@ namespace WebApp.Data
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<CampaignNotification> CampaignNotifications { get; set; }
+        public DbSet<SubscribeWord> SubscribeWords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,6 +45,7 @@ namespace WebApp.Data
             builder.Entity<Phone>().HasKey(i => i.Id);
             builder.Entity<Tariff>().HasKey(i => i.Id);
             builder.Entity<StopWord>().HasKey(i => i.Id);
+            builder.Entity<SubscribeWord>().HasKey(i => i.Id);
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
             builder.Entity<RecievedMessage>().HasKey(i => i.Id);
             builder.Entity<AnswersCode>().HasKey(i => i.Id);
@@ -180,6 +183,14 @@ namespace WebApp.Data
             builder.Entity<PhoneGroupUnsubscribe>()
                 .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
 
+            builder.Entity<Company>()
+                .HasMany(com => com.SubscribeWords)
+                .WithOne(sw => sw.Company)
+                .HasForeignKey(sw => sw.CompanyId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        
             // Required fields
             #region Required fields
             builder.Entity<Code>()
@@ -224,6 +235,10 @@ namespace WebApp.Data
                 .IsRequired(false);
 
             // Unique indexes
+            builder.Entity<StopWord>()
+                .HasIndex(w => w.Word)
+                .IsUnique();
+
 
             builder.Entity<Operator>()
                 .HasIndex(o => o.Name)

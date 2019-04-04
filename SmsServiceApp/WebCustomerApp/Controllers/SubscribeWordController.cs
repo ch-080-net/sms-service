@@ -1,62 +1,51 @@
-﻿using BAL.Managers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Model.Interfaces;
-using Model.ViewModels.StopWordViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using WebApp.Controllers;
-using WebApp.Models;
+using BAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Model.ViewModels.SubscribeWordViewModels;
 
 namespace WebApp.Controllers
 {
-   
-    [Authorize(Roles = "Admin")]
-    [Route("[controller]/[action]")]
-    public class StopWordController : Controller
+    [Authorize]
+    public class SubscribeWordController : Controller
     {
-        private readonly IStopWordManager stopWordManager;
+        private readonly ISubscribeWordManager subscribeWordManager;
 
-        public StopWordController(IStopWordManager stopWord)
+        public SubscribeWordController(ISubscribeWordManager subscribeWordManager)
         {
-            this.stopWordManager = stopWord;
+            this.subscribeWordManager = subscribeWordManager;
         }
-        /// <summary>
-        /// Get view with StopWord 
-        /// </summary>
-        /// <returns>View with stopword</returns>
-        public IActionResult Index()
-        {
-            return View(stopWordManager.GetStopWords());
-        }
+
         /// <summary>
         /// View for creation new StopWord
         /// </summary>
         /// <returns>Create StopWord View</returns>
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult Create(int companyId)
         {
-            return View();
+            SubscribeWordViewModel word=new SubscribeWordViewModel(){CompanyId = companyId};
+            return View(word);
         }
         /// <summary>
         /// Send new StopWord fron view to db
         /// </summary>
         /// <param name="item">ViewModel of StopWord from View</param>
         /// <returns>StopWord index View</returns>
-        [Route("~/StopWord/Create")]
+       
         [HttpPost]
-        public IActionResult Create(StopWordViewModel item)
+        [Route("~/SubscribeWord/Create")]
+        public IActionResult Create(SubscribeWordViewModel item)
         {
             if (ModelState.IsValid)
             {
-                stopWordManager.Insert(item);
+                subscribeWordManager.Insert(item);
             }
 
 
-            return RedirectToAction("Index", "StopWord");
+            return RedirectToAction("SubscribeWord", "Company", new { companyId = item.CompanyId});
         }
 
         /// <summary>
@@ -65,13 +54,13 @@ namespace WebApp.Controllers
         /// <param name="id">Id of stopword which need to edit</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
 
             if (word == null)
             {
@@ -85,15 +74,15 @@ namespace WebApp.Controllers
         /// <param name="wordEdit">Edited fo stopword</param>
         /// <returns>StopWord index View</returns>
         [HttpPost]
-        [Route("~/StopWord/Edit")]
+     
         [ValidateAntiForgeryToken]
-        public IActionResult Edit( StopWordViewModel wordEdit)
+        public IActionResult Edit(SubscribeWordViewModel wordEdit)
         {
-            
+
             if (ModelState.IsValid)
             {
-                stopWordManager.Update(wordEdit);
-                return RedirectToAction("Index");
+                subscribeWordManager.Update(wordEdit);
+                return RedirectToAction("Index", "Company");
             }
             return View(wordEdit);
         }
@@ -111,7 +100,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
 
             if (word == null)
             {
@@ -125,12 +114,12 @@ namespace WebApp.Controllers
         /// </summary>
         /// <param name="id">Id of StopWord which select to delete</param>
         /// <returns>StopWord Index View</returns>
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public IActionResult DeleteConfirmed(int id)
         {
-            stopWordManager.Delete(id);
-            return RedirectToAction("Index");
+           int CompanyId = subscribeWordManager.GetWords().FirstOrDefault(w => w.Id == id).CompanyId;
+            subscribeWordManager.Delete(id);
+            return RedirectToAction("SubscribeWord","Company",new { companyId = CompanyId });
         }
 
     }
