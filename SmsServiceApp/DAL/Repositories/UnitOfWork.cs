@@ -6,6 +6,7 @@ using System.Text;
 using WebApp.Data;
 using Microsoft.AspNetCore.Identity;
 
+
 namespace DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
@@ -24,7 +25,11 @@ namespace DAL.Repositories
         private IBaseRepository<RecievedMessage> recievedMessagesRepo;
         private IBaseRepository<AnswersCode> answersCodeRepo;
         private IMailingRepository mailingRepo;
-        private IChartsRepository ChartsRepo;
+        private IChartsRepository chartsRepo;
+        private INotificationRepository notificationRepo;
+        private ICampaignNotificationRepository campaignNotificationRepo;
+        private IBaseRepository<ApplicationUser> appUserRepo;
+        private IBaseRepository<SubscribeWord> subscribeWordRepo;
         private IBaseRepository<EmailRecipient> emailRecipientRepo;
         private IEmailCampaignRepository emailCampaignRepo;
         private IBaseRepository<Email> emailRepo;
@@ -146,6 +151,17 @@ namespace DAL.Repositories
                 return phoneGroupUnsubscribe;
             }
         }
+        public IBaseRepository<SubscribeWord> SubscribeWords
+        {
+            get
+            {
+                if (subscribeWordRepo == null)
+                {
+                    subscribeWordRepo = new BaseRepository<SubscribeWord>(context);
+                }
+                return subscribeWordRepo;
+            }
+        }
         public IMailingRepository Mailings
         {
             get
@@ -162,11 +178,47 @@ namespace DAL.Repositories
         {
             get
             {
-                if (ChartsRepo == null)
+                if (chartsRepo == null)
                 {
-                    ChartsRepo = new ChartsRepository(context);
+                    chartsRepo = new ChartsRepository(context);
                 }
-                return ChartsRepo;
+                return chartsRepo;
+            }
+        }
+
+        public INotificationRepository Notifications
+        {
+            get
+            {
+                if (notificationRepo == null)
+                {
+                    notificationRepo = new NotificationRepository(context);
+                }
+                return notificationRepo;
+            }
+        }
+
+        public ICampaignNotificationRepository CampaignNotifications
+        {
+            get
+            {
+                if (campaignNotificationRepo == null)
+                {
+                    campaignNotificationRepo = new CampaignNotificationRepository(context);
+                }
+                return campaignNotificationRepo;
+            }
+        }
+
+        public IBaseRepository<ApplicationUser> ApplicationUsers
+        {
+            get
+            {
+                if (appUserRepo == null)
+                {
+                    appUserRepo = new BaseRepository<ApplicationUser>(context);
+                }
+                return appUserRepo;
             }
         }
 

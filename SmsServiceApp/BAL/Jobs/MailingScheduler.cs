@@ -1,6 +1,7 @@
 ﻿using System;
 using Quartz;
 using Quartz.Impl;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BAL.Jobs
 {
@@ -14,7 +15,7 @@ namespace BAL.Jobs
         public static async void Start(IServiceProvider serviceProvider)
         {
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
-            scheduler.JobFactory = new JobFactory(serviceProvider);
+            scheduler.JobFactory = serviceProvider.GetService<JobFactory>();
             await scheduler.Start();
 
             IJobDetail jobDetail = JobBuilder.Create<Mailing>().Build();

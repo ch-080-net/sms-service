@@ -4,7 +4,7 @@ using System.Text;
 using Model.ViewModels.CodeViewModels;
 using Model.DTOs;
 
-namespace Model.Interfaces
+namespace BAL.Managers
 {
     public interface ICodeManager
     {

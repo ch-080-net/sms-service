@@ -39,7 +39,7 @@ namespace BAL.Services
             CreateMap<CompanyViewModel, Company>();
             CreateMap<Company, ManageViewModel>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
-                            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
+                            .ForMember(dest => dest.Phonenumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
 
             CreateMap<Operator, OperatorViewModel>()
@@ -77,6 +77,10 @@ namespace BAL.Services
                 .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => PopulateCategoriesForPieChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
 
+            CreateMap<Company, CompaingPieChart>()
+               .ForMember(pc => pc.Categories, opt => opt.MapFrom(com => MailingsCategoriesForPieChart(com)))
+               .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description));
+
             CreateMap<Company, StackedChart>()
                 .ForMember(pc => pc.TimeFrame, opt => opt.MapFrom(com => GetTimeFrameForStackedChart(com)))
                 .ForMember(pc => pc.Description, opt => opt.MapFrom(com => com.Description))
@@ -99,6 +103,94 @@ namespace BAL.Services
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
 
+            CreateMap<Notification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
+
+            CreateMap<Notification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification));
+
+            CreateMap<SmsNotificationDTO, MessageDTO>()
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.SenderPhone))
+                .ForMember(sn => sn.RecepientPhone, opt => opt.MapFrom(n => n.RecieverPhone))
+                .ForMember(sn => sn.MessageText, opt => opt.MapFrom(n => n.Message))
+                .ForMember(sn => sn.RecipientId, opt => opt.MapFrom(n => 0));
+
+            CreateMap<Notification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.PersonalNotification))
+                .ForMember(sn => sn.Time, opt => opt.MapFrom(n => n.Time.ToString("G")));
+
+            CreateMap<CampaignNotification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
+                .ForMember(en => en.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<CampaignNotification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<CampaignNotification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
+                .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
+        }
+
+        #region Notifications
+
+        private DateTime GetCampaignNotificationTime(CampaignNotification cn)
+        {
+            switch (cn.Event)
+            {
+                case CampaignNotificationEvent.CampaignStart:
+                    {
+                        return cn.Campaign.StartTime;
+                    }
+                case CampaignNotificationEvent.CampaignEnd:
+                    {
+                        return cn.Campaign.EndTime;
+                    }
+                case CampaignNotificationEvent.Sending:
+                    {
+                        return cn.Campaign.SendingTime;
+                    }
+                default:
+                    {
+                        return DateTime.Now;
+                    }
+            }
+        }
+
+        private string GenerateNotificationMessage(CampaignNotification cn)
+        {
+            switch (cn.Event)
+            {
+                case CampaignNotificationEvent.CampaignStart:
+                    {
+                        return "Voting for campaign " + cn.Campaign.Name + " started";
+                    }
+                case CampaignNotificationEvent.CampaignEnd:
+                    {
+                        return "Voting for campaign " + cn.Campaign.Name + " ended";
+                    }
+                case CampaignNotificationEvent.Sending:
+                    {
+                        return "Mailing for campaign " + cn.Campaign.Name + " started";
+                    }
+                default:
+                    {
+                        return "";
+                    }
+            }
+
             CreateMap<EmailRecipient, EmailRecipientViewModel>()
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
@@ -110,6 +202,8 @@ namespace BAL.Services
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));
             CreateMap<EmailCampaignViewModel, EmailCampaign>();
         }
+
+        #endregion
 
         /// <summary>
         /// Replaces Hashtags in message for recipient with corresponding data
@@ -146,6 +240,8 @@ namespace BAL.Services
                 return null;
         }
 
+        #region Charts
+
         /// <summary>
         /// Get data for pie chart of specified pool campaign
         /// </summary>
@@ -162,7 +258,27 @@ namespace BAL.Services
             }
             return result;
         }
+        private IEnumerable<Tuple<string, int>> MailingsCategoriesForPieChart(Company company)
+        {
+            var resultState = new List<Tuple<string, int>>();
 
+            int accepted = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Accepted);
+            int delivered = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Delivered);
+            int notSent = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.NotSent);
+            int reject = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Rejected);
+            int undeliverable = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Undeliverable);
+            int unsubscribed = company.Recipients.Count(c => c.MessageState == WebApp.Models.MessageState.Unsubscribed);
+            
+
+            resultState.Add(new Tuple<string, int>("Accepted", accepted));
+            resultState.Add(new Tuple<string, int>("Delivered", delivered));
+            resultState.Add(new Tuple<string, int>("NotSent", notSent));
+            resultState.Add(new Tuple<string, int>("Rejected", reject));
+            resultState.Add(new Tuple<string, int>("Undeliverable", undeliverable));
+            resultState.Add(new Tuple<string, int>("Unsubscribed", unsubscribed));
+           // return Json(resultState, JsonRequestBehovior.AllowGet);
+            return resultState;
+        }
         /// <summary>
         /// Get current time frame for specified campaign
         /// </summary>
@@ -225,6 +341,8 @@ namespace BAL.Services
             }
             return result;
         }
+
+        #endregion
 
     }
 }

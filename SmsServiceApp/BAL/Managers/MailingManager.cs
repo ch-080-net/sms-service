@@ -26,8 +26,9 @@ namespace BAL.Managers
         public IEnumerable<MessageDTO> GetUnsentMessages()
         {
             var recipients = unitOfWork.Mailings.Get(r => r.MessageState == MessageState.NotSent
-                                                        && r.Company.SendingTime >= DateTime.Now
-                                                        && !r.Company.ApplicationGroup.phoneGroupUnsubscribtions.Any(pgu => pgu.PhoneId == r.PhoneId));
+                                                        && r.Company.SendingTime <= DateTime.Now
+                                                        && r.Company.IsPaused == false
+														&& r.Company.ApplicationGroup.phoneGroupUnsubscribtions.All(pgu => pgu.PhoneId != r.PhoneId));
             IEnumerable<MessageDTO> result = mapper.Map<IEnumerable<Recipient>, IEnumerable<MessageDTO>>(recipients);
             return result;
         }

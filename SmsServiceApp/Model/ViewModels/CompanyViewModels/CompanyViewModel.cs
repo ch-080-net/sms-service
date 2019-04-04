@@ -31,6 +31,7 @@ namespace Model.ViewModels.CompanyViewModels
         [Phone]
         [Display(Name = "Campaign phone number")]
         public string PhoneNumber { get; set; }
+		public bool IsPaused { get; set; }
        
 
     }

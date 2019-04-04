@@ -28,7 +28,7 @@ namespace BAL.Managers
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Add(CodeViewModel newCode)
         {
-            if (newCode.OperatorCode == null || newCode.OperatorCode == "")
+            if (string.IsNullOrEmpty(newCode.OperatorCode))
                 return new TransactionResultDTO() { Success = false, Details = "Code cannot be empty" };
             var check = unitOfWork.Codes.Get(o => o.OperatorCode == newCode.OperatorCode).FirstOrDefault();
             if (check != null)
@@ -59,7 +59,7 @@ namespace BAL.Managers
 
 
         /// <summary>
-        /// Remonve entry in Codes table with <paramref name="id"/>
+        /// Remove entry in Codes table with <paramref name="id"/>
         /// </summary>
         /// <returns>Success, if transaction succesfull; !Success if not, Details contains error message if any</returns>
         public TransactionResultDTO Remove(int id)

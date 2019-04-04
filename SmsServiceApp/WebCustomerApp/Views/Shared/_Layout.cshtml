@@ -45,26 +45,49 @@
                         }
                         @await Html.PartialAsync("_LoginPartial")
                     </div>
-                        <div id="LanguageSwitcher">                        
-                                @await Html.PartialAsync("_SelectLanguagePartial")           
-                        </div>   
+                    <div id="LanguageSwitcher">
+                        @await Html.PartialAsync("_SelectLanguagePartial")
+                    </div>
                 </div>
                 <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
             </div>
-
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a role="button" data-toggle="modal" data-target="#notificationModal" onclick="clearBadge();">
+                        Notifications
+                        <span class="badge" id="notificationBadge"></span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
+
+    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="notificationModalLabel">Notifications</h4>
+                </div>
+                <div class="modal-body" id="notificationContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container body-content">
         @RenderBody()
 
-            <link href="~/css/site.css" rel="stylesheet" />
-        </div>
+        <link href="~/css/site.css" rel="stylesheet" />
+    </div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/notifications.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -80,6 +103,8 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+        <script src="~/js/notifications.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
