@@ -21,7 +21,6 @@ namespace BAL.Managers
         bool CreateContact(ContactViewModel contactModel, int groupId);
         void DeleteContact(int id);
         bool UpdateContact(ContactViewModel contactModel, int groupId);
-        void AddContactFromFile(IFormFile file);
-
+        void AddContactFromFile(IFormFile file, string Id);
     }
 }

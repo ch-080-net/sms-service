@@ -192,6 +192,8 @@ namespace WebApp.Controllers
 
         public void UploadFile(IFormFile ContactFile)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             contactManager.AddContactFromFile(ContactFile);
         }
 

@@ -5,6 +5,7 @@ var pagesCount;
 var currentPage = 1;
 var pageSize = 5;
 var searchValue = "";
+var input;
 
 $(document).ready(function () {
     $.getScript("https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js");
@@ -336,35 +337,35 @@ function HideShowFormForAddContact() {
     }
 }
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
+$(function () {
+    $("#upload").bind("click", function () {
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test($("#fileUpload").val().toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
 
-        reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('.image-upload-wrap').hide();
-
-            $('.file-upload-image').attr('src', e.target.result);
-            $('.file-upload-content').show();
-
-            $('.image-title').html(input.files[0].name);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-
-    } else {
-        removeUpload();
-    }
-}
-
-function removeUpload() {
-    $('.file-upload-input').replaceWith($('.file-upload-input').clone());
-    $('.file-upload-content').hide();
-    $('.image-upload-wrap').show();
-}
-$('.image-upload-wrap').bind('dragover', function () {
-    $('.image-upload-wrap').addClass('image-dropping');
-});
-$('.image-upload-wrap').bind('dragleave', function () {
-    $('.image-upload-wrap').removeClass('image-dropping');
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var table = $("<table />");
+                    var rows = e.target.result.split("\n");
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = $("<tr />");
+                        var cells = rows[i].split(",");
+                        for (var j = 0; j < cells.length; j++) {
+                            var cell = $("<td />");
+                            cell.html(cells[j]);
+                            row.append(cell);
+                        }
+                        table.append(row);
+                    }
+                    $("#dvCSV").html('');
+                    $("#dvCSV").append(table);
+                }
+                reader.readAsText($("#fileUpload")[0].files[0]);
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid CSV file.");
+        }
+    });
 });

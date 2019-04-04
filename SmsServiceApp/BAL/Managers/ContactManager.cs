@@ -9,6 +9,7 @@ using AutoMapper;
 using Model.ViewModels.ContactViewModels;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace BAL.Managers
 {
@@ -218,7 +219,7 @@ namespace BAL.Managers
             }
         }
 
-        public void AddContactFromFile(IFormFile file)
+        public void AddContactFromFile(IFormFile file, string Id)
         {
             var result = string.Empty;
             using (var reader = new StreamReader(file.OpenReadStream()))
@@ -226,7 +227,7 @@ namespace BAL.Managers
                 result = reader.ReadToEnd();
             }
 
-            var contacts = TranslateToContacts(result);
+            var contacts = TranslateToContacts(result,Id);
             foreach (var temp in contacts)
             {
                 unitOfWork.Contacts.Insert(temp);
@@ -236,14 +237,14 @@ namespace BAL.Managers
             
         }
 
-        private List<Contact> TranslateToContacts(string contacts)
+        private List<Contact> TranslateToContacts(string contacts, string Id)
         {
             var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
             var result = new List<Contact>();
             for (int i = 0; i < splitedContacts.Count/3; i+=3)
             {
                 var temp=new Contact();
-                temp.Phone = new Phone() {PhoneNumber = splitedContacts.ElementAt(i)};
+                temp.Phone = new Phone() { PhoneNumber = splitedContacts.ElementAt(i)};
                 temp.BirthDate = Convert.ToDateTime(splitedContacts.ElementAt(i + 1));
                 temp.Gender = Convert.ToByte(splitedContacts.ElementAt(i+2));
                 result.Add(temp);
