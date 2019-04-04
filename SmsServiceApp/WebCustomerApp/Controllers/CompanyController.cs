@@ -215,15 +215,7 @@ namespace WebApp.Controllers
                 var tariff = tariffManager.GetById(item.TariffId).Name;
                 item.Tariff = tariff;
             }
-            ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
-            item.TariffId = company.TariffId;
-            if (item.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.TariffId).Name;
-                item.Tariff = tariff;
-            }
+           
             return View(item);
         }
 
