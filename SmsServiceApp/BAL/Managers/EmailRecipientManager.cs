@@ -37,11 +37,11 @@ namespace BAL.Managers
         {
             EmailRecipient emailRecipient = mapper.Map<EmailRecipient>(item);
             emailRecipient.CompanyId = companyId;
-            Email email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == item.Email).FirstOrDefault();
+            Email email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == item.EmailAddress).FirstOrDefault();
             if (email == null)
             {
                 email = new Email();
-                email.EmailAddress = item.Email;
+                email.EmailAddress = item.EmailAddress;
                 unitOfWork.Emails.Insert(email);
                 emailRecipient.Email = email;
             }
@@ -56,11 +56,11 @@ namespace BAL.Managers
         public void Update(EmailRecipientViewModel item)
         {
             EmailRecipient emailRecipient = mapper.Map<EmailRecipient>(item);
-            Email email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == item.Email).FirstOrDefault();
+            Email email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == item.EmailAddress).FirstOrDefault();
             if (email == null)
             {
                 email = new Email();
-                email.EmailAddress = item.Email;
+                email.EmailAddress = item.EmailAddress;
                 unitOfWork.Emails.Insert(email);
                 emailRecipient.Email = email;
             }

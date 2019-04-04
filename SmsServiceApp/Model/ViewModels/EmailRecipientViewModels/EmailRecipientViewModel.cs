@@ -11,8 +11,7 @@ namespace Model.ViewModels.EmailRecipientViewModels
         public int CompanyId { get; set; }
         [Required(ErrorMessage = "The Email field is required.")]
         [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
         [StringLength(100)]
         [Display(Name = "Name")]
         public string Name { get; set; }

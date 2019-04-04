@@ -100,8 +100,11 @@ namespace BAL.Services
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
 
             CreateMap<EmailRecipient, EmailRecipientViewModel>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.EmailAddress));
-            CreateMap<EmailRecipientViewModel, EmailRecipient>();
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
+            CreateMap<EmailRecipientViewModel, EmailRecipient>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<EmailCampaign, EmailCampaignViewModel>()
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));

@@ -2,18 +2,23 @@
 using BAL.Interfaces;
 using Model.Interfaces;
 using Model.ViewModels.EmailCampaignViewModels;
+using Model.ViewModels.EmailRecipientViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WebApp.Models;
+using WebApp.Services;
 
 namespace BAL.Managers
 {
     public class EmailCampaignManager : BaseManager, IEmailCampaignManager
     {
-        public EmailCampaignManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-        { }
+
+        public EmailCampaignManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork,
+            mapper)
+        {
+        }
 
         public EmailCampaignViewModel GetById(int id)
         {
@@ -58,6 +63,13 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
+        public int InsertWithId(EmailCampaignViewModel item)
+        {
+            EmailCampaign company = mapper.Map<EmailCampaign>(item);
+            int id = unitOfWork.EmailCampaigns.InsertWithId(company);
+            return id;
+        }
+
         public void Update(EmailCampaignViewModel item)
         {
             EmailCampaign emailCampaign = mapper.Map<EmailCampaign>(item);
@@ -82,6 +94,44 @@ namespace BAL.Managers
             EmailCampaign emailCampaign = unitOfWork.EmailCampaigns.GetById(id);
             unitOfWork.EmailCampaigns.Delete(emailCampaign);
             unitOfWork.Save();
+        }
+
+        public void IncertWithRecepients(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> emailRecipients)
+        {
+            EmailCampaign emailCampaign = mapper.Map<EmailCampaign>(campaign);
+            Email email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == campaign.EmailAddress).FirstOrDefault();
+            if (email == null)
+            {
+                email = new Email();
+                email.EmailAddress = campaign.EmailAddress;
+                unitOfWork.Emails.Insert(email);
+                emailCampaign.Email = email;
+            }
+            else
+            {
+                emailCampaign.EmailId = email.Id;
+            }
+            unitOfWork.EmailCampaigns.Insert(emailCampaign);
+            unitOfWork.Save();
+            foreach (var recipient in emailRecipients)
+            {
+                EmailRecipient newRecepient = mapper.Map<EmailRecipientViewModel, EmailRecipient>(recipient);
+                newRecepient.CompanyId = emailCampaign.Id;
+                email = unitOfWork.Emails.Get(filter: e => e.EmailAddress == recipient.EmailAddress).FirstOrDefault();
+                if (email == null)
+                {
+                    email = new Email();
+                    email.EmailAddress = recipient.EmailAddress;
+                    unitOfWork.Emails.Insert(email);
+                    newRecepient.Email = email;
+                }
+                else
+                {
+                    newRecepient.EmailId = email.Id;
+                }
+                unitOfWork.EmailRecipients.Insert(newRecepient);
+                unitOfWork.Save();
+            }
         }
     }
 }

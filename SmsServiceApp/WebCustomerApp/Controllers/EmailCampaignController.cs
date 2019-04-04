@@ -5,11 +5,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BAL.Interfaces;
 using BAL.Managers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.ViewModels.EmailCampaignViewModels;
+using Model.ViewModels.EmailRecipientViewModels;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class EmailCampaignController : Controller
     {
         private IEmailCampaignManager emailCampaignManager;
@@ -49,6 +52,21 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        public void CreateCampaign(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> recepients)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return;
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            campaign.UserId = userId;
+            emailCampaignManager.IncertWithRecepients(campaign, recepients);
+        }
+
+        public IActionResult Details(int campaignId)
+        {
+            var item = emailCampaignManager.GetById(campaignId);
+            return View(item);
         }
     }
 }

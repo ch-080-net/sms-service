@@ -8,5 +8,6 @@ namespace WebApp.Services
     public interface IEmailSender
     {
         Task SendEmailAsync(string email, string subject, string message);
+        Task SendEmailsAsync(string from, string to, string message);
     }
 }
