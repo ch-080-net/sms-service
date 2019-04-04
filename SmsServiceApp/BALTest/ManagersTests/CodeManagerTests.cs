@@ -13,7 +13,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using Model.ViewModels.CodeViewModels;
-using Page = Model.ViewModels.OperatorViewModels.Page;
+using Page = Model.ViewModels.CodeViewModels.Page;
 using PageState = Model.ViewModels.CodeViewModels.PageState;
 
 namespace BAL.Test.ManagersTests
