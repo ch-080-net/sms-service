@@ -32,12 +32,13 @@ namespace WebApp.Controllers
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
         private readonly ILoggerManager logger;
+        private readonly ISubscribeWordManager subscribeWordManager;
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
                                  IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
-                                 ILoggerManager loggerManager)
+                                 ILoggerManager loggerManager, ISubscribeWordManager subscribeWordManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -49,6 +50,7 @@ namespace WebApp.Controllers
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
             this.logger = loggerManager;
+            this.subscribeWordManager = subscribeWordManager;
         }
 
         /// <summary>
@@ -419,6 +421,13 @@ namespace WebApp.Controllers
         {
             companyManager.Delete(companyId);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult SubscribeWord(int companyId)
+        {
+            var sword =subscribeWordManager.GetWordsByCompanyId(companyId);
+            return View(sword);
         }
 
         /// <summary>

@@ -39,9 +39,6 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
         public int PhoneId { get; set; }
-        //[Required(ErrorMessage = "The Subscribe word field is required.")]
-        //[Display(Name = "Subscribe word")]
-        //[StringLength(20)]
-        //public  string Word { get; set; }
+       
     }
 }

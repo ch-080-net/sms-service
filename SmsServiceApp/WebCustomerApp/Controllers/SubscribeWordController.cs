@@ -1,42 +1,29 @@
-﻿using BAL.Managers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Model.Interfaces;
-using Model.ViewModels.StopWordViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using WebApp.Controllers;
-using WebApp.Models;
+using BAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Model.ViewModels.SubscribeWordViewModels;
 
 namespace WebApp.Controllers
 {
-   
-    [Authorize(Roles = "Admin")]
-    [Route("[controller]/[action]")]
-    public class StopWordController : Controller
+    [Authorize]
+    public class SubscribeWordController : Controller
     {
-        private readonly IStopWordManager stopWordManager;
+        private readonly ISubscribeWordManager subscribeWordManager;
 
-        public StopWordController(IStopWordManager stopWord)
+        public SubscribeWordController(ISubscribeWordManager subscribeWordManager)
         {
-            this.stopWordManager = stopWord;
+            this.subscribeWordManager = subscribeWordManager;
         }
-        /// <summary>
-        /// Get view with StopWord 
-        /// </summary>
-        /// <returns>View with stopword</returns>
-        public IActionResult Index()
-        {
-            return View(stopWordManager.GetStopWords());
-        }
+
         /// <summary>
         /// View for creation new StopWord
         /// </summary>
         /// <returns>Create StopWord View</returns>
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -48,15 +35,15 @@ namespace WebApp.Controllers
         /// <returns>StopWord index View</returns>
         [Route("~/StopWord/Create")]
         [HttpPost]
-        public IActionResult Create(StopWordViewModel item)
+        public IActionResult Create(SubscribeWordViewModel item)
         {
             if (ModelState.IsValid)
             {
-                stopWordManager.Insert(item);
+                subscribeWordManager.Insert(item);
             }
 
 
-            return RedirectToAction("Index", "StopWord");
+            return RedirectToAction("Index", "Company");
         }
 
         /// <summary>
@@ -71,7 +58,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
 
             if (word == null)
             {
@@ -87,13 +74,13 @@ namespace WebApp.Controllers
         [HttpPost]
         [Route("~/StopWord/Edit")]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit( StopWordViewModel wordEdit)
+        public IActionResult Edit(SubscribeWordViewModel wordEdit)
         {
-            
+
             if (ModelState.IsValid)
             {
-                stopWordManager.Update(wordEdit);
-                return RedirectToAction("Index");
+                subscribeWordManager.Update(wordEdit);
+                return RedirectToAction("Index", "Company");
             }
             return View(wordEdit);
         }
@@ -111,13 +98,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            SubscribeWordViewModel company = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
 
-            if (word == null)
+            if (company == null)
             {
                 return NotFound();
             }
-            return View(word);
+            return View(company);
         }
 
         /// <summary>
@@ -129,8 +116,8 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            stopWordManager.Delete(id);
-            return RedirectToAction("Index");
+            subscribeWordManager.Delete(id);
+            return RedirectToAction("SubscribeWord","Company");
         }
 
     }
