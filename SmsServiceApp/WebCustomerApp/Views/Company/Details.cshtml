@@ -71,16 +71,19 @@
             </dl>
         </div>
         <div class="col-md-5">
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-campaignId="@Model.Id" asp-controller="CampaignReporting" asp-action="GetChart">@Localizer["Reporting"]</a></div>            <br />
+            <div class="row"><a class="btn btn-primary" style="width: 150px;" asp-route-campaignId="@Model.Id" asp-controller="CampaignReporting" asp-action="GetChart">@Localizer["Reporting"]</a></div>            <br />
             @if (Model.Type == CompanyType.Recieve || Model.Type == CompanyType.SendAndRecieve)
             {
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Incoming">@Localizer["Incoming"]</a></div> <br />
-            <div class="row"><a class="btn btn-primary" style="width: 120px;" asp-route-companyId="@Model.Id" asp-controller="AnswersCode" asp-action="Index">@Localizer["Answer codes"]</a></div> <br />
+                <div class="row"><a class="btn btn-primary" style="width: 150px;" asp-route-companyId="@Model.Id" asp-action="Incoming">@Localizer["Incoming"]</a></div> <br />
+                <div class="row"><a class="btn btn-primary" style="width: 150px;" asp-route-companyId="@Model.Id" asp-controller="AnswersCode" asp-action="Index">@Localizer["Answer codes"]</a></div> <br />
             }
-            <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-companyId="@Model.Id" asp-action="Edit">@Localizer["Edit"]</a></div> <br />
+            <div class="row"><a class="btn btn-warning" style="width: 150px;" asp-route-companyId="@Model.Id" asp-action="Edit">@Localizer["Edit"]</a></div> <br />
+
+            <div class="row"><a class="btn btn-warning" style="width: 150px;" asp-route-companyId="@Model.Id" asp-action="SubscribeWord">@Localizer["SubscribeWord"]</a></div> <br />
+
             <div class="row">
                 <form asp-action="Delete" asp-route-companyId="@Model.Id">
-                    <button type="submit" class="btn btn-danger" style="width: 120px;">@Localizer["Delete"]</button>
+                    <button type="submit" class="btn btn-danger" style="width: 150px;">@Localizer["Delete"]</button>
                 </form>
             </div>
         </div>

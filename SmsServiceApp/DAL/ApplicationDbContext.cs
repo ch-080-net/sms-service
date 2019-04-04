@@ -48,6 +48,7 @@ namespace WebApp.Data
             builder.Entity<Phone>().HasKey(i => i.Id);
             builder.Entity<Tariff>().HasKey(i => i.Id);
             builder.Entity<StopWord>().HasKey(i => i.Id);
+            builder.Entity<SubscribeWord>().HasKey(i => i.Id);
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
             builder.Entity<RecievedMessage>().HasKey(i => i.Id);
             builder.Entity<AnswersCode>().HasKey(i => i.Id);
@@ -216,6 +217,14 @@ namespace WebApp.Data
             builder.Entity<SubscribeWord>()
                 .HasKey(sw => new {sw.StopWordId, sw.CompanyId});
 
+            builder.Entity<Company>()
+                .HasMany(com => com.SubscribeWords)
+                .WithOne(sw => sw.Company)
+                .HasForeignKey(sw => sw.CompanyId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
+
+        
             // Required fields
             #region Required fields
             builder.Entity<Code>()

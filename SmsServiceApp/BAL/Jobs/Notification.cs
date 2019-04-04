@@ -35,9 +35,6 @@ namespace BAL.Jobs
         {
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                //var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
-                //await hub.Clients.All.SendAsync("GetNotification", "Hi!");
-
                 var manager = scope.ServiceProvider.GetService<INotificationManager>();
                 var sender = scope.ServiceProvider.GetService<IEmailSender>();
 
@@ -56,9 +53,6 @@ namespace BAL.Jobs
         {
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                //var hub = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
-                //await hub.Clients.All.SendAsync("GetNotification", "Hi!");
-
                 var manager = scope.ServiceProvider.GetService<INotificationManager>();
                 var mapper = scope.ServiceProvider.GetService<IMapper>();
 

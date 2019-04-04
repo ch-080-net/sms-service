@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AutoMapper;
 using BAL.Interfaces;
@@ -19,9 +20,14 @@ namespace BAL.Managers
         {
         }
 
-        public IEnumerable<SubscribeWordViewModel> GetStopWords()
+        public IEnumerable<SubscribeWordViewModel> GetWords()
         {
             IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll();
+            return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
+        }
+        public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
+        {
+            IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll().Where(sw=>sw.CompanyId==companyId);
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
         /// <summary>
@@ -47,7 +53,12 @@ namespace BAL.Managers
                 unitOfWork.Save();
          
         }
-       
 
+        public void Delete(int item)
+        {
+                SubscribeWord word = unitOfWork.SubscribeWords.GetById(item);
+                unitOfWork.SubscribeWords.Delete(word);
+                unitOfWork.Save();
+        }
     }
 }

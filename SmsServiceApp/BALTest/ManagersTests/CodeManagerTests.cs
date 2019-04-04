@@ -247,7 +247,7 @@ namespace BAL.Test.ManagersTests
             var codeViewModelList = new List<CodeViewModel>();
             mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), It.IsAny<Func<IQueryable<Code>,
                 IOrderedQueryable<Code>>>(), It.IsAny<string>())).Returns(codeList);
-            mockUnitOfWork.Setup(m => m.Operators.GetById(testPageState.OperatorId).Name).Returns("Zhora");
+            mockUnitOfWork.Setup(m => m.Operators.GetById(It.Is<int>(x => x == testPageState.OperatorId))).Returns(new Operator { Name = "Zhora"});
             mockMapper.Setup(m => m.Map<IEnumerable<Code>,
                 IEnumerable<CodeViewModel>>(It.Is<IEnumerable<Code>>(x => x.Equals(codeList)))).Returns(codeViewModelList);
 
