@@ -219,15 +219,13 @@ namespace BAL.Managers
             }
         }
 
-        public void AddContactFromFile(IFormFile file, string Id)
+        public void AddContactFromFile(string data, string Id)
         {
-            var result = string.Empty;
-            using (var reader = new StreamReader(file.OpenReadStream()))
-            {
-                result = reader.ReadToEnd();
-            }
-
-            var contacts = TranslateToContacts(result,Id);
+            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == Id).FirstOrDefault();
+            if (user == null)
+                return;
+            
+            var contacts = TranslateToContacts(data, user);
             foreach (var temp in contacts)
             {
                 unitOfWork.Contacts.Insert(temp);
@@ -237,18 +235,33 @@ namespace BAL.Managers
             
         }
 
-        private List<Contact> TranslateToContacts(string contacts, string Id)
+        private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
         {
-            var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
+            //var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
+            var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
             var result = new List<Contact>();
-            for (int i = 0; i < splitedContacts.Count/3; i+=3)
+            foreach (var item in splitedContactsR.Skip(1))
             {
-                var temp=new Contact();
-                temp.Phone = new Phone() { PhoneNumber = splitedContacts.ElementAt(i)};
-                temp.BirthDate = Convert.ToDateTime(splitedContacts.ElementAt(i + 1));
-                temp.Gender = Convert.ToByte(splitedContacts.ElementAt(i+2));
-                result.Add(temp);
+                var tempList = string.IsNullOrEmpty(item)?null : item.Split(',').ToList();
+                if (tempList!= null)
+                {
+                    var temp = new Contact();
+                    temp.ApplicationGroupId = user.ApplicationGroupId;
+                    var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0)).FirstOrDefault();
+                    if (tempPhone == null)
+                    {
+                        temp.Phone = new Phone() { PhoneNumber = tempList.ElementAt(0) };
+                    }
+                    else
+                    {
+                        temp.PhoneId = tempPhone.Id;
+                    }
+                    temp.BirthDate = DateTime.ParseExact((tempList.ElementAt(1)), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                    temp.Gender = Convert.ToByte(tempList.ElementAt(2));
+                    result.Add(temp);
+                }
             }
+            
 
             return result;
         }

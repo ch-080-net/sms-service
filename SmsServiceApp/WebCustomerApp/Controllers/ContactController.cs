@@ -190,11 +190,12 @@ namespace WebApp.Controllers
             }
         }
 
-        public void UploadFile(IFormFile ContactFile)
+        [HttpPost]
+        public void UploadFile(string fileData)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            contactManager.AddContactFromFile(ContactFile);
+            
+           contactManager.AddContactFromFile(fileData, userId);
         }
 
     }
