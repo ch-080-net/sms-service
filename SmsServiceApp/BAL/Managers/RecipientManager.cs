@@ -25,11 +25,38 @@ namespace BAL.Managers
         /// <param name="id">Id of recipient wich need to delete</param>
         public void Delete(int id)
         {
-            Recipient recipient = unitOfWork.Recipients.GetById(id);
-            unitOfWork.Recipients.Delete(recipient);
-            unitOfWork.Save();
+            try
+            {
+                Recipient recipient = unitOfWork.Recipients.GetById(id);
+                unitOfWork.Recipients.Delete(recipient);
+                unitOfWork.Save();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
+        public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
+        {
+            IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId)&& (
+                ec.Name.Contains(searchValue)    || 
+                ec.Surname.Contains(searchValue) ||
+                ec.KeyWords.Contains(searchValue)
+                ))
+                .Skip((page - 1) * countOnPage).Take(countOnPage);
+            foreach (var recipient in Recipients)
+            {
+                recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
+            }
+
+            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(Recipients);
+        }
+
+        public int GetRecipientsCount(int companyId, string searchValue)
+        {
+            return unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId) &&( ec.Name.Contains(searchValue))).Count();
+        }
 
         /// <summary>
         /// Get one recipient from db by Id
@@ -68,23 +95,30 @@ namespace BAL.Managers
         /// <param name="companyId">Id of company wich belongs this recipient</param>
         public void Insert(RecipientViewModel item, int companyId)
         {
-            Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
-            recipient.CompanyId = companyId;
-            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
-            if (phone.Count == 0)
+            try
             {
-                Phone newPhone = new Phone();
-                newPhone.PhoneNumber = item.PhoneNumber;
-                unitOfWork.Phones.Insert(newPhone);
+                Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
+                recipient.CompanyId = companyId;
+                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
+                if (phone.Count == 0)
+                {
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = item.Phonenumber;
+                    unitOfWork.Phones.Insert(newPhone);
+                    unitOfWork.Save();
+                    recipient.Phone = newPhone;
+                }
+                else
+                {
+                    recipient.Phone = phone[0];
+                }
+                unitOfWork.Recipients.Insert(recipient);
                 unitOfWork.Save();
-                recipient.Phone = newPhone;
             }
-            else
+            catch(Exception ex)
             {
-                recipient.Phone = phone[0];
+                throw ex;
             }
-            unitOfWork.Recipients.Insert(recipient);
-            unitOfWork.Save();
         }
 
         /// <summary>
@@ -93,22 +127,29 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of recipient</param>
         public void Update(RecipientViewModel item)
         {
-            Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
-            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
-            if (phone.Count == 0)
+            try
             {
-                Phone newPhone = new Phone();
-                newPhone.PhoneNumber = item.PhoneNumber;
-                unitOfWork.Phones.Insert(newPhone);
+                Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
+                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
+                if (phone.Count == 0)
+                {
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = item.Phonenumber;
+                    unitOfWork.Phones.Insert(newPhone);
+                    unitOfWork.Save();
+                    recipient.Phone = newPhone;
+                }
+                else
+                {
+                    recipient.PhoneId = phone[0].Id;
+                }
+                unitOfWork.Recipients.Update(recipient);
                 unitOfWork.Save();
-                recipient.Phone = newPhone;
             }
-            else
+            catch(Exception ex)
             {
-                recipient.PhoneId = phone[0].Id;
+                throw ex;
             }
-            unitOfWork.Recipients.Update(recipient);
-            unitOfWork.Save();
         }
     }
 }

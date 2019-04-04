@@ -129,6 +129,12 @@
   <data name="Create" xml:space="preserve">
     <value>Створити</value>
   </data>
+  <data name="Select" xml:space="preserve">
+    <value>Вибрати</value>
+  </data>
+  <data name="Select Date and Time" xml:space="preserve">
+    <value>Виберіть дату та час</value>
+  </data>
   <data name="Send" xml:space="preserve">
     <value>Відправити</value>
   </data>

@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete</title>
+    <title>@Localizer["Delete"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -38,9 +38,9 @@
             <input type="hidden" asp-for="Id" />
             @if (ViewData["Delete"] != "false")
             {
-            <input type="submit" value="Delete" class="btn btn-danger" id="delete" />
+            <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger" id="delete" />
             }
-            <a class="btn btn-primary" asp-action="Index">Back to List</a>
+            <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
         </form>
     </div>
 </body>

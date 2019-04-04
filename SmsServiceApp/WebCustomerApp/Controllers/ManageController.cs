@@ -271,7 +271,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LinkLogin(string provider)
         {
-            // Clear the existing external cookie to ensure a clean login process
+
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
@@ -511,6 +511,62 @@ namespace WebApp.Controllers
             var model = new ShowRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
 
             return View(nameof(ShowRecoveryCodes), model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Notifications()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            var model = new NotificationsViewModel()
+            {
+                SmsNotEnabled = user.SmsNotificationsEnabled,
+                EmailNotEnabled = user.EmailNotificationsEnabled
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Notifications(NotificationsViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Notifications));
+            }
+
+            if(user.EmailConfirmed)
+            {
+                user.EmailNotificationsEnabled = model.EmailNotEnabled;
+            }
+            else if (!user.EmailConfirmed && model.EmailNotEnabled)
+            {
+                ModelState.AddModelError("EmailNotEnabled", "Confirm Email first to recieve notifications");
+                model.EmailNotEnabled = false;
+                user.EmailNotificationsEnabled = false;
+            }
+
+            if (user.PhoneNumberConfirmed)
+            {
+                user.SmsNotificationsEnabled = model.SmsNotEnabled;
+            }
+            else if(!user.PhoneNumberConfirmed && model.SmsNotEnabled)
+            {
+                ModelState.AddModelError("EmailNotEnabled", "Confirm phone number first to recieve SMS-notifications");
+                model.SmsNotEnabled = false;
+                user.SmsNotificationsEnabled = false;
+            }
+            await _userManager.UpdateAsync(user);
+            return View(model);
         }
 
         #region Helpers

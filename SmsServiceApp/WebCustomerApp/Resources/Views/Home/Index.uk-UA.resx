@@ -219,4 +219,7 @@
   <data name="Track not server uptime, but indexing status of the most important messages." xml:space="preserve">
     <value>Відстеження часу роботи сервера та статус індексування найважливіших повідомлень.</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Профіль</value>
+  </data>
 </root>

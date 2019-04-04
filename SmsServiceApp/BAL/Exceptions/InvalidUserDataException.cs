@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace BAL.Exceptions
 {
-	public class InvalidSMPPUserDataException : Exception
+	public class InvalidSmppUserDataException : Exception
 	{
-		public InvalidSMPPUserDataException(string errorMessage) : base (errorMessage)
+		public InvalidSmppUserDataException(string errorMessage) : base(errorMessage)
+		{
+
+		}
+
+		protected InvalidSmppUserDataException(SerializationInfo info, StreamingContext context) 
 		{
 
 		}

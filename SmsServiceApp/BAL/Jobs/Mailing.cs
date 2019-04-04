@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Quartz;
-using Model.Interfaces;
+using BAL.Managers;
 using AutoMapper;
 using WebApp.Services;
 using Model.DTOs;
@@ -16,19 +16,22 @@ namespace BAL.Jobs
     /// </summary>
     public class Mailing : IJob
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public Mailing(IServiceProvider serviceProvider)
+        public Mailing(IServiceScopeFactory serviceScopeFactory)
         {
-            this.serviceProvider = serviceProvider;
+            this.serviceScopeFactory = serviceScopeFactory;
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
-			var service = serviceProvider.GetService<ISmsSender>();
-			var result = serviceProvider.GetService<IMailingManager>().GetUnsentMessages();
-            if (result.Any())
-                await service.SendMessages(result);
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var service = scope.ServiceProvider.GetService<ISmsSender>();
+                var result = scope.ServiceProvider.GetService<IMailingManager>().GetUnsentMessages();
+                if (result.Any())
+                    await service.SendMessages(result);
+            }
         }
     }
 }

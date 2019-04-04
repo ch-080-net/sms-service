@@ -149,9 +149,17 @@
         <p class="app_description">
             <h2 class="app_description_title">@Localizer["SMS SERVICE AT AFFORDABLE PRICE"]</h2>
             <h4 class="app_description_welcome">@Localizer["Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices."]</h4>
-            <div class="app_description_link app_button  ">
-                <a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
-            </div>
+			<div class="app_description_link app_button  ">
+				@if (User.Identity.IsAuthenticated)
+				{
+					<a href="Manage/Index" class="app_link  ">@Localizer["Profile"]</a>
+
+				}
+				else
+				{
+					<a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
+				}
+			</div>
 
         </p>
     </section>

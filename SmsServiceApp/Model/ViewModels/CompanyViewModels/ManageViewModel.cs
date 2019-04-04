@@ -19,12 +19,15 @@ namespace Model.ViewModels.CompanyViewModels
         [StringLength(500)]
         public string Message { get; set; }
         [Display(Name = "Time for send")]
+        [DataType(DataType.DateTime)]
         public DateTime SendingTime { get; set; }
         [Display(Name = "Recipients")]
         public IEnumerable<RecipientViewModel> RecipientViewModels { get; set; }
         [Display(Name = "Start time")]
+        [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
         [Display(Name = "End time")]
+        [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
@@ -36,5 +39,6 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
         public int PhoneId { get; set; }
+       
     }
 }
