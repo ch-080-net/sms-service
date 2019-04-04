@@ -212,11 +212,6 @@ namespace WebApp.Data
                 .HasIndex(r => new { r.EmailId, r.CompanyId })
                 .IsUnique();
 
-
-
-            builder.Entity<SubscribeWord>()
-                .HasKey(sw => new {sw.StopWordId, sw.CompanyId});
-
             builder.Entity<Company>()
                 .HasMany(com => com.SubscribeWords)
                 .WithOne(sw => sw.Company)
