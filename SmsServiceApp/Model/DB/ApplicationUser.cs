@@ -14,6 +14,8 @@ namespace WebApp.Models
     {
         public int ApplicationGroupId { get; set; }
         public ApplicationGroup ApplicationGroup { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
+        public ICollection<CampaignNotification> CampaignNotifications { get; set; }
 
         /// <summary>
         /// Invite ID
@@ -22,5 +24,8 @@ namespace WebApp.Models
         /// Filled up when user has invite to group
         /// </value>
         public int InviteId { get; set; } = 0;
+
+        public bool SmsNotificationsEnabled { get; set; }
+        public bool EmailNotificationsEnabled { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 using Model.DTOs;
 using Model.ViewModels.CampaignReportingViewModels;
 
-namespace Model.Interfaces
+namespace BAL.Managers
 {
     public interface IChartsManager
     {

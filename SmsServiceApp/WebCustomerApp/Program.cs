@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BAL.Jobs;
 using BAL.Managers;
 using BAL.Services;
 using Microsoft.AspNetCore;
@@ -41,6 +42,11 @@ namespace WebApp
                         var unitOfWork = serviceProvider.GetRequiredService<IUnitOfWork>();
 
                         IdentityDataInitializer.SeedData(userManager, roleManager, operatorManager, codeManager, tariffManager, stopWordManager, unitOfWork);
+
+                        // Start Notification scheduler
+
+                        NotificationScheduler.Start(scope.ServiceProvider);
+                        MailingScheduler.Start(scope.ServiceProvider);
                     }
                     catch (Exception ex)
                     {

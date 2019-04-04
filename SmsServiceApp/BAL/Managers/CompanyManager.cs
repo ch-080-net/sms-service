@@ -66,6 +66,7 @@ namespace BAL.Managers
             {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 unitOfWork.Companies.Insert(company);
+                AddNotifications(company);
                 unitOfWork.Save();
             }
             catch(Exception ex)
@@ -97,6 +98,7 @@ namespace BAL.Managers
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.Name = item.Name;
                 company.Description = item.Description;
+                company.IsPaused = item.IsPaused;
                 if (item.TariffId > 0)
                 {
                     company.TariffId = item.TariffId;
@@ -233,12 +235,63 @@ namespace BAL.Managers
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 company.TariffId = null;
                 int id = unitOfWork.Companies.InsertWithId(company);
+                AddNotifications(company);
+                unitOfWork.Save();
                 return id;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
+        }
+
+        private void AddNotifications(Company company)
+        {
+            var users = unitOfWork.ApplicationUsers.Get(au => au.ApplicationGroupId == company.ApplicationGroupId);
+            foreach(var user in users)
+            {
+                AddSpecificNotifications(user, company, CampaignNotificationType.Web);
+                if (user.EmailNotificationsEnabled && user.EmailConfirmed)
+                {
+                    AddSpecificNotifications(user, company, CampaignNotificationType.Email);
+                }
+                if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
+                {
+                    AddSpecificNotifications(user, company, CampaignNotificationType.Sms);
+                }
+            }
+        }
+
+        private void AddSpecificNotifications(ApplicationUser user, Company company, CampaignNotificationType type)
+        {
+            if (company.CampaignNotifications == null)
+                company.CampaignNotifications = new List<CampaignNotification>();
+            if(company.Type != CompanyType.Send)
+                company.CampaignNotifications.Add(new CampaignNotification()
+                {
+                    ApplicationUserId = user.Id,
+                    BeenSent = false,
+                    Event = CampaignNotificationEvent.CampaignStart,
+                    Type = type
+                });
+
+            if (company.Type != CompanyType.Send)
+                company.CampaignNotifications.Add(new CampaignNotification()
+                {
+                    ApplicationUserId = user.Id,
+                    BeenSent = false,
+                    Event = CampaignNotificationEvent.CampaignEnd,
+                    Type = type
+                });
+
+            if (company.Type != CompanyType.Recieve)
+                company.CampaignNotifications.Add(new CampaignNotification()
+                {
+                    ApplicationUserId = user.Id,
+                    BeenSent = false,
+                    Event = CampaignNotificationEvent.Sending,
+                    Type = type
+                });
         }
     }
 }

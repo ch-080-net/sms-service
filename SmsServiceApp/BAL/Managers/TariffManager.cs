@@ -86,12 +86,13 @@ namespace BAL.Managers
             try
             {
                 unitOfWork.Tariffs.Update(result);
+                unitOfWork.Save();
             }
             catch
             {
                 return false;
             }
-            unitOfWork.Save();
+         
             return true;
         }
 

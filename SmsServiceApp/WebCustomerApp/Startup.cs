@@ -19,10 +19,12 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Routing;
 using BAL.Interfaces;
+using BAL.Hubs;
 using Microsoft.Extensions.Logging;
 using NLog;
 using System.IO;
 using BAL.Exceptions;
+using StackExchange.Redis;
 using WebApp.Extensions;
 
 namespace WebApp
@@ -144,26 +146,32 @@ namespace WebApp
             services.AddScoped<ITariffManager, TariffManager>();
             services.AddScoped<IPhoneManager, PhoneManager>();
             services.AddScoped<IStopWordManager, StopWordManager>();
+            services.AddScoped<ISubscribeWordManager,SubscribeWordManager>();
             services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IOperatorManager, OperatorManager>();
-            services.AddScoped<Model.Interfaces.ICodeManager, BAL.Managers.CodeManager>();
+            services.AddScoped<ICodeManager, CodeManager>();
             services.AddScoped<IMailingManager, MailingManager>();
 			services.AddSingleton<ISmsSender, SmsSender>();
             services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
-
-           
-
-            // Start scheduler
-
-            services.AddScoped<Mailing>();
-            MailingScheduler.Start(services.BuildServiceProvider());
+            services.AddScoped<INotificationManager, NotificationManager>();
 
             // Configure sessions
 
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            // Configure hubs
+
+            services.AddSignalR();
+
+            // Register Jobs and JobFactory, start mailing scheduler
+
+            services.AddTransient<JobFactory>();
+
+            services.AddScoped<Mailing>();
+            services.AddScoped<BAL.Jobs.Notification>();
 
         }
        
@@ -189,6 +197,10 @@ namespace WebApp
             // Configure sessions
 
             app.UseSession();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotificationHub>("/notificationHub");
+            });
 
             app.UseMvc(routes =>
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using WebApp.Models;
 
 namespace WebApp.Data
@@ -27,6 +28,9 @@ namespace WebApp.Data
         public DbSet<RecievedMessage> RecievedMessages { get; set; }
         public DbSet<AnswersCode> AnswersCodes { get; set; }
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<CampaignNotification> CampaignNotifications { get; set; }
+        public DbSet<SubscribeWord> SubscribeWords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,6 +48,8 @@ namespace WebApp.Data
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
             builder.Entity<RecievedMessage>().HasKey(i => i.Id);
             builder.Entity<AnswersCode>().HasKey(i => i.Id);
+            builder.Entity<CampaignNotification>().HasKey(i => i.Id);
+            builder.Entity<Notification>().HasKey(i => i.Id);
 
             // Compound key for Many-To-Many joining table
 
@@ -115,6 +121,24 @@ namespace WebApp.Data
                 .HasForeignKey(rm => rm.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.Notifications)
+                .WithOne(n => n.ApplicationUser)
+                .HasForeignKey(n => n.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany(c => c.CampaignNotifications)
+                .WithOne(rm => rm.Campaign)
+                .HasForeignKey(rm => rm.CampaignId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.CampaignNotifications)
+                .WithOne(n => n.ApplicationUser)
+                .HasForeignKey(n => n.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             #endregion
 
             // Optional FK
@@ -157,6 +181,9 @@ namespace WebApp.Data
 
             builder.Entity<PhoneGroupUnsubscribe>()
                 .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
+
+            builder.Entity<SubscribeWord>()
+                .HasKey(sw => new {sw.StopWordId, sw.CompanyId});
 
             // Required fields
             #region Required fields
@@ -202,6 +229,10 @@ namespace WebApp.Data
                 .IsRequired(false);
 
             // Unique indexes
+            builder.Entity<StopWord>()
+                .HasIndex(w => w.Word)
+                .IsUnique();
+
 
             builder.Entity<Operator>()
                 .HasIndex(o => o.Name)
@@ -216,7 +247,6 @@ namespace WebApp.Data
             builder.Entity<Recipient>()
                 .Property(r => r.MessageState)
                 .HasDefaultValue(MessageState.NotSent);
-
         }
     }
 }
