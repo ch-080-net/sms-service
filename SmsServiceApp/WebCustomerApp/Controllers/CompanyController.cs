@@ -342,12 +342,19 @@ namespace WebApp.Controllers
             return View(item);
         }
 
-        /// <summary>
-        /// Return view with operators list
-        /// </summary>
-        /// <param name="companyId"></param>
-        /// <returns></returns>
-        [HttpGet]
+        public void ChangeCampaignState(int companyId, bool newState)
+        {
+	        var item = companyManager.Get(companyId);
+	        item.IsPaused = newState;
+			companyManager.Update(item);
+        }
+
+		/// <summary>
+		/// Return view with operators list
+		/// </summary>
+		/// <param name="companyId"></param>
+		/// <returns></returns>
+		[HttpGet]
         public IActionResult Operators(int companyId)
         {
 			OperatorsViewModel model = new OperatorsViewModel();
