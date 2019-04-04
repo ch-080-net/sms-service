@@ -53,7 +53,7 @@
                 <tr v-for="item in Campaigns">
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
-                    <td><button class="btn btn-success" :data-id="item.id">Details</button></td>
+                    <td><a class="btn btn-success" v-bind:href="'/EmailCampaign/Details?campaignId='+item.id">Details</a></td>
                 </tr>
             </tbody>
         </table>

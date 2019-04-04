@@ -68,5 +68,33 @@ namespace WebApp.Controllers
             var item = emailCampaignManager.GetById(campaignId);
             return View(item);
         }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult Delete(int campaignId)
+        {
+            emailCampaignManager.Delete(campaignId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int campaignId)
+        {
+            EmailCampaignViewModel company = emailCampaignManager.GetById(campaignId);
+            return View(company);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(EmailCampaignViewModel campaign)
+        {
+            if (ModelState.IsValid)
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                campaign.UserId = userId;
+                emailCampaignManager.Update(campaign);
+                return RedirectToAction("Index");
+            }
+            return View(campaign);
+        }
     }
 }

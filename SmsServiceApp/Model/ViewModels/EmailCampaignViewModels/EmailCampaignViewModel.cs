@@ -24,7 +24,7 @@ namespace Model.ViewModels.EmailCampaignViewModels
         public string Description { get; set; }
         [Display(Name = "Time for send")]
         public DateTime SendingTime { get; set; }
-        [Display(Name = "Recipients")]
+        [Display(Name = "RecipientsCount")]
         public int RecipientsCount { get; set; }
     }
 }

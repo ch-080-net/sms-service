@@ -45,7 +45,7 @@
                         recepients: this.Recepients
                     },
                     success: function () {
-                        window.location.href = "http://localhost:55555/EmailCampaign";
+                        window.location.href = "/EmailCampaign/Index";
                     },
                     error: function (request, message, error) {
                         handleException(request, message, error);
