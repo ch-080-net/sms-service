@@ -24,90 +24,133 @@
 <body>
     <h3>@Localizer["Contact Manager"]</h3>
     <form style="padding-left:0em;">
-        <input type="button" class="btn btn-primary" id="HideShowAddContact" onclick="HideShowFormForAddContact()"
-               value="@Localizer["Add new contact"]" />
-        <div id="AddContactForm" style="display: none">
-            <br />
-            <table>
-                <tr>
-                    <td>
-                        <label asp-for="PhonePhoneNumber"></label>
-                    </td>
-                    <td>
-                        <input id="phoneNumber" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="Name"></label>
-                    </td>
-                    <td>
-                        <input id="name" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="Surname"></label>
-                    </td>
-                    <td>
-                        <input id="surname" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="BirthDate"></label>
-                    </td>
-                    <td>
-                        <input id="birthDate" width="175" />
-                        <script>
-                            $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                        </script>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="Gender"></label>
-                    </td>
-                    <td>
-                        <input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
-                        <br>
-                        <input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
-                        <br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="Notes"></label>
-                    </td>
-                    <td>
-                        <input id="notes" type="text" />
+       
+        
 
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label asp-for="KeyWords"></label>
-                    </td>
-                    <td>
-                        <input id="keywords" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
-                            <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
-                        </button>
-                    </td>
-                </tr>
-            </table>
-            <br />
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Contact</button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+    
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                            <li><a data-toggle="tab" href="#menu1">Upload</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            
+                            
+
+                            <div class="tab-content">
+                                <div id="home" class="tab-pane fade in active">
+                                    <h3>Add Contact</h3>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="PhonePhoneNumber"></label>
+                                            </td>
+                                            <td>
+                                                <input id="phoneNumber" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="Name"></label>
+                                            </td>
+                                            <td>
+                                                <input id="name" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="Surname"></label>
+                                            </td>
+                                            <td>
+                                                <input id="surname" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="BirthDate"></label>
+                                            </td>
+                                            <td>
+                                                <input id="birthDate" width="175" />
+                                                <script>
+                                                    $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                                                </script>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="Gender"></label>
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
+                                                <br>
+                                                <input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
+                                                <br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="Notes"></label>
+                                            </td>
+                                            <td>
+                                                <input id="notes" type="text" />
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label asp-for="KeyWords"></label>
+                                            </td>
+                                            <td>
+                                                <input id="keywords" type="text" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                                                    <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>                                </div>
+                                <div id="menu1" class="tab-pane fade">
+                                    <h4>Add contact from file </h4>
+                        <input type="file" id="fileUpload"/>
+                        <input type="button" class="btn btn-primary" id="upload" value="Upload"/>
+                                </div>
+                                <div id="menu2" class="tab-pane fade">
+                                    <h3>Menu 2</h3>
+                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                                </div>
+                                <div id="menu3" class="tab-pane fade">
+                                    <h3>Menu 3</h3>
+                                    <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+      
+            </div>
         </div>
         
-        <input type="file" id="fileUpload" />
-        <input type="button" id="upload" value="Upload" />
         <hr />
         <div id="dvCSV">
         </div>
+
         <div id="msg"></div>
         <div>
             <br />
