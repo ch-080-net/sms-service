@@ -58,6 +58,10 @@ namespace WebApp.Controllers
         {
             if (!User.Identity.IsAuthenticated)
                 return;
+            if(campaign.SendingTime == null)
+                campaign.SendingTime = DateTime.Now;
+            if (campaign.SendingTime < DateTime.Now)
+                campaign.SendingTime = DateTime.Now;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             campaign.UserId = userId;
             emailCampaignManager.IncertWithRecepients(campaign, recepients);
@@ -66,6 +70,7 @@ namespace WebApp.Controllers
         public IActionResult Details(int campaignId)
         {
             var item = emailCampaignManager.GetById(campaignId);
+            item.RecipientsCount = emailRecipientManager.GetEmailRecipients(campaignId).Count;
             return View(item);
         }
 

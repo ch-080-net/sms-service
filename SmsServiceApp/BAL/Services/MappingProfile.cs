@@ -22,6 +22,7 @@ using Model.ViewModels.CampaignReportingViewModels;
 using Model.ViewModels.EmailRecipientViewModels;
 using Model.ViewModels.EmailCampaignViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.TestMessageViewModels;
 
 namespace BAL.Services
 {
@@ -162,6 +163,11 @@ namespace BAL.Services
                 .ForMember(dest => dest.SenderEmail, opt => opt.MapFrom(src => src.Company.Email.EmailAddress))
                 .ForMember(dest => dest.RecepientEmail, opt => opt.MapFrom(src => src.Email.EmailAddress))
                 .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Company.Message));
+
+            CreateMap<TestMessageViewModel, MessageDTO>()
+                .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Recipient))
+                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Sender))
+                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Message));
         }
 
         #region Notifications

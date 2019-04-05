@@ -36,7 +36,8 @@
                     selectData: "now",
                     positionShift: { top: 20, left: 0 },
                     title: "@Localizer["Select Date and Time"]",
-                    buttonTitle: "@Localizer["Select"]"
+                    buttonTitle: "@Localizer["Select"]",
+                    dateFormat: "MM-DD-YYYY HH:mm"
                 });
             })
         })(jQuery);
@@ -64,6 +65,33 @@
 
         .tox-notifications-container {
             display: none;
+        }
+
+        .my-custom-scrollbar {
+            position: relative;
+            height: 600px;
+            overflow: auto;
+        }
+
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+
+        #style-3::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+            margin-top:20px;
+        }
+
+        #style-3::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+            margin-top: 20px;
+        }
+
+        #style-3::-webkit-scrollbar-thumb {
+            background-color: #000000;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -114,21 +142,59 @@
                             </v-stepper-content>
                             <v-stepper-content step="3">
 
-                                <div>
-                                    <v-text-field label="Email" v-model="Recepient.EmailAddress" required></v-text-field>
-                                    <span class="spanError" id="RecepientEmailValidationError"></span>
-                                    <v-text-field label="Name" v-model="Recepient.Name" required></v-text-field>
-                                    <v-text-field label="Surname" v-model="Recepient.Surname" required></v-text-field>
-                                    <input placeholder="Birthday" id="birthDate" v-model="Recepient.BirthDate" required />
-                                    <v-select :items="Gender" label="Gender" v-model="Recepient.Gender"></v-select>
-                                    <v-select :items="Priority" label="Priority" v-model="Recepient.Priority"></v-select>
-                                    <v-text-field label="Key words" v-model="Recepient.KeyWords" required></v-text-field>
-                                    <v-btn color="green" v-on:click.native="AddRecepient">Add</v-btn>
-                                </div>
+                                <v-app style="height: 50px; background-color:white;" id="inspire">
+                                    <v-layout row justify-center>
+                                        <v-dialog v-model="dialog" persistent max-width="600px">
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn color="primary" dark v-on="on">Add</v-btn>
+                                            </template>
+                                            <v-card>
+                                                <v-card-title>
+                                                    <span class="headline">User Profile</span>
+                                                </v-card-title>
+                                                <v-card-text>
+                                                    <v-container grid-list-md>
+                                                        <v-layout wrap>
+                                                            <v-flex xs12>
+                                                                <v-text-field label="Email*" v-model="Recepient.EmailAddress" required></v-text-field>
+                                                                <span class="spanError" id="RecepientEmailValidationError"></span>
+                                                            </v-flex>
 
-                                <div>
+                                                            <v-flex xs12 sm6 md4>
+                                                                <v-text-field label="Name" v-model="Recepient.Name" required></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md4>
+                                                                <v-text-field label="Surname" v-model="Recepient.Surname" required></v-text-field>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6 md4>
+                                                                <input style="margin-top:22px;" placeholder="Birthday" id="birthDate" v-model="Recepient.BirthDate" required />
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6>
+                                                                <v-select :items="Gender" label="Gender" v-model="Recepient.Gender"></v-select>
+                                                            </v-flex>
+                                                            <v-flex xs12 sm6>
+                                                                <v-select :items="Priority" label="Priority" v-model="Recepient.Priority"></v-select>
+                                                            </v-flex>
+                                                            <v-flex xs12>
+                                                                <v-text-field label="Key words" v-model="Recepient.KeyWords" required></v-text-field>
+                                                            </v-flex>
+                                                        </v-layout>
+                                                    </v-container>
+                                                    <small>*indicates required field</small>
+                                                </v-card-text>
+                                                <v-card-actions>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn color="blue darken-1" flat v-on:click="closeDialog">Close</v-btn>
+                                                    <v-btn color="blue darken-1" flat v-on:click="AddRecepient">Save</v-btn>
+                                                </v-card-actions>
+                                            </v-card>
+                                        </v-dialog>
+                                    </v-layout>
+                                </v-app>
+
+                                <div id="style-3" class="table-wrapper-scroll-y my-custom-scrollbar">
                                     <br />
-                                    <table class="table table-striped table-bordered">
+                                    <table class="table table-striped table-bordered" style="max-height:500px !important; overflow:auto;">
                                         <thead class="thead-dark">
                                             <tr>
                                                 <td><label>Email</label></td>
@@ -152,11 +218,14 @@
                                                 <td>{{ item.KeyWords}}</td>
                                                 <td><button value="Delete" class="btn btn-success" :data-recId="item.Id" v-on:click="DeleteRecepient">Delete</button></td>
                                             </tr>
+                                            <tr>
+                                                <td style="text-align: center;" colspan="8">
+                                                    <h1 v-if="Campaign.recipientsCount == 0">You have not Recepients</h1>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <h1 v-if="Campaign.recepientsCount == 0">You have not Recepients</h1>
-
                                 <v-btn flat v-on:click.native="step = 2">Previous</v-btn>
                                 <v-btn color="primary" v-on:click.native="ThirdStep">Continue</v-btn>
 
