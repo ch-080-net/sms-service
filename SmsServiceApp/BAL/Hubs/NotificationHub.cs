@@ -20,5 +20,10 @@ namespace BAL.Hubs
         {
             notificationManager.SetAsSent(notificationId, origin, Context.UserIdentifier);
         }
+
+        public IEnumerable<WebNotificationDTO> GetNotificationPage(int number)
+        {
+            return notificationManager.GetWebNotificationsPage(Context.UserIdentifier, number);
+        }
     }
 }

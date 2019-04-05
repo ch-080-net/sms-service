@@ -331,5 +331,44 @@ namespace BAL.Managers
 
             }
         }
+
+        public IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number)
+        {
+            var campaignNotifications = unitOfWork.CampaignNotifications.Get(x => x.ApplicationUserId == userId
+            && x.BeenSent);
+
+            var webNotifications = mapper.Map<IEnumerable<CampaignNotification>
+                , IEnumerable<WebNotificationDTO>>(campaignNotifications
+                .Where(x => x.Event == CampaignNotificationEvent.CampaignStart)
+                .OrderByDescending(x => x.Campaign.StartTime).Take(number));
+
+            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
+                , IEnumerable<WebNotificationDTO>>(campaignNotifications
+                .Where(x => x.Event == CampaignNotificationEvent.CampaignEnd)
+                .OrderByDescending(x => x.Campaign.EndTime).Take(number)));
+
+            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
+                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
+                 .Where(x => x.Event == CampaignNotificationEvent.Sending)
+                 .OrderByDescending(x => x.Campaign.SendingTime).Take(number)));
+
+            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
+                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
+                 .Where(x => x.Event == CampaignNotificationEvent.Sending)
+                 .OrderByDescending(x => x.Campaign.SendingTime).Take(number)));
+
+            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<EmailCampaignNotification>
+                , IEnumerable<WebNotificationDTO>>(unitOfWork.EmailCampaignNotifications.Get(x => x.EmailCampaign.UserId == userId
+                && x.BeenSent).OrderByDescending(x => x.EmailCampaign.SendingTime).Take(number)));
+
+            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<Notification>
+                , IEnumerable<WebNotificationDTO>>(unitOfWork.Notifications.Get(x => x.ApplicationUserId == userId
+                && x.BeenSent).OrderByDescending(x => x.Time).Take(number)));
+
+            webNotifications = webNotifications.OrderByDescending(x => x.Time).Take(number);
+
+            return webNotifications;
+        }
+
     }
 }
