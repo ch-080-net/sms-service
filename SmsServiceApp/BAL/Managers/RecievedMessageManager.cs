@@ -114,9 +114,9 @@ namespace BAL.Managers
         /// <param name="Content">message that came back</param>
         public void SearchStopWordInMesagasge(RecievedMessageDTO message)
         {
-            var subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault(c => c.Word == message.MessageText);
+            var subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault( c => c.Word == message.MessageText );
 
-            var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c =>( c.Word == message.MessageText)||( c.Word=="START")||(c.Word == "STOP"));
+            var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c =>(c.Word == message.MessageText) || ( c.Word=="START" ) || ( c.Word == "STOP"));
 
 
             if (subscribeWord != null)
@@ -130,7 +130,7 @@ namespace BAL.Managers
 
                
 
-                if ( (company == null) || (subscribeWord.CompanyId != company.Id) )
+                if (( company == null ) || ( subscribeWord.CompanyId != company.Id ))
                 {
                     return;
                 }
@@ -143,10 +143,8 @@ namespace BAL.Managers
                 }
                 else
                 {
-
-                    /*
-                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault(r =>
-                        (r.CompanyId == company.Id) && (r.PhoneId == orignator.Id));
+                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault( r =>
+                        ( r.CompanyId == company.Id ) && ( r.PhoneId == orignator.Id ));
 
                     if (rec != null)
                     {
@@ -154,15 +152,15 @@ namespace BAL.Managers
                     }
                     else
                     {
-                        unitOfWork.Recipients.Insert(new Recipient()
+                        unitOfWork.Recipients.Insert( new Recipient()
                         {
                             CompanyId = company.Id,
                             PhoneId = orignator.Id,
-                            KeyWords = "Subscribed himself"
+                            KeyWords = "Subscribed himself",
                         });
                     }
 
-                    unitOfWork.Save();*/
+                    unitOfWork.Save();
                 }
 
 
@@ -182,11 +180,10 @@ namespace BAL.Managers
                 {
                     return;
                 }
-                    if (words.Word != "START")
+                        if (words.Word != "START")
                         {
-                            PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll()
-                                .FirstOrDefault(w =>
-                                    w.GroupId == company.ApplicationGroupId && w.PhoneId == orignator.Id);
+                            PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll().FirstOrDefault(w =>
+                                   ( w.GroupId == company.ApplicationGroupId ) && ( w.PhoneId == orignator.Id ));
                             if (phoneGroup != null)
                             {
                                 unitOfWork.PhoneGroupUnsubscribes.Delete(phoneGroup);
@@ -194,8 +191,6 @@ namespace BAL.Managers
                         }
                         else
                         {
-
-
                             if (company != null) //add check for repetition
                             {
                                 PhoneGroupUnsubscribe phoneGroup = new PhoneGroupUnsubscribe()
