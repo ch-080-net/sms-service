@@ -120,10 +120,7 @@ namespace BAL.Managers
 
         public void SearchStopWordInMessages(RecievedMessageDTO message)
         {
-            var subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault( c => c.Word == message.MessageText );
-
-            var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c =>(c.Word == message.MessageText) || ( c.Word=="START" ) || ( c.Word == "STOP"));
-
+            SubscribeWord subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault( c => c.Word == message.MessageText );
 
             if (subscribeWord != null)
             {
@@ -134,8 +131,7 @@ namespace BAL.Managers
                     .FirstOrDefault();
                 Company company = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
 
-               
-
+              
                 if (( company == null ) || ( subscribeWord.CompanyId != company.Id ))
                 {
                     return;
@@ -149,29 +145,42 @@ namespace BAL.Managers
                 }
                 else
                 {
-                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault( r =>
-                        ( r.CompanyId == company.Id ) && ( r.PhoneId == orignator.Id ));
+                    if (subscribeWord.SubscribePhoneId == null)
+                    {
+                        return;
+                    }
+
+                    Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
+                    Company subscribeCompany = unitOfWork.Companies
+                        .Get(item => item.PhoneId == subscribeCompanyPhone.Id).FirstOrDefault();
+
+                    if (subscribeCompany == null)
+                    {
+                        return;
+                    }
+                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault(r =>
+                        ((r.CompanyId == subscribeCompany.Id) && (r.PhoneId == orignator.Id)));
 
                     if (rec != null)
                     {
                         return;
                     }
 
-                    unitOfWork.Recipients.Insert( new Recipient()
+                    unitOfWork.Recipients.Insert(new Recipient()
                     {
-                        CompanyId = company.Id,
+                        CompanyId = subscribeCompany.Id,
                         PhoneId = orignator.Id,
                         KeyWords = "Subscribed himself",
                     });
 
                     unitOfWork.Save();
                 }
-
-
             }
             else
-            { 
-               if (words != null)
+            {
+                StopWord words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => (c.Word == message.MessageText) || (c.Word == "START") || (c.Word == "STOP"));
+
+                if (words != null)
                {
 
                 Phone orignator = unitOfWork.Phones.Get(item => item.PhoneNumber == message.SenderPhone)
@@ -202,15 +211,11 @@ namespace BAL.Managers
 
                                     unitOfWork.PhoneGroupUnsubscribes.Insert(phoneGroup);
                             }
-                            
                         }
 
                   unitOfWork.Save();
                }
-                
             }
-
-            
 
         }
     }
