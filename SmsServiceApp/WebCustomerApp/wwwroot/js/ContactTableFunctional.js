@@ -5,6 +5,7 @@ var pagesCount;
 var currentPage = 1;
 var pageSize = 5;
 var searchValue = "";
+var input;
 
 $(document).ready(function () {
     $.getScript("https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js");
@@ -335,3 +336,32 @@ function HideShowFormForAddContact() {
         x.style.display = "none";
     }
 }
+
+$(function () {
+    $("#upload").bind("click", function () {
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test($("#fileUpload").val().toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+                reader.readAsText($("#fileUpload")[0].files[0]);
+
+               reader.onload = function () {
+                    $.ajax(
+                        {
+                            url: "/Contact/UploadFile",
+                            data: { fileData: reader.result },
+                            type: "POST",
+                            success: function () {
+                                GetContactData();
+                            }
+                        }
+                    );
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid CSV file.");
+        }
+    });
+});
