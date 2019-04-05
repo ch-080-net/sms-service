@@ -117,40 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add recipients" xml:space="preserve">
-    <value>Додати</value>
+  <data name="Manage notifications settings" xml:space="preserve">
+    <value>Керувати налаштуваннями сповіщень</value>
   </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Розсилка</value>
+  <data name="Save" xml:space="preserve">
+    <value>Зберегти</value>
   </data>
-  <data name="Campaigns on page" xml:space="preserve">
-    <value>Розсилок на сторінці</value>
+  <data name="Send notifications via Email" xml:space="preserve">
+    <value>Надсилати сповіщення електронною поштою</value>
   </data>
-  <data name="Create New" xml:space="preserve">
-    <value>Створити нову</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Видалити</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Деталі</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редагувати</value>
-  </data>
-  <data name="Index" xml:space="preserve">
-    <value>Головна</value>
-  </data>
-  <data name="Pause" xml:space="preserve">
-    <value>Пауза</value>
-  </data>
-  <data name="Resume" xml:space="preserve">
-    <value>Відновити</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Пошук...</value>
-  </data>
-  <data name="Tariff" xml:space="preserve">
-    <value>Тариф</value>
+  <data name="Send notifications via SMS" xml:space="preserve">
+    <value>Надсилати сповіщення через SMS</value>
   </data>
 </root>
