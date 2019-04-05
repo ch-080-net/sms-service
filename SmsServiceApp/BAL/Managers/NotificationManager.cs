@@ -50,7 +50,7 @@ namespace BAL.Managers
         {
             var notifications = unitOfWork.CampaignNotifications.Get(n =>
                 !n.BeenSent
-                && n.Type == CampaignNotificationType.Email
+                && n.Type == NotificationType.Email
                 && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
@@ -89,7 +89,7 @@ namespace BAL.Managers
         {
             var notifications = unitOfWork.CampaignNotifications.Get(n =>
                 !n.BeenSent
-                && n.Type == CampaignNotificationType.Sms
+                && n.Type == NotificationType.Sms
                 && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
@@ -128,7 +128,7 @@ namespace BAL.Managers
         {
             var notifications = unitOfWork.CampaignNotifications.Get(n =>
                 !n.BeenSent
-                && n.Type == CampaignNotificationType.Web
+                && n.Type == NotificationType.Web
                 && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
