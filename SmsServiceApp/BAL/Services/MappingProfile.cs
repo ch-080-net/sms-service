@@ -104,7 +104,12 @@ namespace BAL.Services
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
 
-            CreateMap<SubscribeWord, SubscribeWordViewModel>().ReverseMap();
+            CreateMap<SubscribeWord, SubscribeWordViewModel>()
+                .ForMember(sw => sw.Id, otp => otp.MapFrom(sw => sw.Id))
+                .ForMember(sw => sw.Word, otp => otp.MapFrom(sw => sw.Word))
+                .ForMember(sw => sw.CompanyId, otp => otp.MapFrom(c => c.CompanyId))
+                .ForMember(sw => sw.PhoneNumber,otp => otp.MapFrom(p => p.Phone.PhoneNumber))
+                .ReverseMap();
 
             CreateMap<Notification, EmailNotificationDTO>()
                 .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
