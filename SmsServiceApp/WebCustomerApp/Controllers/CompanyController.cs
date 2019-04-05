@@ -125,13 +125,12 @@ namespace WebApp.Controllers
             var phoneId = groupManager.Get(GetGroupId()).PhoneId;
             company.CompanyModel.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
             company.CompanyModel.TariffId = company.TariffModels.Id;
-            if (company.CompanyModel.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(company.SendModel.TariffId).Id;
-                company.CompanyModel.TariffId = tariff;
-            }
+            
             return View(company);
         }
+
+
+       
 
         /// <summary>
         /// Send new Company fron view to db
@@ -141,20 +140,9 @@ namespace WebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] StepViewModel item, int companyId)
-        {
+        {          
            
-
-
-            item.CompanyModel.ApplicationGroupId = GetGroupId();
-            item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
-            item.CompanyModel.TariffId = item.TariffModels.Id;
-            if (item.CompanyModel.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.SendModel.TariffId).Name;
-                item.SendModel.Tariff = tariff;
-            }
-
-
+                    
             if (item.CompanyModel.Type == CompanyType.Recieve)
             {
                 if (ModelState.IsValid)

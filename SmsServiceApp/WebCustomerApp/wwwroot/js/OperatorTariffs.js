@@ -64,18 +64,7 @@ function GetTariff(item) {
 
 function ChooseTariff(item) {
 
-
-    $.ajax({
-        url: '/Company/Create/',
-        type: 'POST',
-        data: {
-            id: tariffId
-        },
-        success: function (tariffs) {
-            tariffListSuccess(tariffs);
-        },
-        error: function (request, message, error) {
-            handleException(request, message, error);
-        }
-    });
+    var tariffId = $(item).data("id");
+    console.log(tariffId);
+    $("tariff").val(tariffId);
 }
