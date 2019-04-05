@@ -1,0 +1,77 @@
+﻿@using Model.ViewModels.EmailCampaignViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model EmailCampaignViewModel;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Localizer["Edit"]</title>
+    <script src='https://cloud.tinymce.com/5/tinymce.min.js'></script>
+    <script>
+        tinymce.init({
+            selector: '#myTextarea',
+            height: 600,
+            readonly: 1
+        });
+    </script>
+    <style>
+        .spanError {
+            color: red;
+        }
+
+        .tox-notifications-container {
+            display: none;
+        }
+
+        .tox-menubar {
+            display: none !important;
+        }
+
+        .tox-toolbar {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <h2>@Localizer["Edit"]</h2>
+    <h4>@Localizer["Campaign"]</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea rows="3" style="resize:none" asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailAddress" class="control-label"></label>
+                    <input asp-for="EmailAddress" class="form-control" readonly />
+                    <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <textarea id="myTextarea" asp-for="Message" class="form-control" readonly></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to List"]</a>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

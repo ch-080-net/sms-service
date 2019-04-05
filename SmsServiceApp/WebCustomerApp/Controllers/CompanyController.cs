@@ -177,7 +177,7 @@ namespace WebApp.Controllers
             SendViewModel item = new SendViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -205,9 +205,9 @@ namespace WebApp.Controllers
                 companyManager.AddSend(item);
                 return RedirectToAction("Index","Company");
             }
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
@@ -269,7 +269,7 @@ namespace WebApp.Controllers
             SendRecieveViewModel item = new SendRecieveViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -308,13 +308,13 @@ namespace WebApp.Controllers
             }
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
                 item.Tariff = tariff;
             }
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             return View(item);
         }
 

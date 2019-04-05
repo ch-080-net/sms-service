@@ -1,0 +1,151 @@
+﻿@using Model.ViewModels.EmailCampaignViewModels;
+@model EmailCampaignViewModel;
+@{
+    ViewData["Title"] = "Email Campaign";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Campaign</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div id="app">
+        <a class="btn btn-success" asp-action="Create">Create</a>
+        <br />
+        <div v-if="PageCount != 0">
+        <label>Search</label>
+        <input v-model="searchValue">
+        <button value="Search" v-on:click="getData" class="btn btn-primary">Search</button>
+        <br/>
+        <label>Campaigns on page:</label><select v-model.lazy="CountOnPage" v-on:change="getData">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+        </select>
+        <br />
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <td><label asp-for="Name"></label></td>
+                    <td><label asp-for="Description"></label></td>
+                    <td> </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in Campaigns">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td><a class="btn btn-success" v-bind:href="'/EmailCampaign/Details?campaignId='+item.id">Details</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="padding:inherit" class="btn-group">
+            <button class="btn btn-default" v-if="PageCount != 0" v-on:click="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+            <button class="btn btn-default" v-for="pageNumber in pages" v-on:click="getPageByNumber(pageNumber)">{{pageNumber}}</button>
+            <button class="btn btn-default" v-if="PageCount != 0" v-on:click="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+        </div>
+        </div>
+        <h1 v-if="PageCount == 0">You have not campaigns</h1>
+    </div>
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/axios.js"></script>
+    <script src="//unpkg.com/vue-plain-pagination@0.2.1"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                Campaigns: [],
+                page: 1,
+                CountOnPage: 5,
+                PageCount: 1,
+                pages: [],
+                searchValue: ""
+            },
+            methods: {
+                getCampaigns() {
+                    axios({
+                        method: 'post',
+                        url: '/EmailCampaign/Get',
+                        params: {
+                            page: this.page,
+                            countOnPage: this.CountOnPage,
+                            searchValue: this.searchValue
+                        }
+                    })
+                        .then(response => {
+                            this.Campaigns = response.data;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally();
+                },
+                getCampaignsCount() {
+                    axios({
+                        method: 'post',
+                        url: '/EmailCampaign/GetCampaignsCount',
+                        params: {
+                            searchValue: this.searchValue
+                        }
+                        })
+                        .then(response => {
+                            if (response.data % this.CountOnPage == 0)
+                                this.PageCount = response.data / this.CountOnPage;
+                            else
+                                this.PageCount = (response.data / this.CountOnPage) + 1;
+                            this.pages = [];
+                            for (let i = 1; i <= this.PageCount; i++) {
+                                this.pages.push(i);
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                        .finally();
+                },
+                getData() {
+                    this.getCampaigns();
+                    this.getCampaignsCount();
+                },
+                nextPage() {
+                    if (this.page < parseInt(this.PageCount)) {
+                        this.page++;
+                        this.getData();
+                    }
+                },
+                previousPage() {
+                    if (this.page > 1) {
+                        this.page--;
+                        this.getData();
+                    }                 
+                },
+                getPageByNumber(pageNum) {
+                    this.page = pageNum;
+                    this.getData();
+                }
+            },
+            mounted() {
+                this.getData();
+            }
+        })
+    </script>
+</body>
+</html>

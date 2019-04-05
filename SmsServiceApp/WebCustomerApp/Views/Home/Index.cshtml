@@ -60,8 +60,12 @@
                             <div id="myNav" class="overlay">
                                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                                 <div class="overlay-content">
-                                    <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
-                                    <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
+                                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
+                                        <a asp-area="" asp-controller="EmailCampaign" asp-action="Index">Email Campaign</a>
+                                    }
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                     {
                                         <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>

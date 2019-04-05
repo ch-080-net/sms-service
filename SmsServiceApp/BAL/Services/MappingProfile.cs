@@ -19,6 +19,8 @@ using Model.ViewModels.AnswersCodeViewModels;
 using Model.ViewModels.RecievedMessageViewModel;
 using System.Linq;
 using Model.ViewModels.CampaignReportingViewModels;
+using Model.ViewModels.EmailRecipientViewModels;
+using Model.ViewModels.EmailCampaignViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
 
 namespace BAL.Services
@@ -143,6 +145,23 @@ namespace BAL.Services
                 .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
                 .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
+
+            CreateMap<EmailRecipient, EmailRecipientViewModel>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
+            CreateMap<EmailRecipientViewModel, EmailRecipient>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<EmailCampaign, EmailCampaignViewModel>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));
+            CreateMap<EmailCampaignViewModel, EmailCampaign>();
+
+            CreateMap<EmailRecipient, EmailDTO>()
+                .ForMember(dest => dest.EmailRecipientId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SenderEmail, opt => opt.MapFrom(src => src.Company.Email.EmailAddress))
+                .ForMember(dest => dest.RecepientEmail, opt => opt.MapFrom(src => src.Email.EmailAddress))
+                .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Company.Message));
         }
 
         #region Notifications
@@ -191,6 +210,17 @@ namespace BAL.Services
                         return "";
                     }
             }
+
+            CreateMap<EmailRecipient, EmailRecipientViewModel>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
+            CreateMap<EmailRecipientViewModel, EmailRecipient>()
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<EmailCampaign, EmailCampaignViewModel>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));
+            CreateMap<EmailCampaignViewModel, EmailCampaign>();
         }
 
         #endregion
