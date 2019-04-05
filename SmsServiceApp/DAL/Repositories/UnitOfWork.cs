@@ -33,6 +33,7 @@ namespace DAL.Repositories
         private IBaseRepository<EmailRecipient> emailRecipientRepo;
         private IEmailCampaignRepository emailCampaignRepo;
         private IBaseRepository<Email> emailRepo;
+        private IEmailCampaignNotificationRepository emailCampNotRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -257,6 +258,19 @@ namespace DAL.Repositories
                 return emailRepo;
             }
         }
+
+        IEmailCampaignNotificationRepository IUnitOfWork.EmailCampaignNotifications
+        {
+            get
+            {
+                if (emailCampNotRepo == null)
+                {
+                    emailCampNotRepo = new EmailCampaignNotificactionRepository(context);
+                }
+                return emailCampNotRepo;
+            }
+        }
+        
 
         public int Save()
         {

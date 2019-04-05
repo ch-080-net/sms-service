@@ -22,6 +22,7 @@ namespace Model.Interfaces
         IChartsRepository Charts { get; }
         INotificationRepository Notifications { get; }
         ICampaignNotificationRepository CampaignNotifications { get; }
+        IEmailCampaignNotificationRepository EmailCampaignNotifications { get; }
         IBaseRepository<ApplicationUser> ApplicationUsers { get; }
         IBaseRepository<SubscribeWord> SubscribeWords { get; }
 
@@ -31,6 +32,7 @@ namespace Model.Interfaces
         IBaseRepository<EmailRecipient> EmailRecipients { get; }
         IEmailCampaignRepository EmailCampaigns { get; }
         IBaseRepository<Email> Emails { get; }
+
 
         int Save();
     }

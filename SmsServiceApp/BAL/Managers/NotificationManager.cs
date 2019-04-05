@@ -16,7 +16,7 @@ namespace BAL.Managers
     /// </summary>
     public class NotificationManager : BaseManager, INotificationManager
     {
-        public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager) : base(unitOfWork, mapper)
+        public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
 
@@ -26,7 +26,9 @@ namespace BAL.Managers
         /// <returns>email messages</returns>
         public IEnumerable<EmailNotificationDTO> GetAllEmailNotifications()
         {
-            return GetAllPersonalEmailNotifications().Concat(GetAllCampaignEmailNotifications());
+            return GetAllPersonalEmailNotifications()
+                .Concat(GetAllCampaignEmailNotifications())
+                .Concat(GetAllEmailCampaignEmailNotifications());
         }
 
         /// <summary>
@@ -58,6 +60,20 @@ namespace BAL.Managers
             return result;
         }
 
+        /// <summary>
+        /// Gets all not sent email campaign email notifications based on campaign sending time
+        /// </summary>
+        /// <returns>email messages</returns>
+        private IEnumerable<EmailNotificationDTO> GetAllEmailCampaignEmailNotifications()
+        {
+            var notifications = unitOfWork.EmailCampaignNotifications.Get(n =>
+                !n.BeenSent
+                && n.Type == NotificationType.Email
+                && n.EmailCampaign.SendingTime <= DateTime.Now);
+            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<EmailNotificationDTO>>(notifications);
+            return result;
+        }
+
 
         /// <summary>
         /// Gets all not sent personal and campaign SMS notifications with valid time
@@ -65,7 +81,9 @@ namespace BAL.Managers
         /// <returns>SMS messages</returns>
         public IEnumerable<SmsNotificationDTO> GetAllSmsNotifications()
         {
-            return GetAllPersonalSmsNotifications().Concat(GetAllCampaignSmsNotifications());
+            return GetAllPersonalSmsNotifications()
+                .Concat(GetAllCampaignSmsNotifications())
+                .Concat(GetAllEmailCampaignSmsNotifications());
         }
 
         /// <summary>
@@ -97,6 +115,20 @@ namespace BAL.Managers
             return result;
         }
 
+        /// <summary>
+        /// Gets all not sent email campaign SMS notifications based on campaign sending time
+        /// </summary>
+        /// <returns>SMS messages</returns>
+        private IEnumerable<SmsNotificationDTO> GetAllEmailCampaignSmsNotifications()
+        {
+            var notifications = unitOfWork.EmailCampaignNotifications.Get(n =>
+                !n.BeenSent
+                && n.Type == NotificationType.Sms
+                && n.EmailCampaign.SendingTime <= DateTime.Now);                
+            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<SmsNotificationDTO>>(notifications);
+            return result;
+        }
+
 
         /// <summary>
         /// Gets all not sent personal and campaign web notifications with valid time
@@ -104,7 +136,9 @@ namespace BAL.Managers
         /// <returns>Web notifications</returns>
         public IEnumerable<WebNotificationDTO> GetAllWebNotifications()
         {
-            return GetAllPersonalWebNotifications().Concat(GetAllCampaignWebNotifications());
+            return GetAllPersonalWebNotifications()
+                .Concat(GetAllCampaignWebNotifications())
+                .Concat(GetAllEmailCampaignWebNotifications());
         }
 
         /// <summary>
@@ -133,6 +167,20 @@ namespace BAL.Managers
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
             var result = mapper.Map<IEnumerable<CampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all not sent campaign web notifications based on campaign events time
+        /// </summary>
+        /// <returns>Web notifications</returns>
+        private IEnumerable<WebNotificationDTO> GetAllEmailCampaignWebNotifications()
+        {
+            var notifications = unitOfWork.EmailCampaignNotifications.Get(n =>
+                !n.BeenSent
+                && n.Type == NotificationType.Web
+                && n.EmailCampaign.SendingTime <= DateTime.Now);                
+            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
             return result;
         }
 
@@ -190,6 +238,28 @@ namespace BAL.Managers
                         }
                         break;
                     }
+                case NotificationOrigin.EmailCampaignReport:
+                    {
+                        var not = unitOfWork.EmailCampaignNotifications.GetById(notification.Id);
+                        if (not != null)
+                        {
+                            not.BeenSent = true;
+                        }
+
+                        try
+                        {
+                            unitOfWork.Save();
+                        }
+                        catch
+                        {
+                            // Sending will be repeated
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
             }
         }
 
@@ -223,6 +293,23 @@ namespace BAL.Managers
                 case NotificationOrigin.CampaignReport:
                     {
                         var not = unitOfWork.CampaignNotifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
+                        if (not != null)
+                        {
+                            not.BeenSent = true;
+                        }
+                        try
+                        {
+                            unitOfWork.Save();
+                        }
+                        catch
+                        {
+                            // Sending will be repeated
+                        }
+                        break;
+                    }
+                case NotificationOrigin.EmailCampaignReport:
+                    {
+                        var not = unitOfWork.EmailCampaignNotifications.Get(x => x.Id == notificationId && x.EmailCampaign.UserId == userId).FirstOrDefault();
                         if (not != null)
                         {
                             not.BeenSent = true;

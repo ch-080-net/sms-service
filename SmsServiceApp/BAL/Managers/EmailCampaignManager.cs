@@ -35,7 +35,7 @@ namespace BAL.Managers
             {
                 ec.Email = unitOfWork.Emails.GetById((int)ec.EmailId);
             }
-            
+
             return mapper.Map<IEnumerable<EmailCampaign>, List<EmailCampaignViewModel>>(emailCampaigns);
         }
 
@@ -59,6 +59,7 @@ namespace BAL.Managers
             {
                 emailCampaign.EmailId = email.Id;
             }
+            AddNotifications(emailCampaign);
             unitOfWork.EmailCampaigns.Insert(emailCampaign);
             unitOfWork.Save();
         }
@@ -66,6 +67,7 @@ namespace BAL.Managers
         public int InsertWithId(EmailCampaignViewModel item)
         {
             EmailCampaign company = mapper.Map<EmailCampaign>(item);
+            AddNotifications(company);
             int id = unitOfWork.EmailCampaigns.InsertWithId(company);
             return id;
         }
@@ -111,6 +113,7 @@ namespace BAL.Managers
             {
                 emailCampaign.EmailId = email.Id;
             }
+            AddNotifications(emailCampaign);
             unitOfWork.EmailCampaigns.Insert(emailCampaign);
             unitOfWork.Save();
             foreach (var recipient in emailRecipients)
@@ -132,6 +135,36 @@ namespace BAL.Managers
                 unitOfWork.EmailRecipients.Insert(newRecepient);
                 unitOfWork.Save();
             }
+        }
+
+        private void AddNotifications(EmailCampaign campaign)
+        {
+            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == campaign.UserId).FirstOrDefault();
+            if (user == null)
+                return;
+
+            AddSpecificNotifications(user, campaign, NotificationType.Web);
+            if (user.EmailNotificationsEnabled && user.EmailConfirmed)
+            {
+                AddSpecificNotifications(user, campaign, NotificationType.Email);
+            }
+            if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
+            {
+                AddSpecificNotifications(user, campaign, NotificationType.Sms);
+            }
+
+        }
+
+        private void AddSpecificNotifications(ApplicationUser user, EmailCampaign campaign, NotificationType type)
+        {
+            if (campaign.EmailCampaignNotifications == null)
+                campaign.EmailCampaignNotifications = new List<EmailCampaignNotification>();
+
+            campaign.EmailCampaignNotifications.Add(new EmailCampaignNotification()
+            {
+                BeenSent = false,
+                Type = type,                
+            });            
         }
     }
 }

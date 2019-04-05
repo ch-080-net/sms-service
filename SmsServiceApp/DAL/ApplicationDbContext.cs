@@ -34,6 +34,7 @@ namespace WebApp.Data
         public DbSet<EmailCampaign> EmailCampaigns { get; set; }
         public DbSet<EmailRecipient> EmailRecipients { get; set; }
         public DbSet<Email> Emails { get; set; }
+        public DbSet<EmailCampaignNotification> emailCampaignNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -56,6 +57,7 @@ namespace WebApp.Data
             builder.Entity<EmailRecipient>().HasKey(i => i.Id);
             builder.Entity<Email>().HasKey(i => i.Id);
 
+            builder.Entity<EmailCampaignNotification>().HasKey(i => i.Id);
             builder.Entity<CampaignNotification>().HasKey(i => i.Id);
             builder.Entity<Notification>().HasKey(i => i.Id);
 
@@ -146,6 +148,12 @@ namespace WebApp.Data
                 .WithOne(n => n.ApplicationUser)
                 .HasForeignKey(n => n.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<EmailCampaign>()
+                .HasMany(ec => ec.EmailCampaignNotifications)
+                .WithOne(ecn => ecn.EmailCampaign)
+                .HasForeignKey(ecn => ecn.CampaignId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 

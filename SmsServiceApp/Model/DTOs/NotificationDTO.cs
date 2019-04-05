@@ -15,6 +15,7 @@ namespace Model.DTOs
     public enum NotificationOrigin
     {
         CampaignReport,
-        PersonalNotification
+        PersonalNotification,
+        EmailCampaignReport
     }
 }

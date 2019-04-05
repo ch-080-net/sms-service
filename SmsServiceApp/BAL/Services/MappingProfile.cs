@@ -146,6 +146,26 @@ namespace BAL.Services
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
                 .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
 
+            CreateMap<EmailCampaignNotification, EmailNotificationDTO>()
+                .ForMember(en => en.Email, opt => opt.MapFrom(n => n.EmailCampaign.User.Email))
+                .ForMember(en => en.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<EmailCampaignNotification, SmsNotificationDTO>()
+                .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.EmailCampaign.User.PhoneNumber))
+                .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.EmailCampaign.User.ApplicationGroup.Phone.PhoneNumber))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
+
+            CreateMap<EmailCampaignNotification, WebNotificationDTO>()
+                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.EmailCampaign.UserId))
+                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
+                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
+                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
+                .ForMember(en => en.Time, opt => opt.MapFrom(cn => cn.EmailCampaign.SendingTime.ToString("G")));
+
             CreateMap<EmailRecipient, EmailRecipientViewModel>()
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
@@ -162,6 +182,7 @@ namespace BAL.Services
                 .ForMember(dest => dest.SenderEmail, opt => opt.MapFrom(src => src.Company.Email.EmailAddress))
                 .ForMember(dest => dest.RecepientEmail, opt => opt.MapFrom(src => src.Email.EmailAddress))
                 .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Company.Message));
+
         }
 
         #region Notifications
@@ -209,18 +230,12 @@ namespace BAL.Services
                     {
                         return "";
                     }
-            }
+            }            
+        }
 
-            CreateMap<EmailRecipient, EmailRecipientViewModel>()
-                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress))
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"));
-            CreateMap<EmailRecipientViewModel, EmailRecipient>()
-                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0))
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
-
-            CreateMap<EmailCampaign, EmailCampaignViewModel>()
-                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(src => src.Email.EmailAddress));
-            CreateMap<EmailCampaignViewModel, EmailCampaign>();
+        private string GenerateNotificationMessage(EmailCampaignNotification ecn)
+        {
+            return "Mailing for campaign " + ecn.EmailCampaign.Name + " started";
         }
 
         #endregion
