@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.StepViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,17 +224,69 @@ namespace BAL.Managers
             }
         }
 
+       
+        public int InsertRecieveCampaign(StepViewModel item)
+        {
+            try
+            {
+                Company company = mapper.Map<StepViewModel, Company>(item);
+
+                company.Name = item.CompanyModel.Name;
+                company.Type = item.CompanyModel.Type;
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.StartTime = item.RecieveModel.StartTime;
+                company.EndTime = item.RecieveModel.EndTime;
+                int id = unitOfWork.Companies.InsertRecieveCampaign(company);
+                AddNotifications(company);
+                unitOfWork.Save();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public int InsertCampaign(StepViewModel item)
+        {
+            try
+            {
+                Company company = mapper.Map<StepViewModel, Company>(item);
+                company.Name = item.CompanyModel.Name;
+                company.Type = item.CompanyModel.Type;    
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.TariffId = item.CompanyModel.TariffId;
+
+                int id = unitOfWork.Companies.InsertWithId(company);
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// Insert company entity to db and return Id
         /// </summary>
         /// <param name="item">CompanyViewModel that we isert to db</param>
         /// <returns>Id of inserted company</returns>
-        public int InsertWithId(CompanyViewModel item)
+        public int InsertWithId(StepViewModel item)
         {
             try
             {
-                Company company = mapper.Map<CompanyViewModel, Company>(item);
-                company.TariffId = null;
+                Company company = mapper.Map<StepViewModel, Company>(item);
+               
+                company.Name = item.CompanyModel.Name;
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.StartTime = item.RecieveModel.StartTime; 
+                company.EndTime = item.RecieveModel.EndTime;
                 int id = unitOfWork.Companies.InsertWithId(company);
                 AddNotifications(company);
                 unitOfWork.Save();

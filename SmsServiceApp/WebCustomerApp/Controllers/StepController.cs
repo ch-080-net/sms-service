@@ -92,42 +92,42 @@ namespace WebApp.Controllers
         /// Send new Company fron view to db
         /// </summary>
         /// <param name="item">ViewModel of Company from View</param>
-        /// <returns>Company index View</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] StepViewModel item)
-        {
-            if (ModelState.IsValid)
-            {
-                if (phoneManager.IsPhoneNumberExist(item.CompanyModel.PhoneNumber))
-                {
-                    item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
-                }
-                else
-                {
-                    Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.CompanyModel.PhoneNumber;
-                    phoneManager.Insert(newPhone);
-                    item.CompanyModel.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.CompanyModel.PhoneNumber).Id;
-                }
-                item.CompanyModel.ApplicationGroupId = GetGroupId();
-                int companyId = companyManager.InsertWithId(item.CompanyModel);
-                if (item.CompanyModel.Type == CompanyType.Send)
-                {
-                    return RedirectToAction("Send", new { companyId });
+        ///// <returns>Company index View</returns>
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Create([Bind] StepViewModel item)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (phoneManager.IsPhoneNumberExist(item.CompanyModel.PhoneNumber))
+        //        {
+        //            item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
+        //        }
+        //        else
+        //        {
+        //            Phone newPhone = new Phone();
+        //            newPhone.PhoneNumber = item.CompanyModel.PhoneNumber;
+        //            phoneManager.Insert(newPhone);
+        //            item.CompanyModel.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.CompanyModel.PhoneNumber).Id;
+        //        }
+        //        item.CompanyModel.ApplicationGroupId = GetGroupId();
+        //        int companyId = companyManager.InsertWithId(item);
+        //        if (item.CompanyModel.Type == CompanyType.Send)
+        //        {
+        //            return RedirectToAction("Send", new { companyId });
 
-                }
-                if (item.CompanyModel.Type == CompanyType.Recieve)
-                {
-                    return RedirectToAction("Recieve", new { companyId });
-                }
-                if (item.CompanyModel.Type == CompanyType.SendAndRecieve)
-                {
-                    return RedirectToAction("SendRecieve", new { companyId });
-                }
-            }
-            return View(item);
-        }
+        //        }
+        //        if (item.CompanyModel.Type == CompanyType.Recieve)
+        //        {
+        //            return RedirectToAction("Recieve", new { companyId });
+        //        }
+        //        if (item.CompanyModel.Type == CompanyType.SendAndRecieve)
+        //        {
+        //            return RedirectToAction("SendRecieve", new { companyId });
+        //        }
+        //    }
+        //    return View(item);
+        //}
 
         /// <summary>
         /// Return View of Send details

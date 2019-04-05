@@ -20,6 +20,7 @@ using Model.ViewModels.RecievedMessageViewModel;
 using System.Linq;
 using Model.ViewModels.CampaignReportingViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.StepViewModels;
 
 namespace BAL.Services
 {
@@ -36,6 +37,8 @@ namespace BAL.Services
             // Add as many of these lines as you need to map your objects
             CreateMap<Company, CompanyViewModel>();
             CreateMap<CompanyViewModel, Company>();
+            CreateMap<Company, StepViewModel>();
+            CreateMap<StepViewModel, Company>();
             CreateMap<Company, ManageViewModel>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
                             .ForMember(dest => dest.Phonenumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));

@@ -46,9 +46,9 @@
     border-radius: 15px;
 }
 
-/*.wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .check {
+.wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .check {
             background-color: #9c27b0;
-        }*/
+        }
 
 .wizard-card[data-color="purple"] .radio input[type=radio]:checked ~ .circle {
     border-color: #9c27b0;
@@ -89,8 +89,8 @@
     color: #f44336;
 }
 
-input[name="path"] {
-    display: none;
+input[name="we"] {
+    visibility:hidden;
 }
 
 .wizard-card .choice {

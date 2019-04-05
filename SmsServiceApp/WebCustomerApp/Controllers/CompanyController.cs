@@ -17,6 +17,7 @@ using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
 using BAL.Services;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.StepViewModels;
 
 namespace WebApp.Controllers
 {
@@ -67,6 +68,8 @@ namespace WebApp.Controllers
             return groupId;
         }
 
+       
+
         /// <summary>
         /// Get view with Companies which belongs to this user ApplicationGroup
         /// </summary>
@@ -78,7 +81,7 @@ namespace WebApp.Controllers
             return View(companies);
         }
 
-       
+
 
         public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
@@ -94,7 +97,7 @@ namespace WebApp.Controllers
         }
 
         public int GetCampaignsCount(string searchValue)
-             {
+        {
             if (searchValue == null)
             {
                 searchValue = "";
@@ -118,9 +121,15 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            CompanyViewModel company = new CompanyViewModel();
+            StepViewModel company = new StepViewModel();
             var phoneId = groupManager.Get(GetGroupId()).PhoneId;
-            company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+            company.CompanyModel.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+            company.CompanyModel.TariffId = company.TariffModels.Id;
+            if (company.CompanyModel.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(company.SendModel.TariffId).Id;
+                company.CompanyModel.TariffId = tariff;
+            }
             return View(company);
         }
 
@@ -131,37 +140,39 @@ namespace WebApp.Controllers
         /// <returns>Company index View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] CompanyViewModel item)
+        public IActionResult Create([Bind] StepViewModel item, int companyId)
         {
-            if (ModelState.IsValid)
-            {
-                    if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
-                    {
-                        item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
-                    }
-                    else
-                    {
-                        Phone newPhone = new Phone();
-                        newPhone.PhoneNumber = item.PhoneNumber;
-                        phoneManager.Insert(newPhone);
-                        item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
-                    }
-                    item.ApplicationGroupId = GetGroupId();
-                    int companyId = companyManager.InsertWithId(item);
-                    if (item.Type == CompanyType.Send)
-                    {
-                        return RedirectToAction("Send", new { companyId });
-                    }
-                    if (item.Type == CompanyType.Recieve)
-                    {
-                        return RedirectToAction("Recieve", new { companyId });
-                    }
-                    if (item.Type == CompanyType.SendAndRecieve)
-                    {
-                        return RedirectToAction("SendRecieve", new { companyId });
-                    }
+           
 
+
+            item.CompanyModel.ApplicationGroupId = GetGroupId();
+            item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
+            item.CompanyModel.TariffId = item.TariffModels.Id;
+            if (item.CompanyModel.TariffId != 0)
+            {
+                var tariff = tariffManager.GetById(item.SendModel.TariffId).Name;
+                item.SendModel.Tariff = tariff;
             }
+
+
+            if (item.CompanyModel.Type == CompanyType.Recieve)
+            {
+                if (ModelState.IsValid)
+                {
+                    companyId = companyManager.InsertRecieveCampaign(item);
+                    return RedirectToAction("Index");
+                }
+            }
+            if (item.CompanyModel.Type == CompanyType.Send || item.CompanyModel.Type == CompanyType.SendAndRecieve)
+            {
+                if (ModelState.IsValid)
+                {
+                    companyId = companyManager.InsertCampaign(item);
+                    return RedirectToAction("Index");
+                }
+            }
+            
+
             return View(item);
         }
 
@@ -375,8 +386,8 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Tariffs(int id, int companyId)
         {
-            TariffsViewModel model = new TariffsViewModel();
-            model.TariffsList = tariffManager.GetTariffs(id);
+            StepViewModel model = new StepViewModel();
+            model.TariffModel.TariffsList = tariffManager.GetTariffs(id);
             ViewData["companyId"] = companyId;
             return View(model);
         }

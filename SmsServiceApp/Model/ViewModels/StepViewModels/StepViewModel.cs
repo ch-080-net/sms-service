@@ -1,9 +1,11 @@
 ﻿using Model.ViewModels.CompanyViewModels;
 using Model.ViewModels.OperatorViewModels;
+using Model.ViewModels.RecipientViewModels;
 using Model.ViewModels.TariffViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WebApp.Models;
 
 namespace Model.ViewModels.StepViewModels
 {
@@ -14,5 +16,8 @@ namespace Model.ViewModels.StepViewModels
         public TariffsViewModel TariffModel { get; set; }
         public TariffViewModel TariffModels { get; set; }
         public RecieveViewModel RecieveModel { get; set; }
+        public RecipientViewModel RecipientModel { get; set; }
+        public SendViewModel SendModel { get; set; }
+
     }
 }

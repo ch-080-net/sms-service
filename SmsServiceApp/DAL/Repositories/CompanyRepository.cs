@@ -57,7 +57,14 @@ namespace DAL.Repositories
         /// <returns>Id</returns>
         public int InsertWithId(Company item)
         {
-            context.Add(item);
+            context.Companies.Add(item);
+            context.SaveChanges();
+            return item.Id;
+        }
+
+        public int InsertRecieveCampaign(Company item)
+        {
+            context.Companies.Add(item);
             context.SaveChanges();
             return item.Id;
         }

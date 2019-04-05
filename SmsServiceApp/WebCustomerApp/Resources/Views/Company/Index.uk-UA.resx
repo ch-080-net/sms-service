@@ -123,9 +123,6 @@
   <data name="Campaign" xml:space="preserve">
     <value>Розсилка</value>
   </data>
-  <data name="Campaigns on page" xml:space="preserve">
-    <value>Розсилок на сторінці</value>
-  </data>
   <data name="Create New" xml:space="preserve">
     <value>Створити нову</value>
   </data>
@@ -140,15 +137,6 @@
   </data>
   <data name="Index" xml:space="preserve">
     <value>Головна</value>
-  </data>
-  <data name="Pause" xml:space="preserve">
-    <value>Пауза</value>
-  </data>
-  <data name="Resume" xml:space="preserve">
-    <value>Відновити</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Пошук...</value>
   </data>
   <data name="Tariff" xml:space="preserve">
     <value>Тариф</value>
