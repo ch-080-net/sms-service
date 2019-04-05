@@ -1,0 +1,59 @@
+﻿@using System.Runtime.InteropServices.ComTypes
+@using Model.ViewModels.SubscribeWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<SubscribeWordViewModel>;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Localizer["SubscribeWord"]</title>
+</head>
+<body>
+<h2>@Localizer["SubscribeWord"]</h2>
+<h4>@Localizer["Campaign"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-1">
+      
+    </div>
+</div>
+<div class="container">
+    <a class="btn btn-success" asp-action="Create" asp-route-companyId="@Model.FirstOrDefault().CompanyId" asp-controller="SubscribeWord">@Localizer["Create New"]</a>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="col-md-1">
+                @Html.DisplayNameFor(model => model.Word)
+            </th>
+            <th scope="col" class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Word)
+                </td>
+               
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-controller="SubscribeWord" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
+                    <a class="btn btn-danger" asp-action="DeleteConfirmed"asp-controller="SubscribeWord" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+   
+</div>  
+<div>
+    <a class="btn btn-primary"asp-route-companyId="@Model.FirstOrDefault().CompanyId" asp-action="Details">@Localizer["Back to Details"]</a>
+
+    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Company"]</a>
+</div>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

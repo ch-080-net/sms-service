@@ -111,13 +111,13 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            StopWordViewModel company = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
+            StopWordViewModel word = stopWordManager.GetStopWords().FirstOrDefault(c => c.Id == id);
 
-            if (company == null)
+            if (word == null)
             {
                 return NotFound();
             }
-            return View(company);
+            return View(word);
         }
 
         /// <summary>

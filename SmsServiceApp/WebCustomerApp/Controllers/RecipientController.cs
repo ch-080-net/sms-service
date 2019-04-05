@@ -44,7 +44,21 @@ namespace WebApp.Controllers
 
 			return View(recipientManager.GetRecipients(companyId).ToList());
         }
-       
+        [HttpGet]
+        public IActionResult IndexDetails(int companyId)
+        {
+            int limit = companyManager.GetTariffLimit(companyId);
+            int count = recipientManager.GetRecipients(companyId).Count();
+
+            ViewData["CompanyId"] = companyId;
+
+            if (limit == count)
+                ViewData["warningMessage"] = "Recipients limit is full";
+            else if (limit < count)
+                ViewData["warningMessage"] = "Recipients limit is overflowing";
+
+            return View(recipientManager.GetRecipients(companyId).ToList());
+        }
         public List<RecipientViewModel> Get(int page, int countOnPage, string searchValue,int companyid)
         {
             if (searchValue == null)

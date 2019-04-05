@@ -16,6 +16,7 @@ namespace WebApp.Models
         public ICollection<RecievedMessage> RecievedMessages { get; set; }
         public ICollection<AnswersCode> AnswersCodes { get; set; }
         public ICollection<CampaignNotification> CampaignNotifications { get; set; }
+        public ICollection<SubscribeWord> SubscribeWords { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int ApplicationGroupId { get; set; } 

@@ -7,9 +7,11 @@ namespace BAL.Interfaces
 {
    public interface ISubscribeWordManager
     {
-        IEnumerable<SubscribeWordViewModel> GetStopWords();
+        IEnumerable<SubscribeWordViewModel> GetWords();
+        IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId);
         void Insert(SubscribeWordViewModel item);
         void Update(SubscribeWordViewModel item);
-       
+        void Delete(int item);
+
     }
 }

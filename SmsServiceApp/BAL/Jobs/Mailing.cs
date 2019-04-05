@@ -8,6 +8,7 @@ using Model.DTOs;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using BAL.Interfaces;
 
 namespace BAL.Jobs
 {
@@ -27,6 +28,12 @@ namespace BAL.Jobs
         {
             using (var scope = serviceScopeFactory.CreateScope())
             {
+                var emailsender = scope.ServiceProvider.GetService<IEmailSender>();
+                var emails = scope.ServiceProvider.GetService<IEmailMailingManager>().GetUnsentEmails();
+                if (emails.Any())
+                {
+                    emailsender.SendEmails(emails);
+                }
                 var service = scope.ServiceProvider.GetService<ISmsSender>();
                 var result = scope.ServiceProvider.GetService<IMailingManager>().GetUnsentMessages();
                 if (result.Any())

@@ -1,0 +1,32 @@
+﻿@using Model.ViewModels.SubscribeWordViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model SubscribeWordViewModel;
+<!DOCTYPE html>
+<html>
+<h2>@Localizer["Delete"]</h2>
+<h3>@Localizer["Are you sure you want to delete this?"]</h3>
+<div>
+    <h4>@Localizer["Stop Word"]</h4>
+    <hr />
+
+    <div class="col-md-4">
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Word)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Word)
+            </dd>
+
+        </dl>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="@Localizer["Delete"]" class="btn btn-danger" />
+        <a class="btn btn-primary" asp-action="SubscribeWord" asp-route-companyId="@Model.CompanyId" asp-controller="Company">@Localizer["Back to List"]</a>
+    </form>
+
+</div>
+
