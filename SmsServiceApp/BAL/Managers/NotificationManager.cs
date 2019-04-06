@@ -134,7 +134,7 @@ namespace BAL.Managers
         /// Gets all not sent personal and campaign web notifications with valid time
         /// </summary>
         /// <returns>Web notifications</returns>
-        public IEnumerable<WebNotificationDTO> GetAllWebNotifications()
+        public IEnumerable<NotificationDTO> GetNewWebNotifications()
         {
             return GetAllPersonalWebNotifications()
                 .Concat(GetAllCampaignWebNotifications())
@@ -145,12 +145,12 @@ namespace BAL.Managers
         /// Gets all not sent personal web notifications with valid time
         /// </summary>
         /// <returns>Web notifications</returns>
-        private IEnumerable<WebNotificationDTO> GetAllPersonalWebNotifications()
+        private IEnumerable<NotificationDTO> GetAllPersonalWebNotifications()
         {
             var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
                                                                 && n.Time <= DateTime.Now
                                                                 && n.Type == NotificationType.Web);
-            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<WebNotificationDTO>>(notifications);
+            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<NotificationDTO>>(notifications);
             return result;
         }
 
@@ -158,7 +158,7 @@ namespace BAL.Managers
         /// Gets all not sent campaign web notifications based on campaign events time
         /// </summary>
         /// <returns>Web notifications</returns>
-        private IEnumerable<WebNotificationDTO> GetAllCampaignWebNotifications()
+        private IEnumerable<NotificationDTO> GetAllCampaignWebNotifications()
         {
             var notifications = unitOfWork.CampaignNotifications.Get(n =>
                 !n.BeenSent
@@ -166,7 +166,7 @@ namespace BAL.Managers
                 && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
-            var result = mapper.Map<IEnumerable<CampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
+            var result = mapper.Map<IEnumerable<CampaignNotification>, IEnumerable<NotificationDTO>>(notifications);
             return result;
         }
 
@@ -174,13 +174,13 @@ namespace BAL.Managers
         /// Gets all not sent campaign web notifications based on campaign events time
         /// </summary>
         /// <returns>Web notifications</returns>
-        private IEnumerable<WebNotificationDTO> GetAllEmailCampaignWebNotifications()
+        private IEnumerable<NotificationDTO> GetAllEmailCampaignWebNotifications()
         {
             var notifications = unitOfWork.EmailCampaignNotifications.Get(n =>
                 !n.BeenSent
                 && n.Type == NotificationType.Web
                 && n.EmailCampaign.SendingTime <= DateTime.Now);                
-            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
+            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<NotificationDTO>>(notifications);
             return result;
         }
 
@@ -346,11 +346,6 @@ namespace BAL.Managers
                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
                 .Where(x => x.Event == CampaignNotificationEvent.CampaignEnd)
                 .OrderByDescending(x => x.Campaign.EndTime).Take(number)));
-
-            webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
-                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
-                 .Where(x => x.Event == CampaignNotificationEvent.Sending)
-                 .OrderByDescending(x => x.Campaign.SendingTime).Take(number)));
 
             webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
                  , IEnumerable<WebNotificationDTO>>(campaignNotifications

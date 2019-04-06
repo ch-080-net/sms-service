@@ -71,7 +71,7 @@ namespace BAL.Jobs
             {
                 var hubContext = scope.ServiceProvider.GetService<IHubContext<NotificationHub>>();
                 var manager = scope.ServiceProvider.GetService<INotificationManager>();
-                var webNotifications = manager.GetAllWebNotifications();
+                var webNotifications = manager.GetNewWebNotifications();
                 foreach (var iter in webNotifications)
                 { 
                     await hubContext.Clients.User(iter.UserId).SendAsync("GetNotification", iter);

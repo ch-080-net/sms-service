@@ -134,7 +134,6 @@ namespace BAL.Services
                 .ForMember(sn => sn.RecieverPhone, opt => opt.MapFrom(n => n.ApplicationUser.PhoneNumber))
                 .ForMember(sn => sn.SenderPhone, opt => opt.MapFrom(n => n.ApplicationUser.ApplicationGroup.Phone.PhoneNumber))
                 .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
-                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
 
             CreateMap<CampaignNotification, WebNotificationDTO>()
