@@ -227,7 +227,13 @@ namespace WebApp.Data
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
 
-        
+            builder.Entity<Phone>()
+                .HasMany(p => p.SubscribeWords)
+                .WithOne(r => r.Phone)
+                .HasForeignKey(s => s.SubscribePhoneId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Required fields
             #region Required fields
             builder.Entity<Code>()

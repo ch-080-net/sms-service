@@ -60,6 +60,10 @@
                             <div id="myNav" class="overlay">
                                 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                                 <div class="overlay-content">
+                                    @if (!User.Identity.IsAuthenticated)
+                                    {
+                                        <a asp-area="" asp-controller="TestMessage" asp-action="Index">Test Message</a>
+                                    }
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
@@ -78,8 +82,8 @@
                                     @await Html.PartialAsync("_LoginPartial")
 
                                 </div>
-                                <div id="LanguageSwitcher">                         
-                                        @await Html.PartialAsync("_SelectLanguagePartial")               
+                                <div id="LanguageSwitcher">
+                                    @await Html.PartialAsync("_SelectLanguagePartial")
                                 </div>
                             </div>
                             <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
@@ -152,17 +156,17 @@
         <p class="app_description">
             <h2 class="app_description_title">@Localizer["SMS SERVICE AT AFFORDABLE PRICE"]</h2>
             <h4 class="app_description_welcome">@Localizer["Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices."]</h4>
-			<div class="app_description_link app_button  ">
-				@if (User.Identity.IsAuthenticated)
-				{
-					<a href="Manage/Index" class="app_link  ">@Localizer["Profile"]</a>
+            <div class="app_description_link app_button  ">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="Manage/Index" class="app_link  ">@Localizer["Profile"]</a>
 
-				}
-				else
-				{
-					<a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
-				}
-			</div>
+                }
+                else
+                {
+                    <a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
+                }
+            </div>
 
         </p>
     </section>

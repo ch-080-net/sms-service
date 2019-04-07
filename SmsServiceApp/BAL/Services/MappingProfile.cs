@@ -22,6 +22,7 @@ using Model.ViewModels.CampaignReportingViewModels;
 using Model.ViewModels.EmailRecipientViewModels;
 using Model.ViewModels.EmailCampaignViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.TestMessageViewModels;
 
 namespace BAL.Services
 {
@@ -104,7 +105,12 @@ namespace BAL.Services
                 .ForMember(m => m.GroupId, opt => opt.MapFrom(r => r.GroupId))
              .ForMember(m => m.PhoneId, opt => opt.MapFrom(r => r.PhoneId));
 
-            CreateMap<SubscribeWord, SubscribeWordViewModel>().ReverseMap();
+            CreateMap<SubscribeWord, SubscribeWordViewModel>()
+                .ForMember(sw => sw.Id, otp => otp.MapFrom(sw => sw.Id))
+                .ForMember(sw => sw.Word, otp => otp.MapFrom(sw => sw.Word))
+                .ForMember(sw => sw.CompanyId, otp => otp.MapFrom(c => c.CompanyId))
+                .ForMember(sw => sw.PhoneNumber,otp => otp.MapFrom(p => p.Phone.PhoneNumber))
+                .ReverseMap();
 
             CreateMap<Notification, EmailNotificationDTO>()
                 .ForMember(en => en.Email, opt => opt.MapFrom(n => n.ApplicationUser.Email))
@@ -193,6 +199,10 @@ namespace BAL.Services
                 .ForMember(dest => dest.RecepientEmail, opt => opt.MapFrom(src => src.Email.EmailAddress))
                 .ForMember(dest => dest.MessageText, opt => opt.MapFrom(src => src.Company.Message));
 
+            CreateMap<TestMessageViewModel, MessageDTO>()
+                .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Recipient))
+                .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Sender))
+                .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Message));
         }
 
         #region Notifications

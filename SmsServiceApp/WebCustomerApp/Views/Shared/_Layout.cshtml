@@ -28,6 +28,10 @@
                 <div id="myNav" class="overlay">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="overlay-content">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <a asp-area="" asp-controller="TestMessage" asp-action="Index">Test Message</a>
+                        }
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>

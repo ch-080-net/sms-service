@@ -56,17 +56,13 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
+                SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
 
-            if (word == null)
-            {
-                return NotFound();
-            }
-            return View(word);
+                if (word == null)
+                {
+                    return NotFound();
+                }
+                return View(word);
         }
         /// <summary>
         ///  Send updated StopWord to db
@@ -82,7 +78,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 subscribeWordManager.Update(wordEdit);
-                return RedirectToAction("Index", "Company");
+                return RedirectToAction("SubscribeWord", "Company",new{ wordEdit.CompanyId });
             }
             return View(wordEdit);
         }

@@ -1,6 +1,7 @@
 ﻿new Vue({
     el: '#app',
     data: () => ({
+        dialog: false,
         step: 1,
         firstStepComplite: false,
         secondStepComplite: false,
@@ -32,11 +33,6 @@
     methods: {
         submit() {
             if (this.firstStepComplite && this.secondStepComplite && this.thirdStepComplite) {
-                if (this.Campaign.sendNow == "true") {
-                    this.Campaign.sendingTime = new Date();
-                    this.Campaign.sendingTime.setMinutes(this.Campaign.sendingTime.getMinutes() + 1);
-                    this.Campaign.sendingTime = this.Campaign.sendingTime.toLocaleString();
-                }
                 $.ajax({
                     url: '/EmailCampaign/CreateCampaign/',
                     type: 'POST',
@@ -58,11 +54,9 @@
         },
         FirstStep() {
             this.Campaign.sendingTime = document.getElementById('result').value;
-            if (this.Campaign.sendNow == "true")
-                this.Campaign.sendingTime = new Date().toLocaleString();
             var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             if (this.Campaign.name == "" || this.Campaign.emailAddress == "" ||
-                this.Campaign.sendingTime == "" || !re.test(this.Campaign.emailAddress)) {
+                (this.Campaign.sendingTime == "" && !this.Campaign.sendNow) || !re.test(this.Campaign.emailAddress)) {
                 if (this.Campaign.name == "")
                     $("#NameValidationError").text("Name field is required");
                 else
@@ -145,6 +139,12 @@
             var recid = $(event.target).data("recid");
             this.Recepients.splice(recid - 1, 1);
             this.index--;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        openDialog() {
+            this.dialog = true;
         }
 
     }

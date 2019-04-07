@@ -23,11 +23,30 @@ namespace BAL.Managers
         public IEnumerable<SubscribeWordViewModel> GetWords()
         {
             IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll();
+            foreach (var word in words)
+            {
+                word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
+            }
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
+
+
+        public SubscribeWordViewModel GetWordById(int id)
+        {
+            SubscribeWord word = unitOfWork.SubscribeWords.GetById(id);
+
+            word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
+
+            return mapper.Map<SubscribeWord, SubscribeWordViewModel>(word);
+        }
+
         public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
         {
             IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll().Where(sw=>sw.CompanyId==companyId);
+            foreach (var word in words)
+            {
+                word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
+            }
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
         /// <summary>
@@ -36,10 +55,23 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(SubscribeWordViewModel item)
         {
-            
-                SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-                unitOfWork.SubscribeWords.Insert(word);
+            SubscribeWord subscribeWord = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
+            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+
+            if (phone.Count == 0)
+            {
+                Phone newPhone = new Phone();
+                newPhone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(newPhone);
                 unitOfWork.Save();
+                subscribeWord.Phone = newPhone;
+            }
+            else
+            {
+                subscribeWord.Phone = phone[0];
+            }
+            unitOfWork.SubscribeWords.Insert(subscribeWord);
+            unitOfWork.Save();
          
         }
         /// <summary>
@@ -49,7 +81,22 @@ namespace BAL.Managers
         public void Update(SubscribeWordViewModel item)
         {
                 SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-                unitOfWork.SubscribeWords.Update(word);
+                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+
+                if (phone.Count == 0)
+                {
+                    Phone newPhone = new Phone();
+                    newPhone.PhoneNumber = item.PhoneNumber;
+                    unitOfWork.Phones.Insert(newPhone);
+                    unitOfWork.Save();
+                    word.Phone = newPhone;
+                }
+                else
+                {
+                    word.Phone = phone[0];
+                }
+               
+            unitOfWork.SubscribeWords.Update(word);
                 unitOfWork.Save();
          
         }

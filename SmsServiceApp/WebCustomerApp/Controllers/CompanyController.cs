@@ -491,9 +491,12 @@ namespace WebApp.Controllers
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)
                 {
-                    AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
-                    if (Regex.IsMatch(rm.MessageText, @"^\d+$") && answersCode != null)
-                        rm.MessageText = answersCodes.First(ac => ac.Code == int.Parse(rm.MessageText)).Answer;
+                    if (Regex.IsMatch(rm.MessageText, @"^\d+$"))
+                    {
+                        AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
+                        if (answersCode != null)
+                            rm.MessageText = answersCode.Answer;
+                    }
                 }
             }
             ViewBag.RecievedMessages = recievedMessages;
