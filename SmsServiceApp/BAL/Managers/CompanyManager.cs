@@ -250,19 +250,19 @@ namespace BAL.Managers
             var users = unitOfWork.ApplicationUsers.Get(au => au.ApplicationGroupId == company.ApplicationGroupId);
             foreach(var user in users)
             {
-                AddSpecificNotifications(user, company, CampaignNotificationType.Web);
+                AddSpecificNotifications(user, company, NotificationType.Web);
                 if (user.EmailNotificationsEnabled && user.EmailConfirmed)
                 {
-                    AddSpecificNotifications(user, company, CampaignNotificationType.Email);
+                    AddSpecificNotifications(user, company, NotificationType.Email);
                 }
                 if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
                 {
-                    AddSpecificNotifications(user, company, CampaignNotificationType.Sms);
+                    AddSpecificNotifications(user, company, NotificationType.Sms);
                 }
             }
         }
 
-        private void AddSpecificNotifications(ApplicationUser user, Company company, CampaignNotificationType type)
+        private void AddSpecificNotifications(ApplicationUser user, Company company, NotificationType type)
         {
             if (company.CampaignNotifications == null)
                 company.CampaignNotifications = new List<CampaignNotification>();

@@ -31,6 +31,8 @@ namespace BAL.Jobs
 
         public void ReturnJob(IJob job)
         {
+            // Dependencies resolved via scope factory, no unmanaged reources
+            // should be managed
         }
     }
 }

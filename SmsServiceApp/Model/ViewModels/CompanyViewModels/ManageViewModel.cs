@@ -39,5 +39,6 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
         public int PhoneId { get; set; }
+       
     }
 }

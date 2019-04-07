@@ -42,7 +42,7 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+               services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -69,6 +69,7 @@ namespace WebApp
 			services.AddTransient<IBaseRepository<Tariff>, BaseRepository<Tariff>>();
 			services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IMailingRepository, MailingRepository>();
+            services.AddTransient<IEmailCampaignRepository, EmailCampaignRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
 
             services.Configure<RequestLocalizationOptions>(options =>
@@ -155,7 +156,12 @@ namespace WebApp
             services.AddScoped<IChartsManager, ChartsManager>();
             services.AddScoped<IAnswersCodeManager, AnswersCodeManager>();
             services.AddScoped<IRecievedMessageManager, RecievedMessageManager>();
+            services.AddScoped<IEmailManager, EmailManager>();
+            services.AddScoped<IEmailCampaignManager, EmailCampaignManager>();
+            services.AddScoped<IEmailRecipientManager, EmailRecipientManager>();
             services.AddScoped<INotificationManager, NotificationManager>();
+            services.AddScoped<IEmailMailingManager, EmailMailingManager>();
+            services.AddScoped<ITestMessageManager, TestMessageManager>();
 
             // Configure sessions
 

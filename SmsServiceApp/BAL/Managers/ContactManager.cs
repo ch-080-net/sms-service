@@ -7,6 +7,9 @@ using System.Linq.Expressions;
 using System.Linq;
 using AutoMapper;
 using Model.ViewModels.ContactViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace BAL.Managers
 {
@@ -215,5 +218,67 @@ namespace BAL.Managers
                 throw ex;
             }
         }
+
+        public void AddContactFromFile(string data, string Id)
+        {
+            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == Id).FirstOrDefault();
+            if (user == null)
+                return;
+            
+            var contacts = TranslateToContacts(data, user);
+            foreach (var temp in contacts)
+            {
+                unitOfWork.Contacts.Insert(temp);
+            }
+
+            unitOfWork.Save();
+            
+        }
+
+        private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
+        {
+            //var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
+            var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
+            var result = new List<Contact>();
+            foreach (var item in splitedContactsR.Skip(1))
+            {
+                var tempList = string.IsNullOrEmpty(item)?null : item.Split(',').ToList();
+                if (tempList!= null)
+                {
+                    
+                        var temp = new Contact();
+                        temp.ApplicationGroupId = user.ApplicationGroupId;
+                        var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0))
+                            .FirstOrDefault();
+                        try
+                        {
+                        if (tempPhone != null)
+                        {
+                            temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
+                        }
+                        else
+                        {
+                            temp.PhoneId = tempPhone.Id;
+                        }
+
+                        temp.BirthDate = DateTime.ParseExact((tempList.ElementAt(1)), "yyyy-MM-dd",
+                            System.Globalization.CultureInfo.InvariantCulture);
+
+                        temp.Gender = Convert.ToByte(tempList.ElementAt(2));
+                    }
+                    catch
+                    {
+                    }
+                    
+                        result.Add(temp);
+                    
+                }
+            }
+            
+
+            return result;
+        }
+
+       
     }
 }

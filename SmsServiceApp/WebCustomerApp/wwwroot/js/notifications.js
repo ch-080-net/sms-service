@@ -2,20 +2,9 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
 window.onload = notificationStartup();
+var notificationsToShow = 10;
 
 connection.on("GetNotification", function (notification) {
-    var storedNotifications = localStorage.getItem("notifications");
-    storedNotifications = JSON.parse(storedNotifications);
-    if (storedNotifications == null) {
-        storedNotifications = [];
-    }
-    else if (storedNotifications.length > 15) {
-        storedNotifications = storedNotifications.slice(0, 15);
-    }
-    storedNotifications.unshift(notification);
-    storedNotifications = JSON.stringify(storedNotifications);
-    localStorage.setItem("notifications", storedNotifications);
-    fillModal();
     incrementBadge();
     connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
         return console.error(err.toString());
@@ -30,10 +19,9 @@ function incrementBadge() {
     if (activeNotifications == null) {
         activeNotifications = 0;
     }
-
-    document.getElementById("notificationBadge").innerHTML = ++activeNotifications;
-    activeNotifications = JSON.stringify(activeNotifications);
+    activeNotifications = JSON.stringify(++activeNotifications);
     localStorage.setItem("numOfActiveNotifications", activeNotifications);
+    loadBadge();
 }
 
 function loadBadge() {
@@ -51,22 +39,28 @@ function clearBadge() {
 }
 
 function fillModal() {
-    var content = "";
-    var storedNotifications = localStorage.getItem("notifications");
-    storedNotifications = JSON.parse(storedNotifications);
-    if (storedNotifications == null)
-        return;
-    for (var i = 0; i < storedNotifications.length; i++) {
-        content += "<h4>" + storedNotifications[i].title + "</h4>" + "<small>" + storedNotifications[i].time + "</small>";
-        content += "<p>" + storedNotifications[i].message + "</p>";
-        content += "<br />";
-    }
-    document.getElementById("notificationContent").innerHTML = content;
+    connection.invoke("GetNotificationPage", notificationsToShow).catch(function (err) {
+        return console.error(err.toString());
+    }).then(function (value) {
+        var content = "";
+        for (var i = 0; i < value.length; i++) {
+            content += "<h4>" + value[i].title + "</h4>" + "<small>" + value[i].time + "</small>";
+            content += "<p>" + value[i].message + "</p>";
+            content += "<br />";
+        }
+        content += '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="showMoreNotifications()">Load more</button>'
+        document.getElementById("notificationContent").innerHTML = content;
+    });
+}
+
+function showMoreNotifications()
+{
+    notificationsToShow += 10;
+    fillModal();
 }
 
 function notificationStartup() {
     loadBadge();
-    fillModal();
 }
 
 

@@ -13,7 +13,9 @@ namespace BAL.Managers
 
         IEnumerable<SmsNotificationDTO> GetAllSmsNotifications();
 
-        IEnumerable<WebNotificationDTO> GetAllWebNotifications();
+        IEnumerable<NotificationDTO> GetNewWebNotifications();
+
+        IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number);
 
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
         void SetAsSent(NotificationDTO notification);

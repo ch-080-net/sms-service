@@ -43,9 +43,12 @@ namespace BAL.Managers
             foreach (var rc in recievedMessages)
             {
                 Company company = unitOfWork.Companies.GetById(rc.CompanyId);
-                company.Phone = unitOfWork.Phones.GetById((int)company.PhoneId);
-                rc.Company = company;
-                rc.Phone = unitOfWork.Phones.GetById(rc.PhoneId);
+                if (company.PhoneId != null)
+                {
+                    company.Phone = unitOfWork.Phones.GetById((int) company.PhoneId);
+                    rc.Company = company;
+                    rc.Phone = unitOfWork.Phones.GetById(rc.PhoneId);
+                }
             }
             return mapper.Map<IEnumerable<RecievedMessage>, IEnumerable<RecievedMessageViewModel>>(recievedMessages);
         }
@@ -56,7 +59,7 @@ namespace BAL.Managers
         /// <param name="item">RecievedMessageDTO for inserting</param>
         public void Insert(RecievedMessageDTO item)
         {
-            SearchStopWordInMeaasge(item);
+            SearchStopWordInMessages(item);
             RecievedMessage recievedMessage = mapper.Map<RecievedMessageDTO, RecievedMessage>(item);
             unitOfWork.Phones.Get(filter: p => p.PhoneNumber == item.SenderPhone);
             List<Phone> phone = unitOfWork.Phones.Get(filter: p => p.PhoneNumber == item.SenderPhone).ToList();
@@ -105,28 +108,113 @@ namespace BAL.Managers
         }
 
         /// <summary>
-        /// check who is in the reported stopword
+        /// check who is in the reported stopword & subscribeword
         /// if there is something 
-        /// look for the recipient and block the mailing in this group
+        /// look for the recipient and block the mailing in this group or start
         /// </summary>
         /// <param name="Originator">recipient PhoneNumber</param>
         /// <param name="Destination">company PhoneNumber</param>
         /// <param name="Content">message that came back</param>
-        public void SearchStopWordInMeaasge(RecievedMessageDTO message)
-        {
-            var words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => c.Word == message.MessageText);//"STOP"==Content
+        /// <param name="message">message.Originator/Destination/Content</param>
 
-            if (words != null)
+
+        public void SearchStopWordInMessages(RecievedMessageDTO message)
+        {
+            SubscribeWord subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault( c => c.Word == message.MessageText );
+
+            if (subscribeWord != null)
             {
-                var orignator = unitOfWork.Phones.Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
-                var destination = unitOfWork.Phones.Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
-                var companies = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
-                if (companies != null)//add check for repetition
+
+                Phone orignator = unitOfWork.Phones.Get(item => item.PhoneNumber == message.SenderPhone)
+                    .FirstOrDefault();
+                Phone destination = unitOfWork.Phones.Get(item => item.PhoneNumber == message.RecipientPhone)
+                    .FirstOrDefault();
+                Company company = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
+
+              
+                if (( company == null ) || ( subscribeWord.CompanyId != company.Id ))
                 {
-                    PhoneGroupUnsubscribe phoneGroup = new PhoneGroupUnsubscribe() { GroupId = companies.ApplicationGroupId , PhoneId = orignator.Id};
-                    unitOfWork.PhoneGroupUnsubscribes.Insert(phoneGroup);
+                    return;
+                }
+
+                if (orignator == null)
+                {
+                    orignator = new Phone() { PhoneNumber = message.SenderPhone };
+                    unitOfWork.Phones.Insert(orignator);
                     unitOfWork.Save();
                 }
+                else
+                {
+                    if (subscribeWord.SubscribePhoneId == null)
+                    {
+                        return;
+                    }
+
+                    Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
+                    Company subscribeCompany = unitOfWork.Companies
+                        .Get(item => item.PhoneId == subscribeCompanyPhone.Id).FirstOrDefault();
+
+                    if (subscribeCompany == null)
+                    {
+                        return;
+                    }
+                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault(r =>
+                        ((r.CompanyId == subscribeCompany.Id) && (r.PhoneId == orignator.Id)));
+
+                    if (rec != null)
+                    {
+                        return;
+                    }
+
+                    unitOfWork.Recipients.Insert(new Recipient()
+                    {
+                        CompanyId = subscribeCompany.Id,
+                        PhoneId = orignator.Id,
+                        KeyWords = "Subscribed himself",
+                    });
+
+                    unitOfWork.Save();
+                }
+            }
+            else
+            {
+                StopWord words = unitOfWork.StopWords.GetAll().FirstOrDefault(c => (c.Word == message.MessageText) || (c.Word == "START") || (c.Word == "STOP"));
+
+                if (words != null)
+               {
+
+                Phone orignator = unitOfWork.Phones.Get(item => item.PhoneNumber == message.SenderPhone)
+                    .FirstOrDefault();
+                Phone destination = unitOfWork.Phones.Get(item => item.PhoneNumber == message.RecipientPhone)
+                    .FirstOrDefault();
+                Company company = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
+
+                if (company == null)
+                {
+                    return;
+                }
+                        if ((words.Word != "START")&& (orignator != null))
+                        {
+                            PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll().FirstOrDefault(w =>
+                                   ( w.GroupId == company.ApplicationGroupId ) && ( w.PhoneId == orignator.Id ));
+                            if (phoneGroup != null)
+                            {
+                                unitOfWork.PhoneGroupUnsubscribes.Delete(phoneGroup);
+                            }
+                        }
+                        else
+                        {
+                            if (orignator != null)
+                            {
+                                    PhoneGroupUnsubscribe phoneGroup = new PhoneGroupUnsubscribe()
+                                        {GroupId = company.ApplicationGroupId, PhoneId = orignator.Id};
+
+                                    unitOfWork.PhoneGroupUnsubscribes.Insert(phoneGroup);
+                            }
+                        }
+
+                  unitOfWork.Save();
+               }
             }
 
         }

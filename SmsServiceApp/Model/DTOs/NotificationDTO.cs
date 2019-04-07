@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Model.DTOs
 {
-    public abstract class NotificationDTO
+    public class NotificationDTO
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Message { get; set; }
+        [JsonIgnore]
+        public string UserId { get; set; }
+        public int Id { get; set; }        
         public NotificationOrigin Origin { get; set; }
     }
 
     public enum NotificationOrigin
     {
         CampaignReport,
-        PersonalNotification
+        PersonalNotification,
+        EmailCampaignReport
     }
 }

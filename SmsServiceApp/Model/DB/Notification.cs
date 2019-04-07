@@ -15,11 +15,4 @@ namespace WebApp.Models
         public string Title { get; set; }
         public string Message { get; set; }
     }
-
-    public enum NotificationType
-    {
-        Web,
-        Email,
-        Sms
-    }
 }

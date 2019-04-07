@@ -7,9 +7,13 @@ namespace WebApp.Models
 {
    public class SubscribeWord
     {
-        public  int? StopWordId { get; set; }
-        public  StopWord StopWord { get; set; }
+        public int Id { get; set; }
+        public string Word { get; set; }
+
         public int? CompanyId { get; set; }
         public Company Company { get; set; }
+
+        public int? SubscribePhoneId { get; set; }
+        public Phone Phone { get; set; }
     }
 }
