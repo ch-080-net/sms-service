@@ -1,18 +1,17 @@
 /*global*/
    * {
-    box-sizing: border-box;
+    box-sizing: content-box;
   }
   
-  body {
-      margin:0;
-      padding:0;
-    font-family: 'Lato', sans-serif;
-    position: relative;
-    box-sizing: border-box;
-    padding-bottom: 1%;
-    overflow-y:scroll;
-    overflow-x:hidden;
-  }
+   .content {
+       min-height: 250px;
+       padding: 0px;
+       margin-right: auto;
+       margin-left: auto;
+       padding-left: 0px;
+       padding-right: 0px;
+   }
+
   a {
     color: rgba(255, 255, 255, 0.8);
     text-decoration: underline;
@@ -30,7 +29,7 @@
     padding: 1% 5%;
   }
   /*Logo*/
-.logo {
+.logo_home {
     display: flex;
     align-items: flex-start;
     max-height: 100px;

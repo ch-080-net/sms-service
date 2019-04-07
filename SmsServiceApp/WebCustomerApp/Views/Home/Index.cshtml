@@ -3,21 +3,10 @@
 @inject IViewLocalizer Localizer
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-@{
-    ViewData["Title"] = Localizer["SMS-service"];
-    Layout = null;
-}
-
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie-edge">
-    <title>SmS Service</title>
-
-
     <script>
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -26,17 +15,8 @@
             window.scrollTo(0, 1);
         }
     </script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/css/menunav.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="~/css/style2.min.css">
-
-
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-
-    <link rel="stylesheet" href="~/css/style2.css">
 </head>
 <body>
     <div id="page_preloader" onload='StartPage()'>
@@ -47,46 +27,9 @@
         </div>
     </div>
     <header class="header">
-        <a href="#" class="logo">
+        <a href="#" class="logo_home">
             <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
         </a>
-
-        <nav class="menu">
-            <ul class="menu_list">
-                <li>
-
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <div id="myNav" class="overlay">
-                                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                                <div class="overlay-content">
-                                    <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
-                                    <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
-                                        <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
-                                    }
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                                    {
-                                        <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
-                                    }
-                                    @await Html.PartialAsync("_LoginPartial")
-
-                                </div>
-                                <div id="LanguageSwitcher">                         
-                                        @await Html.PartialAsync("_SelectLanguagePartial")               
-                                </div>
-                            </div>
-                            <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                        </div>
-                    </div>
-                </li>
-
-            </ul>
-
-        </nav>
-
         <!--/.header-->
     </header>
     <section class="main">

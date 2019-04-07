@@ -309,13 +309,13 @@ function buildNavigationButtons() {
     else
         pagesCount = contactCount / pageSize + 1;
     $("#pageButtons button").remove();
-    var button = "<button type='button' class='btn btn -default ' onclick='previousPage()' id='previous'><span class='glyphicon glyphicon-triangle-left' /></button>"
+    var button = "<button type='button' class='btn btn-default ' onclick='previousPage()' id='previous'><span class='glyphicon glyphicon-triangle-left' /></button>"
     $("#pageButtons").append(button);
     for (var i = 1; i <= pagesCount; i++) {
-        button = "<button type='button' class='btn btn -default' onclick='getPageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
+        button = "<button type='button' class='btn btn-default' onclick='getPageByNumber(this)' id='Page" + i + "'>" + i + "</button>";
         $("#pageButtons").append(button);
     }
-    button = "<button type='button' class='btn btn -default ' onclick='nextPage()' id='next'><span class='glyphicon glyphicon-triangle-right' /></button>";
+    button = "<button type='button' class='btn btn-default ' onclick='nextPage()' id='next'><span class='glyphicon glyphicon-triangle-right' /></button>";
     $("#pageButtons").append(button);
 }
 
