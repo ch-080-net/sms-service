@@ -365,5 +365,29 @@ namespace BAL.Managers
             return webNotifications;
         }
 
+        public NotificationReportDTO GetWebNotificationsReport(string userId)
+        {
+            var result = new NotificationReportDTO();
+            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == userId).FirstOrDefault();
+            if (user == null)
+                return result;
+            result.Notifications = GetWebNotificationsPage(userId, 5);
+            var campaigns = unitOfWork.Companies.Get(x => x.ApplicationGroupId == user.ApplicationGroupId);
+            var emailCampaigns = unitOfWork.EmailCampaigns.Get(x => x.UserId == userId);
+            result.VotingsInProgress = (from iter in campaigns
+                                        where iter.StartTime <= DateTime.Now
+                                        && iter.EndTime >= DateTime.Now
+                                        select iter).Count();
+
+            result.MailingsPlannedToday = (from iter in campaigns
+                                            where iter.SendingTime >= DateTime.Now
+                                            && iter.SendingTime <= DateTime.Today.AddDays(1)
+                                            select iter).Count();
+            result.MailingsPlannedToday += (from iter in emailCampaigns
+                                             where iter.SendingTime >= DateTime.Now
+                                             && iter.SendingTime <= DateTime.Today.AddDays(1)
+                                             select iter).Count();
+            return result;
+        }
     }
 }

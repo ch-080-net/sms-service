@@ -17,6 +17,8 @@ namespace BAL.Managers
 
         IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number);
 
+        NotificationReportDTO GetWebNotificationsReport(string userId);
+
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
         void SetAsSent(NotificationDTO notification);
         void SetAsSent(int notificationId, NotificationOrigin origin, string userId);

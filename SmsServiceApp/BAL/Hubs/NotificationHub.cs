@@ -25,5 +25,10 @@ namespace BAL.Hubs
         {
             return notificationManager.GetWebNotificationsPage(Context.UserIdentifier, number);
         }
+
+        public NotificationReportDTO GetNotificationReport()
+        {
+            return notificationManager.GetWebNotificationsReport(Context.UserIdentifier);
+        }
     }
 }

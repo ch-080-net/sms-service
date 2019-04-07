@@ -53,6 +53,34 @@ function fillModal() {
     });
 }
 
+function fillReport() {
+    connection.invoke("GetNotificationReport").catch(function (err) {
+        return console.error(err.toString());
+    }).then(function (value) {
+        var content = "";
+        if (value.votingsInProgress == 0) {
+            content += "<ul class='menu'><li><a href='#'>" + "<span class='glyphicon glyphicon-pause' aria-hidden='true'></span>" + "No votings in progress" + "</a></li></ul>"
+        }
+        else {
+            content += "<ul class='menu'><li><a href='#'>" + "<span class='glyphicon glyphicon-play' aria-hidden='true'></span>" + value.votingsInProgress + " votings in progress" + "</a></li></ul>"
+        }
+
+        if (value.campaignsPlannedToday == 0) {
+            content += "<ul class='menu'><li><a href='#'>" + "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>" + "No mailings planned for today" + "</a></li></ul>"
+        }
+        else {
+            content += "<ul class='menu'><li><a href='#'>" + "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>" + value.mailingsPlannedToday + " mailings planned for today" + "</a></li></ul>"
+        }
+
+        content += "<br />"
+        
+        for (var i = 0; i < value.notifications.length; i++) {
+            content += "<ul class='menu'><li><a href='#'>" + value.notifications[i].message + "</a></li></ul>";
+        }
+        document.getElementById("notificationMenu").innerHTML = content;
+    });
+}
+
 function showMoreNotifications()
 {
     notificationsToShow += 10;
