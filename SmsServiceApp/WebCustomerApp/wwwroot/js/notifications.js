@@ -2,6 +2,7 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
 window.onload = notificationStartup();
+var notificationsToShow = 10;
 
 connection.on("GetNotification", function (notification) {
     incrementBadge();
@@ -37,8 +38,8 @@ function clearBadge() {
     loadBadge();
 }
 
-function fillModal(numOfNotifications = 15) {
-    connection.invoke("GetNotificationPage", numOfNotifications).catch(function (err) {
+function fillModal() {
+    connection.invoke("GetNotificationPage", notificationsToShow).catch(function (err) {
         return console.error(err.toString());
     }).then(function (value) {
         var content = "";
@@ -47,8 +48,15 @@ function fillModal(numOfNotifications = 15) {
             content += "<p>" + value[i].message + "</p>";
             content += "<br />";
         }
+        content += '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="showMoreNotifications()">Load more</button>'
         document.getElementById("notificationContent").innerHTML = content;
     });
+}
+
+function showMoreNotifications()
+{
+    notificationsToShow += 10;
+    fillModal();
 }
 
 function notificationStartup() {

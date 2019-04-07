@@ -339,17 +339,17 @@ namespace BAL.Managers
 
             var webNotifications = mapper.Map<IEnumerable<CampaignNotification>
                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
-                .Where(x => x.Event == CampaignNotificationEvent.CampaignStart)
+                .Where(x => x.Event == CampaignNotificationEvent.CampaignStart && x.BeenSent)
                 .OrderByDescending(x => x.Campaign.StartTime).Take(number));
 
             webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
                 , IEnumerable<WebNotificationDTO>>(campaignNotifications
-                .Where(x => x.Event == CampaignNotificationEvent.CampaignEnd)
+                .Where(x => x.Event == CampaignNotificationEvent.CampaignEnd && x.BeenSent)
                 .OrderByDescending(x => x.Campaign.EndTime).Take(number)));
 
             webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<CampaignNotification>
                  , IEnumerable<WebNotificationDTO>>(campaignNotifications
-                 .Where(x => x.Event == CampaignNotificationEvent.Sending)
+                 .Where(x => x.Event == CampaignNotificationEvent.Sending && x.BeenSent)
                  .OrderByDescending(x => x.Campaign.SendingTime).Take(number)));
 
             webNotifications = webNotifications.Concat(mapper.Map<IEnumerable<EmailCampaignNotification>
