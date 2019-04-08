@@ -117,16 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="External logins" xml:space="preserve">
-    <value>Зовнішні сервіси</value>
+  <data name="Add another service to log in." xml:space="preserve">
+    <value>Додайте інший сервіс для реєстрації</value>
   </data>
-  <data name="Notifications" xml:space="preserve">
-    <value>Сповіщення</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Профіль</value>
+  <data name="Registered Logins" xml:space="preserve">
+    <value>Зареєстровані сервіси</value>
   </data>
 </root>
