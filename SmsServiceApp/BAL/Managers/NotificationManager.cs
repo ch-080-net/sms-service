@@ -390,20 +390,20 @@ namespace BAL.Managers
             return result;
         }
 
-        public TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message)
+        public TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null)
         {
             var user = unitOfWork.ApplicationUsers.Get(au => au.Id == userId).FirstOrDefault();
             if (user == null)
                 return new TransactionResultDTO() { Success = false, Details = "User does not exist!" };
 
-            AddSpecificNotifications(userId, NotificationType.Web, time, title, message);
+            AddSpecificNotifications(userId, NotificationType.Web, time, title, message, href);
             if (user.EmailNotificationsEnabled && user.EmailConfirmed)
             {
-                AddSpecificNotifications(userId, NotificationType.Email, time, title, message);
+                AddSpecificNotifications(userId, NotificationType.Email, time, title, message, href);
             }
             if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
             {
-                AddSpecificNotifications(userId, NotificationType.Sms, time, title, message);
+                AddSpecificNotifications(userId, NotificationType.Sms, time, title, message, href);
             }
             try
             {
@@ -417,7 +417,7 @@ namespace BAL.Managers
             return new TransactionResultDTO() { Success = true };
         }
 
-        private void AddSpecificNotifications(string userId, NotificationType type, DateTime time, string title, string message)
+        private void AddSpecificNotifications(string userId, NotificationType type, DateTime time, string title, string message, string href = null)
         {            
             unitOfWork.Notifications.Insert(new Notification()
             {
@@ -426,7 +426,8 @@ namespace BAL.Managers
                 Title = title,
                 Message = message,
                 Time = time,
-                ApplicationUserId = userId
+                ApplicationUserId = userId,
+                Href = href                
             });       
         }
     }

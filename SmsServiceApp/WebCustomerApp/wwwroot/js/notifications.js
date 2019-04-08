@@ -75,7 +75,13 @@ function fillReport() {
         content += "<br />"
         
         for (var i = 0; i < value.notifications.length; i++) {
-            content += "<ul class='menu'><li style='width:99%'><a href='#'>" + value.notifications[i].message + "</a></li></ul>";
+            content += "<ul class='menu'><li style='width:99%'>";
+            if (value.notifications[i].href != null)
+                content += "<a href='" + value.notifications[i].href + "'>";
+            else {
+                content += "<a href='#'>";
+            }
+            content += value.notifications[i].message + "</a></li></ul>";
         }
         document.getElementById("notificationMenu").innerHTML = content;
     });
