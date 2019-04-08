@@ -117,25 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Campaigns" xml:space="preserve">
-    <value>Розсилки</value>
-  </data>
   <data name="Contacts" xml:space="preserve">
     <value>Контакти</value>
   </data>
-  <data name="Group" xml:space="preserve">
-    <value>Групи</value>
+  <data name="Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="Email Campaign" xml:space="preserve">
+    <value>Поштова розсилка</value>
+  </data>
+  <data name="List of campaigns" xml:space="preserve">
+    <value>Список розсилок</value>
+  </data>
+  <data name="List of words" xml:space="preserve">
+    <value>Список слів</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Повідомлення</value>
   </data>
   <data name="Operators" xml:space="preserve">
-    <value>Оператор</value>
+    <value>Оператори</value>
   </data>
-  <data name="Stop Words" xml:space="preserve">
+  <data name="Profile" xml:space="preserve">
+    <value>Користувач</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Реєстрація</value>
+  </data>
+  <data name="Send invite" xml:space="preserve">
+    <value>Запросити</value>
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value>Увійти</value>
+  </data>
+  <data name="Sign out" xml:space="preserve">
+    <value>Вийти</value>
+  </data>
+  <data name="SMS Campaign" xml:space="preserve">
+    <value>СМС розсилка</value>
+  </data>
+  <data name="Stop words" xml:space="preserve">
     <value>Слова зупинки</value>
   </data>
-  <data name="Toggle navigation" xml:space="preserve">
-    <value>Перемикання навігації</value>
+  <data name="User group" xml:space="preserve">
+    <value>Група користувачів</value>
   </data>
-  <data name="Users Group" xml:space="preserve">
-    <value>Групи користувача</value>
+  <data name="Users in group" xml:space="preserve">
+    <value>Користувачі в групі</value>
   </data>
 </root>
