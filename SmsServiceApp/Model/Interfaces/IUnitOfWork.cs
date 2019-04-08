@@ -32,6 +32,8 @@ namespace Model.Interfaces
         IBaseRepository<EmailRecipient> EmailRecipients { get; }
         IEmailCampaignRepository EmailCampaigns { get; }
         IBaseRepository<Email> Emails { get; }
+        IAdminStatisticRepository AdminStatisticRepository { get; }
+
 
 
         int Save();

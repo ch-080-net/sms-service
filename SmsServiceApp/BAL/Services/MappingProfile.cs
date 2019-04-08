@@ -23,6 +23,8 @@ using Model.ViewModels.EmailRecipientViewModels;
 using Model.ViewModels.EmailCampaignViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
 using Model.ViewModels.TestMessageViewModels;
+using Model.ViewModels.AdminStatisticViewModel;
+using MessageState = WebApp.Models.MessageState;
 
 namespace BAL.Services
 {
@@ -48,6 +50,7 @@ namespace BAL.Services
                 .ForMember(ovm => ovm.Logo, opt => opt.MapFrom(o => GetLogo(o)));
             CreateMap<OperatorViewModel, Operator>();
 
+
             CreateMap<Code, CodeViewModel>().ReverseMap();
 
             CreateMap<StopWord, StopWordViewModel>();
@@ -66,6 +69,7 @@ namespace BAL.Services
             CreateMap<ApplicationGroup, GroupViewModel>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
             CreateMap<GroupViewModel, ApplicationGroup>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
 
+          
             CreateMap<ApplicationUser, UserViewModel>();
             CreateMap<UserViewModel, ApplicationUser>();
 
@@ -203,6 +207,21 @@ namespace BAL.Services
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Recipient))
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Sender))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Message));
+
+            CreateMap<ApplicationGroup, AdminStatisticViewModel>()
+                .ForMember(dest => dest.groupName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.groupName, opt => opt.MapFrom(cn => GetNumberOfMessage(cn)));
+
+        }
+        private int GetNumberOfMessage(ApplicationGroup applicationGroup)
+        {
+            int counter = 0;
+            foreach (var iter in applicationGroup.Companies)
+            {
+                counter += iter.Recipients.Select(x => x.MessageState != MessageState.NotSent && x.MessageState != MessageState.Unsubscribed).Count();
+            }
+
+            return counter;
         }
 
         #region Notifications

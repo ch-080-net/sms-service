@@ -15,6 +15,7 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private ICompanyRepository companyRepo;
+        private IAdminStatisticRepository adminStatisticRepository;
         private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
@@ -270,8 +271,19 @@ namespace DAL.Repositories
                 return emailCampNotRepo;
             }
         }
-        
 
+
+        IAdminStatisticRepository AdminStatisticRepository
+        {
+            get
+            {
+                if (adminStatisticRepository == null)
+                {
+                    adminStatisticRepository = new AdminStatisticRepository(context);
+                }
+                return adminStatisticRepository;
+            }
+        }
         public int Save()
         {
             return context.SaveChanges();
