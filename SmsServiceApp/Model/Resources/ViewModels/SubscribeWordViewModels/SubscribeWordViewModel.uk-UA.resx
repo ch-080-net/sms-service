@@ -117,28 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Back to Company" xml:space="preserve">
-    <value>Назад до розсилок</value>
+  <data name="Not a valid phone number" xml:space="preserve">
+    <value>Недійсний номер телефону</value>
   </data>
-  <data name="Back to Details" xml:space="preserve">
-    <value>Назад до деталей</value>
-  </data>
-  <data name="Back to List" xml:space="preserve">
-    <value>Назад до списку</value>
-  </data>
-  <data name="Campaign" xml:space="preserve">
-    <value>Розсилка</value>
-  </data>
-  <data name="Create New" xml:space="preserve">
-    <value>Створити нову</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Видалити</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редагувати</value>
+  <data name="Phone number" xml:space="preserve">
+    <value>Номер телефону</value>
   </data>
   <data name="Subscribe word" xml:space="preserve">
     <value>Слова підписки</value>
+  </data>
+  <data name="The Phone Number field is required." xml:space="preserve">
+    <value>Поле Номер Телефону є обов'язковим</value>
+  </data>
+  <data name="The Subscribe word field is required." xml:space="preserve">
+    <value>Поле Слова підписки є обов'язковим</value>
   </data>
 </root>
