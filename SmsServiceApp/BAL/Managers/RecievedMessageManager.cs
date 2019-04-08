@@ -151,27 +151,26 @@ namespace BAL.Managers
                     }
 
                     Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
-                    Company subscribeCompany = unitOfWork.Companies
-                        .Get(item => item.PhoneId == subscribeCompanyPhone.Id).FirstOrDefault();
+                    var subscribeCompanies = unitOfWork.Companies
+                        .Get(item => item.PhoneId == subscribeCompanyPhone.Id);
 
-                    if (subscribeCompany == null)
+                    foreach (var subscribeCompany in subscribeCompanies)
                     {
-                        return;
+
+
+                        var rec = unitOfWork.Recipients.GetAll().FirstOrDefault(r =>
+                            ((r.CompanyId == subscribeCompany.Id) && (r.PhoneId == orignator.Id)));
+
+                        if (rec == null)
+                        {
+                            unitOfWork.Recipients.Insert(new Recipient()
+                            {
+                                CompanyId = subscribeCompany.Id,
+                                PhoneId = orignator.Id,
+                                KeyWords = "Subscribed himself",
+                            });
+                        }
                     }
-                    var rec = unitOfWork.Recipients.GetAll().FirstOrDefault(r =>
-                        ((r.CompanyId == subscribeCompany.Id) && (r.PhoneId == orignator.Id)));
-
-                    if (rec != null)
-                    {
-                        return;
-                    }
-
-                    unitOfWork.Recipients.Insert(new Recipient()
-                    {
-                        CompanyId = subscribeCompany.Id,
-                        PhoneId = orignator.Id,
-                        KeyWords = "Subscribed himself",
-                    });
 
                     unitOfWork.Save();
                 }
