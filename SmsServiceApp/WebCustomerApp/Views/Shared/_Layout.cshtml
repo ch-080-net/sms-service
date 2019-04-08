@@ -82,19 +82,19 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
-                        @if(SignInManager.IsSignedIn(User))
+                        @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="clearBadge(); fillReport();">
-                                <i class="fa fa-bell-o"></i>
-                                <span class="label label-warning" id="notificationBadge"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li id="notificationMenu">
-                                </li>
-                                <li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
-                            </ul>
-                        </li>
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="clearBadge(); fillReport();">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="label label-warning" id="notificationBadge"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li id="notificationMenu">
+                                    </li>
+                                    <li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
+                                </ul>
+                            </li>
                         }
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -286,7 +286,6 @@
         <script src="~/js/adminlte.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-        <script src="~/js/notifications.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -303,9 +302,10 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
-        <script src="~/js/notifications.js"></script>
     </environment>
+    
+    @Html.Partial("_NotificationSriptsPartial")
+    @RenderSection("Scripts", required: false)
 
-@RenderSection("Scripts", required: false)
 </body>
 </html>

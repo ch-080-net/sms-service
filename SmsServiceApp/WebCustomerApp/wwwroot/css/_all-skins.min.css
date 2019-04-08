@@ -39,7 +39,7 @@
     border-left:1px solid #eee;border-right-width:0
 }
 .skin-black .main-header .logo {
-    background-color:#fff;color:#333;border-bottom:0 solid transparent;border-right:1px solid #eee
+    background-color:black;color:white;border-bottom:0 solid transparent;border-right:1px solid #eee
 }
 .skin-black .main-header .logo:hover {
     background-color:#fcfcfc

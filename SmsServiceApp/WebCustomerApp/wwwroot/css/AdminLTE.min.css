@@ -97,7 +97,7 @@ a:hover,a:active,a:focus {
     position:relative;max-height:100px;z-index:1030
 }
 .main-header .navbar {
-    -webkit-transition:margin-left .3s ease-in-out;-o-transition:margin-left .3s ease-in-out;transition:margin-left .3s ease-in-out;margin-bottom:0;margin-left:230px;border:none;min-height:50px;border-radius:0
+    -webkit-transition:margin-left .3s ease-in-out;-o-transition:margin-left .3s ease-in-out;transition:margin-left .3s ease-in-out;margin-bottom:0;margin-left:230px;border:none;min-height:50px;border-radius: 0;
 }
 .layout-top-nav .main-header .navbar {
     margin-left:0
@@ -133,7 +133,7 @@ a:hover,a:active,a:focus {
     }
 }
 .main-header .sidebar-toggle {
-    float:left;background-color:transparent;background-image:none;padding:15px 15px;font-family:fontAwesome
+    float:left;background-color:transparent;background-image:none;padding:5px 15px;font-family:fontAwesome
 }
 .main-header .sidebar-toggle:before {
     content:"\f0c9"
