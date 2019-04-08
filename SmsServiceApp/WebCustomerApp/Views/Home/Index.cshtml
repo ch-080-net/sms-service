@@ -7,16 +7,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script>
-        (function($) {
-            $(document).ready(function() {
-                $("#menu").attr("class", "hold-transition skin-black sidebar-collapse");
-                $("#pageContent").removeClass("content");
-            });
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
 </head>
 <body>
+<script>
+    $("#menu").attr("class", "hold-transition skin-black sidebar-collapse");
+    $("#pageContent").removeClass("content");
+</script>
 <header class="header">
     <a href="#" class="logo_home">
         <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
