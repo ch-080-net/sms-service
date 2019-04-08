@@ -236,15 +236,15 @@ namespace BAL.Services
             {
                 case CampaignNotificationEvent.CampaignStart:
                     {
-                        return "Voting for campaign " + cn.Campaign.Name + " started";
+                        return "Voting started";
                     }
                 case CampaignNotificationEvent.CampaignEnd:
                     {
-                        return "Voting for campaign " + cn.Campaign.Name + " ended";
+                        return "Voting ended";
                     }
                 case CampaignNotificationEvent.Sending:
                     {
-                        return "Mailing for campaign " + cn.Campaign.Name + " started";
+                        return "Mailing started";
                     }
                 default:
                     {
@@ -255,7 +255,7 @@ namespace BAL.Services
 
         private string GenerateNotificationMessage(EmailCampaignNotification ecn)
         {
-            return "Mailing for campaign " + ecn.EmailCampaign.Name + " started";
+            return "Mailing started";
         }
 
         #endregion
