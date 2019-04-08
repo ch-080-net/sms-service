@@ -24,14 +24,17 @@ namespace WebApp.Controllers
         private readonly IGroupManager groupManager;
         private readonly IMapper mapper;
         private readonly IEmailSender emailSender;
+        private readonly INotificationManager notificationManager;
        
 
-        public GroupController(UserManager<ApplicationUser> userManager, IMapper mapper, IGroupManager groupManager, IEmailSender emailSender)
+        public GroupController(UserManager<ApplicationUser> userManager, IMapper mapper
+            , IGroupManager groupManager, IEmailSender emailSender, INotificationManager notificationManager)
         {
             this.userManager = userManager;
             this.mapper = mapper;
             this.groupManager = groupManager;
             this.emailSender = emailSender;
+            this.notificationManager = notificationManager;
         }
 
         /// <summary>
@@ -92,6 +95,8 @@ namespace WebApp.Controllers
                 else
                 {
                     user.InviteId = groupId;
+                    notificationManager.AddNotificationsToUser(user.Id, DateTime.Now
+                        , "Group invite", "You have been invited to group " + groupName, Url.Action("Index", "Manage"));
                     userManager.UpdateAsync(user);
                     string subjectNew = "SMS Service invite you to join the group";
                     var sb = new StringBuilder("You invited to join the group ");

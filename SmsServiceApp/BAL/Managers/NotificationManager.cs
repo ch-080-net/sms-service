@@ -389,5 +389,46 @@ namespace BAL.Managers
                                              select iter).Count();
             return result;
         }
+
+        public TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null)
+        {
+            var user = unitOfWork.ApplicationUsers.Get(au => au.Id == userId).FirstOrDefault();
+            if (user == null)
+                return new TransactionResultDTO() { Success = false, Details = "User does not exist!" };
+
+            AddSpecificNotifications(userId, NotificationType.Web, time, title, message, href);
+            if (user.EmailNotificationsEnabled && user.EmailConfirmed)
+            {
+                AddSpecificNotifications(userId, NotificationType.Email, time, title, message, href);
+            }
+            if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
+            {
+                AddSpecificNotifications(userId, NotificationType.Sms, time, title, message, href);
+            }
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+            }
+
+            return new TransactionResultDTO() { Success = true };
+        }
+
+        private void AddSpecificNotifications(string userId, NotificationType type, DateTime time, string title, string message, string href = null)
+        {            
+            unitOfWork.Notifications.Insert(new Notification()
+            {
+                BeenSent = false,
+                Type = type,
+                Title = title,
+                Message = message,
+                Time = time,
+                ApplicationUserId = userId,
+                Href = href                
+            });       
+        }
     }
 }

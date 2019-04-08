@@ -82,6 +82,8 @@
                 </a>
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
+                        @if(SignInManager.IsSignedIn(User))
+                        {
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="clearBadge(); fillReport();">
                                 <i class="fa fa-bell-o"></i>
@@ -93,6 +95,7 @@
                                 <li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
                             </ul>
                         </li>
+                        }
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-language"></i>
