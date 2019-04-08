@@ -6,7 +6,7 @@
 
 <!DOCTYPE html>
 <html>
-<head>
+<head  >
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
@@ -16,20 +16,24 @@
     $("#menu").attr("class", "hold-transition skin-black sidebar-collapse");
     $("#pageContent").removeClass("content");
 </script>
-<header class="header">
+<header class="header" >
     <a href="#" class="logo_home">
         <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
     </a>
     <!--/.header-->
 </header>
-<section class="main">
+<section class="main" id="Header">
     <h1 class="main_title">@Localizer["SMS on 150 mobile networks no matter where you are"] <span class="main_title-big">sms service</span></h1>
     <a href="#log" class="main_button anchor">@Localizer["get started"]</a>
     @*<p class="main_description">some text <a href="#">@Localizer["some link"]</a>!</p>*@
 </section>
 <!--/.main-->
 <section class="second">
-
+    
+    
+    <div class="ButtonUp">
+        <a href="#Header" class="anchor"></a>
+    </div>
     <section class="features">
         <!-- <img src="styles/images/text1.svg" class="start"> -->
         <ul class="features_list">
@@ -154,6 +158,7 @@
 
         </div>
     </div>
+    
 
 </footer>
 

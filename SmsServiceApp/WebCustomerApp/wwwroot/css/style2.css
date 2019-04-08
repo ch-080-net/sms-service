@@ -500,7 +500,6 @@
     background: #141414;
     color: #fff;
     border-top: 2px solid silver;
-    margin-top: 10vh;
     }
 
   
@@ -527,6 +526,26 @@
         justify-content: space-around;
     }
 }
+
+   .ButtonUp {
+       overflow: hidden;
+       position: fixed;
+       bottom: 0;
+       width: 36px;
+  
+       /*display: none;*/
+   }
+
+    .ButtonUp a {
+        float: left;
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 30px 40px;
+        text-decoration: none;
+        font-size: 30px;
+        background-image: url('../images/landing/angle-up-solid.svg');
+    }
 
 #LanguageSwitcher {
     position: absolute;
