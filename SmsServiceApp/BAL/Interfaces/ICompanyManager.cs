@@ -21,6 +21,7 @@ namespace BAL.Managers
         int InsertWithId(StepViewModel item);
         int InsertRecieveCampaign(StepViewModel item);
         int InsertCampaign(StepViewModel item);
+        int InsertSendCampaign(StepViewModel item);
         void Insert(CompanyViewModel item);
 		void Update(CompanyViewModel item);
 		void Delete(int id);

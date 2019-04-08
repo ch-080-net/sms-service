@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.RecipientViewModels;
 using Model.ViewModels.StepViewModels;
 using System;
 using System.Collections.Generic;
@@ -115,6 +116,49 @@ namespace BAL.Managers
             {
                 throw ex;
             }
+        }
+
+        public void CreateWithRecipient(ManageViewModel item, int applicationGroupId, List<RecipientViewModel> recipientList)
+        {
+
+           
+            Company company = mapper.Map<Company>(item);
+            Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
+            if (phone == null)
+            {
+                phone = new Phone();
+                phone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(phone);
+                company.Phone = phone;
+            }
+            else
+            {
+                company.PhoneId = phone.Id;
+            }
+            unitOfWork.Companies.Insert(company);
+            unitOfWork.Save();
+            foreach (var recipient in recipientList)
+            {
+                Recipient newRecepient = mapper.Map<RecipientViewModel, Recipient>(recipient);
+                newRecepient.CompanyId = company.Id;
+                phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == recipient.Phonenumber).FirstOrDefault();
+                if (phone == null)
+                {
+                    phone = new Phone();
+                    phone.PhoneNumber = recipient.Phonenumber;
+                    unitOfWork.Phones.Insert(phone);
+                    newRecepient.Phone = phone;
+                }
+                else
+                {
+                    newRecepient.PhoneId = phone.Id;
+                }
+                unitOfWork.Recipients.Insert(newRecepient);
+                unitOfWork.Save();
+            }
+
+
+
         }
 
         /// <summary>
@@ -260,8 +304,14 @@ namespace BAL.Managers
                 company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
                 company.Description = item.CompanyModel.Description;
                 company.TariffId = item.CompanyModel.TariffId;
-
+                company.StartTime = item.SendRecieveModel.StartTime;
+                company.EndTime = item.SendRecieveModel.EndTime;
+                company.SendingTime = item.SendRecieveModel.SendingTime;
+                company.Message = item.SendRecieveModel.Message;
+               
                 int id = unitOfWork.Companies.InsertWithId(company);
+                AddNotifications(company);
+                unitOfWork.Save();
                 return id;
             }
             catch (Exception ex)
@@ -269,6 +319,33 @@ namespace BAL.Managers
                 throw ex;
             }
         }
+
+        public int InsertSendCampaign(StepViewModel item)
+        {
+            try
+            {
+                Company company = mapper.Map<StepViewModel, Company>(item);
+                company.Name = item.CompanyModel.Name;
+                company.Type = item.CompanyModel.Type;
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.TariffId = item.CompanyModel.TariffId;
+                company.SendingTime = item.SendRecieveModel.SendingTime;
+                company.Message = item.SendRecieveModel.Message;
+
+                int id = unitOfWork.Companies.InsertWithId(company);
+                AddNotifications(company);
+                unitOfWork.Save();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
         /// <summary>
         /// Insert company entity to db and return Id

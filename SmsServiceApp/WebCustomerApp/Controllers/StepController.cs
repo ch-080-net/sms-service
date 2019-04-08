@@ -77,7 +77,7 @@ namespace WebApp.Controllers
             company.OperatorModel = new OperatorsViewModel();
             company.OperatorModel.OperatorsList = operatorManager.GetAll();
             company.TariffModel = new TariffsViewModel();
-            company.TariffModel.TariffsList= tariffManager.GetTariffs(id);
+            company.TariffModel.TariffsList= tariffManager.GetTariffs(id).ToList();
             company.RecieveModel = new RecieveViewModel();
             return View(company);
         }

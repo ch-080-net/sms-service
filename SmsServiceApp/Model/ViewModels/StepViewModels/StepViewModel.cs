@@ -17,7 +17,8 @@ namespace Model.ViewModels.StepViewModels
         public TariffViewModel TariffModels { get; set; }
         public RecieveViewModel RecieveModel { get; set; }
         public RecipientViewModel RecipientModel { get; set; }
-        public SendViewModel SendModel { get; set; }
+        
+        public SendRecieveViewModel SendRecieveModel { get; set; }
 
     }
 }

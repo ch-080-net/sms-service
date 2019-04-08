@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using BAL.Services;
 using Model.ViewModels.SubscribeWordViewModels;
 using Model.ViewModels.StepViewModels;
+using Model.ViewModels.RecipientViewModels;
 
 namespace WebApp.Controllers
 {
@@ -129,8 +130,14 @@ namespace WebApp.Controllers
             return View(company);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void CreateCampaign(ManageViewModel item, List<RecipientViewModel> recipient)
+        {
 
-       
+           
+        }
+
 
         /// <summary>
         /// Send new Company fron view to db
@@ -139,25 +146,30 @@ namespace WebApp.Controllers
         /// <returns>Company index View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] StepViewModel item, int companyId)
-        {          
-           
-                    
+        public IActionResult Create([Bind] StepViewModel item, int companyId,int id)
+        {
+            item.CompanyModel.ApplicationGroupId = GetGroupId();
+            item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
+
             if (item.CompanyModel.Type == CompanyType.Recieve)
             {
-                if (ModelState.IsValid)
-                {
-                    companyId = companyManager.InsertRecieveCampaign(item);
-                    return RedirectToAction("Index");
-                }
+                companyId = companyManager.InsertRecieveCampaign(item);
+                return RedirectToAction("Index");
             }
-            if (item.CompanyModel.Type == CompanyType.Send || item.CompanyModel.Type == CompanyType.SendAndRecieve)
+            if ( item.CompanyModel.Type == CompanyType.SendAndRecieve)
             {
-                if (ModelState.IsValid)
+               
+                companyId = companyManager.InsertCampaign(item);
+                 return RedirectToAction("Index");
+            }
+            else if (item.CompanyModel.Type == CompanyType.Send)
+            {
+                if (item.SendRecieveModel.SendingTime < DateTime.Now)
                 {
-                    companyId = companyManager.InsertCampaign(item);
-                    return RedirectToAction("Index");
+                    item.SendRecieveModel.SendingTime = DateTime.Now.AddMinutes(1);
                 }
+                companyId = companyManager.InsertSendCampaign(item);
+                return RedirectToAction("Index");
             }
             
 
@@ -372,12 +384,11 @@ namespace WebApp.Controllers
         /// <param name="companyId">Current company id</param>
         /// <returns>Tariffs list, related to choosing operator</returns>
         [HttpGet]
-        public IActionResult Tariffs(int id, int companyId)
+        public List<TariffViewModel> Tariffs(int id)
         {
-            StepViewModel model = new StepViewModel();
-            model.TariffModel.TariffsList = tariffManager.GetTariffs(id);
-            ViewData["companyId"] = companyId;
-            return View(model);
+            List<TariffViewModel> model = new List<TariffViewModel>();
+            model = tariffManager.GetTariffs(id).ToList();
+            return model;
         }
 
         /// <summary>

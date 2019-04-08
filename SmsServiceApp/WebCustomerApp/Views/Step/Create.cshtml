@@ -24,14 +24,28 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.js" integrity="sha256-dgFbqbQVzjkZPQxWd8PBtzGiRBhChc4I2wO/q/s+Xeo=" crossorigin="anonymous"></script>
-    <script src="~/js/datetimepicker.js"></script>
+
     <script src="https://unpkg.com/gijgo@1.9.11/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.11/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link href="~/css/MessagePreview.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/MessagePreview.js"></script>
+    <script src="~/js/AddRecipient.js"></script>
+    <script src="~/js/datetimepicker.js"></script>
 
     <script>
         (function ($) {
         $(document).ready(function () {
             $('#StartTime').dateTimePicker({
+                locale: "@culture",
+                selectData: "now",
+                positionShift: { top: 20, left: 0 },
+                title: "@Localizer["Select Date and Time"]",
+                buttonTitle: "@Localizer["Select"]"
+            });
+             $('#StartTimeSR').dateTimePicker({
                 locale: "@culture",
                 selectData: "now",
                 positionShift: { top: 20, left: 0 },
@@ -45,83 +59,105 @@
                 title: "@Localizer["Select Date and Time"]",
                 buttonTitle: "@Localizer["Select"]"
             });
+             $('#EndTimeSR').dateTimePicker({
+                locale: "@culture",
+                selectData: "now",
+                positionShift: { top: 20, left: 0 },
+                title: "@Localizer["Select Date and Time"]",
+                buttonTitle: "@Localizer["Select"]"
+            });
             })
         })(jQuery);
     </script>
+    <script>
+        (function ($) {
+        $(document).ready(function () {
+            $('#SendTime').dateTimePicker({
+                locale: "@culture",
+                selectData: "now",
+                positionShift: { top: 20, left: 0 },
+                title: "@Localizer["Select Date and Time"]",
+                buttonTitle: "@Localizer["Select"]"
+            });
+            })
+        })(jQuery);
+    </script>
+
 </head>
 <body>
     <div class="container">
         <div class="stepwizard">
             <div class="stepwizard-row setup-panel">
                 <div class="stepwizard-step">
-                    <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
+                    <a href="#step-1" type="button" class="btn btn-primary btn-circle">D</a>
                     <p>Description</p>
                 </div>
                 <div class="stepwizard-step">
-                    <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+                    <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">T</a>
                     <p>Type</p>
                 </div>
                 <div class="stepwizard-step tariffStep">
-                    <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+                    <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">O</a>
                     <p>Tariff</p>
                 </div>
                 <div class="stepwizard-step recievestep">
-                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                    <a href="#step-1-1" type="button" class="btn btn-default btn-circle" disabled="disabled">Re</a>
                     <p>Recieve</p>
                 </div>
-                <div class="stepwizard-step step4">
-                    <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">5</a>
-                    <p>Step 4</p>
+
+                <div class="stepwizard-step recipients">
+                    <a href="#step-5" type="button" class="btn btn-default btn-circle" disabled="disabled">R</a>
+                    <p>Recipients</p>
                 </div>
+                <div class="stepwizard-step Message">
+                    <a href="#step-6" type="button" class="btn btn-default btn-circle" disabled="disabled">M</a>
+                    <p>Message</p>
+                </div>
+                <div class="stepwizard-step step4">
+                    <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">F</a>
+                    <p>Time</p>
+                </div>
+
             </div>
         </div>
+
         <form role="form" asp-controller="Company" asp-action="Create">
             <div class="row setup-content" id="step-1">
-
-                @Html.AntiForgeryToken()
-                <div>
-                    @Html.ValidationSummary(true)
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label asp-for="CompanyModel.PhoneNumber" class="control-label"></label>
-                            <input asp-for="CompanyModel.PhoneNumber" class="form-control" />
-                            <span asp-validation-for="CompanyModel.PhoneNumber" class="text-danger"></span>
-                        </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="CompanyModel.PhoneNumber" class="control-label"></label>
+                        <input asp-for="CompanyModel.PhoneNumber" id="campaignPhoneNumber" class="form-control" />
+                        <span asp-validation-for="CompanyModel.PhoneNumber" class="text-danger"></span>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label asp-for="CompanyModel.Name" class="control-label"></label>
-                            <input asp-for="CompanyModel.Name" required class="form-control" />
-                            @Html.ValidationMessageFor(x => x.CompanyModel.Name)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-md-12">
-                            <label asp-for="CompanyModel.Description" class="control-label"></label>
-                            <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" class="form-control" required></textarea>
-                            @Html.ValidationMessageFor(x => x.CompanyModel.Description)
-                        </div>
-                    </div>
-                    <div class="row">
-
-                    </div>
-                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
                 </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="CompanyModel.Name" class="control-label"></label>
+                        <input asp-for="CompanyModel.Name" id="campaignName" required class="form-control" />
+                        @Html.ValidationMessageFor(x => x.CompanyModel.Name)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="CompanyModel.Description" class="control-label"></label>
+                        <textarea rows="3" style="resize:none" asp-for="CompanyModel.Description" id="campaignDescription" class="form-control" required></textarea>
+                        @Html.ValidationMessageFor(x => x.CompanyModel.Description)
+                    </div>
+                </div>
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
 
             </div>
 
             <div class="card wizard-card" data-color="red" id="wizard">
                 <div class="row setup-content" id="step-2">
-
                     <div class="row">
+
                         <label asp-for="CompanyModel.Type" class="col-sm-6 col-form-label">@Localizer["Select campaign type"]</label>
                         <div class="col-sm-10">
-
                             <div class="col-sm-10 col-sm-offset-1">
                                 <div class="col-sm-4">
                                     <div class="form-check form-check-inline">
-                                       
+
                                         <div class="choice" rel="tooltip" title="For sending SMS only">
                                             <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" value=0 />
                                             <div class="icon">
@@ -145,7 +181,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-check-inline">
                                         <div class="choice" rel="tooltip" title="For Sending and Recieving SMS">
-                                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio"  value=2 />
+                                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" value=2 />
                                             <div class="icon">
                                                 <i class="material-icons">import_export</i>
                                             </div>
@@ -155,50 +191,42 @@
                                 </div>
                             </div>
                             <span asp-validation-for="CompanyModel.Type" class="text-danger"></span>
+
+                            <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+
                         </div>
-
                     </div>
-                    <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
                 </div>
-
-
-
             </div>
-
-
-
-
 
             <div class="row setup-content" id="step-1-1">
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="RecieveModel.StartTime" class="control-label"></label>
-                    <div id="StartTime">
+                    <label asp-for="RecieveModel.StartTime"  class="control-label"></label>
+                    <div id="StartTime" >
 
                     </div>
-                    <input type="hidden" id="result" asp-for="RecieveModel.StartTime">
+                    <input type="hidden" id="result" class="starttime" asp-for="RecieveModel.StartTime">
                     <span asp-validation-for="RecieveModel.StartTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="hidden" asp-for="RecieveModel.Id" />
                     <label asp-for="RecieveModel.EndTime" class="control-label"></label>
-                    <div id="EndTime">
+                    <span asp-validation-for="RecieveModel.EndTime" class="text-danger"></span>
+                    <div id="EndTime" class="endtime">
 
                     </div>
-                    <input type="hidden" id="result" asp-for="RecieveModel.EndTime">
+                    <input type="hidden" id="result" class="endtime" asp-for="RecieveModel.EndTime">
                     <span asp-validation-for="RecieveModel.EndTime" class="text-danger"></span>
                 </div>
 
                 <div class="col-xs-12">
                     <div class="col-md-12">
-                        <button class="btn btn-success btn-lg pull-right" type="submit">Finish!</button>
+                        <a class="btn btn-success btn-lg pull-right" onclick="CreateCampaign()">finish!</a>
                     </div>
                 </div>
-
-
             </div>
-
             <div class="row setup-content" id="step-3">
                 <h3> Choose Tariff</h3>
                 <div class="container">
@@ -230,9 +258,6 @@
                         </table>
                     </div>
 
-
-
-
                     <div style="float:left;">
                         <table class="table table-striped table-bordered" id="tariffTable" style="display:inline-block">
                             <thead class="thead-dark">
@@ -241,121 +266,368 @@
                                     <td><label asp-for="TariffModels.Description"></label></td>
                                     <td><label asp-for="TariffModels.Price"> </label></td>
                                     <td><label asp-for="TariffModels.Limit"> </label></td>
-                                    <td><input id="tariff" type="hidden" asp-for="TariffModels.Id"></td>
+                                    <td><input type="hidden" asp-for="TariffModels.Id"></td>
                                 </tr>
                             </thead>
                         </table>
+                        <input id="tariff" type="hidden" class="tariff" asp-for="CompanyModel.TariffId">
                     </div>
                 </div>
-                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
             </div>
+
+            <div class="row setup-content" id="step-5">
+
+
+
+
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Contact</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                                    <li><a data-toggle="tab" href="#menu1">Upload</a></li>
+                                </ul>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+
+
+
+                                    <div class="tab-content">
+                                        <div id="home" class="tab-pane fade in active">
+                                            <h3>Add Contact</h3>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Phonenumber"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="phoneNumber" type="text" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Name"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="name" type="text" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Surname"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="surname" type="text" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Birthdate"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="birthDate" width="175" />
+                                                        <script>
+                                                            $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Gender"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
+                                                        <br>
+                                                        <input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
+                                                        <br>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <label asp-for="RecipientModel.Keywords"></label>
+                                                    </td>
+                                                    <td>
+                                                        <input id="keywords" type="text" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                                                            <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="menu1" class="tab-pane fade">
+                                            <h4>Add contact from file </h4>
+                                            <input type="file" id="fileUpload" />
+                                            <input type="button" class="btn btn-primary" id="upload" value="Upload" />
+                                        </div>
+                                        <div id="menu2" class="tab-pane fade">
+                                            <h3>Menu 2</h3>
+                                            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                                        </div>
+                                        <div id="menu3" class="tab-pane fade">
+                                            <h3>Menu 3</h3>
+                                            <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr />
+                <div id="dvCSV">
+                </div>
+
+                <div id="msg"></div>
+                <div>
+                    <br />
+                    @Localizer["Page Size"]:
+                    <select id="pageSizeSelector" onchange="pageSizeChange(this)">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option selected>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                    </select>
+                </div>
+                <div>
+                    <input id="searchField" type="text" />
+                    <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
+                        <span class='glyphicon glyphicon-search' /> @Localizer["Search"]
+                    </button>
+                </div>
+
+
+
+                <table class="table table-hover" id="contactTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <td><label asp-for="RecipientModel.Phonenumber"></label></td>
+                            <td><label asp-for="RecipientModel.Name"></label></td>
+                            <td><label asp-for="RecipientModel.Surname"> </label></td>
+                            <td><label asp-for="RecipientModel.Birthdate"> </label></td>
+                            <td><label asp-for="RecipientModel.Gender"></label></td>
+                            <td><label asp-for="RecipientModel.Keywords"></label></td>
+                            <td> </td>
+                        </tr>
+                    </thead>
+                </table>
+
+                <div style="padding:inherit" class="btn-group" id="pageButtons">
+                    <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+                    <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
+                    <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+                </div>
+
+            </div>
+
+            <div class="row setup-content" id="step-6">
+                <div style="float:left;">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label asp-for="SendRecieveModel.Message" class="control-label"></label>
+                            <textarea rows="7" style="resize:none; width:50%"
+                                      asp-for="SendRecieveModel.Message" class="form-control" id="message" onclick="ClickPosition(this)"
+                                      onkeyup="MessagePreview(this)"></textarea>
+
+                            <span asp-validation-for="SendRecieveModel.Message" class="text-danger"></span>
+
+
+                            <div>
+                                <input type="button" class="btn btn-default btn-xs" value="#name" onclick='AddWord(" #name ")'>
+                                <input type="button" class="btn btn-default btn-xs" value="#surname" onclick='AddWord(" #surname ")'>
+                                <input type="button" class="btn btn-default btn-xs" value="#birthday" onclick='AddWord(" #birthday ")'>
+                                <input type="button" class="btn btn-default btn-xs" value="#company" onclick='AddWord(" #company ")'>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+                        <div class="form-group col-md-10">
+                            <label class="control-label">@Localizer["Send Now"]</label>
+                            <input type="radio" id="SendNowRadio" checked="checked" name="Send" value=" " onclick="ShowDate()" />
+                            <label class="control-label">@Localizer["Send Later"]</label>
+                            <input type="radio" id="SendLaterRadio" name="Send" value=" " onclick="ShowDate()" />
+                        </div>
+                        <div class="form-group" id="SendLater">
+                            <label asp-for="SendRecieveModel.SendingTime" class="control-label"></label>
+                            <div id="SendTime"> </div>
+                            <input type="hidden" id="result" class="sendtime" asp-for="SendRecieveModel.SendingTime">
+                            <span asp-validation-for="SendRecieveModel.SendingTime" class="text-danger"></span>
+                        </div>
+                        <a class="btn btn-success btn-lg pull-right" onclick="CreateCampaign()">finish!</a>
+                    </div>
+
+                </div>
+
+                <div >
+                    <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
+                        <div style="position:absolute; height:auto !important;">
+                            <div rows="1" readonly class="form-control" id="messagePreview">
+                                ::before
+                            </div>
+                        </div>
+                    </div>
+                    <a style="display:inline-flex;" id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
+                        <span class="glyphicon glyphicon-phone"></span>
+                    </a>
+                </div>
+            </div>
+            
+
+
             <div class="row setup-content" id="step-4">
 
-                <div class="col-xs-12">
-                    <div class="col-md-12">
-                        <h3> Step 4</h3>
-                        <button class="btn btn-success btn-lg pull-right" type="submit">Finish!</button>
+                <div id="SendRecieveTime">
+                    <h3> step 4</h3>
+                    <div class="form-group col-md-12">
+                        <label asp-for="SendRecieveModel.StartTime" class="control-label"></label>
+                        <div id="StartTimeSR"> </div>
+                        <input type="hidden" id="result" class="starttime" asp-for="SendRecieveModel.StartTime">
+                        <span asp-validation-for="SendRecieveModel.StartTime" class="text-danger"></span>
                     </div>
+                    <div class="form-group col-md-12">
+                        <label asp-for="SendRecieveModel.EndTime" class="control-label"></label>
+                        <div id="EndTimeSR"> </div>
+                        <input type="hidden" id="result" class="endtime" asp-for="SendRecieveModel.EndTime">
+                        <span asp-validation-for="SendRecieveModel.EndTime" class="text-danger"></span>
+                    </div>
+                    <a class="btn btn-success btn-lg pull-right" onclick="CreateCampaign()">finish!</a>
                 </div>
+
             </div>
 
         </form>
 
-        <script>
-            $(document).ready(function () {
+
+    </div>
 
 
-                $('[rel="tooltip"]').tooltip();
-                var navListItems = $('div.setup-panel div a'),
-                    allWells = $('.setup-content'),
-                    allNextBtn = $('.nextBtn'),
-                    nextStepWizard,
-                    curStepBtn;
-
-                allWells.hide();
-
-                navListItems.click(function (e) {
-                    e.preventDefault();
-                    var $target = $($(this).attr('href')),
-                        $item = $(this);
-
-                    if (!$item.hasClass('disabled')) {
-                        navListItems.removeClass('btn-primary').addClass('btn-default');
-                        $item.addClass('btn-primary');
-                        allWells.hide();
-                        $target.show();
-                        $target.find('input:eq(0)').focus();
-                    }
-                });
-
-                allNextBtn.click(function () {
+    <script>
+        $(document).ready(function () {
 
 
-                    curStep = $(this).closest(".setup-content");
-                    curStepBtn = curStep.attr("id"),
-                        nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-                        curInputs = curStep.find("input[type='text'],input[type='url'],textarea, input[type='radio']"),
-                        isValid = true,
+            $('[rel="tooltip"]').tooltip();
+            var navListItems = $('div.setup-panel div a'),
+                allWells = $('.setup-content'),
+                allNextBtn = $('.nextBtn'),
+                nextStepWizard,
+                curStepBtn;
 
+            allWells.hide();
 
-                        $(".form-group").removeClass("has-error");
-                    for (var i = 0; i < curInputs.length; i++) {
-                        if (!curInputs[i].validity.valid) {
-                            isValid = false;
-                            $(curInputs[i]).closest(".form-group").addClass("has-error");
-                        }
-                    }
+            navListItems.click(function (e) {
+                e.preventDefault();
+                var $target = $($(this).attr('href')),
+                    $item = $(this);
 
-
-                    if (isValid)
-                        nextStepWizard.removeAttr('disabled').trigger('click');
-                });
-
-                $('div.setup-panel div a.btn-primary').trigger('click');
-
-                $('.choice').change(function() {
-                    wizard = $(this).closest('.wizard-card');
-                    wizard.find('.choice').removeClass('active');
-                   $(this).addClass('active');
-                   $(wizard).find('[type="radio"][name="path"]').prop('checked', false);
-                   $(this).find('[type="radio"][name="path"]').prop('checked', true); 
-                    var value = parseInt($("input[type='radio']:checked").val());
-                  
-                    switch (value) {
-                        case 0:
-                            $(".recievestep").remove();
-                            break;
-                        case 1:
-                            $(".tariffStep").remove();
-                            $(".step4").remove();
-                            break;
-                        case 2:
-                            $(".recievestep").remove();
-                            break;
-
-                        default:
-
-                    }
-              
-
-                   
-                   
-
-                });
-                //step1
-
-
-
-
-                function GetType(item) {
-
-                   
+                if (!$item.hasClass('disabled')) {
+                    navListItems.removeClass('btn-primary').addClass('btn-default');
+                    $item.addClass('btn-primary');
+                    allWells.hide();
+                    $target.show();
+                    $target.find('input:eq(0)').focus();
                 }
             });
-        </script>
- 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+            allNextBtn.click(function () {
+
+
+                curStep = $(this).closest(".setup-content");
+                curStepBtn = curStep.attr("id"),
+                    nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                    curInputs = curStep.find("input[type='text'],input[type='url'],textarea, input[type='radio']"),
+                    isValid = true,
+
+
+                    $(".form-group").removeClass("has-error");
+                for (var i = 0; i < curInputs.length; i++) {
+                    if (!curInputs[i].validity.valid) {
+                        isValid = false;
+                        $(curInputs[i]).closest(".form-group").addClass("has-error");
+                    }
+                }
+
+
+                if (isValid)
+                    nextStepWizard.removeAttr('disabled').trigger('click');
+            });
+
+            $('div.setup-panel div a.btn-primary').trigger('click');
+
+            $('.choice').change(function () {
+                wizard = $(this).closest('.wizard-card');
+                wizard.find('.choice').removeClass('active');
+                $(this).addClass('active');
+                $(wizard).find('[type="radio"][name="path"]').prop('checked', false);
+                $(this).find('[type="radio"][name="path"]').prop('checked', true);
+                var value = parseInt($("input[type='radio']:checked").val());
+
+                switch (value) {
+                    case 0:
+                        $(".recievestep").remove();
+                        $(".SendRecieveTime").remove();
+                        $(".step4").remove();
+                        break;
+                    case 1:
+                        $(".tariffStep").remove();
+                        $(".step4").remove();
+                        $(".Message").remove();
+                        $(".recipients").remove();
+                        break;
+                    case 2:
+                        $(".recievestep").remove();
+                        $("#SendRecieveTime").css('display', 'block');
+                        break;
+
+                }
+            });
+
+
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
 @section Scripts {

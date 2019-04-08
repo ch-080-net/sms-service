@@ -3,7 +3,7 @@
 function getTariffsList() {
 
     $.ajax({
-        url: '/Step/Tariffs/',
+        url: '/Company/Tariffs/',
         type: 'GET',
         data: {
             id: operatorId
@@ -12,7 +12,7 @@ function getTariffsList() {
             tariffListSuccess(tariffs);
         },
         error: function (request, message, error) {
-            handleException(request, message, error);
+            //handleException(request, message, error);
         }
     });
 }
@@ -49,7 +49,7 @@ function tariffBuildTableRow(tariff) {
         "onclick='ChooseTariff(this);'" +
         "class='btn btn-danger' " +
         "data-id='" + tariff.id + "'>" +
-        "Choose" +
+        " " +
         "</input>" +
         "</td>" +
         "</tr>";
@@ -63,8 +63,6 @@ function GetTariff(item) {
 }
 
 function ChooseTariff(item) {
-
     var tariffId = $(item).data("id");
-    console.log(tariffId);
-    $("tariff").val(tariffId);
+    $("#tariff").val(tariffId);
 }
