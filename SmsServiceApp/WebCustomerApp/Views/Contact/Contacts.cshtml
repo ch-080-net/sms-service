@@ -27,7 +27,7 @@
        
         
 
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Contact</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus"></i> Add Contact</button>
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -115,7 +115,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                                                <button type='button' class="btn btn-success" id='insert' onclick='onAddContact(this)'>
                                                     <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
                                                 </button>
                                             </td>
@@ -180,7 +180,7 @@
         </div>
         <div>
             <input id="searchField" type="text" />
-            <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
+            <button type='button' id="search" onclick='searchContacts()' class='btn btn-default'>
                 <span class='glyphicon glyphicon-search' /> @Localizer["Search"]
             </button>
         </div>

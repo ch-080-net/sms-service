@@ -12,7 +12,7 @@
 
 
 <p>
-    <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
+    <a class="btn btn-success" asp-action="Create"><i class="glyphicon glyphicon-plus"></i> @Localizer["Create New"]</a>
 </p>
 <div class="container">
     <table class="table table-hover">
@@ -35,8 +35,8 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">@Localizer["Edit"]</a> |
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">@Localizer["Delete"]</a>
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="glyphicon glyphicon-edit"></i></a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="glyphicon glyphicon-trash"></i></a>
                     </td>
                 </tr>
             }
