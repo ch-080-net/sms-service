@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
 @using System.Globalization;
 @using Microsoft.AspNetCore.Builder;
+@using Microsoft.AspNetCore.Http.Extensions
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Localization
 @inject IViewLocalizer Localizer
@@ -65,7 +66,7 @@
         <link href="~/css/menunav.css" rel="stylesheet"/>
     </environment>
 </head>
-<body class="hold-transition skin-black sidebar-collapse sidebar-mini">
+<body id="menu" class="hold-transition skin-black sidebar-collapse sidebar-mini">
 <div class="wrapper">
 <header class="main-header">
     <a asp-controller="Home" asp-action="Index" class="logo">
@@ -261,7 +262,7 @@
     </section>
 </aside>
 <div class="content-wrapper">
-    <section class="content">
+    <section id="pageContent" class="content">
         @RenderBody()
 
         <link href="~/css/site.css" rel="stylesheet"/>
