@@ -19,6 +19,8 @@ namespace BAL.Managers
 
         NotificationReportDTO GetWebNotificationsReport(string userId);
 
+        TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message);
+
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
         void SetAsSent(NotificationDTO notification);
         void SetAsSent(int notificationId, NotificationOrigin origin, string userId);
