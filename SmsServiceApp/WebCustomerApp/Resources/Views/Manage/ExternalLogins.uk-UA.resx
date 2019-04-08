@@ -123,4 +123,7 @@
   <data name="Registered Logins" xml:space="preserve">
     <value>Зареєстровані сервіси</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Видалити</value>
+  </data>
 </root>
