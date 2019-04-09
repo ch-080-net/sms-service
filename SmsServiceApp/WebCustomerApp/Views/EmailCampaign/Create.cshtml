@@ -144,50 +144,78 @@
 
                                 <v-app style="height: 50px; background-color:white;" id="inspire">
                                     <v-layout row justify-center>
-                                        <v-dialog v-model="dialog" persistent max-width="600px">
+                                        <v-dialog v-model="dialog" persistent max-width="600px" style="z-index:1040;">
                                             <template v-slot:activator="{ on }">
                                                 <v-btn color="primary" dark v-on="on">@Localizer["Add"]</v-btn>
                                             </template>
-                                            <v-card>
-                                                <v-card-title>
-                                                    <span class="headline">@Localizer["User Profile"]</span>
-                                                </v-card-title>
-                                                <v-card-text>
-                                                    <v-container grid-list-md>
-                                                        <v-layout wrap>
-                                                            <v-flex xs12>
-                                                                <v-text-field label="@Localizer["Email*"]" v-model="Recepient.EmailAddress" required></v-text-field>
-                                                                <span class="spanError" id="RecepientEmailValidationError"></span>
-                                                            </v-flex>
+                                            <v-tabs v-model="active"
+                                                    color="cyan"
+                                                    dark
+                                                    slider-color="yellow">
+                                                <v-tab :key="1"
+                                                       ripple>
+                                                    Add Manual
+                                                </v-tab>
+                                                <v-tab :key="2"
+                                                       ripple>
+                                                    Add From File
+                                                </v-tab>
+                                                <v-tab-item :key="1">
+                                                    <v-card>
+                                                        <v-card-text>
+                                                            <v-container grid-list-md>
+                                                                <v-layout wrap>
+                                                                    <v-flex xs12>
+                                                                        <v-text-field label="@Localizer["Email*"]" v-model="Recepient.EmailAddress" required></v-text-field>
+                                                                        <span class="spanError" id="RecepientEmailValidationError"></span>
+                                                                    </v-flex>
 
-                                                            <v-flex xs12 sm6 md4>
-                                                                <v-text-field label="@Localizer["Name"]" v-model="Recepient.Name" required></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6 md4>
-                                                                <v-text-field label="@Localizer["Surname"]" v-model="Recepient.Surname" required></v-text-field>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6 md4>
-                                                                <input style="margin-top:22px;" placeholder="@Localizer["Birthday"]" id="birthDate" v-model="Recepient.BirthDate" required />
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6>
-                                                                <v-select :items="Gender" label="@Localizer["Gender"]" v-model="Recepient.Gender"></v-select>
-                                                            </v-flex>
-                                                            <v-flex xs12 sm6>
-                                                                <v-select :items="Priority" label="@Localizer["Priority"]" v-model="Recepient.Priority"></v-select>
-                                                            </v-flex>
-                                                            <v-flex xs12>
-                                                                <v-text-field label="@Localizer["Key words"]" v-model="Recepient.KeyWords" required></v-text-field>
-                                                            </v-flex>
-                                                        </v-layout>
-                                                    </v-container>
-                                                    <small>@Localizer["*indicates required field"]</small>
-                                                </v-card-text>
-                                                <v-card-actions>
-                                                    <v-spacer></v-spacer>
-                                                    <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
-                                                    <v-btn color="blue darken-1" flat v-on:click="AddRecepient">@Localizer["Save"]</v-btn>
-                                                </v-card-actions>
-                                            </v-card>
+                                                                    <v-flex xs12 sm6 md4>
+                                                                        <v-text-field label="@Localizer["Name"]" v-model="Recepient.Name" required></v-text-field>
+                                                                    </v-flex>
+                                                                    <v-flex xs12 sm6 md4>
+                                                                        <v-text-field label="@Localizer["Surname"]" v-model="Recepient.Surname" required></v-text-field>
+                                                                    </v-flex>
+                                                                    <v-flex xs12 sm6 md4>
+                                                                        <input style="margin-top:22px;" placeholder="@Localizer["Birthday"]" id="birthDate" v-model="Recepient.BirthDate" required />
+                                                                    </v-flex>
+                                                                    <v-flex xs12 sm6>
+                                                                        <v-select :items="Gender" label="@Localizer["Gender"]" v-model="Recepient.Gender"></v-select>
+                                                                    </v-flex>
+                                                                    <v-flex xs12 sm6>
+                                                                        <v-select :items="Priority" label="@Localizer["Priority"]" v-model="Recepient.Priority"></v-select>
+                                                                    </v-flex>
+                                                                    <v-flex xs12>
+                                                                        <v-text-field label="@Localizer["Key words"]" v-model="Recepient.KeyWords" required></v-text-field>
+                                                                    </v-flex>
+                                                                </v-layout>
+                                                            </v-container>
+                                                            <small>@Localizer["*indicates required field"]</small>
+                                                        </v-card-text>
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
+                                                            <v-btn color="blue darken-1" flat v-on:click="AddRecepient">@Localizer["Save"]</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-tab-item>
+                                                <v-tab-item :key="2">
+                                                    <v-card>
+                                                        <v-card-text>
+                                                            <v-container grid-list-md>
+                                                                <h4>Add contact from file </h4>
+                                                                <input type="file" id="fileUpload" />
+                                                                <v-btn id="upload" v-on:click="GetFromFile">Upload</v-btn>
+                                                            </v-container>                                                            
+                                                        </v-card-text>                                                  
+                                                        <v-card-actions>
+                                                            <v-spacer></v-spacer>
+                                                            <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
+                                                            <v-btn color="blue darken-1" flat v-on:click="AddRecepient">@Localizer["Save"]</v-btn>
+                                                        </v-card-actions>
+                                                    </v-card>
+                                                </v-tab-item>
+                                            </v-tabs>                                            
                                         </v-dialog>
                                     </v-layout>
                                 </v-app>

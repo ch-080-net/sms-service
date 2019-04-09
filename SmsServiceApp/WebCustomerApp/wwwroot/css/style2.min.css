@@ -4,7 +4,7 @@
   transition: 2s all;
   opacity: 1;
   visibility: visible;
-  z-index: 3;
+  z-index: 1040;
   left: 0;
   top: 0;
   width: 100%;
