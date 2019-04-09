@@ -26,7 +26,7 @@
     color: #333;
 }
 .skin-black .main-header .navbar .sidebar-toggle:hover {
-    color:#999;background:#fff
+    color:#999;background:#fff;
 }
 .skin-black .main-header .navbar>.sidebar-toggle {
     color:white;border-right:1px solid #eee
@@ -42,14 +42,16 @@
     background-color:black;color:white;border-bottom:0 solid transparent;border-right:1px solid #eee
 }
 .skin-black .main-header .logo:hover {
-    background-color:#fcfcfc
+    background-color:#fcfcfc;
+    color: black;
+    
 }
 @media (max-width:767px) {
     .skin-black .main-header .logo {
         background-color:white;color:black;border-bottom:0 solid transparent;border-right:none
     }
         .skin-black .main-header .logo:hover {
-            background-color: black;
+            background-color: white;
             color: white;
         }
 }
