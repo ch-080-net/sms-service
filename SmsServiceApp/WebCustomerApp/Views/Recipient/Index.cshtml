@@ -88,7 +88,7 @@
                         <button class="btn btn-default" v-on:click="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
                     </div>
               
-                    <a class="btn btn-primary" asp-controller="Company" asp-action="RedirectByType" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to Company"]</a>
+                    <a class="btn btn-primary" asp-controller="Company" asp-action="Details" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to Company"]</a>
                 </div>
             </div>
         <script src="https://unpkg.com/vue"></script>
