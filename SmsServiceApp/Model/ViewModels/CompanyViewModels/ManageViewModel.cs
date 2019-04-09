@@ -18,6 +18,7 @@ namespace Model.ViewModels.CompanyViewModels
         public int TariffId { get; set; }
         public int ApplicationGroupId { get; set; }
         [StringLength(500)]
+        [Display(Name = "Message")]
         public string Message { get; set; }
         [Display(Name = "Time for send")]
         [DataType(DataType.DateTime)]

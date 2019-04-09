@@ -120,6 +120,9 @@
   <data name="End time" xml:space="preserve">
     <value>Час завершення</value>
   </data>
+  <data name="Message" xml:space="preserve">
+    <value>Повідомлення</value>
+  </data>
   <data name="Phone number" xml:space="preserve">
     <value>Номер телефону</value>
   </data>
