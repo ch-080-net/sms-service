@@ -20,7 +20,7 @@ namespace Model.ViewModels.EmailCampaignViewModels
         [Required(ErrorMessage = "The Message field is required.")]
         [Display(Name = "Message")]
         public string Message { get; set; }
-        [Display(Name = "Discription")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
         [Display(Name = "Time for send")]
         public DateTime SendingTime { get; set; }

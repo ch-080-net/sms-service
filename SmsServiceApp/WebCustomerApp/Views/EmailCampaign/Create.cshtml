@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Email Campaign</title>
+    <title>@Localizer["Create Email Campaign"]</title>
     <meta charset="utf-8" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <link href="~/css/vuetify.css" rel="stylesheet">
@@ -104,40 +104,40 @@
                 <v-container>
                     <v-stepper v-model="step" vertical>
                         <v-stepper-header>
-                            <v-stepper-step step="1" :complete="firstStepComplite" v-on:click="step = 1">Main Information</v-stepper-step>
+                            <v-stepper-step step="1" :complete="firstStepComplite" v-on:click="step = 1">@Localizer["Main Information"]</v-stepper-step>
                             <v-divider></v-divider>
                             @*<v-stepper-step step="2" :complete="step > 2">Select tempalate</v-stepper-step>
                             <v-divider></v-divider>*@
-                            <v-stepper-step step="2" :complete="secondStepComplite" v-on:click="step = 2">Create mail</v-stepper-step>
+                            <v-stepper-step step="2" :complete="secondStepComplite" v-on:click="step = 2">@Localizer["Create mail"]</v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step step="3" :complete="thirdStepComplite" v-on:click="step = 3">Add recepients</v-stepper-step>
+                            <v-stepper-step step="3" :complete="thirdStepComplite" v-on:click="step = 3">@Localizer["Add recepients"]</v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step step="4" v-on:click="step = 4">Finish</v-stepper-step>
+                            <v-stepper-step step="4" v-on:click="step = 4">@Localizer["Finish"]</v-stepper-step>
                         </v-stepper-header>
                         <v-stepper-items>
                             <v-stepper-content step="1">
 
-                                <v-text-field label="Name" v-model="Campaign.name" required></v-text-field>
+                                <v-text-field label="@Localizer["Name"]" v-model="Campaign.name" required></v-text-field>
                                 <span class="spanError" id="NameValidationError"></span>
-                                <v-text-field label="Email" v-model="Campaign.emailAddress" required></v-text-field>
+                                <v-text-field label="@Localizer["Email"]" v-model="Campaign.emailAddress" required></v-text-field>
                                 <span class="spanError" id="EmailValidationError"></span>
-                                <v-textarea label="Description" v-model="Campaign.description" required></v-textarea>
-                                <label>Time of send</label>
+                                <v-textarea label="@Localizer["Description"]" v-model="Campaign.description" required></v-textarea>
+                                <label>@Localizer["Time of send"]</label>
                                 <br />
-                                <label><input type="radio" id="SendNowRadio" name="SendTime" v-model="Campaign.sendNow" value="true" onclick="ShowDate()">Send now</label>
-                                <label><input type="radio" id="SendLaterRadio" name="SendTime" v-model="Campaign.sendNow" value="false" onclick="ShowDate()">Send later</label>
+                                <label><input type="radio" id="SendNowRadio" name="SendTime" v-model="Campaign.sendNow" value="true" onclick="ShowDate()">@Localizer["Send now"]</label>
+                                <label><input type="radio" id="SendLaterRadio" name="SendTime" v-model="Campaign.sendNow" value="false" onclick="ShowDate()">@Localizer["Send later"]</label>
                                 <div id="sendTime" style="display: none;"> </div>
                                 <input type="hidden" id="result" v-model="Campaign.sendingTime">
                                 <span class="spanError" id="SendTimeValidationError"></span>
                                 <br />
-                                <v-btn color="primary" v-on:click.native="FirstStep">Continue</v-btn>
+                                <v-btn color="primary" v-on:click.native="FirstStep">@Localizer["Continue"]</v-btn>
                             </v-stepper-content>
                             <v-stepper-content step="2">
 
                                 <textarea name="myTextarea" id="myTextarea"></textarea>
 
-                                <v-btn flat v-on:click.native="step = 1">Previous</v-btn>
-                                <v-btn color="primary" v-on:click.native="SecondStep">Continue</v-btn>
+                                <v-btn flat v-on:click.native="step = 1">@Localizer["Previous"]</v-btn>
+                                <v-btn color="primary" v-on:click.native="SecondStep">@Localizer["Continue"]</v-btn>
 
                             </v-stepper-content>
                             <v-stepper-content step="3">
@@ -146,46 +146,46 @@
                                     <v-layout row justify-center>
                                         <v-dialog v-model="dialog" persistent max-width="600px">
                                             <template v-slot:activator="{ on }">
-                                                <v-btn color="primary" dark v-on="on">Add</v-btn>
+                                                <v-btn color="primary" dark v-on="on">@Localizer["Add"]</v-btn>
                                             </template>
                                             <v-card>
                                                 <v-card-title>
-                                                    <span class="headline">User Profile</span>
+                                                    <span class="headline">@Localizer["User Profile"]</span>
                                                 </v-card-title>
                                                 <v-card-text>
                                                     <v-container grid-list-md>
                                                         <v-layout wrap>
                                                             <v-flex xs12>
-                                                                <v-text-field label="Email*" v-model="Recepient.EmailAddress" required></v-text-field>
+                                                                <v-text-field label="@Localizer["Email*"]" v-model="Recepient.EmailAddress" required></v-text-field>
                                                                 <span class="spanError" id="RecepientEmailValidationError"></span>
                                                             </v-flex>
 
                                                             <v-flex xs12 sm6 md4>
-                                                                <v-text-field label="Name" v-model="Recepient.Name" required></v-text-field>
+                                                                <v-text-field label="@Localizer["Name"]" v-model="Recepient.Name" required></v-text-field>
                                                             </v-flex>
                                                             <v-flex xs12 sm6 md4>
-                                                                <v-text-field label="Surname" v-model="Recepient.Surname" required></v-text-field>
+                                                                <v-text-field label="@Localizer["Surname"]" v-model="Recepient.Surname" required></v-text-field>
                                                             </v-flex>
                                                             <v-flex xs12 sm6 md4>
-                                                                <input style="margin-top:22px;" placeholder="Birthday" id="birthDate" v-model="Recepient.BirthDate" required />
+                                                                <input style="margin-top:22px;" placeholder="@Localizer["Birthday"]" id="birthDate" v-model="Recepient.BirthDate" required />
                                                             </v-flex>
                                                             <v-flex xs12 sm6>
-                                                                <v-select :items="Gender" label="Gender" v-model="Recepient.Gender"></v-select>
+                                                                <v-select :items="Gender" label="@Localizer["Gender"]" v-model="Recepient.Gender"></v-select>
                                                             </v-flex>
                                                             <v-flex xs12 sm6>
-                                                                <v-select :items="Priority" label="Priority" v-model="Recepient.Priority"></v-select>
+                                                                <v-select :items="Priority" label="@Localizer["Priority"]" v-model="Recepient.Priority"></v-select>
                                                             </v-flex>
                                                             <v-flex xs12>
-                                                                <v-text-field label="Key words" v-model="Recepient.KeyWords" required></v-text-field>
+                                                                <v-text-field label="@Localizer["Key words"]" v-model="Recepient.KeyWords" required></v-text-field>
                                                             </v-flex>
                                                         </v-layout>
                                                     </v-container>
-                                                    <small>*indicates required field</small>
+                                                    <small>@Localizer["*indicates required field"]</small>
                                                 </v-card-text>
                                                 <v-card-actions>
                                                     <v-spacer></v-spacer>
-                                                    <v-btn color="blue darken-1" flat v-on:click="closeDialog">Close</v-btn>
-                                                    <v-btn color="blue darken-1" flat v-on:click="AddRecepient">Save</v-btn>
+                                                    <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
+                                                    <v-btn color="blue darken-1" flat v-on:click="AddRecepient">@Localizer["Save"]</v-btn>
                                                 </v-card-actions>
                                             </v-card>
                                         </v-dialog>
@@ -197,13 +197,13 @@
                                     <table class="table table-striped table-bordered" style="max-height:500px !important; overflow:auto;">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <td><label>Email</label></td>
-                                                <td><label>Name</label></td>
-                                                <td><label>Surname</label></td>
-                                                <td><label>Birthday</label></td>
-                                                <td><label>Gender</label></td>
-                                                <td><label>Priority</label></td>
-                                                <td><label>Key words</label></td>
+                                                <td><label>@Localizer["Email"]</label></td>
+                                                <td><label>@Localizer["Name"]</label></td>
+                                                <td><label>@Localizer["Surname"]</label></td>
+                                                <td><label>@Localizer["Birthday"]</label></td>
+                                                <td><label>@Localizer["Gender"]</label></td>
+                                                <td><label>@Localizer["Priority"]</label></td>
+                                                <td><label>@Localizer["Key words"]</label></td>
                                                 <td> </td>
                                             </tr>
                                         </thead>
@@ -216,30 +216,30 @@
                                                 <td>{{ item.Gender}}</td>
                                                 <td>{{ item.Priority}}</td>
                                                 <td>{{ item.KeyWords}}</td>
-                                                <td><button value="Delete" class="btn btn-success" :data-recId="item.Id" v-on:click="DeleteRecepient">Delete</button></td>
+                                                <td><button value="Delete" class="btn btn-success" :data-recId="item.Id" v-on:click="DeleteRecepient">@Localizer["Delete"]</button></td>
                                             </tr>
                                             <tr>
                                                 <td style="text-align: center;" colspan="8">
-                                                    <h1 v-if="Campaign.recipientsCount == 0">You have not Recepients</h1>
+                                                    <h1 v-if="Campaign.recipientsCount == 0">@Localizer["You have not Recepients"]</h1>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <v-btn flat v-on:click.native="step = 2">Previous</v-btn>
-                                <v-btn color="primary" v-on:click.native="ThirdStep">Continue</v-btn>
+                                <v-btn flat v-on:click.native="step = 2">@Localizer["Previous"]</v-btn>
+                                <v-btn color="primary" v-on:click.native="ThirdStep">@Localizer["Continue"]</v-btn>
 
                             </v-stepper-content>
                             <v-stepper-content step="4">
 
-                                <v-text-field readonly label="Name" v-model="Campaign.name" required></v-text-field>
-                                <v-text-field readonly label="Email" v-model="Campaign.emailAddress" required></v-text-field>
-                                <v-textarea readonly label="Description" v-model="Campaign.description" required></v-textarea>
-                                <v-text-field readonly label="Time of send" v-model="Campaign.sendingTime" required></v-text-field>
-                                <v-text-field readonly label="Recepients Count" v-model="Campaign.recipientsCount" required></v-text-field>
+                                <v-text-field readonly label="@Localizer["Name"]" v-model="Campaign.name" required></v-text-field>
+                                <v-text-field readonly label="@Localizer["Email"]" v-model="Campaign.emailAddress" required></v-text-field>
+                                <v-textarea readonly label="@Localizer["Description"]" v-model="Campaign.description" required></v-textarea>
+                                <v-text-field readonly label="@Localizer["Time of send"]" v-model="Campaign.sendingTime" required></v-text-field>
+                                <v-text-field readonly label="@Localizer["Recepients Count"]" v-model="Campaign.recipientsCount" required></v-text-field>
 
-                                <v-btn flat v-on:click.native="step = 3">Previous</v-btn>
-                                <v-btn color="primary" v-on:click.prevent="submit">Save</v-btn>
+                                <v-btn flat v-on:click.native="step = 3">@Localizer["Previous"]</v-btn>
+                                <v-btn color="primary" v-on:click.prevent="submit">@Localizer["Save"]</v-btn>
 
                             </v-stepper-content>
                         </v-stepper-items>

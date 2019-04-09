@@ -40,8 +40,8 @@
                         campaign: this.Campaign,
                         recepients: this.Recepients
                     },
-                    success: function () {
-                        window.location.href = "/EmailCampaign/Index";
+                    success: function (href) {
+                        window.location.href = href.newUrl;
                     },
                     error: function (request, message, error) {
                         handleException(request, message, error);
