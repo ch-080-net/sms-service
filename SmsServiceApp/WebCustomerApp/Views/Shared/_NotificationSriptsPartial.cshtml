@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Model.DTOs
 @inject IViewLocalizer Localizer
 <script type="text/javascript">
     "use strict";
@@ -100,8 +101,17 @@
             }
 
             content += "<br />"
-
+            
             for (var i = 0; i < value.notifications.length; i++) {
+                switch (value.notifications[i].origin) {
+                    case @((int) NotificationOrigin.CampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "Company")' + '?companyId=' + value.notifications[i].id;
+                        break;
+                    case @((int) NotificationOrigin.EmailCampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "EmailCampaign")' + '?campaignId=' + value.notifications[i].id;
+                        break;
+                }
+
                 content += "<ul class='menu'><li style='width:99%'>";
                 if (value.notifications[i].href != null)
                     content += "<a href='" + value.notifications[i].href + "'>";
