@@ -1,24 +1,31 @@
 ﻿@using Model.ViewModels.AdminStatisticViewModel
-@model AdminStatisticViewModel
+@model IEnumerable<AdminStatisticViewModel>
 <div class="Statistic">
-    <h3>Admin Sttistica</h3>
+    <h3>Admin Statistica</h3>
     
-    <table>  
-        <tr>  
-            <th>Group Name</th>  
-            <th>Number of messages</th>  
-        </tr>  
-        @foreach (AdminStatisticViewModel item in ViewBag.statistic)
-        {
+    <table class="table table-hover">
+        <thead>
         <tr>
-            <td>
-                @item.groupName 
-            </td>
-            <td>
-                @item.count
-            </td>
+            <th>Group Name</th>
+            <th>Number of messages</th>
         </tr>
-        }
+        </thead>
+        <tbody>
+            @{
+                foreach (AdminStatisticViewModel item in ViewBag.statistic)
+                {
+                    <tr>
+                        <td>
+                            @item.GroupName
+                        </td>
+                        <td>
+                            @item.Count
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
     </table>  
     
      

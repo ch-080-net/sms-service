@@ -17,9 +17,10 @@ namespace BAL.Managers
 
         public IEnumerable<AdminStatisticViewModel> NumberOfMessages()
         {
-            var groups = unitOfWork.ApplicationGroups.GetAll();
+            var groups = unitOfWork.AdminStatistics.GetAll();
 
             var result = mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<AdminStatisticViewModel>>(groups);
+
             return result;
         }
        

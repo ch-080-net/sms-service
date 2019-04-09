@@ -209,8 +209,8 @@ namespace BAL.Services
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Message));
 
             CreateMap<ApplicationGroup, AdminStatisticViewModel>()
-                .ForMember(dest => dest.groupName, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.groupName, opt => opt.MapFrom(cn => GetNumberOfMessage(cn)));
+                .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Count, opt => opt.MapFrom(cn => GetNumberOfMessage(cn)));
 
         }
         private int GetNumberOfMessage(ApplicationGroup applicationGroup)
