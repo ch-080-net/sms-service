@@ -6,10 +6,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@Localizer["SubscribeWord"]</title>
+    <title>@Localizer["Subscribe Word"]</title>
 </head>
 <body>
-<h2>@Localizer["SubscribeWord"]</h2>
+ <div class="container">
+<h2>@Localizer["Subscribe word"]</h2>
 <h4>@Localizer["Campaign"]</h4>
 <hr />
 <div class="row">
@@ -17,7 +18,6 @@
       
     </div>
 </div>
-<div class="container">
     <a class="btn btn-success" asp-action="Create" asp-route-companyId="@Model.FirstOrDefault().CompanyId" asp-controller="SubscribeWord">@Localizer["Create New"]</a>
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -45,13 +45,13 @@
         }
         </tbody>
     </table>
-   
-</div>  
-<div>
-    <a class="btn btn-primary"asp-route-companyId="@Model.FirstOrDefault().CompanyId" asp-action="Details">@Localizer["Back to Details"]</a>
+    <div>
+        <a class="btn btn-primary" asp-route-companyId="@Model.FirstOrDefault().CompanyId" asp-action="Details">@Localizer["Back to Details"]</a>
 
-    <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Company"]</a>
+        <a class="btn btn-primary" asp-action="Index">@Localizer["Back to Company"]</a>
+    </div>   
 </div>
+
 </body>
 </html>
 @section Scripts {

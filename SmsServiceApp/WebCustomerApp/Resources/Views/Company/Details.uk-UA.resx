@@ -135,7 +135,13 @@
   <data name="Incoming" xml:space="preserve">
     <value>Вхідні</value>
   </data>
+  <data name="Recipients" xml:space="preserve">
+    <value>Отримувачі</value>
+  </data>
   <data name="Reporting" xml:space="preserve">
     <value>Звітність</value>
+  </data>
+  <data name="Subscribe word" xml:space="preserve">
+    <value>Слова підписки</value>
   </data>
 </root>

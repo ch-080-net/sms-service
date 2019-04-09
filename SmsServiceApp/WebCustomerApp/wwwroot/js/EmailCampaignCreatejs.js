@@ -1,8 +1,9 @@
-﻿new Vue({
+﻿var vue = new Vue({
     el: '#app',
     data: () => ({
         dialog: false,
         step: 1,
+        active: null,
         firstStepComplite: false,
         secondStepComplite: false,
         thirdStepComplite: false,
@@ -40,8 +41,8 @@
                         campaign: this.Campaign,
                         recepients: this.Recepients
                     },
-                    success: function () {
-                        window.location.href = "/EmailCampaign/Index";
+                    success: function (href) {
+                        window.location.href = href.newUrl;
                     },
                     error: function (request, message, error) {
                         handleException(request, message, error);
@@ -145,7 +146,45 @@
         },
         openDialog() {
             this.dialog = true;
-        }
+        },
+        GetFromFile() {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+            if (regex.test($("#fileUpload").val().toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.readAsText($("#fileUpload")[0].files[0]);
 
+                    reader.onload = function () {
+                        var recepientrow = reader.result;
+                        var lines = recepientrow.split("\n");
+                        var result = [];
+                        var headers = lines[0].split(",");
+                        for (var i = 1; i < lines.length; i++) {
+
+                            var obj = {};
+                            var currentline = lines[i].split(",");
+
+                            for (var j = 0; j < headers.length; j++) {
+                                obj[headers[j]] = currentline[j];
+                            }
+
+                            result.push(obj);
+                            vue.AddRecepientFromFile(obj)
+                        }
+                        console.dir(result);
+                    }
+                }
+                else {
+                    alert("This browser does not support HTML5.");
+                }
+            }
+            else {
+                alert("Please upload a valid CSV file.");
+            }
+        },
+        AddRecepientFromFile(recepient) {
+            this.Recepients.push(recepient);
+            this.Campaign.recipientsCount++;
+        }
     }
 })

@@ -332,6 +332,13 @@ namespace BAL.Managers
             }
         }
 
+
+        /// <summary>
+        /// Generate list of sent notifications in descending order for User with userId
+        /// </summary>
+        /// <param name="userId">Identity User Id</param>
+        /// <param name="number">Quantity of returned notifications</param>
+        /// <returns>Enumeration of notifications in descending (by time) order</returns>
         public IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number)
         {
             var campaignNotifications = unitOfWork.CampaignNotifications.Get(x => x.ApplicationUserId == userId
@@ -365,6 +372,10 @@ namespace BAL.Managers
             return webNotifications;
         }
 
+        /// <summary>
+        /// Generate web notifications report class with latest notifications and statistics
+        /// </summary>
+        /// <param name="userId">Application User Id</param>
         public NotificationReportDTO GetWebNotificationsReport(string userId)
         {
             var result = new NotificationReportDTO();
@@ -390,6 +401,15 @@ namespace BAL.Managers
             return result;
         }
 
+        /// <summary>
+        /// Add personal notification to Identity User
+        /// </summary>
+        /// <param name="userId">Identity user Id</param>
+        /// <param name="time">Time, when messages should be sent</param>
+        /// <param name="title">Title of message</param>
+        /// <param name="message">Text of message</param>
+        /// <param name="href">Optional hyper reference</param>
+        /// <returns>succes result if succesfull</returns>
         public TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null)
         {
             var user = unitOfWork.ApplicationUsers.Get(au => au.Id == userId).FirstOrDefault();

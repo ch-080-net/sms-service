@@ -1,0 +1,149 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Model.DTOs
+@inject IViewLocalizer Localizer
+<script type="text/javascript">
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+    window.onload = notificationStartup();
+    var notificationsToShow = 10;
+
+    connection.on("GetNotification", function (notification) {
+        incrementBadge();
+        connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+
+    connection.start();
+
+    function incrementBadge() {
+        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
+        activeNotifications = JSON.parse(activeNotifications);
+        if (activeNotifications == null) {
+            activeNotifications = 0;
+        }
+        activeNotifications = JSON.stringify(++activeNotifications);
+        localStorage.setItem("numOfActiveNotifications", activeNotifications);
+        loadBadge();
+    }
+
+    function loadBadge() {
+        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
+        activeNotifications = JSON.parse(activeNotifications);
+        if (activeNotifications == null) {
+            activeNotifications = "";
+        }
+        document.getElementById("notificationBadge").innerHTML = activeNotifications;
+    }
+
+    function clearBadge() {
+        localStorage.setItem("numOfActiveNotifications", null);
+        loadBadge();
+    }
+
+    function fillModal() {
+        connection.invoke("GetNotificationPage", notificationsToShow).catch(function (err) {
+            return console.error(err.toString());
+        }).then(function (value) {
+            var content = "";
+            for (var i = 0; i < value.length; i++) {
+                content += "<h4>" + value[i].title + "</h4>" + "<small>" + value[i].time + "</small>";
+                content += "<p>";
+                switch (value[i].message) {
+                    case "Voting started":
+                        content += "@Localizer["Voting started"]";
+                        break;
+                    case "Voting ended":
+                        content += "@Localizer["Voting ended"]";
+                        break;
+                    case "Mailing started":
+                        content += "@Localizer["Mailing started"]";
+                        break;
+                    default:
+                        content += value[i].message;
+                        break;
+                }
+                content += "</p>";
+                content += "<br />";
+            }
+            content += '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="showMoreNotifications()">'
+                + '@Localizer["Load more"]' + '</button>'
+            document.getElementById("notificationContent").innerHTML = content;
+        });
+    }
+
+    function fillReport() {
+        connection.invoke("GetNotificationReport").catch(function (err) {
+            return console.error(err.toString());
+        }).then(function (value) {
+            var content = "";
+            if (value.votingsInProgress == 0) {
+                content += "<ul class='menu'><li style='width:99%'><a href='#'>"
+                    + "<span class='glyphicon glyphicon-pause' aria-hidden='true'></span>"
+                    + "@Localizer["No votings in progress"]" + "</a></li></ul>"
+            }
+            else {
+                content += "<ul class='menu'><li style='width:99%'><a href='#'>"
+                    + "<span class='glyphicon glyphicon-play' aria-hidden='true'></span>"
+                    + value.votingsInProgress + " " + "@Localizer["votings in progress"]" + "</a></li></ul>"
+            }
+
+            if (value.mailingsPlannedToday == 0) {
+                content += "<ul class='menu'><li style='width:99%'><a href='#'>"
+                    + "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>"
+                    + "@Localizer["No mailings planned for today"]" + "</a></li></ul>"
+            }
+            else {
+                content += "<ul class='menu'><li style='width:99%'><a href='#'>"
+                    + "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span>"
+                    + value.mailingsPlannedToday + " " + "@Localizer["mailings planned for today"]" + "</a></li></ul>"
+            }
+
+            content += "<br />"
+            
+            for (var i = 0; i < value.notifications.length; i++) {
+                switch (value.notifications[i].origin) {
+                    case @((int) NotificationOrigin.CampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "Company")' + '?companyId=' + value.notifications[i].id;
+                        break;
+                    case @((int) NotificationOrigin.EmailCampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "EmailCampaign")' + '?campaignId=' + value.notifications[i].id;
+                        break;
+                }
+
+                content += "<ul class='menu'><li style='width:99%'>";
+                if (value.notifications[i].href != null)
+                    content += "<a href='" + value.notifications[i].href + "'>";
+                else {
+                    content += "<a href='#'>";
+                }                
+                switch (value.notifications[i].message) {
+                    case "Voting started":
+                        content += value.notifications[i].title + ": " + "@Localizer["Voting started"]";
+                        break;
+                    case "Voting ended":
+                        content += value.notifications[i].title + ": " + "@Localizer["Voting ended"]";
+                        break;
+                    case "Mailing started":
+                        content += value.notifications[i].title + ": " + "@Localizer["Mailing started"]";
+                        break;
+                    default:
+                        content += value.notifications[i].message;
+                        break;
+                }
+                content += "</a></li></ul>";
+            }
+            document.getElementById("notificationMenu").innerHTML = content;
+        });
+    }
+
+    function showMoreNotifications() {
+        notificationsToShow += 10;
+        fillModal();
+    }
+
+    function notificationStartup() {
+        loadBadge();
+    }
+</script>
