@@ -1,6 +1,25 @@
-﻿@using Model.ViewModels.AdminStatisticViewModel;
-
+﻿@using Model.ViewModels.AdminStatisticViewModel
 @model AdminStatisticViewModel
-<div>
-
+<div class="Statistic">
+    <h3>Admin Sttistica</h3>
+    
+    <table>  
+        <tr>  
+            <th>Group Name</th>  
+            <th>Number of messages</th>  
+        </tr>  
+        @foreach (AdminStatisticViewModel item in ViewBag.statistic)
+        {
+        <tr>
+            <td>
+                @item.groupName 
+            </td>
+            <td>
+                @item.count
+            </td>
+        </tr>
+        }
+    </table>  
+    
+     
 </div>

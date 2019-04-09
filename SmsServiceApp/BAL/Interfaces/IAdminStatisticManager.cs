@@ -7,6 +7,6 @@ namespace BAL.Interfaces
 {
     public interface IAdminStatisticManager
     {
-        IEnumerable<AdminStatisticViewModel> GetAll();
+        IEnumerable<AdminStatisticViewModel> NumberOfMessages();
     }
 }

@@ -12,14 +12,6 @@
     <EmbeddedResource Remove="Views\LandingPage\**" />
     <None Remove="Views\LandingPage\**" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\AdminStatistic\AdminStatistics.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Views\AdminStatistic\AdminStatistics.cshtml" />
-  </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />

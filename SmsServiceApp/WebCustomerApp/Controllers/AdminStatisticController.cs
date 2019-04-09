@@ -20,14 +20,11 @@ namespace WebApp.Controllers
             this.adminStatisticManager = adminStatisticManager;
         }
         [HttpGet]
-        public IActionResult AdminStatistic(AdminStatisticViewModel adminStatisticView)
+        public IActionResult AdminStatistics(AdminStatisticViewModel adminStatisticView)
         {
 
-            var statistic = adminStatisticManager.GetAll();
-
-               
-
-                    return View(statistic);
+            ViewBag.statistic = adminStatisticManager.NumberOfMessages();
+            return View();
             
            
         }

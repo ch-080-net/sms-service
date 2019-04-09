@@ -187,7 +187,18 @@ namespace DAL.Repositories
                 return chartsRepo;
             }
         }
-
+        
+        public IAdminStatisticRepository adminStatistic
+        {
+            get
+            {
+                if (adminStatisticRepository == null)
+                {
+                    adminStatisticRepository = new AdminStatisticRepository(context);
+                }
+                return adminStatisticRepository;
+            }
+        }
         public INotificationRepository Notifications
         {
             get
@@ -273,7 +284,7 @@ namespace DAL.Repositories
         }
 
 
-        IAdminStatisticRepository AdminStatisticRepository
+        public IAdminStatisticRepository AdminStatistics
         {
             get
             {

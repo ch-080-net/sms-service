@@ -165,4 +165,7 @@
   <data name="Users in group" xml:space="preserve">
     <value>Користувачі в групі</value>
   </data>
+  <data name="Statistic" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
 </root>
