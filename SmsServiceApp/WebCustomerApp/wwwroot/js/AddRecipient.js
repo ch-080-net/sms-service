@@ -246,4 +246,50 @@ function CreateCampaign() {
         
             
     });
+
 }
+
+function GetFromFile() {
+    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+    if (regex.test($("#fileUpload").val().toLowerCase())) {
+        if (typeof (FileReader) != "undefined") {
+            var reader = new FileReader();
+            reader.readAsText($("#fileUpload")[0].files[0]);
+
+            reader.onload = function () {
+                var recepientrow = reader.result;
+                var lines = recepientrow.split("\n");
+                var result = [];
+                var headers = lines[0].split(",");
+                for (var i = 1; i < lines.length; i++) {
+
+                    var obj = {};
+                    var currentline = lines[i].split(",");
+                    var found = false;
+                    for (var j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    for (var k = 0; k < recipients.length; k++) {   
+                        if (recipients[k].phoneNumber == obj.phoneNumber) {
+                            found = true;
+                            break;
+                        }                        
+                    }
+                    if (!found) {
+                        recipients.push(obj);
+                    }
+                    
+                    result.push(obj);                   
+                }
+                console.dir(result);
+                contactListSuccess(recipients);
+            }
+        }
+        else {
+            alert("This browser does not support HTML5.");
+        }
+    }
+    else {
+        alert("Please upload a valid CSV file.");
+    }
+};
