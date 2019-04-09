@@ -252,7 +252,7 @@ namespace BAL.Managers
                             .FirstOrDefault();
                         try
                         {
-                        if (tempPhone != null)
+                        if (tempPhone == null)
                         {
                             temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
                         }
