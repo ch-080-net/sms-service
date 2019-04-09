@@ -51,7 +51,7 @@ body {
 
 .body-container {
 	background: rgba(255, 255, 255,0.85);
-	padding: 5vw;
+	padding: 4vw 0.1vw;
 }
 
 .file-upload-btn {
