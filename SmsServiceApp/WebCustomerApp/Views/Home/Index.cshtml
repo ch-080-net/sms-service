@@ -62,7 +62,6 @@
                                 <div class="overlay-content">
                                     <a asp-area="" asp-controller="Company" asp-action="Index" title="@Localizer["Campaigns"]">@Localizer["Campaigns"]</a>
                                     <a asp-area="" asp-controller="Contact" asp-action="Contacts" title="@Localizer["Contacts"]">@Localizer["Contacts"]</a>
-                                    <a asp-area="" asp-controller="Step" asp-action="Index" title="@Localizer["Contacts"]">@Localizer["Step"]</a>
                                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                                     {
                                         <a asp-area="" asp-controller="Operator" asp-action="Operators" title="@Localizer["Operators"]">@Localizer["Operators"]</a>
