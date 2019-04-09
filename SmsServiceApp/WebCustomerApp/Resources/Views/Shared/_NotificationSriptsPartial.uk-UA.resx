@@ -138,4 +138,7 @@
   <data name="votings in progress" xml:space="preserve">
     <value>активних голосувань</value>
   </data>
+  <data name="Load more" xml:space="preserve">
+    <value>Завантажити більше</value>
+  </data>
 </root>
