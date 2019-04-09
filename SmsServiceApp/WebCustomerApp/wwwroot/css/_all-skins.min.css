@@ -29,17 +29,17 @@
     color:#999;background:#fff;
 }
 .skin-black .main-header .navbar>.sidebar-toggle {
-    color:white;border-right:1px solid #eee
+    color:white; 
 }
 .skin-black .main-header .navbar .navbar-nav>li>a {
     border-right:1px solid #eee
 }
 .skin-black .main-header .navbar .navbar-custom-menu .navbar-nav>li>a,
 .skin-black .main-header .navbar .navbar-right>li>a {
-    border-left:1px solid #eee;border-right-width:0
+   border-right-width:0
 }
 .skin-black .main-header .logo {
-    background-color:black;color:white;border-bottom:0 solid transparent;border-right:1px solid #eee
+    background-color:black;color:white;border-bottom:0 solid transparent;
 }
 .skin-black .main-header .logo:hover {
     background-color:#fcfcfc;

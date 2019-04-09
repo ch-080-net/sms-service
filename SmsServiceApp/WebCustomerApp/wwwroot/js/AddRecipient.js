@@ -81,7 +81,7 @@ function contactAddRow(contact) {
 // Build a <tr> for a row of table data
 function contactBuildTableRow(contact) {
     var newRow = "<tr>" +
-        "<td>" + contact.phonNumber + "</td>" +
+        "<td>" + contact.phoneNumber + "</td>" +
         "<td>" + contact.name + "</td>" +
         "<td>" + contact.surname + "</td>" +
         "<td>" + contact.birthDate.slice(0, 10) + "</td>" +
@@ -100,7 +100,7 @@ function contactBuildTableRow(contact) {
         "data-gender='" + contact.gender + "'" +
         "data-notes='" + contact.priority + "'" +
         "data-keywords='" + contact.keyWords + "'" +
-        ">" +
+           +
         "</button> " +
         " <button type='button' " +
         "onclick='contactDelete(this);'" +
