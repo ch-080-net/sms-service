@@ -10,6 +10,7 @@ function getTariffsList() {
         },
         success: function (tariffs) {
             tariffListSuccess(tariffs);
+             
         },
         error: function (request, message, error) {
             //handleException(request, message, error);

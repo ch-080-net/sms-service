@@ -213,4 +213,7 @@
   <data name="Upload" xml:space="preserve">
     <value>Завантажити</value>
   </data>
+  <data name="Page Size" xml:space="preserve">
+    <value>Кількість на сторінці</value>
+  </data>
 </root>
