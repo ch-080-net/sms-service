@@ -16,13 +16,14 @@
 
 </head>
 <body>
-    <h2>@Localizer["Campaign"]</h2>
+<div class="container">
+<h2>@Localizer["Campaign"]</h2>
 
     <div id="tables">
         <p>
             <a class="btn btn-success" asp-action="Create"><i class="glyphicon glyphicon-plus"></i> @Localizer["Create New"]</a>
         </p>
-        <div class="container">
+       
 
             <label>@Localizer["Search"]</label>
             <input v-model="searchValue">
