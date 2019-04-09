@@ -118,11 +118,10 @@ namespace BAL.Managers
             }
         }
 
-        public void CreateWithRecipient(ManageViewModel item, int applicationGroupId, List<RecipientViewModel> recipientList)
+        public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
         {
-
-           
-            Company company = mapper.Map<Company>(item);
+            Company company = mapper.Map<ManageViewModel, Company>(item);
+            company.ApplicationGroupId = item.ApplicationGroupId;
             Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
             if (phone == null)
             {
@@ -135,6 +134,9 @@ namespace BAL.Managers
             {
                 company.PhoneId = phone.Id;
             }
+            if (company.TariffId == 0)
+                company.TariffId = null;
+
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();
             foreach (var recipient in recipientList)
@@ -154,11 +156,9 @@ namespace BAL.Managers
                     newRecepient.PhoneId = phone.Id;
                 }
                 unitOfWork.Recipients.Insert(newRecepient);
+                AddNotifications(company);
                 unitOfWork.Save();
             }
-
-
-
         }
 
         /// <summary>
@@ -267,85 +267,6 @@ namespace BAL.Managers
                 throw ex;
             }
         }
-
-       
-        public int InsertRecieveCampaign(StepViewModel item)
-        {
-            try
-            {
-                Company company = mapper.Map<StepViewModel, Company>(item);
-
-                company.Name = item.CompanyModel.Name;
-                company.Type = item.CompanyModel.Type;
-                company.PhoneId = item.CompanyModel.PhoneId;
-                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
-                company.Description = item.CompanyModel.Description;
-                company.StartTime = item.RecieveModel.StartTime;
-                company.EndTime = item.RecieveModel.EndTime;
-                int id = unitOfWork.Companies.InsertRecieveCampaign(company);
-                AddNotifications(company);
-                unitOfWork.Save();
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public int InsertCampaign(StepViewModel item)
-        {
-            try
-            {
-                Company company = mapper.Map<StepViewModel, Company>(item);
-                company.Name = item.CompanyModel.Name;
-                company.Type = item.CompanyModel.Type;    
-                company.PhoneId = item.CompanyModel.PhoneId;
-                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
-                company.Description = item.CompanyModel.Description;
-                company.TariffId = item.CompanyModel.TariffId;
-                company.StartTime = item.SendRecieveModel.StartTime;
-                company.EndTime = item.SendRecieveModel.EndTime;
-                company.SendingTime = item.SendRecieveModel.SendingTime;
-                company.Message = item.SendRecieveModel.Message;
-               
-                int id = unitOfWork.Companies.InsertWithId(company);
-                AddNotifications(company);
-                unitOfWork.Save();
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public int InsertSendCampaign(StepViewModel item)
-        {
-            try
-            {
-                Company company = mapper.Map<StepViewModel, Company>(item);
-                company.Name = item.CompanyModel.Name;
-                company.Type = item.CompanyModel.Type;
-                company.PhoneId = item.CompanyModel.PhoneId;
-                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
-                company.Description = item.CompanyModel.Description;
-                company.TariffId = item.CompanyModel.TariffId;
-                company.SendingTime = item.SendRecieveModel.SendingTime;
-                company.Message = item.SendRecieveModel.Message;
-
-                int id = unitOfWork.Companies.InsertWithId(company);
-                AddNotifications(company);
-                unitOfWork.Save();
-                return id;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
 
         /// <summary>
         /// Insert company entity to db and return Id

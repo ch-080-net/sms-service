@@ -40,6 +40,7 @@ namespace BAL.Services
             CreateMap<Company, StepViewModel>();
             CreateMap<StepViewModel, Company>();
             CreateMap<Company, ManageViewModel>();
+            CreateMap<ManageViewModel, Company>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
                             .ForMember(dest => dest.Phonenumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));

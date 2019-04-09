@@ -15,7 +15,7 @@ $(document).ready(function () {
 
 var Recipient = {
     id: 0,
-    phonePhoneNumber: "",
+    phoneNumber: "",
     name: "",
     surname: "",
     birthDate: "",
@@ -81,7 +81,7 @@ function contactAddRow(contact) {
 // Build a <tr> for a row of table data
 function contactBuildTableRow(contact) {
     var newRow = "<tr>" +
-        "<td>" + contact.phonePhoneNumber + "</td>" +
+        "<td>" + contact.phonNumber + "</td>" +
         "<td>" + contact.name + "</td>" +
         "<td>" + contact.surname + "</td>" +
         "<td>" + contact.birthDate.slice(0, 10) + "</td>" +
@@ -93,7 +93,7 @@ function contactBuildTableRow(contact) {
         "onclick='contactEditAllow(this);'" +
         "class='btn btn-primary'" +
         "data-id='" + contact.id + "'" +
-        "data-phonenumber='" + contact.phonePhoneNumber + "'" +
+        "data-phonenumber='" + contact.phoneNumber + "'" +
         "data-name='" + contact.name + "'" +
         "data-surname='" + contact.surname + "'" +
         "data-birthdate='" + contact.birthDate.slice(0, 10) + "'" +
@@ -101,7 +101,6 @@ function contactBuildTableRow(contact) {
         "data-notes='" + contact.priority + "'" +
         "data-keywords='" + contact.keyWords + "'" +
         ">" +
-        "<span class='glyphicon glyphicon-edit' /> Update" +
         "</button> " +
         " <button type='button' " +
         "onclick='contactDelete(this);'" +
@@ -118,9 +117,9 @@ function contactBuildTableRow(contact) {
 function onAddContact(item) {
     var obj = {};
     Object.assign(obj, Recipient);
-    obj.phonePhoneNumber = $("#phoneNumber").val();
+    obj.phoneNumber = $("#phoneNumber").val();
     var regex = new RegExp("^[+][0-9]{12}");
-    if (!regex.test(obj.phonePhoneNumber)) {
+    if (!regex.test(obj.phoneNumber)) {
         $("#msg").html("Invalid phone number");
         return;
     }
@@ -226,7 +225,6 @@ function CreateCampaign() {
     campaign.tariffId = $("#tariff").val();
     campaign.startTime = $(".starttime").val();
     campaign.endTime = $(".endtime").val();
-    campaign.recipientsList = recipients;
     campaign.message = $("#message").val();
     campaign.sendtime = $("#sendtime").val();
     console.dir(campaign);
@@ -235,13 +233,17 @@ function CreateCampaign() {
         url: '/Company/CreateCampaign/',
         type: 'POST',
         data: {
-            id: operatorId
+            item: campaign,
+            recipient: recipients
         },
         success: function (tariffs) {
             tariffListSuccess(tariffs);
+            window.location.href = tariffs.newUrl;
         },
         error: function (request, message, error) {
             //handleException(request, message, error);
         }
+        
+            
     });
 }

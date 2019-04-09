@@ -16,6 +16,7 @@ namespace Model.ViewModels.CompanyViewModels
         [Display(Name = "Tariff")]
         public string Tariff { get; set; }
         public int TariffId { get; set; }
+        public int ApplicationGroupId { get; set; }
         [StringLength(500)]
         public string Message { get; set; }
         [Display(Name = "Time for send")]

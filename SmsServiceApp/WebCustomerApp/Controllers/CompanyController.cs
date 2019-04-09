@@ -110,32 +110,35 @@ namespace WebApp.Controllers
             return companyManager.GetCampaignsCount(GetGroupId(), searchValue);
         }
 
-        [HttpPost]
-        public IActionResult Index([FromBody] CompanyViewModel company)
-        {
-            return View();
-        }
+      
         /// <summary>
         /// View for creation new Company
         /// </summary>
         /// <returns>Create Company View</returns>
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
             StepViewModel company = new StepViewModel();
             var phoneId = groupManager.Get(GetGroupId()).PhoneId;
+            company.CompanyModel = new CompanyViewModel();
             company.CompanyModel.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
-            company.CompanyModel.TariffId = company.TariffModels.Id;
-            
+            company.OperatorModel = new OperatorsViewModel();
+            company.OperatorModel.OperatorsList = operatorManager.GetAll();
+            company.TariffModel = new TariffsViewModel();
+            company.TariffModel.TariffsList = tariffManager.GetTariffs(id).ToList();
+            company.RecieveModel = new RecieveViewModel();
             return View(company);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public void CreateCampaign(ManageViewModel item, List<RecipientViewModel> recipient)
+        public IActionResult CreateCampaign(ManageViewModel item, List<RecipientViewModel> recipient)
         {
-
-           
+            item.ApplicationGroupId = GetGroupId();
+            if (item.SendingTime < DateTime.Now)
+                item.SendingTime = DateTime.Now;
+            companyManager.CreateWithRecipient(item,recipient);
+            
+            return Json(new {newUrl = Url.Action("Index", "Company") });
         }
 
 
@@ -148,31 +151,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] StepViewModel item, int companyId,int id)
         {
-            item.CompanyModel.ApplicationGroupId = GetGroupId();
-            item.CompanyModel.PhoneId = phoneManager.GetPhoneId(item.CompanyModel.PhoneNumber);
-
-            if (item.CompanyModel.Type == CompanyType.Recieve)
-            {
-                companyId = companyManager.InsertRecieveCampaign(item);
-                return RedirectToAction("Index");
-            }
-            if ( item.CompanyModel.Type == CompanyType.SendAndRecieve)
-            {
-               
-                companyId = companyManager.InsertCampaign(item);
-                 return RedirectToAction("Index");
-            }
-            else if (item.CompanyModel.Type == CompanyType.Send)
-            {
-                if (item.SendRecieveModel.SendingTime < DateTime.Now)
-                {
-                    item.SendRecieveModel.SendingTime = DateTime.Now.AddMinutes(1);
-                }
-                companyId = companyManager.InsertSendCampaign(item);
-                return RedirectToAction("Index");
-            }
-            
-
+           
             return View(item);
         }
 

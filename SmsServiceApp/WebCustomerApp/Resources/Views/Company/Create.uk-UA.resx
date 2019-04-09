@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ADD" xml:space="preserve">
+    <value>Додати</value>
+  </data>
+  <data name="Add Recipients" xml:space="preserve">
+    <value>Додати отримувачів</value>
+  </data>
+  <data name="Add recipients from file" xml:space="preserve">
+    <value>Завантажити отримувачів з файлу</value>
+  </data>
   <data name="Back to List" xml:space="preserve">
     <value>Назад до списку</value>
   </data>
   <data name="Campaigns" xml:space="preserve">
     <value>Розсилки</value>
+  </data>
+  <data name="Choose Tariff" xml:space="preserve">
+    <value>Виберіть тариф</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрити</value>
   </data>
   <data name="Compaign" xml:space="preserve">
     <value>Розсилку</value>
@@ -129,19 +144,73 @@
   <data name="Create" xml:space="preserve">
     <value>Створити</value>
   </data>
+  <data name="Description" xml:space="preserve">
+    <value>Опис</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Жіноча</value>
+  </data>
+  <data name="finish!" xml:space="preserve">
+    <value>Фініш</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Чоловіча</value>
+  </data>
+  <data name="Manually" xml:space="preserve">
+    <value>Додати вручну</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Повідомлення</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Далі</value>
+  </data>
+  <data name="Receive" xml:space="preserve">
+    <value>Отримати</value>
   </data>
   <data name="Recieve" xml:space="preserve">
     <value>Отримати</value>
   </data>
+  <data name="Recipients" xml:space="preserve">
+    <value>Отримувачі</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Пошук</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Вибрати</value>
+  </data>
   <data name="Select campaign type" xml:space="preserve">
     <value>Виберіть тип розсилки</value>
+  </data>
+  <data name="Select Date and Time" xml:space="preserve">
+    <value>Виберіть дату та час</value>
   </data>
   <data name="Send" xml:space="preserve">
     <value>Надіслати</value>
   </data>
   <data name="Send and Recieve" xml:space="preserve">
     <value>Надіслати та отримати</value>
+  </data>
+  <data name="Send Later" xml:space="preserve">
+    <value>Відправити пізніше</value>
+  </data>
+  <data name="Send Now" xml:space="preserve">
+    <value>Відправити зараз</value>
+  </data>
+  <data name="SendReceive" xml:space="preserve">
+    <value>Відправити та отримати</value>
+  </data>
+  <data name="Tariff" xml:space="preserve">
+    <value>Тариф</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Завантажити</value>
   </data>
 </root>
