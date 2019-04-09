@@ -247,3 +247,9 @@ function CreateCampaign() {
             
     });
 }
+
+function calculatePrice() {
+    $("#calculatePrice_CampaignName").text($("#campaignName").val());
+    $("#calculatePrice_Recipients").text(recipients.length);
+    $("#calculatePrice_Price").text(recipients.length * $("#calculatePrice_TariffValue").data("value") + "$");
+}

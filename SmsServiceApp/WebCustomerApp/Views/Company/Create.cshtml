@@ -158,7 +158,7 @@
                                     <div class="form-check form-check-inline">
 
                                         <div class="choice" rel="tooltip" title="For sending SMS only">
-                                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" value=0/>
+                                            <input class="form-check-input" asp-for="CompanyModel.Type" type="radio" value=0 />
                                             <div class="icon">
                                                 <i class="material-icons">speaker_phone</i>
                                             </div>
@@ -221,7 +221,7 @@
                                         </td>
                                         <td class="col-md-5">
                                             <div class="form-check form-check-inline">
-                                                <input type="radio" value="@item.Id" name="1radio"  onchange="GetTariff(this)" />
+                                                <input type="radio" value="@item.Id" name="1radio" onchange="GetTariff(this)" />
                                             </div>
                                         </td>
                                     </tr>
@@ -254,11 +254,11 @@
 
 
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">@Localizer["Add Recipients"]</button>
-              
+
                 <div class="modal fade" id="myModal" role="dialog">
                     <div class="modal-dialog">
 
-    
+
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -397,7 +397,7 @@
                         <option>20</option>
                     </select>
                 </div>
-             
+
 
 
 
@@ -509,7 +509,38 @@
 
     </div>
 
+    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#calculatePriceModal" onclick="calculatePrice();">View all</button>
 
+    <div class="modal fade" id="calculatePriceModal" tabindex="-1" role="dialog" aria-labelledby="calculatePriceLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Price for campaign</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th>Campaign name</th>
+                            <th>Recipients</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td id="calculatePrice_CampaignName"></td>
+                            <td id="calculatePrice_Recipients"></td>
+                            <td id="calculatePrice_Price"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success btn-lg" onclick="CreateCampaign()">@Localizer["finish!"]</button>
+                    <button class="btn btn-danger btn-lg">@Localizer["abort"]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input hidden data-value="" id="calculatePrice_TariffValue" />
     <script>
         $(document).ready(function () {
 
@@ -576,7 +607,7 @@
                         $(".step4").remove();
                         break;
                     case 1:
-                    
+
                         $(".tariffStep").remove();
                         $(".Message").remove();
                         $(".recipients").remove();

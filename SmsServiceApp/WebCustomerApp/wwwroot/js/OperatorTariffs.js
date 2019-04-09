@@ -49,7 +49,8 @@ function tariffBuildTableRow(tariff) {
         "<input type='radio' name='tariff' " +
         "onclick='ChooseTariff(this);'" +
         "class='btn btn-danger' " +
-        "data-id='" + tariff.id + "'>" +
+        "data-id='" + tariff.id + "' " +
+        "data-price='" + tariff.price + "'>" +
         " " +
         "</input>" +
         "</td>" +
@@ -65,5 +66,6 @@ function GetTariff(item) {
 
 function ChooseTariff(item) {
     var tariffId = $(item).data("id");
+    $("#calculatePrice_TariffValue").attr("data-value", $(item).data("price"));
     $("#tariff").val(tariffId);
 }
