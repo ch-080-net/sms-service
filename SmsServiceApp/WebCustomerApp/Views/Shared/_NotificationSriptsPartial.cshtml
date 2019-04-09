@@ -105,10 +105,10 @@
             for (var i = 0; i < value.notifications.length; i++) {
                 switch (value.notifications[i].origin) {
                     case @((int) NotificationOrigin.CampaignReport):
-                        value.notifications[i].href = '@Url.Action("Details", "Company")' + '?companyId=' + value.notifications[i].id;
+                        value.notifications[i].href = '@Url.Action("Details", "Company")' + '?companyId=' + value.notifications[i].campaignId;
                         break;
                     case @((int) NotificationOrigin.EmailCampaignReport):
-                        value.notifications[i].href = '@Url.Action("Details", "EmailCampaign")' + '?campaignId=' + value.notifications[i].id;
+                        value.notifications[i].href = '@Url.Action("Details", "EmailCampaign")' + '?campaignId=' + value.notifications[i].campaignId;
                         break;
                 }
 
