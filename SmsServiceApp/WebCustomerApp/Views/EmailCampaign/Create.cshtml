@@ -102,7 +102,7 @@
             <v-content>
 
                 <v-container>
-                    <v-stepper v-model="step" vertical>
+                    <v-stepper v-model="step" vertical style="height: 850px;">
                         <v-stepper-header>
                             <v-stepper-step step="1" :complete="firstStepComplite" v-on:click="step = 1">@Localizer["Main Information"]</v-stepper-step>
                             <v-divider></v-divider>
@@ -154,11 +154,11 @@
                                                     slider-color="yellow">
                                                 <v-tab :key="1"
                                                        ripple>
-                                                    Add Manual
+                                                    @Localizer["Add Manual"]
                                                 </v-tab>
                                                 <v-tab :key="2"
                                                        ripple>
-                                                    Add From File
+                                                    @Localizer["Add From File"]
                                                 </v-tab>
                                                 <v-tab-item :key="1">
                                                     <v-card>
@@ -203,15 +203,14 @@
                                                     <v-card>
                                                         <v-card-text>
                                                             <v-container grid-list-md>
-                                                                <h4>Add contact from file </h4>
+                                                                <h4>@Localizer["Add recepients from file"]</h4>
                                                                 <input type="file" id="fileUpload" />
-                                                                <v-btn id="upload" v-on:click="GetFromFile">Upload</v-btn>
+                                                                <v-btn id="upload" v-on:click="GetFromFile">@Localizer["Upload"]</v-btn>
                                                             </v-container>                                                            
                                                         </v-card-text>                                                  
                                                         <v-card-actions>
                                                             <v-spacer></v-spacer>
                                                             <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
-                                                            <v-btn color="blue darken-1" flat v-on:click="AddRecepient">@Localizer["Save"]</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-tab-item>

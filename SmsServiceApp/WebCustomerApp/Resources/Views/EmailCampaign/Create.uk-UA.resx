@@ -123,8 +123,17 @@
   <data name="Add" xml:space="preserve">
     <value>Додати</value>
   </data>
+  <data name="Add From File" xml:space="preserve">
+    <value>Додати з файлу</value>
+  </data>
+  <data name="Add Manual" xml:space="preserve">
+    <value>Додати вручну</value>
+  </data>
   <data name="Add recepients" xml:space="preserve">
     <value>Додати отримувачів</value>
+  </data>
+  <data name="Add recepients from file" xml:space="preserve">
+    <value>Додати отривувачів з файлу</value>
   </data>
   <data name="Birthday" xml:space="preserve">
     <value>Дата народження</value>
@@ -200,6 +209,9 @@
   </data>
   <data name="Time of send" xml:space="preserve">
     <value>Час відправки</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Завантажити</value>
   </data>
   <data name="User Profile" xml:space="preserve">
     <value>Профіль Користувача</value>

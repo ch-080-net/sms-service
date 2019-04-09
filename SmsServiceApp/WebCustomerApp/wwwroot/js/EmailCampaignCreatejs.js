@@ -183,6 +183,16 @@
             }
         },
         AddRecepientFromFile(recepient) {
+            var found = false;
+            for (var i = 0; i < this.Recepients.length; i++) {
+                if (this.Recepients[i].EmailAddress == recepient.EmailAddress) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                return;
+            }
             this.Recepients.push(recepient);
             this.Campaign.recipientsCount++;
         }
