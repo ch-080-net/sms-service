@@ -41,92 +41,96 @@
     <title>@Localizer["Campaign"]</title>
 </head>
 <body>
-    <h2>@Localizer["Create"]</h2>
-    <h4>@Localizer["Campaign"]</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Send" asp-route-companyId="@ViewData["companyId"]">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label asp-for="Tariff" class="control-label"></label>
-                        <input asp-for="Tariff" class="form-control" readonly />
-                        <input type="hidden" asp-for="Id" />
-                        <br />
-                        <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">@Localizer["Choose Tariff"]</a>
-                    </div>
-                    @if (Model.TariffId > 0)
-                    {
+<div class="container">
+<h2>@Localizer["Create"]</h2>
+<h4>@Localizer["Campaign"]</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Send" asp-route-companyId="@ViewData["companyId"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label asp-for="Tariff" class="control-label"></label>
+                    <input asp-for="Tariff" class="form-control" readonly/>
+                    <input type="hidden" asp-for="Id"/>
+                    <br/>
+                    <a class="btn btn-primary" asp-controller="Company" asp-action="Operators" asp-route-companyId="@ViewData["companyId"]">@Localizer["Choose Tariff"]</a>
+                </div>
+                @if (Model.TariffId > 0)
+                {
                     <div class="form-group col-md-12">
                         <label asp-for="RecipientsCount" class="control-label"></label>
-                        <br />
-                        <input value="@Model.RecipientsCount" class="form-control" readonly />
-                        <br />
+                        <br/>
+                        <input value="@Model.RecipientsCount" class="form-control" readonly/>
+                        <br/>
                         <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">@Localizer["Add recipients"]</a>
                     </div>
-                    }
-                    <div class="form-group col-md-12">
-                        <label asp-for="Message" class="control-label"></label>
-                        <textarea rows="7" style="resize:none; width:100%"
+                }
+                <div class="form-group col-md-12">
+                    <label asp-for="Message" class="control-label"></label>
+                    <textarea rows="7" style="resize: none; width: 100%"
                                   asp-for="Message" class="form-control" id="message" onclick="ClickPosition(this)"
                                   onkeyup="MessagePreview(this)"></textarea>
-                        <span asp-validation-for="Message" class="text-danger"></span>
-                        <div>
-                            <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
-                            <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
-                            <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
-                            <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-                    <div class="form-group col-md-12">
-                        <label class="control-label">@Localizer["Send Now"]</label>
-                        <input type="radio" id="SendNowRadio" checked="checked" name="Send" value=" " onclick="ShowDate()" />
-                        <label class="control-label">@Localizer["Send Later"]</label>
-                        <input type="radio" id="SendLaterRadio" name="Send" value=" " onclick="ShowDate()" />
-                    </div>
-                    <div class="form-group" id="SendLater">
-                        <label asp-for="SendingTime" class="control-label"></label>
-                        <div id="sendTime"> </div>
-                        <input type="hidden" id="result" asp-for="SendingTime">
-                        <span asp-validation-for="SendingTime" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-3">
-                        <input type="submit" value="@Localizer["Send"]" class="btn btn-success" />
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div>
-            <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
-                <div style="position:absolute; height:auto !important;">
-                    <div rows="1" readonly class="form-control" id="messagePreview">
-                        ::before
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                    <div>
+                        <input type="button" class="btn btn-default" value="#name" onclick='AddWord(" #name ")'>
+                        <input type="button" class="btn btn-default" value="#surname" onclick='AddWord(" #surname ")'>
+                        <input type="button" class="btn btn-default" value="#birthday" onclick='AddWord(" #birthday ")'>
+                        <input type="button" class="btn btn-default" value="#company" onclick='AddWord(" #company ")'>
                     </div>
                 </div>
             </div>
-            <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
-                <span class="glyphicon glyphicon-phone"></span>
-            </button>
-        </div>
+            <div class="form-group col-md-12">
+                <div class="form-group col-md-12">
+                    <label class="control-label">@Localizer["Send Now"]</label>
+                    <input type="radio" id="SendNowRadio" checked="checked" name="Send" value=" " onclick="ShowDate()"/>
+                    <label class="control-label">@Localizer["Send Later"]</label>
+                    <input type="radio" id="SendLaterRadio" name="Send" value=" " onclick="ShowDate()"/>
+                </div>
+                <div class="form-group" id="SendLater">
+                    <label asp-for="SendingTime" class="control-label"></label>
+                    <div id="sendTime"> </div>
+                    <input type="hidden" id="result" asp-for="SendingTime">
+                    <span asp-validation-for="SendingTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <input type="submit" value="@Localizer["Send"]" class="btn btn-success"/>
+                </div>
+            </div>
+        </form>
     </div>
-    <script>
-        document.getElementById("SendLater").style.display = 'none';
-        function ShowDate() {
-            var sendNow = document.getElementById("SendNowRadio");
-            var sendLater = document.getElementById("SendLaterRadio");
-            if (sendLater.checked) {
-                document.getElementById("SendLater").style.display = 'block';
-            }
-            if (sendNow.checked) {
-                document.getElementById("SendLater").style.display = 'none';
-            }
+    <div>
+        <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
+            <div style="position: absolute; height: auto !important;">
+                <div rows="1" readonly class="form-control" id="messagePreview">
+                    ::before
+                </div>
+            </div>
+        </div>
+        <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
+            <span class="glyphicon glyphicon-phone"></span>
+        </button>
+    </div>
+</div>
+</div>
+<script>
+    document.getElementById("SendLater").style.display = 'none';
+
+    function ShowDate() {
+        var sendNow = document.getElementById("SendNowRadio");
+        var sendLater = document.getElementById("SendLaterRadio");
+        if (sendLater.checked) {
+            document.getElementById("SendLater").style.display = 'block';
         }
-    </script>
+        if (sendNow.checked) {
+            document.getElementById("SendLater").style.display = 'none';
+        }
+    }
+</script>
+
 </body>
 </html>
 @section Scripts {
