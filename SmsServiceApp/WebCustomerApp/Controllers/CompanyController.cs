@@ -17,6 +17,8 @@ using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
 using BAL.Services;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.StepViewModels;
+using Model.ViewModels.RecipientViewModels;
 
 namespace WebApp.Controllers
 {
@@ -35,7 +37,8 @@ namespace WebApp.Controllers
         private readonly ILoggerManager logger;
         private readonly ISubscribeWordManager subscribeWordManager;
 
-        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff, 
+
+        public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff,
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
                                  IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
@@ -66,6 +69,8 @@ namespace WebApp.Controllers
             return groupId;
         }
 
+       
+
         /// <summary>
         /// Get view with Companies which belongs to this user ApplicationGroup
         /// </summary>
@@ -77,7 +82,7 @@ namespace WebApp.Controllers
             return View(companies);
         }
 
-       
+
 
         public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
@@ -93,7 +98,7 @@ namespace WebApp.Controllers
         }
 
         public int GetCampaignsCount(string searchValue)
-             {
+        {
             if (searchValue == null)
             {
                 searchValue = "";
@@ -105,23 +110,37 @@ namespace WebApp.Controllers
             return companyManager.GetCampaignsCount(GetGroupId(), searchValue);
         }
 
-        [HttpPost]
-        public IActionResult Index([FromBody] CompanyViewModel company)
-        {
-            return View();
-        }
+      
         /// <summary>
         /// View for creation new Company
         /// </summary>
         /// <returns>Create Company View</returns>
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            CompanyViewModel company = new CompanyViewModel();
+            StepViewModel company = new StepViewModel();
             var phoneId = groupManager.Get(GetGroupId()).PhoneId;
-            company.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+            company.CompanyModel = new CompanyViewModel();
+            company.CompanyModel.PhoneNumber = phoneManager.GetPhoneNumber(phoneId);
+            company.OperatorModel = new OperatorsViewModel();
+            company.OperatorModel.OperatorsList = operatorManager.GetAll();
+            company.TariffModel = new TariffsViewModel();
+            company.TariffModel.TariffsList = tariffManager.GetTariffs(id).ToList();
+            company.RecieveModel = new RecieveViewModel();
             return View(company);
         }
+
+        [HttpPost]
+        public IActionResult CreateCampaign(ManageViewModel item, List<RecipientViewModel> recipient)
+        {
+            item.ApplicationGroupId = GetGroupId();
+            if (item.SendingTime < DateTime.Now)
+                item.SendingTime = DateTime.Now;
+            companyManager.CreateWithRecipient(item,recipient);
+            
+            return Json(new {newUrl = Url.Action("Index", "Company") });
+        }
+
 
         /// <summary>
         /// Send new Company fron view to db
@@ -130,37 +149,9 @@ namespace WebApp.Controllers
         /// <returns>Company index View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] CompanyViewModel item)
+        public IActionResult Create([Bind] StepViewModel item, int companyId,int id)
         {
-            if (ModelState.IsValid)
-            {
-                    if (phoneManager.IsPhoneNumberExist(item.PhoneNumber))
-                    {
-                        item.PhoneId = phoneManager.GetPhoneId(item.PhoneNumber);
-                    }
-                    else
-                    {
-                        Phone newPhone = new Phone();
-                        newPhone.PhoneNumber = item.PhoneNumber;
-                        phoneManager.Insert(newPhone);
-                        item.PhoneId = phoneManager.GetPhones().FirstOrDefault(p => p.PhoneNumber == item.PhoneNumber).Id;
-                    }
-                    item.ApplicationGroupId = GetGroupId();
-                    int companyId = companyManager.InsertWithId(item);
-                    if (item.Type == CompanyType.Send)
-                    {
-                        return RedirectToAction("Send", new { companyId });
-                    }
-                    if (item.Type == CompanyType.Recieve)
-                    {
-                        return RedirectToAction("Recieve", new { companyId });
-                    }
-                    if (item.Type == CompanyType.SendAndRecieve)
-                    {
-                        return RedirectToAction("SendRecieve", new { companyId });
-                    }
-
-            }
+           
             return View(item);
         }
 
@@ -203,7 +194,7 @@ namespace WebApp.Controllers
                 }
                 item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
                 companyManager.AddSend(item);
-                return RedirectToAction("Index","Company");
+                return RedirectToAction("Index", "Company");
             }
             item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             ViewData["companyId"] = companyId;
@@ -214,6 +205,7 @@ namespace WebApp.Controllers
                 var tariff = tariffManager.GetById(item.TariffId).Name;
                 item.Tariff = tariff;
             }
+           
             return View(item);
         }
 
@@ -240,7 +232,7 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Recieve(RecieveViewModel item)
         {
-            if(item.StartTime <= DateTime.Now)
+            if (item.StartTime <= DateTime.Now)
             {
                 ModelState.AddModelError(string.Empty, "The date can not be less than the current");
             }
@@ -295,7 +287,7 @@ namespace WebApp.Controllers
             {
                 ModelState.AddModelError(string.Empty, "The date can not be less than the start date");
             }
-     
+
             if (ModelState.IsValid)
             {
                 if (item.SendingTime < DateTime.Now)
@@ -357,35 +349,34 @@ namespace WebApp.Controllers
 		[HttpGet]
         public IActionResult Operators(int companyId)
         {
-			OperatorsViewModel model = new OperatorsViewModel();
-			model.OperatorsList = operatorManager.GetAll();
+            OperatorsViewModel model = new OperatorsViewModel();
+            model.OperatorsList = operatorManager.GetAll();
             ViewData["companyId"] = companyId;
             return View(model);
         }
 
-		/// <summary>
-		/// Return tariffs list, related to choosing operator,
-		/// for choosing tariff for current company
-		/// </summary>
-		/// <param name="id">Operator id</param>
-		/// <param name="companyId">Current company id</param>
-		/// <returns>Tariffs list, related to choosing operator</returns>
-		[HttpGet]
-        public IActionResult Tariffs(int id, int companyId)
+        /// <summary>
+        /// Return tariffs list, related to choosing operator,
+        /// for choosing tariff for current company
+        /// </summary>
+        /// <param name="id">Operator id</param>
+        /// <param name="companyId">Current company id</param>
+        /// <returns>Tariffs list, related to choosing operator</returns>
+        [HttpGet]
+        public List<TariffViewModel> Tariffs(int id)
         {
-			TariffsViewModel model = new TariffsViewModel();
-            model.TariffsList = tariffManager.GetTariffs(id);
-            ViewData["companyId"] = companyId;
-            return View(model);
+            List<TariffViewModel> model = new List<TariffViewModel>();
+            model = tariffManager.GetTariffs(id).ToList();
+            return model;
         }
 
-		/// <summary>
-		/// Change tariff for current company
-		/// </summary>
-		/// <param name="companyId">Current company id</param>
-		/// <param name="tariffId">Selected tariff</param>
-		/// <returns>Companies list</returns>
-		[HttpGet]
+        /// <summary>
+        /// Change tariff for current company
+        /// </summary>
+        /// <param name="companyId">Current company id</param>
+        /// <param name="tariffId">Selected tariff</param>
+        /// <returns>Companies list</returns>
+        [HttpGet]
         public IActionResult ChangeTariff(int companyId, int tariffId)
         {
             CompanyViewModel currentCompany = companyManager.Get(companyId);

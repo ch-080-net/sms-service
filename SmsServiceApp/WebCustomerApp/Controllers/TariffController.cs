@@ -68,7 +68,7 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid) { 
             tariffManager.Insert(item);
-            return RedirectToAction("Operators", "Operator");
+                return Json(new { newUrl = Url.Action("Operators", "Operator") });
             }
             else
             {

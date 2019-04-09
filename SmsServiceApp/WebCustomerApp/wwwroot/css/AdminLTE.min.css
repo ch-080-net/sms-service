@@ -133,7 +133,11 @@ a:hover,a:active,a:focus {
     }
 }
 .main-header .sidebar-toggle {
-    float:left;background-color:transparent;background-image:none;padding:5px 15px;font-family:fontAwesome
+    float: left;
+    background-image: none;
+    background-color: transparent;
+    padding: 14px 15px;
+    font-family: fontAwesome;
 }
 .main-header .sidebar-toggle:before {
     content:"\f0c9"

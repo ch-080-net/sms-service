@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.RecipientViewModels;
+using Model.ViewModels.StepViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,6 +118,49 @@ namespace BAL.Managers
             }
         }
 
+        public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
+        {
+            Company company = mapper.Map<ManageViewModel, Company>(item);
+            company.ApplicationGroupId = item.ApplicationGroupId;
+            Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
+            if (phone == null)
+            {
+                phone = new Phone();
+                phone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(phone);
+                company.Phone = phone;
+            }
+            else
+            {
+                company.PhoneId = phone.Id;
+            }
+            if (company.TariffId == 0)
+                company.TariffId = null;
+
+            unitOfWork.Companies.Insert(company);
+            unitOfWork.Save();
+            foreach (var recipient in recipientList)
+            {
+                Recipient newRecepient = mapper.Map<RecipientViewModel, Recipient>(recipient);
+                newRecepient.CompanyId = company.Id;
+                phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == recipient.Phonenumber).FirstOrDefault();
+                if (phone == null)
+                {
+                    phone = new Phone();
+                    phone.PhoneNumber = recipient.Phonenumber;
+                    unitOfWork.Phones.Insert(phone);
+                    newRecepient.Phone = phone;
+                }
+                else
+                {
+                    newRecepient.PhoneId = phone.Id;
+                }
+                unitOfWork.Recipients.Insert(newRecepient);
+                AddNotifications(company);
+                unitOfWork.Save();
+            }
+        }
+
         /// <summary>
         /// Find base entity of company from db
         /// and add Send info from view
@@ -228,12 +273,18 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="item">CompanyViewModel that we isert to db</param>
         /// <returns>Id of inserted company</returns>
-        public int InsertWithId(CompanyViewModel item)
+        public int InsertWithId(StepViewModel item)
         {
             try
             {
-                Company company = mapper.Map<CompanyViewModel, Company>(item);
-                company.TariffId = null;
+                Company company = mapper.Map<StepViewModel, Company>(item);
+               
+                company.Name = item.CompanyModel.Name;
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.StartTime = item.RecieveModel.StartTime; 
+                company.EndTime = item.RecieveModel.EndTime;
                 int id = unitOfWork.Companies.InsertWithId(company);
                 AddNotifications(company);
                 unitOfWork.Save();
