@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@Localizer["SubscribeWord"]</title>
+    <title>@Localizer["Subscribe Word"]</title>
 </head>
 <body>
-<h2>@Localizer["SubscribeWord"]</h2>
-<h4>@Localizer["Campaign"]</h4>
+<h2>@Localizer["Subscribe Word"]</h2>
+<h4>@Localizer["Company"]</h4>
 <hr />
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -18,6 +18,10 @@
         <label asp-for="Word" class="control-label"></label>
         <input asp-for="Word" class="form-control" />
         <span asp-validation-for="Word" class="text-danger"></span>
+     
+        <label asp-for="PhoneNumber" class="control-label"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="@Localizer["Save"]" class="btn btn-success" />

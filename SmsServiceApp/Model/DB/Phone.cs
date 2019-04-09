@@ -14,7 +14,7 @@ namespace WebApp.Models
         public ICollection<RecievedMessage> RecievedMessages { get; set; }
         public ICollection<Company> Companies { get; set; }
         public ICollection<PhoneGroupUnsubscribe> PhoneGroupUnsubscribtions { get; set; }
-
+        public ICollection<SubscribeWord> SubscribeWords { get; set; }
         public string PhoneNumber { get; set; }
 
         //public bool 

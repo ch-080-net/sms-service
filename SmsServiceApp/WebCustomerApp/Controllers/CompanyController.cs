@@ -168,7 +168,7 @@ namespace WebApp.Controllers
             SendViewModel item = new SendViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -196,9 +196,9 @@ namespace WebApp.Controllers
                 companyManager.AddSend(item);
                 return RedirectToAction("Index", "Company");
             }
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
@@ -261,7 +261,7 @@ namespace WebApp.Controllers
             SendRecieveViewModel item = new SendRecieveViewModel();
             item.Id = companyId;
             item.TariffId = company.TariffId;
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
@@ -300,13 +300,13 @@ namespace WebApp.Controllers
             }
             ViewData["companyId"] = companyId;
             CompanyViewModel company = companyManager.Get(companyId);
-            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
             item.TariffId = company.TariffId;
             if (item.TariffId != 0)
             {
                 var tariff = tariffManager.GetById(item.TariffId).Name;
                 item.Tariff = tariff;
             }
+            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
             return View(item);
         }
 
@@ -482,9 +482,12 @@ namespace WebApp.Controllers
                 IEnumerable<AnswersCodeViewModel> answersCodes = answersCodeManager.GetAnswersCodes(companyId);
                 foreach (var rm in recievedMessages)
                 {
-                    AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
-                    if (Regex.IsMatch(rm.MessageText, @"^\d+$") && answersCode != null)
-                        rm.MessageText = answersCodes.First(ac => ac.Code == int.Parse(rm.MessageText)).Answer;
+                    if (Regex.IsMatch(rm.MessageText, @"^\d+$"))
+                    {
+                        AnswersCodeViewModel answersCode = answersCodes.FirstOrDefault(item => item.Code == int.Parse(rm.MessageText));
+                        if (answersCode != null)
+                            rm.MessageText = answersCode.Answer;
+                    }
                 }
             }
             ViewBag.RecievedMessages = recievedMessages;

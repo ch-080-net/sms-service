@@ -31,6 +31,10 @@ namespace WebApp.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<CampaignNotification> CampaignNotifications { get; set; }
         public DbSet<SubscribeWord> SubscribeWords { get; set; }
+        public DbSet<EmailCampaign> EmailCampaigns { get; set; }
+        public DbSet<EmailRecipient> EmailRecipients { get; set; }
+        public DbSet<Email> Emails { get; set; }
+        public DbSet<EmailCampaignNotification> emailCampaignNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -49,6 +53,11 @@ namespace WebApp.Data
             builder.Entity<ApplicationGroup>().HasKey(i => i.Id);
             builder.Entity<RecievedMessage>().HasKey(i => i.Id);
             builder.Entity<AnswersCode>().HasKey(i => i.Id);
+            builder.Entity<EmailCampaign>().HasKey(i => i.Id);
+            builder.Entity<EmailRecipient>().HasKey(i => i.Id);
+            builder.Entity<Email>().HasKey(i => i.Id);
+
+            builder.Entity<EmailCampaignNotification>().HasKey(i => i.Id);
             builder.Entity<CampaignNotification>().HasKey(i => i.Id);
             builder.Entity<Notification>().HasKey(i => i.Id);
 
@@ -140,6 +149,12 @@ namespace WebApp.Data
                 .HasForeignKey(n => n.ApplicationUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<EmailCampaign>()
+                .HasMany(ec => ec.EmailCampaignNotifications)
+                .WithOne(ecn => ecn.EmailCampaign)
+                .HasForeignKey(ecn => ecn.CampaignId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion
 
             // Optional FK
@@ -183,6 +198,28 @@ namespace WebApp.Data
             builder.Entity<PhoneGroupUnsubscribe>()
                 .HasKey(pgu => new { pgu.PhoneId, pgu.GroupId });
 
+            builder.Entity<Email>()
+                .HasMany(p => p.EmailRecipients)
+                .WithOne(r => r.Email)
+                .HasForeignKey(r => r.EmailId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EmailCampaign>()
+                .HasMany(c => c.EmailRecipients)
+                .WithOne(r => r.Company)
+                .HasForeignKey(r => r.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<EmailCampaign>()
+                .HasOne(c => c.Email)
+                .WithMany(p => p.EmailCampaigns)
+                .HasForeignKey(c => c.EmailId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<EmailRecipient>()
+                .HasIndex(r => new { r.EmailId, r.CompanyId })
+                .IsUnique();
+
             builder.Entity<Company>()
                 .HasMany(com => com.SubscribeWords)
                 .WithOne(sw => sw.Company)
@@ -190,7 +227,13 @@ namespace WebApp.Data
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
 
-        
+            builder.Entity<Phone>()
+                .HasMany(p => p.SubscribeWords)
+                .WithOne(r => r.Phone)
+                .HasForeignKey(s => s.SubscribePhoneId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Required fields
             #region Required fields
             builder.Entity<Code>()
@@ -223,6 +266,10 @@ namespace WebApp.Data
 
             builder.Entity<StopWord>()
                 .Property(sw => sw.Word)
+                .IsRequired();
+
+            builder.Entity<Email>()
+                .Property(p => p.EmailAddress)
                 .IsRequired();
 
             #endregion

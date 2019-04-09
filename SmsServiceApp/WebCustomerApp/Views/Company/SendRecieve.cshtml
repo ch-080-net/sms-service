@@ -72,9 +72,9 @@
                     @if (Model.TariffId > 0)
                     {
                         <div class="form-group col-md-12">
-                            <label asp-for="RecipientViewModels" class="control-label"></label>
+                            <label asp-for="RecipientsCount" class="control-label"></label>
                             <br />
-                            <input value="@Model.RecipientViewModels.Count()" class="form-control" readonly />
+                            <input value="@Model.RecipientsCount" class="form-control" readonly />
                             <br />
                             <a class="btn btn-primary" asp-controller="Recipient" asp-action="Index" asp-route-companyId="@Model.Id">@Localizer["Add recipients"]</a>
                         </div>

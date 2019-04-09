@@ -3,7 +3,7 @@
 @model NotificationsViewModel
 
 @{
-    ViewData["Title"] = "Manage notifications setings";
+    ViewData["Title"] = "Manage notifications settings";
     ViewData.AddActivePage(ManageNavPages.Notifications);
 }
 
@@ -18,7 +18,7 @@
                 <label asp-for="SmsNotEnabled">Send notifications via SMS</label>
             </div>
             <div class="form-group form-inline">
-                <input asp-for="EmailNotEnabled" class="form-control checkbox" />
+                <input asp-for="EmailNotEnabled" class="checkbox form" />
                 <label asp-for="EmailNotEnabled">Send notifications via Email</label>
             </div>
             <button type="submit" class="btn btn-default">Save</button>

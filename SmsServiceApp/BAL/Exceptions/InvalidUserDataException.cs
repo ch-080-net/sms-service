@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BAL.Exceptions
 {
-	public class InvalidSmppUserDataException : Exception
+	public class InvalidSmppUserDataException : ApplicationException
 	{
 		public InvalidSmppUserDataException(string errorMessage) : base(errorMessage)
 		{

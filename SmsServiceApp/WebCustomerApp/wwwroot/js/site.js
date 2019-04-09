@@ -1,12 +1,4 @@
-﻿function openNav() {
-    document.getElementById("myNav").style.width = "100%";
-}
-
-function closeNav() {
-    document.getElementById("myNav").style.width = "0%";
-}
-
-function readURL(input) {
+﻿function readURL(input) {
     if (input.files && input.files[0]) {
 
         var reader = new FileReader();
