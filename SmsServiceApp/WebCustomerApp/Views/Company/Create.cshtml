@@ -509,21 +509,21 @@
 
     </div>
 
-    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#calculatePriceModal" onclick="calculatePrice();">View all</button>
+    <button role="button" class="btn btn-primary" data-toggle="modal" data-target="#calculatePriceModal" onclick="calculatePrice();">@Localizer["Calculate price"]</button>
 
     <div class="modal fade" id="calculatePriceModal" tabindex="-1" role="dialog" aria-labelledby="calculatePriceLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Price for campaign</h4>
+                    <h4 class="modal-title">@Localizer["Campaign price"]</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table">
                         <tr>
-                            <th>Campaign name</th>
-                            <th>Recipients</th>
-                            <th>Price</th>
+                            <th>@Localizer["Campaign name"]</th>
+                            <th>@Localizer["Recipients"]</th>
+                            <th>@Localizer["Price"]</th>
                         </tr>
                         <tr>
                             <td id="calculatePrice_CampaignName"></td>
@@ -533,8 +533,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success btn-lg" onclick="CreateCampaign()">@Localizer["finish!"]</button>
-                    <button class="btn btn-danger btn-lg">@Localizer["abort"]</button>
+                    <button class="btn btn-danger">@Localizer["Abort"]</button>
+                    <button class="btn btn-success" onclick="CreateCampaign()">@Localizer["finish!"]</button>
                 </div>
             </div>
         </div>

@@ -216,4 +216,19 @@
   <data name="Page Size" xml:space="preserve">
     <value>Кількість на сторінці</value>
   </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Відміна</value>
+  </data>
+  <data name="Calculate price" xml:space="preserve">
+    <value>Розрахувати вартість</value>
+  </data>
+  <data name="Campaign name" xml:space="preserve">
+    <value>Назва кампанії</value>
+  </data>
+  <data name="Campaign price" xml:space="preserve">
+    <value>Вартість кампанії</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Вартість</value>
+  </data>
 </root>
