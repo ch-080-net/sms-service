@@ -117,31 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>Опис</value>
+  <data name="Back to List" xml:space="preserve">
+    <value>Назад до списку</value>
   </data>
-  <data name="End time" xml:space="preserve">
-    <value>Час завершення</value>
+  <data name="Campaign By Copy" xml:space="preserve">
+    <value>Компанію за копією</value>
   </data>
-  <data name="Message" xml:space="preserve">
-    <value>Повідомлення</value>
+  <data name="Create" xml:space="preserve">
+    <value>Створити</value>
   </data>
-  <data name="Phone number" xml:space="preserve">
-    <value>Номер телефону</value>
-  </data>
-  <data name="Recipients" xml:space="preserve">
-    <value>Одержувачі</value>
-  </data>
-  <data name="Start time" xml:space="preserve">
-    <value>Час початку</value>
-  </data>
-  <data name="Tariff" xml:space="preserve">
-    <value>Тариф</value>
-  </data>
-  <data name="Time for send" xml:space="preserve">
-    <value>Час для відправки</value>
-  </data>
-  <data name="Type of compaign" xml:space="preserve">
-    <value>Тип розсилки</value>
+  <data name="Create Copy" xml:space="preserve">
+    <value>Створити копію</value>
   </data>
 </root>

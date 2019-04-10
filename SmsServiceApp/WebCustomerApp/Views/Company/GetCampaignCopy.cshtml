@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer
 @model ManageViewModel;
 @{
-    ViewData["Title"] = Localizer["Details"];
+    ViewData["Title"] = Localizer["Create Copy"];
 }
 @{
     var requestCulture = CultureInfo.CurrentCulture;
@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@Localizer["Details"]</title>
+    <title>@Localizer["Create Copy"]</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="~/css/datetimepicker.css" rel="stylesheet" />
@@ -40,11 +40,31 @@
             })
         })(jQuery);
     </script>
+    <script>
+        (function ($) {
+        $(document).ready(function () {
+            $('#StartTime').dateTimePicker({
+                locale: "@culture",
+                selectData: "now",
+                positionShift: { top: 20, left: 0 },
+                title: "@Localizer["Select Date and Time"]",
+                buttonTitle: "@Localizer["Select"]"
+            });
+             $('#EndTime').dateTimePicker({
+                locale: "@culture",
+                selectData: "now",
+                positionShift: { top: 20, left: 0 },
+                title: "@Localizer["Select Date and Time"]",
+                buttonTitle: "@Localizer["Select"]"
+            });
+            })
+        })(jQuery);
+    </script>
 </head>
 <body>
 
-    <h2>Create</h2>
-    <h4>Campaign By Copy</h4>
+    <h2>@Localizer["Create"]</h2>
+    <h4>@Localizer["Campaign By Copy"]</h4>
     <hr />
     <div class="row">
         <div class="col-md-5">
@@ -158,7 +178,7 @@
                 <a class="btn btn-success" asp-action="Index">@Localizer["Back to List"]</a>
             </form>
         </div>
-       
+
         <div>
             <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
                 <div style="position:absolute; height:auto !important;">
@@ -173,11 +193,9 @@
         </div>
 
     </div>
-   
-
-
     <script>
         document.getElementById("SendLater").style.display = 'none';
+
         function ShowDate() {
             var sendNow = document.getElementById("SendNowRadio");
             var sendLater = document.getElementById("SendLaterRadio");

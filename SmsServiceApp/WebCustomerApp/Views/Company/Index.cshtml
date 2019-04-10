@@ -57,8 +57,10 @@
                             <td>{{item.name}}</td>
                             <td>{{item.description}}</td>
                             <td>
+
                                 <button class="btn btn-danger" v-if="!item.isPaused" id="PauseButton" v-on:click="changeState(item.id, true)"><i class="glyphicon glyphicon-pause"></i></button>
                                 <button class="btn btn-info" v-if="item.isPaused" id="ResumeButton" v-on:click="changeState(item.id, false)"><i class="glyphicon glyphicon-play"></i></button>
+                                <a class="btn btn-info" v-bind:href="'/Company/GetCampaignCopy?companyId='+item.id"><i class="glyphicon glyphicon-copy"></i></a>
                                 <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id"><i class="glyphicon glyphicon-folder-open"></i></a>
                             </td>
                         </tr>

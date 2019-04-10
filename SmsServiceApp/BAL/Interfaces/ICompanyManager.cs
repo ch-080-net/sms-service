@@ -21,7 +21,6 @@ namespace BAL.Managers
         int GetTariffLimit(int companyId);
         int InsertWithId(StepViewModel item);
         void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList);
-        int InsertWithId(CompanyViewModel item);
         void CreateCampaignCopy(ManageViewModel item);
         void Insert(CompanyViewModel item);
 		void Update(CompanyViewModel item);
