@@ -153,7 +153,10 @@ namespace BAL.Managers
                     Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
                     var subscribeCompanies = unitOfWork.Companies
                         .Get(item => item.PhoneId == subscribeCompanyPhone.Id);
-
+                    if (subscribeCompanyPhone == orignator)
+                    {
+                        return;
+                    }
                     foreach (var subscribeCompany in subscribeCompanies)
                     {
 
