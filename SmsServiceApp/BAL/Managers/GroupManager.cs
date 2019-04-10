@@ -53,8 +53,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert method", ex);
+			}
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from update method", ex);
+			}
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from delete method", ex);
+			}
         }
     }
 }

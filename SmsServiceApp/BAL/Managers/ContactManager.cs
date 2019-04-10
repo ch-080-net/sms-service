@@ -80,8 +80,8 @@ namespace BAL.Managers
             }
             catch (Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from get contact method", ex);
+			}
         }
 
         /// <summary>
@@ -161,8 +161,8 @@ namespace BAL.Managers
             }
             catch (Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from create contact method", ex);
+			}
         }
 
         /// <summary>
@@ -215,8 +215,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from update contact method", ex);
+			}
         }
 
         public void AddContactFromFile(string data, string Id)
@@ -237,7 +237,6 @@ namespace BAL.Managers
 
         private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
         {
-            //var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
             var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
             var result = new List<Contact>();
             foreach (var item in splitedContactsR.Skip(1))
