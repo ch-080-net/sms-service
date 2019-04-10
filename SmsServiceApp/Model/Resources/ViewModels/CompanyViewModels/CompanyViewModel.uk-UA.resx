@@ -126,6 +126,9 @@
   <data name="Message" xml:space="preserve">
     <value>Повідомлення</value>
   </data>
+  <data name="Message State" xml:space="preserve">
+    <value>Стан Повідомлення</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Ім'я</value>
   </data>

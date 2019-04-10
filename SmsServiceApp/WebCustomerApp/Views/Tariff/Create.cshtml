@@ -39,6 +39,7 @@ function onAddTariff(item) {
     options.data = obj;
     options.success = function (msg) {
         $("#msg").html(msg);
+        window.location.href = msg.newUrl;
     },
         options.error = function () {
             $("#msg").html("Error while calling the Web API!");

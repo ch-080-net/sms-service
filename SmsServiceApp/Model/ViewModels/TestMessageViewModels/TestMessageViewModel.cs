@@ -11,7 +11,7 @@ namespace Model.ViewModels.TestMessageViewModels
         [Display(Name = "Sender phone")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
         public string Sender { get; set; }
-        [Required(ErrorMessage = "The Repipient phone field is required.")]
+        [Required(ErrorMessage = "The Reсipient phone field is required.")]
         [Display(Name = "Recipient phone")]
         [RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
         public string Recipient { get; set; }

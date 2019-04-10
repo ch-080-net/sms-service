@@ -71,6 +71,8 @@ namespace WebApp
             services.AddTransient<IMailingRepository, MailingRepository>();
             services.AddTransient<IEmailCampaignRepository, EmailCampaignRepository>();
             services.AddTransient<IBaseRepository<ApplicationGroup>, BaseRepository<ApplicationGroup>>();
+            services.AddTransient<IAdminStatisticRepository, AdminStatisticRepository>();
+
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -162,6 +164,8 @@ namespace WebApp
             services.AddScoped<INotificationManager, NotificationManager>();
             services.AddScoped<IEmailMailingManager, EmailMailingManager>();
             services.AddScoped<ITestMessageManager, TestMessageManager>();
+            services.AddScoped<IAdminStatisticManager, AdminStatisticManager>();
+
 
             // Configure sessions
 

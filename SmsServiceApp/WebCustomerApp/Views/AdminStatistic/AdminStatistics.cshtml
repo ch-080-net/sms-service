@@ -1,0 +1,34 @@
+﻿@using Model.ViewModels.AdminStatisticViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<AdminStatisticViewModel>
+<div class="Statistic">
+    <h3>@Localizer["Admin Statistic"]</h3>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Localizer["Group Name"]</th>
+                <th>@Localizer["Number of messages"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (AdminStatisticViewModel item in ViewBag.statistic)
+                {
+                    <tr>
+                        <td>
+                            @item.GroupName
+                        </td>
+                        <td>
+                            @item.Count
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+
+</div>

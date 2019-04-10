@@ -27,7 +27,7 @@
        
         
 
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Contact</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus"></i> Add Contact</button>
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -115,7 +115,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type='button' class="btn btn-primary" id='insert' onclick='onAddContact(this)'>
+                                                <button type='button' class="btn btn-success" id='insert' onclick='onAddContact(this)'>
                                                     <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
                                                 </button>
                                             </td>
@@ -128,11 +128,9 @@
                                 </div>
                                 <div id="menu2" class="tab-pane fade">
                                     <h3>Menu 2</h3>
-                                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
                                 </div>
                                 <div id="menu3" class="tab-pane fade">
                                     <h3>Menu 3</h3>
-                                    <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +178,7 @@
         </div>
         <div>
             <input id="searchField" type="text" />
-            <button type='button' id="search" onclick='searchContacts()' class='btn btn-primary'>
+            <button type='button' id="search" onclick='searchContacts()' class='btn btn-default'>
                 <span class='glyphicon glyphicon-search' /> @Localizer["Search"]
             </button>
         </div>
