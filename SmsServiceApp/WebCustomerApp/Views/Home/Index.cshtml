@@ -230,18 +230,24 @@
 								<span class="pull-right-container"> </span>
 							</a>
 						</li>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-stop"></i> <span>@Localizer["Stop words"]</span>
-								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a asp-controller="StopWord" asp-action="Create"><i class="fa fa-plus-circle"></i>@Localizer["Create"]</a></li>
-								<li><a asp-controller="StopWord" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["List of words"]</a></li>
-							</ul>
-						</li>
+					    <li class="treeview">
+                            <a href="#">
+                                <i class="fa fa-stop"></i> <span>@Localizer["Stop words"]</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a asp-controller="StopWord" asp-action="Create"><i class="fa fa-plus-circle"></i>@Localizer["Create"]</a></li>
+                                <li><a asp-controller="StopWord" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["List of words"]</a></li>
+                            </ul>
+                        </li>
+					    <li>
+                            <a asp-area="" asp-controller="AdminStatistic" asp-action="AdminStatistics">
+                                <i class="fa fa-bar-chart"></i> <span>@Localizer["Statistic"]</span>
+                                <span class="pull-right-container"> </span>
+                            </a>
+                        </li>
 					}
 					@if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
 					{
