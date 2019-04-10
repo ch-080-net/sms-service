@@ -216,6 +216,9 @@
   <data name="User Profile" xml:space="preserve">
     <value>Профіль Користувача</value>
   </data>
+  <data name="You achive maximum of recipients" xml:space="preserve">
+    <value>Ви досягли максимуму отримувачів</value>
+  </data>
   <data name="You have not Recepients" xml:space="preserve">
     <value>У вас немає отримувачів</value>
   </data>

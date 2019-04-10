@@ -69,8 +69,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert method", ex);
+			}
         }
 
         /// <summary>

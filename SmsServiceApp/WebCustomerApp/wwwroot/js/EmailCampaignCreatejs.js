@@ -97,44 +97,49 @@
             this.thirdStepComplite = true;
         },
         AddRecepient() {
-            var valid = true;
-            var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-            if (this.Recepient.emailAddress == "") {
-                $("#RecepientEmailValidationError").text("Email field is required");
-                return;
-            }
-            else {
-                if (!re.test(this.Recepient.EmailAddress)) {
-                    $("#RecepientEmailValidationError").text("Invalid email");
+            if (vue.Campaign.recipientsCount < 100) {
+                var valid = true;
+                var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                if (this.Recepient.emailAddress == "") {
+                    $("#RecepientEmailValidationError").text("Email field is required");
                     return;
                 }
-                else
-                    $("#RecepientEmailValidationError").text("");
-            }
-            var found = false;
-            for (var i = 0; i < this.Recepients.length; i++) {
-                if (this.Recepients[i].EmailAddress == this.Recepient.EmailAddress) {
-                    found = true;
-                    break;
+                else {
+                    if (!re.test(this.Recepient.EmailAddress)) {
+                        $("#RecepientEmailValidationError").text("Invalid email");
+                        return;
+                    }
+                    else
+                        $("#RecepientEmailValidationError").text("");
                 }
+                var found = false;
+                for (var i = 0; i < this.Recepients.length; i++) {
+                    if (this.Recepients[i].EmailAddress == this.Recepient.EmailAddress) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    $("#RecepientEmailValidationError").text("Recipient with this email already exist");
+                    return;
+                }
+                this.Recepient.BirthDate = $("#birthDate").val();
+                this.index++;
+                this.Recepient.Id = this.index;
+                this.Campaign.recipientsCount++;
+                this.Recepients.push(Object.assign({}, this.Recepient));
+                this.Recepient.Id = null;
+                this.Recepient.EmailAddress = null;
+                this.Recepient.Name = null;
+                this.Recepient.Surname = null;
+                this.Recepient.BirthDate = null;
+                this.Recepient.Gender = null;
+                this.Recepient.Priority = null;
+                this.Recepient.KeyWords = null;
             }
-            if (found) {
-                $("#RecepientEmailValidationError").text("Recepient with this email already exist");
-                return;
+            else {
+                alert("Recipients limit 100");
             }
-            this.Recepient.BirthDate = $("#birthDate").val();
-            this.index++;
-            this.Recepient.Id = this.index;
-            this.Campaign.recipientsCount++;
-            this.Recepients.push(Object.assign({}, this.Recepient));
-            this.Recepient.Id = null;
-            this.Recepient.EmailAddress = null;
-            this.Recepient.Name = null;
-            this.Recepient.Surname = null;
-            this.Recepient.BirthDate = null;
-            this.Recepient.Gender = null;
-            this.Recepient.Priority = null;
-            this.Recepient.KeyWords = null;
         },
         DeleteRecepient(event) {
             var recid = $(event.target).data("recid");
@@ -169,7 +174,12 @@
                             }
 
                             result.push(obj);
-                            vue.AddRecepientFromFile(obj)
+                            if (vue.Campaign.recipientsCount < 100)
+                                vue.AddRecepientFromFile(obj);
+                            else {
+                                alert("Recipients limit 100")
+                                break;
+                            }
                         }
                         console.dir(result);
                     }

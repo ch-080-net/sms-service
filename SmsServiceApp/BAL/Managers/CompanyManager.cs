@@ -73,8 +73,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert method", ex);
+			}
         }
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from update method", ex);
+			}
         }
 
         public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
@@ -179,8 +179,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from send method", ex);
+			}
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from receive method", ex);
+			}
         }
 
         /// <summary>
@@ -224,8 +224,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from send receive method", ex);
+			}
         }
 
         /// <summary>
@@ -292,8 +292,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert with id method", ex);
+			}
         }
 
         private void AddNotifications(Company company)

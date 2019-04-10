@@ -42,8 +42,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert method", ex);
+			}
         }
         /// <summary>
         ///  Update stop word in db
@@ -59,8 +59,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from update method", ex);
+			}
         }
         /// <summary>
         /// delete stop word by db
@@ -76,8 +76,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from delete method", ex);
+			}
         }
 
 
