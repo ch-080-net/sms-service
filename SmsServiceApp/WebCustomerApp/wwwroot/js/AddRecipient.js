@@ -1,4 +1,5 @@
 ﻿var operatorId;
+var tarifflimit;
 
 function getTariffsList() {
 
@@ -28,7 +29,7 @@ function getTariffLimit(tariffId) {
             id: tariffId
         },
         success: function (limit) {
-            return limit;
+            tarifflimit = limit;
 
         },
         error: function (request, message, error) {
@@ -85,6 +86,7 @@ function GetTariff(item) {
 function ChooseTariff(item) {
     var tariffId = $(item).data("id");
     $("#tariff").val(tariffId);
+    getTariffLimit(tariffId);
 }
 
 var contactCount = 0;
@@ -192,7 +194,7 @@ function contactBuildTableRow(contact) {
         "data-gender='" + contact.gender + "'" +
         "data-notes='" + contact.priority + "'" +
         "data-keywords='" + contact.keyWords + "'" +
-           +
+        +
         "</button> " +
         " <button type='button' " +
         "onclick='DeleteRecipient(this);'" +
@@ -239,22 +241,22 @@ function onAddContact(item) {
             RecSimilar = true;
         }
         var tariffId = $("#tariff").val();
-        var limit = getTariffLimit(tariffId);
-        if (recipients.length >= limit) {
+       
+        if (recipients.length >= tarifflimit) {
             RecSimilar = true;
             break;
         }
 
     }
     if (!RecSimilar) {
-      recipients.push(obj);
+        recipients.push(obj);
     }
 
-  
+
     contactCount++;
 
     contactListSuccess(recipients);
-    
+
 
     $("#phoneNumber").val("");
     $("#name").val("");
@@ -324,9 +326,9 @@ function CreateCampaign() {
     console.dir(recipientsList);
     var message = $("#message").val();
     console.dir(message);
-    var sendtime= $("#sendtime").val();
+    var sendtime = $("#sendtime").val();
     console.dir(sendtime);
-    
+
     campaign.name = $("#campaignName").val();
     campaign.phoneNumber = $("#campaignPhoneNumber").val();
     campaign.description = $("#campaignDescription").val();
@@ -352,8 +354,8 @@ function CreateCampaign() {
         error: function (request, message, error) {
             //handleException(request, message, error);
         }
-        
-            
+
+
     });
 
 }
@@ -378,14 +380,14 @@ function GetFromFile(tariffId) {
                     for (var j = 0; j < headers.length; j++) {
                         obj[headers[j]] = currentline[j];
                     }
-                    for (var k = 0; k < recipients.length; k++) {   
+                    for (var k = 0; k < recipients.length; k++) {
                         if (recipients[k].phoneNumber == obj.phoneNumber) {
                             found = true;
                             break;
                         }
                         var tariffId = $("#tariff").val();
-                        var limit = getTariffLimit(tariffId);
-                        if (recipients.length >= limit) {
+                        
+                        if (recipients.length >= tarifflimit) {
                             found = true;
                             break;
                         }
@@ -393,8 +395,8 @@ function GetFromFile(tariffId) {
                     if (!found) {
                         recipients.push(obj);
                     }
-                    
-                    result.push(obj);                   
+
+                    result.push(obj);
                 }
                 console.dir(result);
                 contactListSuccess(recipients);
