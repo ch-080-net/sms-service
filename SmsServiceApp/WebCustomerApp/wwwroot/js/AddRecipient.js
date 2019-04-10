@@ -1,4 +1,91 @@
-﻿
+﻿var operatorId;
+
+function getTariffsList() {
+
+    $.ajax({
+        url: '/Company/Tariffs/',
+        type: 'GET',
+        data: {
+            id: operatorId
+        },
+        success: function (tariffs) {
+            tariffListSuccess(tariffs);
+
+        },
+        error: function (request, message, error) {
+            //handleException(request, message, error);
+        }
+    });
+}
+
+
+function getTariffLimit(tariffId) {
+
+    $.ajax({
+        url: '/Company/GetTariffById/',
+        type: 'GET',
+        data: {
+            id: tariffId
+        },
+        success: function (limit) {
+            return limit;
+
+        },
+        error: function (request, message, error) {
+            //handleException(request, message, error);
+        }
+    });
+}
+
+function tariffListSuccess(tariffs) {
+
+    $("#tariffTable tbody").remove();
+    $.each(tariffs, function (index, tariff) {
+
+        tariffAddRow(tariff);
+    });
+}
+
+
+function tariffAddRow(tariff) {
+
+    if ($("#tariffTable tbody").length == 0) {
+        $("#tariffTable").append("<tbody></tbody>");
+    }
+
+
+    $("#tariffTable tbody").append(
+        tariffBuildTableRow(tariff));
+}
+
+function tariffBuildTableRow(tariff) {
+    var newRow = "<tr>" +
+        "<td>" + tariff.name + "</td>" +
+        "<td>" + tariff.description + "</td>" +
+        "<td>" + tariff.price + "</td>" +
+        "<td>" + tariff.limit + "</td>" +
+        "<td>" +
+        "<input type='radio' name='tariff' " +
+        "onclick='ChooseTariff(this);'" +
+        "class='btn btn-danger' " +
+        "data-id='" + tariff.id + "'>" +
+        " " +
+        "</input>" +
+        "</td>" +
+        "</tr>";
+
+    return newRow;
+}
+
+function GetTariff(item) {
+    operatorId = $(item).val();
+    getTariffsList();
+}
+
+function ChooseTariff(item) {
+    var tariffId = $(item).data("id");
+    $("#tariff").val(tariffId);
+}
 
 var contactCount = 0;
 var pagesCount = 0;
@@ -53,6 +140,11 @@ function getPageByNumber(item) {
     currentPage = parseInt(numberOfPage, 10);
     contactListSuccess(recipients);
 }
+function DeleteRecipient(event) {
+    var recid = $(event.target).data("recid");
+    recipients.splice(recid - 1, 1);
+    index--;
+}
 
 // Display Phones returned from Web API call
 function contactListSuccess(contacts) {
@@ -103,7 +195,7 @@ function contactBuildTableRow(contact) {
            +
         "</button> " +
         " <button type='button' " +
-        "onclick='contactDelete(this);'" +
+        "onclick='DeleteRecipient(this);'" +
         "class='btn btn-danger' " +
         "data-id='" + contact.id + "'>" +
         "<span class='glyphicon glyphicon-remove' /> Delete" +
@@ -141,7 +233,24 @@ function onAddContact(item) {
     if (obj.keyWords == null)
         obj.keyWords = "";
 
-    recipients.push(obj);
+    var RecSimilar = false;
+    for (var k = 0; k < recipients.length; k++) {
+        if (recipients[k].phoneNumber == obj.phoneNumber || recipients[k].length > tariff.limit) {
+            RecSimilar = true;
+        }
+        var tariffId = $("#tariff").val();
+        var limit = getTariffLimit(tariffId);
+        if (recipients.length >= limit) {
+            RecSimilar = true;
+            break;
+        }
+
+    }
+    if (!RecSimilar) {
+      recipients.push(obj);
+    }
+
+  
     contactCount++;
 
     contactListSuccess(recipients);
@@ -249,7 +358,7 @@ function CreateCampaign() {
 
 }
 
-function GetFromFile() {
+function GetFromFile(tariffId) {
     var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
     if (regex.test($("#fileUpload").val().toLowerCase())) {
         if (typeof (FileReader) != "undefined") {
@@ -273,7 +382,13 @@ function GetFromFile() {
                         if (recipients[k].phoneNumber == obj.phoneNumber) {
                             found = true;
                             break;
-                        }                        
+                        }
+                        var tariffId = $("#tariff").val();
+                        var limit = getTariffLimit(tariffId);
+                        if (recipients.length >= limit) {
+                            found = true;
+                            break;
+                        }
                     }
                     if (!found) {
                         recipients.push(obj);

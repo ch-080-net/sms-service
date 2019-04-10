@@ -334,6 +334,12 @@ namespace WebApp.Controllers
             return View(item);
         }
 
+        public int GetTariffById(int id)
+        {
+            var limit = tariffManager.GetTariffById(id).Limit;
+            return limit;
+        }
+
         public void ChangeCampaignState(int companyId, bool newState)
         {
 	        var item = companyManager.Get(companyId);
