@@ -80,7 +80,7 @@
         #style-3::-webkit-scrollbar-track {
             -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
             background-color: #F5F5F5;
-            margin-top:20px;
+            margin-top: 20px;
         }
 
         #style-3::-webkit-scrollbar {
@@ -107,7 +107,7 @@
                             <v-stepper-step step="1" :complete="firstStepComplite" v-on:click="step = 1">@Localizer["Main Information"]</v-stepper-step>
                             <v-divider></v-divider>
                             @*<v-stepper-step step="2" :complete="step > 2">Select tempalate</v-stepper-step>
-                            <v-divider></v-divider>*@
+                                <v-divider></v-divider>*@
                             <v-stepper-step step="2" :complete="secondStepComplite" v-on:click="step = 2">@Localizer["Create mail"]</v-stepper-step>
                             <v-divider></v-divider>
                             <v-stepper-step step="3" :complete="thirdStepComplite" v-on:click="step = 3">@Localizer["Add recepients"]</v-stepper-step>
@@ -141,12 +141,12 @@
 
                             </v-stepper-content>
                             <v-stepper-content step="3">
-
+                                <span style="text-align: center" v-if="Campaign.recipientsCount >= 100">@Localizer["You achive maximum of recipients"]</span>
                                 <v-app style="height: 50px; background-color:white;" id="inspire">
                                     <v-layout row justify-center>
                                         <v-dialog v-model="dialog" persistent max-width="600px" style="z-index:1040;">
                                             <template v-slot:activator="{ on }">
-                                                <v-btn color="primary" dark v-on="on">@Localizer["Add"]</v-btn>
+                                                <v-btn color="primary" v-if="Campaign.recipientsCount < 100" dark v-on="on">@Localizer["Add"]</v-btn>
                                             </template>
                                             <v-tabs v-model="active"
                                                     color="cyan"
@@ -206,15 +206,15 @@
                                                                 <h4>@Localizer["Add recepients from file"]</h4>
                                                                 <input type="file" id="fileUpload" />
                                                                 <v-btn id="upload" v-on:click="GetFromFile">@Localizer["Upload"]</v-btn>
-                                                            </v-container>                                                            
-                                                        </v-card-text>                                                  
+                                                            </v-container>
+                                                        </v-card-text>
                                                         <v-card-actions>
                                                             <v-spacer></v-spacer>
                                                             <v-btn color="blue darken-1" flat v-on:click="closeDialog">@Localizer["Close"]</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-tab-item>
-                                            </v-tabs>                                            
+                                            </v-tabs>
                                         </v-dialog>
                                     </v-layout>
                                 </v-app>
@@ -276,9 +276,9 @@
         </v-app>
     </div>
     <script src="~/js/EmailCampaignCreatejs.js"></script>
-<script>
-    $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-    $('#birthDate').val(new Date(1901, 1, 1).toLocaleDateString());
-</script>
+    <script>
+        $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+        $('#birthDate').val(new Date(1901, 1, 1).toLocaleDateString());
+    </script>
 </body>
 </html>
