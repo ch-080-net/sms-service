@@ -17,6 +17,7 @@ using Model.ViewModels.AnswersCodeViewModels;
 using System.Text.RegularExpressions;
 using BAL.Services;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.RecipientViewModels;
 
 namespace WebApp.Controllers
 {
@@ -77,9 +78,37 @@ namespace WebApp.Controllers
             return View(companies);
         }
 
-       
+        [HttpGet]
+        public IActionResult GetCampaignCopy(int companyId)
+        {
+            var item = companyManager.GetDetails(companyId);
+            item.PhoneNumber = phoneManager.GetPhoneById(item.PhoneId).PhoneNumber;
+            int count = recipientManager.GetRecipients(companyId).Count();
+            if (item.Type == CompanyType.Send || item.Type == CompanyType.SendAndRecieve)
+            {
+                if (item.TariffId <= 0)
+                {
+                    item.Tariff = "Tariff not choosen";
+                }
+                else
+                {
+                    item.Tariff = tariffManager.GetTariffById(item.TariffId).Name;
+                }
+            }
+            return View(item);
+        }
+        [HttpPost]
+        public IActionResult GetCampaignCopy(ManageViewModel item, int companyId)
+        {
+            item.ApplicationGroupId = GetGroupId();
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            if (item.SendingTime < DateTime.Now)
+                item.SendingTime = DateTime.Now;
+            companyManager.CreateCampaignCopy(item);
+            return RedirectToAction("Index","Company");
+        }
 
-        public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
+            public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
             if (searchValue == null)
             {

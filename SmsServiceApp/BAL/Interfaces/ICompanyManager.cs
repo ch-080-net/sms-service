@@ -1,4 +1,5 @@
 ﻿using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.RecipientViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,8 @@ namespace BAL.Managers
         int GetCampaignsCount(int groupId, string searchValue);
         int GetTariffLimit(int companyId);
         int InsertWithId(CompanyViewModel item);
-		void Insert(CompanyViewModel item);
+        void CreateCampaignCopy(ManageViewModel item);
+        void Insert(CompanyViewModel item);
 		void Update(CompanyViewModel item);
 		void Delete(int id);
         void AddSend(SendViewModel item);

@@ -115,6 +115,42 @@ namespace BAL.Managers
                 throw ex;
             }
         }
+        public void CreateCampaignCopy(ManageViewModel item)
+        {
+            Company company = new Company()
+            {
+                Id = 0,
+                Name = item.Name,
+                Description = item.Description,
+                TariffId = item.TariffId,
+                Message = item.Message,
+                ApplicationGroupId = item.ApplicationGroupId,
+                SendingTime = item.SendingTime,
+                StartTime = item.StartTime,
+                EndTime = item.EndTime,
+                Type =item.Type
+            };
+            company.ApplicationGroupId = item.ApplicationGroupId;
+            Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
+            if (phone == null)
+            {
+                phone = new Phone();
+                phone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(phone);
+                company.Phone = phone;
+            }
+            else
+            {
+                company.PhoneId = phone.Id;
+            }
+            if (company.TariffId == 0)
+                company.TariffId = null;
+
+            unitOfWork.Companies.Insert(company);
+            AddNotifications(company);
+            unitOfWork.Save();
+           
+        }
 
         /// <summary>
         /// Find base entity of company from db

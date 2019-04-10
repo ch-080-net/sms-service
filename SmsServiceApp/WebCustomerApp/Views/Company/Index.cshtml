@@ -57,6 +57,7 @@
 		                    <button class="btn btn-dark" v-if="item.isPaused" id="ResumeButton" v-on:click="changeState(item.id, false)">Resume</button>
 	                    </td>
 	                    <td>
+                            <a class="btn btn-default" v-bind:href="'/Company/GetCampaignCopy?companyId='+item.id" >Copy to new campaign</a>
 		                    <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id">@Localizer["Details"]</a>
 	                    </td>
                     </tr>

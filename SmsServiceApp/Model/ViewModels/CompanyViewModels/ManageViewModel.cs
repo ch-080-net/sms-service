@@ -15,6 +15,7 @@ namespace Model.ViewModels.CompanyViewModels
         public int Id { get; set; }
         [Display(Name = "Tariff")]
         public string Tariff { get; set; }
+        public int ApplicationGroupId { get; set; }
         public int TariffId { get; set; }
         [StringLength(500)]
         public string Message { get; set; }
