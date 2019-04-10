@@ -44,10 +44,10 @@
             </dl>
         </div>
         <div class="col-md-5">
-            <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-campaignId="@Model.Id" asp-action="Edit">@Localizer["Edit"]</a></div> <br />
+            <div class="row"><a class="btn btn-warning" style="width: 120px;" asp-route-campaignId="@Model.Id" asp-action="Edit"><i class="glyphicon glyphicon-edit"></i>&nbsp @Localizer["Edit"]</a></div> <br />
             <div class="row">
                 <form asp-action="Delete" asp-route-campaignId="@Model.Id">
-                    <button type="submit" class="btn btn-danger" style="width: 120px;">@Localizer["Delete"]</button>
+                    <button type="submit" class="btn btn-danger" style="width: 120px;"><i class="glyphicon glyphicon-remove"></i>&nbsp @Localizer["Delete"]</button>
                 </form>
             </div>
         </div>
