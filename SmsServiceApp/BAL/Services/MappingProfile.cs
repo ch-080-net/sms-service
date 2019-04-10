@@ -22,7 +22,10 @@ using Model.ViewModels.CampaignReportingViewModels;
 using Model.ViewModels.EmailRecipientViewModels;
 using Model.ViewModels.EmailCampaignViewModels;
 using Model.ViewModels.SubscribeWordViewModels;
+using Model.ViewModels.StepViewModels;
 using Model.ViewModels.TestMessageViewModels;
+using Model.ViewModels.AdminStatisticViewModel;
+using MessageState = WebApp.Models.MessageState;
 
 namespace BAL.Services
 {
@@ -39,7 +42,10 @@ namespace BAL.Services
             // Add as many of these lines as you need to map your objects
             CreateMap<Company, CompanyViewModel>();
             CreateMap<CompanyViewModel, Company>();
+            CreateMap<Company, StepViewModel>();
+            CreateMap<StepViewModel, Company>();
             CreateMap<Company, ManageViewModel>();
+            CreateMap<ManageViewModel, Company>();
             CreateMap<Recipient, RecipientViewModel>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == 1 ? "Male" : "Female"))
                             .ForMember(dest => dest.Phonenumber, opt => opt.MapFrom(src => src.Phone.PhoneNumber));
             CreateMap<RecipientViewModel, Recipient>().ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender == "Male" ? 1 : 0));
@@ -47,6 +53,7 @@ namespace BAL.Services
             CreateMap<Operator, OperatorViewModel>()
                 .ForMember(ovm => ovm.Logo, opt => opt.MapFrom(o => GetLogo(o)));
             CreateMap<OperatorViewModel, Operator>();
+
 
             CreateMap<Code, CodeViewModel>().ReverseMap();
 
@@ -66,6 +73,7 @@ namespace BAL.Services
             CreateMap<ApplicationGroup, GroupViewModel>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
             CreateMap<GroupViewModel, ApplicationGroup>().ForMember(dest => dest.ApplicationUsers, opt => opt.MapFrom(src => src.ApplicationUsers));
 
+          
             CreateMap<ApplicationUser, UserViewModel>();
             CreateMap<UserViewModel, ApplicationUser>();
 
@@ -148,14 +156,16 @@ namespace BAL.Services
                 .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
 
-            CreateMap<CampaignNotification, WebNotificationDTO>()
-                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
-                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
-                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
-                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
-                .ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")));
+			CreateMap<CampaignNotification, WebNotificationDTO>()
+				.ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.ApplicationUserId))
+				.ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
+				.ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.Campaign.Name))
+				.ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
+				.ForMember(en => en.Time, opt => opt.MapFrom(cn => GetCampaignNotificationTime(cn).ToString("G")))
+				.ForMember(en => en.CampaignId, opt => opt.MapFrom(cn => cn.CampaignId));
 
-            CreateMap<CampaignNotification, NotificationDTO>()
+
+			CreateMap<CampaignNotification, NotificationDTO>()
                 .ForMember(en => en.Origin, opt => opt.MapFrom(n => NotificationOrigin.CampaignReport))
                 .ForMember(en => en.UserId, opt => opt.MapFrom(n => n.ApplicationUserId));
 
@@ -171,14 +181,16 @@ namespace BAL.Services
                 .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
                 .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)));
 
-            CreateMap<EmailCampaignNotification, WebNotificationDTO>()
-                .ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.EmailCampaign.UserId))
-                .ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
-                .ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
-                .ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
-                .ForMember(en => en.Time, opt => opt.MapFrom(cn => cn.EmailCampaign.SendingTime.ToString("G")));
+			CreateMap<EmailCampaignNotification, WebNotificationDTO>()
+				.ForMember(wn => wn.UserId, opt => opt.MapFrom(n => n.EmailCampaign.UserId))
+				.ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
+				.ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
+				.ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
+				.ForMember(en => en.Time, opt => opt.MapFrom(cn => cn.EmailCampaign.SendingTime.ToString("G")))
+				.ForMember(sn => sn.CampaignId, opt => opt.MapFrom(n => n.CampaignId));
 
-            CreateMap<EmailCampaignNotification, NotificationDTO>()
+
+			CreateMap<EmailCampaignNotification, NotificationDTO>()
                 .ForMember(en => en.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
                 .ForMember(en => en.UserId, opt => opt.MapFrom(n => n.EmailCampaign.UserId));
 
@@ -203,6 +215,21 @@ namespace BAL.Services
                 .ForMember(m => m.RecepientPhone, opt => opt.MapFrom(r => r.Recipient))
                 .ForMember(m => m.SenderPhone, opt => opt.MapFrom(r => r.Sender))
                 .ForMember(m => m.MessageText, opt => opt.MapFrom(r => r.Message));
+
+            CreateMap<ApplicationGroup, AdminStatisticViewModel>()
+                .ForMember(dest => dest.GroupName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Count, opt => opt.MapFrom(cn => GetNumberOfMessage(cn)));
+
+        }
+        private int GetNumberOfMessage(ApplicationGroup applicationGroup)
+        {
+            int counter = 0;
+            foreach (var iter in applicationGroup.Companies)
+            {
+                counter += iter.Recipients.Select(x => x.MessageState != MessageState.NotSent && x.MessageState != MessageState.Unsubscribed).Count();
+            }
+
+            return counter;
         }
 
         #region Notifications
@@ -236,15 +263,15 @@ namespace BAL.Services
             {
                 case CampaignNotificationEvent.CampaignStart:
                     {
-                        return "Voting for campaign " + cn.Campaign.Name + " started";
+                        return "Voting started";
                     }
                 case CampaignNotificationEvent.CampaignEnd:
                     {
-                        return "Voting for campaign " + cn.Campaign.Name + " ended";
+                        return "Voting ended";
                     }
                 case CampaignNotificationEvent.Sending:
                     {
-                        return "Mailing for campaign " + cn.Campaign.Name + " started";
+                        return "Mailing started";
                     }
                 default:
                     {
@@ -255,7 +282,7 @@ namespace BAL.Services
 
         private string GenerateNotificationMessage(EmailCampaignNotification ecn)
         {
-            return "Mailing for campaign " + ecn.EmailCampaign.Name + " started";
+            return "Mailing started";
         }
 
         #endregion

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.RecipientViewModels;
+using Model.ViewModels.StepViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,8 +73,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert method", ex);
+			}
         }
 
         /// <summary>
@@ -112,8 +114,87 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
+				throw new Exception("Exception from update method", ex);
+			}
+        }
+
+        public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
+        {
+            Company company = mapper.Map<ManageViewModel, Company>(item);
+            company.ApplicationGroupId = item.ApplicationGroupId;
+            Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
+            if (phone == null)
+            {
+                phone = new Phone();
+                phone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(phone);
+                company.Phone = phone;
             }
+            else
+            {
+                company.PhoneId = phone.Id;
+            }
+            if (company.TariffId == 0)
+                company.TariffId = null;
+
+            unitOfWork.Companies.Insert(company);
+            AddNotifications(company);
+            unitOfWork.Save();
+            foreach (var recipient in recipientList)
+            {
+                Recipient newRecepient = mapper.Map<RecipientViewModel, Recipient>(recipient);
+                newRecepient.CompanyId = company.Id;
+                phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == recipient.Phonenumber).FirstOrDefault();
+                if (phone == null)
+                {
+                    phone = new Phone();
+                    phone.PhoneNumber = recipient.Phonenumber;
+                    unitOfWork.Phones.Insert(phone);
+                    newRecepient.Phone = phone;
+                }
+                else
+                {
+                    newRecepient.PhoneId = phone.Id;
+                }
+                unitOfWork.Recipients.Insert(newRecepient);
+                unitOfWork.Save();
+            }
+        }
+        public void CreateCampaignCopy(ManageViewModel item)
+        {
+            Company company = new Company()
+            {
+                Id = 0,
+                Name = item.Name,
+                Description = item.Description,
+                TariffId = item.TariffId,
+                Message = item.Message,
+                ApplicationGroupId = item.ApplicationGroupId,
+                SendingTime = item.SendingTime,
+                StartTime = item.StartTime,
+                EndTime = item.EndTime,
+                Type =item.Type
+            };
+            company.ApplicationGroupId = item.ApplicationGroupId;
+            Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
+            if (phone == null)
+            {
+                phone = new Phone();
+                phone.PhoneNumber = item.PhoneNumber;
+                unitOfWork.Phones.Insert(phone);
+                company.Phone = phone;
+            }
+            else
+            {
+                company.PhoneId = phone.Id;
+            }
+            if (company.TariffId == 0)
+                company.TariffId = null;
+
+            unitOfWork.Companies.Insert(company);
+            AddNotifications(company);
+            unitOfWork.Save();
+           
         }
 
         /// <summary>
@@ -134,8 +215,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from send method", ex);
+			}
         }
 
         /// <summary>
@@ -155,8 +236,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from receive method", ex);
+			}
         }
 
         /// <summary>
@@ -179,8 +260,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from send receive method", ex);
+			}
         }
 
         /// <summary>
@@ -228,12 +309,18 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="item">CompanyViewModel that we isert to db</param>
         /// <returns>Id of inserted company</returns>
-        public int InsertWithId(CompanyViewModel item)
+        public int InsertWithId(StepViewModel item)
         {
             try
             {
-                Company company = mapper.Map<CompanyViewModel, Company>(item);
-                company.TariffId = null;
+                Company company = mapper.Map<StepViewModel, Company>(item);
+               
+                company.Name = item.CompanyModel.Name;
+                company.PhoneId = item.CompanyModel.PhoneId;
+                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
+                company.Description = item.CompanyModel.Description;
+                company.StartTime = item.RecieveModel.StartTime; 
+                company.EndTime = item.RecieveModel.EndTime;
                 int id = unitOfWork.Companies.InsertWithId(company);
                 AddNotifications(company);
                 unitOfWork.Save();
@@ -241,8 +328,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from insert with id method", ex);
+			}
         }
 
         private void AddNotifications(Company company)

@@ -138,7 +138,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Редагувати</value>
   </data>
-  <data name="SubscribeWord" xml:space="preserve">
-    <value />
+  <data name="Subscribe word" xml:space="preserve">
+    <value>Слова підписки</value>
   </data>
 </root>
