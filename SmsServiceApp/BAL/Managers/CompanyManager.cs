@@ -138,6 +138,7 @@ namespace BAL.Managers
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
+            AddNotifications(company);
             unitOfWork.Save();
             foreach (var recipient in recipientList)
             {
@@ -156,7 +157,6 @@ namespace BAL.Managers
                     newRecepient.PhoneId = phone.Id;
                 }
                 unitOfWork.Recipients.Insert(newRecepient);
-                AddNotifications(company);
                 unitOfWork.Save();
             }
         }
