@@ -64,17 +64,10 @@ namespace BAL.Managers
         /// <param name="groupId">Id of Group wich create this company</param>
         public void Insert(CompanyViewModel item)
         {
-            try
-            {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 unitOfWork.Companies.Insert(company);
                 AddNotifications(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
         }
 
         /// <summary>
@@ -95,8 +88,6 @@ namespace BAL.Managers
         /// <param name="item">CompanyViewModel item from view</param>
         public void Update(CompanyViewModel item)
         {
-            try
-            {
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.Name = item.Name;
                 company.Description = item.Description;
@@ -111,11 +102,6 @@ namespace BAL.Managers
                 }
                 unitOfWork.Companies.Update(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from update method", ex);
-			}
         }
 
         public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
@@ -204,19 +190,12 @@ namespace BAL.Managers
         /// <param name="item">SendViewModel from send view</param>
         public void AddSend(SendViewModel item)
         {
-            try
-            {
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.TariffId = item.TariffId;
                 company.Message = item.Message;
                 company.SendingTime = item.SendingTime;
                 unitOfWork.Companies.Update(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from send method", ex);
-			}
         }
 
         /// <summary>
@@ -226,18 +205,11 @@ namespace BAL.Managers
         /// <param name="item">RecieveViewModel from view</param>
         public void AddRecieve(RecieveViewModel item)
         {
-            try
-            {
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.StartTime = item.StartTime;
                 company.EndTime = item.EndTime;
                 unitOfWork.Companies.Update(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from receive method", ex);
-			}
         }
 
         /// <summary>
@@ -247,8 +219,6 @@ namespace BAL.Managers
         /// <param name="item">SendRecieveViewModel from view</param>
         public void AddSendRecieve(SendRecieveViewModel item)
         {
-            try
-            {
                 Company company = unitOfWork.Companies.GetById(item.Id);
                 company.TariffId = item.TariffId;
                 company.Message = item.Message;
@@ -257,11 +227,6 @@ namespace BAL.Managers
                 company.EndTime = item.EndTime;
                 unitOfWork.Companies.Update(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from send receive method", ex);
-			}
         }
 
         /// <summary>
@@ -292,16 +257,9 @@ namespace BAL.Managers
         /// <param name="id">Id of company wich need to delete</param>
         public void Delete(int id)
         {
-            try
-            {
                 Company company = unitOfWork.Companies.GetById(id);
                 unitOfWork.Companies.Delete(company);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -311,8 +269,6 @@ namespace BAL.Managers
         /// <returns>Id of inserted company</returns>
         public int InsertWithId(StepViewModel item)
         {
-            try
-            {
                 Company company = mapper.Map<StepViewModel, Company>(item);
                
                 company.Name = item.CompanyModel.Name;
@@ -325,11 +281,6 @@ namespace BAL.Managers
                 AddNotifications(company);
                 unitOfWork.Save();
                 return id;
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert with id method", ex);
-			}
         }
 
         private void AddNotifications(Company company)
