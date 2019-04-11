@@ -157,10 +157,10 @@
                             else
                             {
                                 <div class="pull-left">
-                                    <a href="Account/NewLogin" class="btn btn-primary"><span class="fa fa-sign-in"></span> @Localizer["Sign in"]</a>
+                                    <a asp-controller="Account" asp-action="NewLogin" class="btn btn-primary"><span class="fa fa-sign-in"></span> @Localizer["Sign in"]</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="Account/NewRegister" class="btn btn-primary"><span class="fa fa-registered"></span> @Localizer["Register"]</a>
+                                    <a asp-controller="Account" asp-action="NewRegister" class="btn btn-primary"><span class="fa fa-registered"></span> @Localizer["Register"]</a>
                                 </div>
                             }
                         </li>
