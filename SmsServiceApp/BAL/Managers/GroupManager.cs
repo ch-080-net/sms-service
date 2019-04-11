@@ -45,16 +45,9 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of group</param>
         public void Insert(GroupViewModel item)
         {
-            try
-            {
                 ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
                 unitOfWork.ApplicationGroups.Insert(group);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
         }
 
         /// <summary>
@@ -63,16 +56,9 @@ namespace BAL.Managers
         /// <param name="item">ViewModel wich need to update in db</param>
         public void Update(GroupViewModel item)
         {
-            try
-            {
                 ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
                 unitOfWork.ApplicationGroups.Update(group);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from update method", ex);
-			}
         }
 
         /// <summary>
@@ -81,16 +67,9 @@ namespace BAL.Managers
         /// <param name="id">Id of group wich need to delete</param>
         public void Delete(int id)
         {
-            try
-            {
                 ApplicationGroup group = unitOfWork.ApplicationGroups.GetById(id);
                 unitOfWork.ApplicationGroups.Delete(group);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from delete method", ex);
-			}
         }
     }
 }

@@ -209,16 +209,8 @@ namespace BAL.Managers
                         {
                             not.BeenSent = true;
                         }
-
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
-                        break;
+                            break;
                     }
                 case NotificationOrigin.CampaignReport:
                     {
@@ -227,15 +219,7 @@ namespace BAL.Managers
                         {
                             not.BeenSent = true;
                         }
-
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
                         break;
                     }
                 case NotificationOrigin.EmailCampaignReport:
@@ -246,14 +230,7 @@ namespace BAL.Managers
                             not.BeenSent = true;
                         }
 
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
                         break;
                     }
                 default:
@@ -280,14 +257,7 @@ namespace BAL.Managers
                         {
                             not.BeenSent = true;
                         }
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
                         break;
                     }
                 case NotificationOrigin.CampaignReport:
@@ -297,14 +267,7 @@ namespace BAL.Managers
                         {
                             not.BeenSent = true;
                         }
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
                         break;
                     }
                 case NotificationOrigin.EmailCampaignReport:
@@ -314,14 +277,7 @@ namespace BAL.Managers
                         {
                             not.BeenSent = true;
                         }
-                        try
-                        {
                             unitOfWork.Save();
-                        }
-                        catch
-                        {
-                            // Sending will be repeated
-                        }
                         break;
                     }
                 default:
