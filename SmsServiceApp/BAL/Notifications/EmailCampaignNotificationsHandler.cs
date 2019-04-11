@@ -50,21 +50,27 @@ namespace BAL.Notifications
             return result;
         }
 
-        public override IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5)
+        public override IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5)
+        {
+            var result = GetWebNotificationsForEmailCampaign(userId, quantity);
+            result = result.Concat(base.notificationHandler.GetWebNotifications(userId, quantity))
+                .OrderByDescending(x => x.Time).Take(quantity);
+            return result;
+        }
+
+        private IEnumerable<WebNotificationDTO> GetWebNotificationsForEmailCampaign(string userId, int quantity = 5)
         {
             var notifications = unitOfWork.EmailCampaignNotifications
-                .Get(n => n.EmailCampaign.SendingTime <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == UserId)
+                .Get(n => n.EmailCampaign.SendingTime <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == userId)
                 .OrderByDescending(x => x.EmailCampaign.SendingTime).Take(quantity);
             var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
-            result = result.Concat(base.notificationHandler.GetWebNotifications(UserId, quantity))
-                .OrderByDescending(x => x.Time).Take(quantity);
             return result;
         }
 
         public override NotificationReportDTO GetWebNotificationsReport(string userId)
         {
             var result = new NotificationReportDTO();
-            result.Notifications = GetWebNotifications(userId);
+            result.Notifications = GetWebNotificationsForEmailCampaign(userId);
             var campaigns = unitOfWork.EmailCampaigns.Get(x => x.UserId == userId);
 
             result.MailingsPlannedToday = (from iter in campaigns

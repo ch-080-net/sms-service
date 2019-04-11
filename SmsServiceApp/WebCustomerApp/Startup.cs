@@ -26,6 +26,8 @@ using System.IO;
 using BAL.Exceptions;
 using StackExchange.Redis;
 using WebApp.Extensions;
+using BAL.Notifications.Infrastructure;
+using BAL.Notifications;
 
 namespace WebApp
 {
@@ -165,7 +167,8 @@ namespace WebApp
             services.AddScoped<IEmailMailingManager, EmailMailingManager>();
             services.AddScoped<ITestMessageManager, TestMessageManager>();
             services.AddScoped<IAdminStatisticManager, AdminStatisticManager>();
-
+            services.AddScoped<INotificationsGenerator<EmailCampaign>, EmailCampaignNotificationGenerator>();
+            services.AddScoped<INotificationsGenerator<Company>, SmsCampaignNotificationGenerator>();
 
             // Configure sessions
 

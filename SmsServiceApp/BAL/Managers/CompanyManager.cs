@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WebApp.Models;
+using BAL.Notifications;
+using BAL.Notifications.Infrastructure;
 
 namespace BAL.Managers
 {
@@ -17,8 +19,11 @@ namespace BAL.Managers
     /// </summary>
     public class CompanyManager : BaseManager, ICompanyManager
     {
-        public CompanyManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly INotificationsGenerator<Company> notificationsGenerator;
+        public CompanyManager(IUnitOfWork unitOfWork, IMapper mapper
+            , INotificationsGenerator<Company> notificationsGenerator) : base(unitOfWork, mapper)
         {
+            this.notificationsGenerator = notificationsGenerator;
         }
 
         /// <summary>
@@ -66,7 +71,7 @@ namespace BAL.Managers
         {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 unitOfWork.Companies.Insert(company);
-                AddNotifications(company);
+                notificationsGenerator.SupplyWithNotifications(company);
                 unitOfWork.Save();
         }
 
@@ -124,7 +129,7 @@ namespace BAL.Managers
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
-            AddNotifications(company);
+            notificationsGenerator.SupplyWithNotifications(company);
             unitOfWork.Save();
             foreach (var recipient in recipientList)
             {
@@ -178,7 +183,7 @@ namespace BAL.Managers
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
-            AddNotifications(company);
+            notificationsGenerator.SupplyWithNotifications(company);
             unitOfWork.Save();
            
         }
@@ -278,58 +283,9 @@ namespace BAL.Managers
                 company.StartTime = item.RecieveModel.StartTime; 
                 company.EndTime = item.RecieveModel.EndTime;
                 int id = unitOfWork.Companies.InsertWithId(company);
-                AddNotifications(company);
+                notificationsGenerator.SupplyWithNotifications(company);
                 unitOfWork.Save();
                 return id;
-        }
-
-        private void AddNotifications(Company company)
-        {
-            var users = unitOfWork.ApplicationUsers.Get(au => au.ApplicationGroupId == company.ApplicationGroupId);
-            foreach(var user in users)
-            {
-                AddSpecificNotifications(user, company, NotificationType.Web);
-                if (user.EmailNotificationsEnabled && user.EmailConfirmed)
-                {
-                    AddSpecificNotifications(user, company, NotificationType.Email);
-                }
-                if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
-                {
-                    AddSpecificNotifications(user, company, NotificationType.Sms);
-                }
-            }
-        }
-
-        private void AddSpecificNotifications(ApplicationUser user, Company company, NotificationType type)
-        {
-            if (company.CampaignNotifications == null)
-                company.CampaignNotifications = new List<CampaignNotification>();
-            if(company.Type != CompanyType.Send)
-                company.CampaignNotifications.Add(new CampaignNotification()
-                {
-                    ApplicationUserId = user.Id,
-                    BeenSent = false,
-                    Event = CampaignNotificationEvent.CampaignStart,
-                    Type = type
-                });
-
-            if (company.Type != CompanyType.Send)
-                company.CampaignNotifications.Add(new CampaignNotification()
-                {
-                    ApplicationUserId = user.Id,
-                    BeenSent = false,
-                    Event = CampaignNotificationEvent.CampaignEnd,
-                    Type = type
-                });
-
-            if (company.Type != CompanyType.Recieve)
-                company.CampaignNotifications.Add(new CampaignNotification()
-                {
-                    ApplicationUserId = user.Id,
-                    BeenSent = false,
-                    Event = CampaignNotificationEvent.Sending,
-                    Type = type
-                });
-        }
+        }        
     }
 }

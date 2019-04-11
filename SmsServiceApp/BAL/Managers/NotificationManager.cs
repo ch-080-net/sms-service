@@ -45,61 +45,8 @@ namespace BAL.Managers
         {
             var result = handler.GetAllSmsNotifications();
             return result;           
-        }
-        
-        /// <summary>
-        /// Gets all not sent personal and campaign web notifications with valid time
-        /// </summary>
-        /// <returns>Web notifications</returns>
-        public IEnumerable<NotificationDTO> GetNewWebNotifications()
-        {
-            return GetAllPersonalWebNotifications()
-                .Concat(GetAllCampaignWebNotifications())
-                .Concat(GetAllEmailCampaignWebNotifications());
-        }
-
-        /// <summary>
-        /// Gets all not sent personal web notifications with valid time
-        /// </summary>
-        /// <returns>Web notifications</returns>
-        private IEnumerable<NotificationDTO> GetAllPersonalWebNotifications()
-        {
-            var notifications = unitOfWork.Notifications.Get(n => !n.BeenSent
-                                                                && n.Time <= DateTime.Now
-                                                                && n.Type == NotificationType.Web);
-            var result = mapper.Map<IEnumerable<Notification>, IEnumerable<NotificationDTO>>(notifications);
-            return result;
-        }
-
-        /// <summary>
-        /// Gets all not sent campaign web notifications based on campaign events time
-        /// </summary>
-        /// <returns>Web notifications</returns>
-        private IEnumerable<NotificationDTO> GetAllCampaignWebNotifications()
-        {
-            var notifications = unitOfWork.CampaignNotifications.Get(n =>
-                !n.BeenSent
-                && n.Type == NotificationType.Web
-                && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
-                || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
-                || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now));
-            var result = mapper.Map<IEnumerable<CampaignNotification>, IEnumerable<NotificationDTO>>(notifications);
-            return result;
-        }
-
-        /// <summary>
-        /// Gets all not sent campaign web notifications based on campaign events time
-        /// </summary>
-        /// <returns>Web notifications</returns>
-        private IEnumerable<NotificationDTO> GetAllEmailCampaignWebNotifications()
-        {
-            var notifications = unitOfWork.EmailCampaignNotifications.Get(n =>
-                !n.BeenSent
-                && n.Type == NotificationType.Web
-                && n.EmailCampaign.SendingTime <= DateTime.Now);                
-            var result = mapper.Map<IEnumerable<EmailCampaignNotification>, IEnumerable<NotificationDTO>>(notifications);
-            return result;
-        }
+        }     
+      
 
         /// <summary>
         /// Set enumeration of NotificationDTO as sent in Notifications and CampaignNotifications tables

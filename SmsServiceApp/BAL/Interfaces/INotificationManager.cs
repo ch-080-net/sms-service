@@ -12,9 +12,7 @@ namespace BAL.Managers
         IEnumerable<EmailNotificationDTO> GetAllEmailNotifications();
 
         IEnumerable<SmsNotificationDTO> GetAllSmsNotifications();
-
-        IEnumerable<NotificationDTO> GetNewWebNotifications();
-
+       
         IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number);
 
         int GetNumberOfWebNotifications(string userId);

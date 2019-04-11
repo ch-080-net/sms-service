@@ -45,18 +45,24 @@ namespace BAL.Notifications
             return result;
         }
 
-        public override IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5)
+        public override IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5)
+        {
+            var result = GetWebNotificationsForSmsCampaign(userId, quantity);
+            result = result.Concat(base.notificationHandler.GetWebNotifications(userId, quantity))
+                .OrderByDescending(x => x.Time).Take(quantity);
+            return result;
+        }
+
+        private IEnumerable<WebNotificationDTO> GetWebNotificationsForSmsCampaign(string userId, int quantity = 5)
         {
             var notifications = unitOfWork.CampaignNotifications.Get(n =>
                 n.Type == NotificationType.Web
                 && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
                 || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now)
-                && n.ApplicationUserId == UserId)
+                && n.ApplicationUserId == userId)
                 .OrderByDescending(x => Comparer(x)).Take(quantity);
             var result = mapper.Map<IEnumerable<CampaignNotification>, IEnumerable<WebNotificationDTO>>(notifications);
-            result = result.Concat(base.notificationHandler.GetWebNotifications(UserId, quantity))
-                .OrderByDescending(x => x.Time).Take(quantity);
             return result;
         }
 
@@ -81,7 +87,7 @@ namespace BAL.Notifications
             var user = unitOfWork.ApplicationUsers.Get(x => x.Id == userId).FirstOrDefault();
             if (user == null)
                 return result;
-            result.Notifications = GetWebNotifications(userId);
+            result.Notifications = GetWebNotificationsForSmsCampaign(userId);
             var campaigns = unitOfWork.Companies.Get(x => x.ApplicationGroupId == user.ApplicationGroupId);
 
             result.VotingsInProgress = (from iter in campaigns
