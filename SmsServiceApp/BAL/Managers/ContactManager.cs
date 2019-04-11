@@ -99,8 +99,8 @@ namespace BAL.Managers
             }
             catch(Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from get contact count method", ex);
+			}
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace BAL.Managers
             }
             catch (Exception ex)
             {
-                throw ex;
-            }
+				throw new Exception("Exception from delete contact method", ex);
+			}
         }
 
         /// <summary>
@@ -249,8 +249,8 @@ namespace BAL.Managers
                         temp.ApplicationGroupId = user.ApplicationGroupId;
                         var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0))
                             .FirstOrDefault();
-                        try
-                        {
+                    try
+                    {
                         if (tempPhone == null)
                         {
                             temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
@@ -265,11 +265,12 @@ namespace BAL.Managers
 
                         temp.Gender = Convert.ToByte(tempList.ElementAt(2));
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                    }
+	                    throw new Exception("Exception from translate to contact method", ex);
+					}
                     
-                        result.Add(temp);
+					result.Add(temp);
                     
                 }
             }
