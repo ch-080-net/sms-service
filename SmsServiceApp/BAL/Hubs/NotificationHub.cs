@@ -43,5 +43,10 @@ namespace BAL.Hubs
             var result = notificationManager.GetNumberOfWebNotifications(Context.UserIdentifier);
             await Clients.User(Context.UserIdentifier).SendAsync("NotificationsNumRecieved", result);
         }
+
+        public void ConfirmReceival()
+        {
+            notificationManager.SetAsSent(Context.UserIdentifier);
+        }
     }
 }
