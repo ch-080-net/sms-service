@@ -14,14 +14,14 @@ namespace BAL.Managers
         public EmailManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         { }
 
-        public Email GetEmailById(int Id)
+        public Email GetEmailById(int id)
         {
-            return unitOfWork.Emails.GetById(Id);
+            return unitOfWork.Emails.GetById(id);
         }
 
-        public string GetEmailText(int Id)
+        public string GetEmailText(int id)
         {
-            return unitOfWork.Emails.GetById(Id).EmailAddress;
+            return unitOfWork.Emails.GetById(id).EmailAddress;
         }
 
         public int GetEmailId(string email)
