@@ -25,16 +25,9 @@ namespace BAL.Managers
         /// <param name="id">Id of recipient wich need to delete</param>
         public void Delete(int id)
         {
-            try
-            {
                 Recipient recipient = unitOfWork.Recipients.GetById(id);
                 unitOfWork.Recipients.Delete(recipient);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from delete method", ex);
-			}
         }
 
         public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
@@ -95,8 +88,6 @@ namespace BAL.Managers
         /// <param name="companyId">Id of company wich belongs this recipient</param>
         public void Insert(RecipientViewModel item, int companyId)
         {
-            try
-            {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
                 recipient.CompanyId = companyId;
                 List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
@@ -114,11 +105,6 @@ namespace BAL.Managers
                 }
                 unitOfWork.Recipients.Insert(recipient);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
         }
 
         /// <summary>
@@ -127,8 +113,6 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of recipient</param>
         public void Update(RecipientViewModel item)
         {
-            try
-            {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
                 List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
                 if (phone.Count == 0)
@@ -145,11 +129,6 @@ namespace BAL.Managers
                 }
                 unitOfWork.Recipients.Update(recipient);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from update method", ex);
-			}
         }
     }
 }

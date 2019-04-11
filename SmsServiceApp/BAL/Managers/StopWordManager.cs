@@ -34,16 +34,9 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(StopWordViewModel item)
         {
-            try
-            {
                 StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
                 unitOfWork.StopWords.Insert(word);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
         }
         /// <summary>
         ///  Update stop word in db
@@ -51,16 +44,9 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Update(StopWordViewModel item)
         {
-            try
-            {
                 StopWord word = mapper.Map<StopWordViewModel, StopWord>(item);
                 unitOfWork.StopWords.Update(word);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from update method", ex);
-			}
         }
         /// <summary>
         /// delete stop word by db
@@ -68,18 +54,9 @@ namespace BAL.Managers
         /// <param id="item"></param>
         public void Delete(int item)
         {
-            try
-            {
                 StopWord word = unitOfWork.StopWords.GetById(item);
                 unitOfWork.StopWords.Delete(word);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from delete method", ex);
-			}
         }
-
-
     }
 }
