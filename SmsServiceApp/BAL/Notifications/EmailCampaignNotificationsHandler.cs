@@ -41,6 +41,15 @@ namespace BAL.Notifications
             return result;
         }
 
+        public override int GetNumOfWebNotifications(string userId)
+        {
+            int result = unitOfWork.EmailCampaignNotifications
+                .Get(n => n.EmailCampaign.SendingTime <= DateTime.Now && n.Type == NotificationType.Web
+                && n.ApplicationUserId == userId && !n.BeenSent).Count();
+            result += base.notificationHandler.GetNumOfWebNotifications(userId);
+            return result;
+        }
+
         public override IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5)
         {
             var notifications = unitOfWork.EmailCampaignNotifications
@@ -79,21 +88,14 @@ namespace BAL.Notifications
             base.notificationHandler.SetAsSent(notifications);
         }
 
-        public override void SetAsSent(int notificationId, NotificationOrigin origin, string userId)
+        public override void SetAsSent(string userId)
         {
-            if (origin == NotificationOrigin.EmailCampaignReport)
+            var campaignNotifications = unitOfWork.EmailCampaignNotifications.Get(n => n.ApplicationUserId == userId);
+            foreach(var notification in campaignNotifications)
             {
-                var not = unitOfWork.EmailCampaignNotifications.Get(x => x.Id == notificationId
-                    && x.ApplicationUserId == userId).FirstOrDefault();
-                if (not != null)
-                {
-                    not.BeenSent = true;
-                }
+                notification.BeenSent = true;
             }
-            else
-            {
-                base.notificationHandler.SetAsSent(notificationId, origin, userId);
-            }
+            base.notificationHandler.SetAsSent(userId);
         }
     }
 }

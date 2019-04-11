@@ -15,13 +15,14 @@ namespace BAL.Notifications.Infrastructure
     {
         IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5);
         NotificationReportDTO GetWebNotificationsReport(string userId);
+        int GetNumOfWebNotifications(string userId);
 
         IEnumerable<EmailNotificationDTO> GetAllEmailNotifications();
 
         IEnumerable<SmsNotificationDTO> GetAllSmsNotifications();
 
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
-        void SetAsSent(int notificationId, NotificationOrigin origin, string userId);
+        void SetAsSent(string userId);        
 
     }
 }

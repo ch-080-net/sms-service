@@ -18,8 +18,13 @@ namespace BAL.Managers
     /// </summary>
     public class NotificationManager : BaseManager, INotificationManager
     {
+        private readonly INotificationHandler handler;
+
         public NotificationManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
+            handler = new PersonalNotificationHandler(unitOfWork, mapper);
+            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
+            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
         }
 
         /// <summary>
@@ -28,9 +33,6 @@ namespace BAL.Managers
         /// <returns>email messages</returns>
         public IEnumerable<EmailNotificationDTO> GetAllEmailNotifications()
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
             var result = handler.GetAllEmailNotifications();
             return result;
         }
@@ -41,9 +43,6 @@ namespace BAL.Managers
         /// <returns>SMS messages</returns>
         public IEnumerable<SmsNotificationDTO> GetAllSmsNotifications()
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
             var result = handler.GetAllSmsNotifications();
             return result;           
         }
@@ -107,9 +106,6 @@ namespace BAL.Managers
         /// </summary>
         public void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
             handler.SetAsSent(notifications);
             unitOfWork.Save();
         }      
@@ -120,12 +116,9 @@ namespace BAL.Managers
         /// <param name="notificationId">id of notification to set</param>
         /// <param name="origin">table with notification</param>
         /// <param name="userId">Id of ApplicationUser who owns notification</param>
-        public void SetAsSent(int notificationId, NotificationOrigin origin, string userId)
+        public void SetAsSent(string userId)
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
-            handler.SetAsSent(notificationId, origin, userId);
+            handler.SetAsSent(userId);
             unitOfWork.Save();
         }
 
@@ -138,9 +131,6 @@ namespace BAL.Managers
         /// <returns>Enumeration of notifications in descending (by time) order</returns>
         public IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number)
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
             var result = handler.GetWebNotifications(userId, number);
             return result;
         }
@@ -151,9 +141,6 @@ namespace BAL.Managers
         /// <param name="userId">Application User Id</param>
         public NotificationReportDTO GetWebNotificationsReport(string userId)
         {
-            INotificationHandler handler = new PersonalNotificationHandler(unitOfWork, mapper);
-            handler = new EmailCampaignNotificationsHandler(handler, unitOfWork, mapper);
-            handler = new SmsCampaignNotificationHandler(handler, unitOfWork, mapper);
             var result = handler.GetWebNotificationsReport(userId);
             return result;
         }
@@ -206,6 +193,11 @@ namespace BAL.Managers
                 ApplicationUserId = userId,
                 Href = href                
             });       
+        }
+
+        public int GetNumberOfWebNotifications(string userId)
+        {
+            return handler.GetNumOfWebNotifications(userId);
         }
     }
 }

@@ -41,10 +41,17 @@ namespace BAL.Notifications
             return result;
         }
 
-        public IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5)
+        public int GetNumOfWebNotifications(string userId)
+        {
+            int result = unitOfWork.Notifications.Get(n => n.Time <= DateTime.Now
+                && n.Type == NotificationType.Web && n.ApplicationUserId == userId && !n.BeenSent).Count();
+            return result;
+        }
+
+        public IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5)
         {
             var notifications = unitOfWork.Notifications
-                .Get(n => n.Time <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == UserId)
+                .Get(n => n.Time <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == userId)
                 .OrderByDescending(x => x.Time).Take(quantity);
             var result = mapper.Map<IEnumerable<Notification>, IEnumerable<WebNotificationDTO>>(notifications);
             return result;
@@ -67,15 +74,12 @@ namespace BAL.Notifications
             }
         }
 
-        public void SetAsSent(int notificationId, NotificationOrigin origin, string userId)
+        public void SetAsSent(string userId)
         {
-            if (origin == NotificationOrigin.PersonalNotification)
+            var personalNotifications = unitOfWork.Notifications.Get(n => n.ApplicationUserId == userId);
+            foreach (var notification in personalNotifications)
             {
-                var not = unitOfWork.Notifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
-                if (not != null)
-                {
-                    not.BeenSent = true;
-                }
+                notification.BeenSent = true;
             }
         }
     }

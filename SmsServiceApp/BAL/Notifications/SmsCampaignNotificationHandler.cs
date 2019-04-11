@@ -110,20 +110,26 @@ namespace BAL.Notifications
             base.notificationHandler.SetAsSent(notifications);
         }
 
-        public override void SetAsSent(int notificationId, NotificationOrigin origin, string userId)
+        public override void SetAsSent(string userId)
         {
-            if (origin == NotificationOrigin.CampaignReport)
+            var emailCampaignNotifications = unitOfWork.CampaignNotifications.Get(n => n.ApplicationUserId == userId);
+            foreach (var notification in emailCampaignNotifications)
             {
-                var not = unitOfWork.CampaignNotifications.Get(x => x.Id == notificationId && x.ApplicationUserId == userId).FirstOrDefault();
-                if (not != null)
-                {
-                    not.BeenSent = true;
-                }
+                notification.BeenSent = true;
             }
-            else
-            {
-                base.notificationHandler.SetAsSent(notificationId, origin, userId);
-            }
+            base.notificationHandler.SetAsSent(userId);
+        }
+
+        public override int GetNumOfWebNotifications(string userId)
+        {
+            int result = unitOfWork.CampaignNotifications.Get(n =>
+                n.Type == NotificationType.Web
+                && (n.Event == CampaignNotificationEvent.CampaignStart && n.Campaign.StartTime <= DateTime.Now
+                || n.Event == CampaignNotificationEvent.CampaignEnd && n.Campaign.EndTime <= DateTime.Now
+                || n.Event == CampaignNotificationEvent.Sending && n.Campaign.SendingTime <= DateTime.Now)
+                && n.ApplicationUserId == userId && !n.BeenSent).Count();
+            result += base.notificationHandler.GetNumOfWebNotifications(userId);
+            return result;
         }
     }
 }

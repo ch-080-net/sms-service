@@ -28,12 +28,14 @@ namespace BAL.Notifications.Infrastructure
 
         public abstract IEnumerable<SmsNotificationDTO> GetAllSmsNotifications();
 
+        public abstract int GetNumOfWebNotifications(string userId);
+
         public abstract IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5);
 
         public abstract NotificationReportDTO GetWebNotificationsReport(string userId);
 
         public abstract void SetAsSent(IEnumerable<NotificationDTO> notifications);
 
-        public abstract void SetAsSent(int notificationId, NotificationOrigin origin, string userId);
+        public abstract void SetAsSent(string userId);
     }
 }
