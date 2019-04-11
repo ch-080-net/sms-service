@@ -22,7 +22,6 @@ namespace BAL.Managers
         TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null);
 
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
-        void SetAsSent(NotificationDTO notification);
         void SetAsSent(int notificationId, NotificationOrigin origin, string userId);
 
     }

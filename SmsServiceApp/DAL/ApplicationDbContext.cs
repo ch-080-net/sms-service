@@ -155,6 +155,12 @@ namespace WebApp.Data
                 .HasForeignKey(ecn => ecn.CampaignId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<ApplicationUser>()
+                .HasMany(au => au.EmailCampaignNotifications)
+                .WithOne(n => n.ApplicationUser)
+                .HasForeignKey(n => n.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             #endregion
 
             // Optional FK
