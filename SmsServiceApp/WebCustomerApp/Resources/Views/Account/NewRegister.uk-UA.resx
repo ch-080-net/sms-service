@@ -124,7 +124,7 @@
     <value>Введіть ваш пароль</value>
   </data>
   <data name="LOGIN" xml:space="preserve">
-    <value>ВХІД</value>
+    <value>УВІЙТИ</value>
   </data>
   <data name="REGISTER" xml:space="preserve">
     <value>РЕЄСТРАЦІЯ</value>

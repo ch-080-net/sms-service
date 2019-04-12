@@ -35,7 +35,7 @@
 <body>
 	<div class="back_image"></div>
 	<div class="w3ls-login box box--big">
-		<h1 class="title-page">Sign In </h1>
+		<h1 class="title-page">@Localizer["Log in"]</h1>
 		<div class="form">
 		<form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 			<div class="agile-field-txt">
@@ -85,8 +85,8 @@
 				<form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
 					<div>
 						<div class="agile-field-txt">
-							<label>Use another service to log in</label>
-						</div>
+							<label>@Localizer["Use another service to log in"]</label>
+					 </div>
 						<p>
 							@foreach (var provider in loginProviders)
 							{

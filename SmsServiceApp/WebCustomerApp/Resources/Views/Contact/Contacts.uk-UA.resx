@@ -120,8 +120,17 @@
   <data name="ADD" xml:space="preserve">
     <value>Додати</value>
   </data>
+  <data name="Add Contact" xml:space="preserve">
+    <value>Додати контакт</value>
+  </data>
+  <data name="Add contact from file" xml:space="preserve">
+    <value>Додати контакти з файлу</value>
+  </data>
   <data name="Add new contact" xml:space="preserve">
     <value>Додати новий контакт</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрити</value>
   </data>
   <data name="Contact Manager" xml:space="preserve">
     <value>Редагування контактів</value>
@@ -135,6 +144,9 @@
   <data name="Male" xml:space="preserve">
     <value>Чоловіча</value>
   </data>
+  <data name="New" xml:space="preserve">
+    <value>Новий</value>
+  </data>
   <data name="Page Size" xml:space="preserve">
     <value>Розмір сторінки</value>
   </data>
@@ -143,5 +155,8 @@
   </data>
   <data name="Update" xml:space="preserve">
     <value>Редагувати</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Завантажити</value>
   </data>
 </root>

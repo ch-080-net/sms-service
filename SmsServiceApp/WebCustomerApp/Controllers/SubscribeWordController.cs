@@ -78,7 +78,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 subscribeWordManager.Update(wordEdit);
-                return RedirectToAction("Index", "Company");
+                return RedirectToAction("SubscribeWord", "Company",new{ wordEdit.CompanyId });
             }
             return View(wordEdit);
         }

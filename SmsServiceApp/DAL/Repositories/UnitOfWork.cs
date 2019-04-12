@@ -15,6 +15,7 @@ namespace DAL.Repositories
         private IBaseRepository<Recipient> recipientRepo;
         private IBaseRepository<StopWord> stopWordRepo;
         private ICompanyRepository companyRepo;
+        private IAdminStatisticRepository adminStatisticRepository;
         private IOperatorRepository operatorRepo;
         private IContactRepository contactRepo;
         private IBaseRepository<Phone> phoneRepo;
@@ -33,6 +34,7 @@ namespace DAL.Repositories
         private IBaseRepository<EmailRecipient> emailRecipientRepo;
         private IEmailCampaignRepository emailCampaignRepo;
         private IBaseRepository<Email> emailRepo;
+        private IEmailCampaignNotificationRepository emailCampNotRepo;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -185,7 +187,18 @@ namespace DAL.Repositories
                 return chartsRepo;
             }
         }
-
+        
+        public IAdminStatisticRepository adminStatistic
+        {
+            get
+            {
+                if (adminStatisticRepository == null)
+                {
+                    adminStatisticRepository = new AdminStatisticRepository(context);
+                }
+                return adminStatisticRepository;
+            }
+        }
         public INotificationRepository Notifications
         {
             get
@@ -258,6 +271,30 @@ namespace DAL.Repositories
             }
         }
 
+        IEmailCampaignNotificationRepository IUnitOfWork.EmailCampaignNotifications
+        {
+            get
+            {
+                if (emailCampNotRepo == null)
+                {
+                    emailCampNotRepo = new EmailCampaignNotificactionRepository(context);
+                }
+                return emailCampNotRepo;
+            }
+        }
+
+
+        public IAdminStatisticRepository AdminStatistics
+        {
+            get
+            {
+                if (adminStatisticRepository == null)
+                {
+                    adminStatisticRepository = new AdminStatisticRepository(context);
+                }
+                return adminStatisticRepository;
+            }
+        }
         public int Save()
         {
             return context.SaveChanges();

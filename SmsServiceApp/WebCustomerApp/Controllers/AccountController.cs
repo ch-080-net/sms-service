@@ -52,14 +52,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
         {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-
-            if (user == null)
-            {
-                _logger.LogWarn($"Unable to load two-factor authentication for {user.UserName}.");
-            }
-
+            // Ensure the user has gone through the username & password screen first    
             var model = new LoginWith2faViewModel { RememberMe = rememberMe };
             ViewData["ReturnUrl"] = returnUrl;
 

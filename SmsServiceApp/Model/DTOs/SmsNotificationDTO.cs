@@ -8,5 +8,6 @@ namespace Model.DTOs
     {
         public string SenderPhone { get; set; }
         public string RecieverPhone { get; set; }
+        public string Message { get; set; }
     }
 }

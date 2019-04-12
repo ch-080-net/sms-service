@@ -61,10 +61,6 @@ namespace WebApp.Controllers
                 group = _groupManager.Get(user.InviteId).Name;
                 isInvited = true;
             }
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
             var model = new IndexViewModel
             {
                 Username = user.UserName,
@@ -517,10 +513,6 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Notifications()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
             var model = new NotificationsViewModel()
             {
                 SmsNotEnabled = user.SmsNotificationsEnabled,
@@ -534,10 +526,6 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Notifications(NotificationsViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
 
             if(!ModelState.IsValid)
             {

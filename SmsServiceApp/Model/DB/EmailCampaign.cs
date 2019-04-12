@@ -7,6 +7,7 @@ namespace WebApp.Models
     public class EmailCampaign
     {
         public int Id { get; set; }
+        public ICollection<EmailCampaignNotification> EmailCampaignNotifications { get; set; }
         public int? EmailId { get; set; } 
         public Email Email { get; set; }
         public ICollection<EmailRecipient> EmailRecipients { get; set; }

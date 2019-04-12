@@ -15,8 +15,10 @@ namespace Model.ViewModels.CompanyViewModels
         public int Id { get; set; }
         [Display(Name = "Tariff")]
         public string Tariff { get; set; }
+        public int ApplicationGroupId { get; set; }
         public int TariffId { get; set; }
         [StringLength(500)]
+        [Display(Name = "Message")]
         public string Message { get; set; }
         [Display(Name = "Time for send")]
         [DataType(DataType.DateTime)]
@@ -30,8 +32,10 @@ namespace Model.ViewModels.CompanyViewModels
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
         [StringLength(100)]
+		[Display(Name = "Name")]
         public string Name { get; set; }
         [StringLength(500)]
+        [Display(Name="Description")]
         public string Description { get; set; }
         [Display(Name = "Type of compaign")]
         public CompanyType Type { get; set; }

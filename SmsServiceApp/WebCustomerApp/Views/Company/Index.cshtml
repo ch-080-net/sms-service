@@ -16,58 +16,62 @@
 
 </head>
 <body>
-    <h2>@Localizer["Campaign"]</h2>
+<div class="container">
+<h2>@Localizer["Campaign"]</h2>
 
     <div id="tables">
         <p>
-            <a class="btn btn-success" asp-action="Create">@Localizer["Create New"]</a>
+            <a class="btn btn-success" asp-action="Create"><em class="glyphicon glyphicon-plus"></em> @Localizer["Create New"]</a>
         </p>
-        <div class="container">
-            @*<input type="text" v-model.lazy.trim="name" class="form-control" placeholder="Search for ..." />*@
+       
 
-            <label>Search</label>
+            <label>@Localizer["Search"]</label>
             <input v-model="searchValue">
-            <button value="Search" v-on:click="getData" class="btn btn-primary">Search</button>
-            <br />
-            <label>Campaigns on page:</label><select v-model.lazy="CountOnPage" v-on:change="getData">
-                <option>1</option>
-                <option>2</option>
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-                <option>20</option>
-            </select>
+            <button value="Search" v-on:click="getData" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>  @Localizer["Search"]</button>
+                <br />
+                <label>@Localizer["Campaigns on page"]  </label><select v-model.lazy="CountOnPage" v-on:change="getData">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                </select>
 
-            <br />
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                        <td>Name</td>
-	                    <td>Description</td>
-	                    <td>Message state</td>
-						<td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in Campaigns">
-                        <td>{{item.name}}</td>
-                        <td>{{item.description}}</td>
-	                    <td>
-							<button class="btn btn-warning" v-if="!item.isPaused" id="PauseButton" v-on:click="changeState(item.id, true)">Pause</button>
-		                    <button class="btn btn-dark" v-if="item.isPaused" id="ResumeButton" v-on:click="changeState(item.id, false)">Resume</button>
-	                    </td>
-	                    <td>
-		                    <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id">@Localizer["Details"]</a>
-	                    </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style="padding:inherit" class="btn-group">
-                <button class="btn btn-default" v-on:click="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
-                <button class="btn btn-default" v-for="pageNumber in pages" v-on:click="getPageByNumber(pageNumber)">{{pageNumber}}</button>
-                <button class="btn btn-default" v-on:click="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
-            </div>
-        </div>
+                <br />
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th scope="col" class="col-md-4">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in Campaigns">
+                            <td>{{item.name}}</td>
+                            <td>{{item.description}}</td>
+                            <td>
+
+                                <button class="btn btn-danger" v-if="!item.isPaused" id="PauseButton" v-on:click="changeState(item.id, true)"><em class="glyphicon glyphicon-pause"></em></button>
+                                <button class="btn btn-info" v-if="item.isPaused" id="ResumeButton" v-on:click="changeState(item.id, false)"><em class="glyphicon glyphicon-play"></em></button>
+                                <a class="btn btn-info" v-bind:href="'/Company/GetCampaignCopy?companyId='+item.id"><em class="glyphicon glyphicon-copy"></em></a>
+                                <a class="btn btn-success" v-bind:href="'/Company/Details?companyId='+item.id"><em class="glyphicon glyphicon-folder-open"></em></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="padding:inherit" class="btn-group">
+                    <button class="btn btn-default" v-on:click="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+                    <button class="btn btn-default" v-for="pageNumber in pages" v-on:click="getPageByNumber(pageNumber)">{{pageNumber}}</button>
+                    <button class="btn btn-default" v-on:click="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+                </div>
+</div>
     </div>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

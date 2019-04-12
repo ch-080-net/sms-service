@@ -3,20 +3,6 @@
     min-height: 100%;
 }
 
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-}
-
-#footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    background-color: #f5f5f5;
-}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -63,19 +49,24 @@ body {
     padding: 20px;
 }
 
+.body-container {
+	background: rgba(255, 255, 255,0.85);
+	padding: 4vw 0.1vw;
+}
+
 .file-upload-btn {
-    width: 100%;
-    margin: 0;
-    color: #fff;
-    background: #343836;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    border-bottom: 4px solid #343836;
-    transition: all .2s ease;
-    outline: none;
-    text-transform: uppercase;
-    font-weight: 700;
+	width: 100%;
+	margin: 0;
+	color: #fff;
+	background: #343836;
+	border: none;
+	padding: 10px;
+	border-radius: 4px;
+	border-bottom: 4px solid #343836;
+	transition: all .2s ease;
+	outline: none;
+	text-transform: uppercase;
+	font-weight: 700;
 }
 
     .file-upload-btn:hover {

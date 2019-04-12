@@ -27,7 +27,7 @@
     <None Include="wwwroot\images\landing\phoneMessage.png" />
     <None Include="wwwroot\images\landing\logo.svg" />
     <None Include="wwwroot\js\ContactTableFunctional.js" />
-    <None Include="wwwroot\js\preloader.js" />
+    <None Include="wwwroot\js\preloader.min.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,7 +60,7 @@
     <Content Update="Views\AnswersCode\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Recipient\IndexDetails.cshtml">
+    <Content Update="Views\Recipient\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\SubscribeWord\Delete.cshtml">

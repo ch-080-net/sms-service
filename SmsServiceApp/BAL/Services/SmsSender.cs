@@ -24,7 +24,6 @@ namespace WebApp.Services
 	public class SmsSender : ISmsSender 
 	{
 		private readonly SMSCclientSMPP clientSMPP;
-		private List<uint> messageNumbers;
 
         private readonly ICollection<MessageDTO> messagesForSend = new List<MessageDTO>();
         private readonly IServiceScopeFactory serviceScopeFactory;
@@ -109,7 +108,7 @@ namespace WebApp.Services
 		/// <param name="message">Message for send</param>
 		public void SendMessage(MessageDTO message)
 		{
-            if (messagesForSend.Any(m => m.RecipientId == message.RecipientId))
+			if (messagesForSend.Any(m => m.RecipientId == message.RecipientId))
                 return;
             else
 				messagesForSend.Add(message);
@@ -118,7 +117,7 @@ namespace WebApp.Services
 
 			int resultStatus = clientSMPP.smppSubmitMessageAsync(message.RecepientPhone, 1, 1, message.SenderPhone, 1, 1,
 							message.MessageText, EncodingEnum.etUCS2Text, "", options, 
-							DateTime.Now, DateTime.Now, "", 0, "", out messageNumbers);
+							DateTime.Now, DateTime.Now, "", 0, "", out var messageNumbers);
 
 			if (resultStatus == 0)
 				message.SequenceNumber = messageNumbers.FirstOrDefault();

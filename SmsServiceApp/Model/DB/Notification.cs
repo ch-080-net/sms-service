@@ -14,12 +14,6 @@ namespace WebApp.Models
         public bool BeenSent { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
-    }
-
-    public enum NotificationType
-    {
-        Web,
-        Email,
-        Sms
+        public string Href { get; set; }
     }
 }

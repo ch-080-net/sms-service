@@ -1,234 +1,469 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using WebApp.Models
 @inject IViewLocalizer Localizer
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@using System.Globalization;
+@using Microsoft.AspNetCore.Builder;
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@inject IOptions<RequestLocalizationOptions> LocOps
 @{
-    ViewData["Title"] = Localizer["SMS-service"];
-    Layout = null;
+	Layout = null;
 }
+@{
+	var requestCultures = Context.Features.Get<IRequestCultureFeature>();
+	var requestCulture = CultureInfo.CurrentCulture;
+	var supportedCultures = LocOps.Value.SupportedUICultures
+		.Select(c => new SelectListItem
+		{
+			Value = c.Name,
+			Text = $"{c.TwoLetterISOLanguageName}"
+		}).ToList();
 
+	var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+	var url = location.AbsoluteUri;
+	var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+	var routeData = new Dictionary<string, string>();
+
+	if (Context.Request.QueryString.HasValue)
+	{
+		returnUrl = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+	}
+
+	foreach (var r in ViewContext.RouteData.Values)
+	{
+		routeData.Add(r.Key, r.Value.ToString());
+	}
+}
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie-edge">
-    <title>SmS Service</title>
-
-
-    <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/css/menunav.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="~/css/style2.min.css">
-
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-
-    <link rel="stylesheet" href="~/css/style2.css">
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<title>@ViewData["Title"] SmsService</title>
+	<environment include="Development">
+		<link rel="stylesheet" href="~/css/style2.css">
+		<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css" />
+		<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="~/css/AdminLTE.min.css" rel="stylesheet" />
+		<link href="~/css/_all-skins.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+		<link rel="stylesheet" href="~/css/site.css" />
+		<link href="~/css/menunav.css" rel="stylesheet" />
+	</environment>
+	<environment exclude="Development">
+		<link rel="stylesheet" href="~/css/style2.css">
+		<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="~/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="~/css/AdminLTE.min.css" rel="stylesheet" />
+		<link href="~/css/_all-skins.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+		<link rel="stylesheet" href="~/css/site.css" />
+		<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css" />
+		<link href="~/css/menunav.css" rel="stylesheet" />
+	</environment>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			crossorigin="anonymous"></script>
+	<link href="css/style2.min.css" rel="stylesheet" type="text/css"></link>
+	<script src="~/js/preloader.min.js"></script>
 </head>
-<body>
-    <div id="page_preloader" onload='StartPage()'>
-        <div class="" id="pagefirst">
+<body id="menu" class="hold-transition skin-black sidebar-collapse sidebar-mini">
+	<div class="wrapper">
+		<header class="main-header">
+			<a asp-controller="Home" asp-action="Index" class="logo">
+				<span class="logo-mini"><strong>SMS</strong></span>
+				<span class="logo-lg"><strong>SMS</strong>Service</span>
+			</a>
+			<nav class="navbar navbar-static-top">
+				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						@if (User.Identity.IsAuthenticated)
+						{
+							<li class="dropdown notifications-menu">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="onNotificationsOpened(); fillReport();">
+									<em class="fa fa-bell-o"></em>
+									<span class="label label-warning" id="notificationBadge"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li id="notificationMenu">
+									</li>
+									<li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
+								</ul>
+							</li>
+						}
+						<li class="dropdown notifications-menu">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<em class="fa fa-language"></em>
+								<span class="label label-primary">@($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")</span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<form id="form" asp-controller="Home" name="form" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
 
-            <div class="" id="text_preloader"></div>
+										<ul class="lang-switcher lang-switcher--pill">
+											<li>
+												<a class="is-active">
+													@($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
+												</a>
+											</li>
+											<li>
+												@foreach (var culture in supportedCultures)
+												{
+													if (culture.Value.ToLower() != requestCulture.Name.ToLower())
+													{
+														routeData["culture"] = culture.Value;
 
-        </div>
-    </div>
-    <header class="header">
-        <a href="#" class="logo">
-            <img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
-        </a>
+														<a href="#" onclick="document.getElementById('form').submit();" class="linkLanguage">
+															@culture.Text.ToUpper()
+														</a>
 
-        <nav class="menu">
-            <ul class="menu_list">
-                <li>
+														<input type="hidden" name="culture" value="@culture.Value" />
+													}
+												}
+											</li>
+										</ul>
 
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <div id="myNav" class="overlay">
-                                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                                <div class="overlay-content">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
-                                        <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
-                                        <a asp-area="" asp-controller="EmailCampaign" asp-action="Index">Email Campaign</a>
-                                    }
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                                    {
-                                        <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
-                                        <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
-                                    }
-                                    @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                                    {
-                                        <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
-                                    }
-                                    @await Html.PartialAsync("_LoginPartial")
+									</form>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown user user-menu">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<em class="fa fa-user"></em>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="user-header">
+									<p>
+										@Context.User.Identity.Name
+									</p>
+								</li>
+								<li class="user-footer">
+									@if (SignInManager.IsSignedIn(User))
+									{
+										<form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+											<div class="pull-left">
+												<a asp-controller="Manage" asp-action="Index" class="btn btn-primary"><span class="fa fa-user"></span> @Localizer["Profile"]</a>
+											</div>
+											<div class="pull-right">
+												<button type="submit" class="btn btn-primary"><span class="fa fa-sign-out"></span> @Localizer["Sign out"]</button>
+											</div>
+										</form>
+									}
+									else
+									{
+										<div class="pull-left">
+											<a href="Account/NewLogin" class="btn btn-primary"><span class="fa fa-sign-in"></span> @Localizer["Sign in"]</a>
+										</div>
+										<div class="pull-right">
+											<a href="Account/NewRegister" class="btn btn-primary"><span class="fa fa-registered"></span> @Localizer["Register"]</a>
+										</div>
+									}
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<ul class="sidebar-menu" data-widget="tree">
+					@if (!User.Identity.IsAuthenticated)
+					{
+						<li>
+							<a asp-controller="TestMessage" asp-action="Index">
+								<em class="fa fa fa-envelope-o"></em><span>@Localizer["Message"]</span>
+								<span class="pull-right-container">
+									<small class="label pull-right bg-green">@Localizer["demo"]</small>
+								</span>
+							</a>
+						</li>
+					}
+					@if (User.Identity.IsAuthenticated)
+					{
+						<li class="treeview">
+							<a href="#">
+								<em class="fa fa-comments-o"></em> <span>@Localizer["SMS Campaign"]</span>
+								<span class="pull-right-container">
+									<em class="fa fa-angle-left pull-right"></em>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a asp-controller="Company" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+								<li><a asp-controller="Company" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
+							</ul>
+						</li>
+						<li class="treeview">
+							<a href="#">
+								<em class="fa fa-envelope"></em> <span>@Localizer["Email Campaign"]</span>
+								<span class="pull-right-container">
+									<em class="fa fa-angle-left pull-right"></em>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a asp-controller="EmailCampaign" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+								<li><a asp-controller="EmailCampaign" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
+							</ul>
+						</li>
+						<li>
+							<a asp-controller="Contact" asp-action="Contacts">
+								<em class="fa fa-address-book-o"></em> <span>@Localizer["Contacts"]</span>
+								<span class="pull-right-container"> </span>
+							</a>
+						</li>
+					}
+					@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+					{
+						<li>
+							<a asp-area="" asp-controller="Operator" asp-action="Operators">
+								<em class="fa fa-money"></em> <span>@Localizer["Operators"]</span>
+								<span class="pull-right-container"> </span>
+							</a>
+						</li>
+					    <li class="treeview">
+                            <a href="#">
+                                <em class="fa fa-stop"></em> <span>@Localizer["Stop words"]</span>
+                                <span class="pull-right-container">
+                                    <em class="fa fa-angle-left pull-right"></em>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a asp-controller="StopWord" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+                                <li><a asp-controller="StopWord" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of words"]</a></li>
+                            </ul>
+                        </li>
+					    <li>
+                            <a asp-area="" asp-controller="AdminStatistic" asp-action="AdminStatistics">
+                                <em class="fa fa-bar-chart"></em> <span>@Localizer["Statistic"]</span>
+                                <span class="pull-right-container"> </span>
+                            </a>
+                        </li>
+					}
+					@if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+					{
+						<li class="treeview">
+							<a href="#">
+								<em class="fa fa-users"></em> <span>@Localizer["User group"]</span>
+								<span class="pull-right-container">
+									<em class="fa fa-angle-left pull-right"></em>
+								</span>
+							</a>
+							<ul class="treeview-menu">
+								<li><a asp-area="" asp-controller="Group" asp-action="AddUsers"><em class="fa fa-envelope-open-o"></em>@Localizer["Send invite"]</a></li>
+								<li><a asp-area="" asp-controller="Group" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["Users in group"]</a></li>
+							</ul>
+						</li>
+					}
+				</ul>
+			</section>
+		</aside>
+		<div class="content-wrapper">
+			<section id="pageContent" class="content">
+				<div id="page_preloader" onload='StartPage()'>
+					<div class="" id="pagefirst">
 
-                                </div>
-                                <div id="LanguageSwitcher">                         
-                                        @await Html.PartialAsync("_SelectLanguagePartial")               
-                                </div>
-                            </div>
-                            <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                        </div>
-                    </div>
-                </li>
+						<div class="" id="text_preloader"></div>
 
-            </ul>
+					</div>
+				</div>
 
-        </nav>
+				<script>
+					$("#menu").attr("class", "hold-transition skin-black sidebar-collapse");
+					$("#pageContent").removeClass("content");
+				</script>
 
-        <!--/.header-->
-    </header>
-    <section class="main">
-        <h1 class="main_title">@Localizer["SMS on 150 mobile networks no matter where you are"] <span class="main_title-big">sms service</span></h1>
-        <a href="#log" class="main_button anchor">@Localizer["get started"]</a>
-        @*<p class="main_description">some text <a href="#">@Localizer["some link"]</a>!</p>*@
-    </section>
-    <!--/.main-->
-    <section class="second">
 
-        <section class="features">
-            <!-- <img src="styles/images/text1.svg" class="start"> -->
-            <ul class="features_list">
+				<header class="header">
+					<a href="#" class="logo_home">
+						<img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
+					</a>
+				</header>
+				<section class="main">
+					<h1 class="main_title">@Localizer["SMS on 150 mobile networks no matter where you are"] <span class="main_title-big">sms service</span></h1>
+					<a href="#log" class="main_button anchor">@Localizer["get started"]</a>
+				</section>
+				<section class="second">
 
-                <li class="features_item features_item--sms_tools_1">
-                    <h3 class="section_title">@Localizer["STATISTICS"]</h3>
-                    <p class="features_description">
-                        @Localizer["Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out."]
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_2">
-                    <h3 class="section_title">@Localizer["API INTEGRATION"]</h3>
-                    <p class="features_description">
-                        @Localizer["Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow."]
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_3">
-                    <h3 class="section_title">@Localizer["SMS AUTORESPONDERS"]</h3>
-                    <p class="features_description">
-                        @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
-                    </p>
-                </li>
-            </ul>
-        </section>
-        <section class="features">
-            <ul class="features_list">
-                <li class="features_item features_item--sms_tools_4">
-                    <h3 class="section_title">@Localizer["SUBSCRIPTION FORMS"]</h3>
-                    <p class="features_description">
-                        @Localizer["Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo."]
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_5">
-                    <h3 class="section_title">@Localizer["UNSUBSCRIBE LINKS"]</h3>
-                    <p class="features_description">
-                        @Localizer["Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like."]
-                    </p>
-                </li>
-                <li class="features_item features_item--sms_tools_6">
-                    <h3 class="section_title">@Localizer["EXCEPTION LIST"]</h3>
-                    <p class="features_description">
-                        @Localizer["You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list."]
-                    </p>
-                </li>
-            </ul>
-        </section>
-    </section>
-    <section class="log_section" id="log">
-        <p class="app_description">
-            <h2 class="app_description_title">@Localizer["SMS SERVICE AT AFFORDABLE PRICE"]</h2>
-            <h4 class="app_description_welcome">@Localizer["Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices."]</h4>
-			<div class="app_description_link app_button  ">
-				@if (User.Identity.IsAuthenticated)
-				{
-					<a href="Manage/Index" class="app_link  ">@Localizer["Profile"]</a>
+					<section class="features">
+						<ul class="features_list">
 
-				}
-				else
-				{
-					<a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
-				}
+							<li class="features_item features_item--sms_tools_1">
+								<h3 class="section_title">@Localizer["STATISTICS"]</h3>
+								<p class="features_description">
+									@Localizer["Evaluate the results of SMS campaigns by analyzing the statistics on opening and delivering each message you send out."]
+								</p>
+							</li>
+							<li class="features_item features_item--sms_tools_2">
+								<h3 class="section_title">@Localizer["API INTEGRATION"]</h3>
+								<p class="features_description">
+									@Localizer["Use our API to integrate SMS messaging with your website, app, software or CRM system. Many developers have already implemented it to make notifications easy for business workflow."]
+								</p>
+							</li>
+							<li class="features_item features_item--sms_tools_3">
+								<h3 class="section_title">@Localizer["SMS AUTORESPONDERS"]</h3>
+								<p class="features_description">
+									@Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
+								</p>
+							</li>
+						</ul>
+					</section>
+					<section class="features">
+						<ul class="features_list">
+							<li class="features_item features_item--sms_tools_4">
+								<h3 class="section_title">@Localizer["SUBSCRIPTION FORMS"]</h3>
+								<p class="features_description">
+									@Localizer["Create SMS subscription forms and integrate them into your website. You can customize the size, the background, font color and even upload your image or logo."]
+								</p>
+							</li>
+							<li class="features_item features_item--sms_tools_5">
+								<h3 class="section_title">@Localizer["UNSUBSCRIBE LINKS"]</h3>
+								<p class="features_description">
+									@Localizer["Include unsubscribe link into your SMS. Let your audience know that they can unsubscribe whenever they like."]
+								</p>
+							</li>
+							<li class="features_item features_item--sms_tools_6">
+								<h3 class="section_title">@Localizer["EXCEPTION LIST"]</h3>
+								<p class="features_description">
+									@Localizer["You can exclude phone numbers from recipients list. Use this feature when you don’t want to send message to the whole list."]
+								</p>
+							</li>
+						</ul>
+					</section>
+				</section>
+				<section class="log_section" id="log">
+					<p class="app_description">
+						<h2 class="app_description_title">@Localizer["SMS SERVICE AT AFFORDABLE PRICE"]</h2>
+						<h4 class="app_description_welcome">@Localizer["Sms Service is one of email services leaders that's why we offer low prices. Are you're going to send to a large subscriber base? OK, we can offer a plan at wholesale prices."]</h4>
+						<div class="app_description_link app_button  ">
+							@if (User.Identity.IsAuthenticated)
+							{
+								<a href="Manage/Index" class="app_link  ">@Localizer["Profile"]</a>
+
+							}
+							else
+							{
+								<a href="Account/NewLogin" class="app_link  ">@Localizer["Log in"]</a>
+							}
+						</div>
+
+					</p>
+				</section>
+				<section class="app second" id="app">
+					<div class="app_image_phone"></div>
+
+
+
+					<div class="app_content">
+
+						<h1 class="section_title ">@Localizer["Personalized SMS"]</h1>
+						<p class="app_description">
+							@Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
+						</p>
+						<div class="app_content">
+
+							<h1 class="section_title ">@Localizer["Sender name"]</h1>
+							<p class="app_description">
+								@Localizer["Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries."]
+							</p>
+
+
+
+						</div>
+					</div>
+				</section>
+				<section class="section_tariff">
+					<ul class="tariff_content">
+						<li>
+							<h2 class="section_title tariff_main">@Localizer["Tariff"]</h2>
+							<h3 class="tariff_main_content">@Localizer["There are many tariffs at affordable prices,"]</h3>
+							<h3 class="tariff_main_content"> @Localizer["and tariffs are easy to use."]</h3>
+						</li>
+						<li class="tariff_photo"></li>
+
+					</ul>
+
+				</section>
+
+				<section class="section_chart features_list">
+					<ul class="chart_content">
+						<li class="chart_description">
+							<h2 class="section_title ">@Localizer["Statistic"]</h2>
+							<h3 class="chart_main_content"> @Localizer["Track not server uptime, but indexing status of the most important messages."]</h3>
+						</li>
+						<li class="chart_description">
+							<div class="chart_img_main chart_img2"></div>
+							<div class="chart_img_main chart_img1"></div>
+						</li>
+
+					</ul>
+				</section>
+
+				<footer>
+					<div class="footer_content">
+						@Localizer["All rights reserved"] &copy; 2019
+						<div>
+
+						</div>
+					</div>
+
+				</footer>
+				<link href="~/css/site.css" rel="stylesheet" />
+			</section>
+		</div>
+	</div>
+
+	<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="notificationModalLabel">Notifications</h4>
+				</div>
+				<div class="modal-body" id="notificationContent">
+				</div>
 			</div>
+		</div>
+	</div>
 
-        </p>
-    </section>
-    <!--/.features -->
-    <section class="app second" id="app">
-        <div class="app_image_phone"></div>
+	<environment include="Development">
+		<script src="~/lib/jquery/dist/jquery.js"></script>
+		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="~/js/jquery.slimscroll.min.js"></script>
+		<script src="~/js/fastclick.js"></script>
+		<script src="~/js/adminlte.min.js"></script>
+		<script src="~/js/site.js" asp-append-version="true"></script>
+		<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+	</environment>
+	<environment exclude="Development">
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+				asp-fallback-test="window.jQuery"
+				crossorigin="anonymous"
+				integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+		</script>
+		<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+				crossorigin="anonymous"
+				integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+		</script>
+		<script src="~/js/site.min.js" asp-append-version="true"></script>
+		<script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+	</environment>
+
+	@Html.Partial("_NotificationSriptsPartial")
 
 
-
-        <div class="app_content">
-
-            <h1 class="section_title ">@Localizer["Personalized SMS"]</h1>
-            <p class="app_description">
-                @Localizer["Add the recipient's name and other personal information to each SMS: your name or company's name, date of birth, discount code, and other."]
-            </p>
-            <div class="app_content">
-
-                <h1 class="section_title ">@Localizer["Sender name"]</h1>
-                <p class="app_description">
-                    @Localizer["Use any sender ID depending on your campaign. Sender IDs must be pre-approved for some countries."]
-                </p>
-
-
-
-            </div>
-        </div>
-    </section>
-    <section class="section_tariff">
-        <ul class="tariff_content">
-            <li>
-                <h2 class="section_title tariff_main">@Localizer["Tariff"]</h2>
-                <h3 class="tariff_main_content">@Localizer["There are many tariffs at affordable prices,"]</h3>
-                <h3 class="tariff_main_content"> @Localizer["and tariffs are easy to use."]</h3>
-            </li>
-            <li class="tariff_photo"></li>
-
-        </ul>
-
-    </section>
-
-    <section class="section_chart features_list">
-        <ul class="chart_content">
-            <li class="chart_description">
-                <h2 class="section_title ">@Localizer["Statistic"]</h2>
-                <h3 class="chart_main_content"> @Localizer["Track not server uptime, but indexing status of the most important messages."]</h3>
-            </li>
-            <li class="chart_description">
-                <div class="chart_img_main chart_img2"></div>
-                <div class="chart_img_main chart_img1"></div>
-            </li>
-
-        </ul>
-    </section>
-
-    <!--/.footer -->
-    <footer>
-        <div class="footer_content">
-            @Localizer["All rights reserved"] &copy; 2019
-            <div>
-
-            </div>
-        </div>
-
-    </footer>
-
-    <script src="~/js/preloader.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

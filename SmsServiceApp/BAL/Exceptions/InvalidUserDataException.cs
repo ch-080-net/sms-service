@@ -5,14 +5,15 @@ using System.Text;
 
 namespace BAL.Exceptions
 {
-	public class InvalidSmppUserDataException : Exception
+	[Serializable]
+	public class InvalidSmppUserDataException : ApplicationException
 	{
 		public InvalidSmppUserDataException(string errorMessage) : base(errorMessage)
 		{
 
 		}
 
-		protected InvalidSmppUserDataException(SerializationInfo info, StreamingContext context) 
+		protected InvalidSmppUserDataException(SerializationInfo info, StreamingContext context) : base(info, context)
 		{
 
 		}

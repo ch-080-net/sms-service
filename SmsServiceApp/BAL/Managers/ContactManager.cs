@@ -7,6 +7,9 @@ using System.Linq.Expressions;
 using System.Linq;
 using AutoMapper;
 using Model.ViewModels.ContactViewModels;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace BAL.Managers
 {
@@ -60,8 +63,6 @@ namespace BAL.Managers
         public List<ContactViewModel> GetContactBySearchValue(int groupId, int pageNumber, int pageSize,
             string searchValue)
         {
-            try
-            {
                 var contacts = unitOfWork.Contacts.GetAll();
                 foreach (var contact in contacts)
                 {
@@ -74,11 +75,6 @@ namespace BAL.Managers
                         .Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
                 return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -88,16 +84,9 @@ namespace BAL.Managers
         /// <returns></returns>
         public int GetContactCount(int groupId)
         {
-            try
-            {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
                     filter: item => item.ApplicationGroupId == groupId).ToList();
                 return contacts.Count;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -129,8 +118,6 @@ namespace BAL.Managers
         /// <returns></returns>
         public bool CreateContact(ContactViewModel contactModel, int groupId)
         {
-            try
-            {
                 Contact newContact = mapper.Map<Contact>(contactModel);
                 newContact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get
@@ -155,11 +142,6 @@ namespace BAL.Managers
                 unitOfWork.Contacts.Insert(newContact);
                 unitOfWork.Save();
                 return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -168,16 +150,9 @@ namespace BAL.Managers
         /// <param name="id">Id of contact</param>
         public void DeleteContact(int id)
         {
-            try
-            {
                 Contact contact = unitOfWork.Contacts.GetById(id);
                 unitOfWork.Contacts.Delete(contact);
                 unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -188,8 +163,6 @@ namespace BAL.Managers
         /// <returns></returns>
         public bool UpdateContact(ContactViewModel contactModel, int groupId)
         {
-            try
-            {
                 Contact contact = mapper.Map<Contact>(contactModel);
                 contact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
@@ -209,11 +182,60 @@ namespace BAL.Managers
                 unitOfWork.Contacts.Update(contact);
                 unitOfWork.Save();
                 return true;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
+
+        public void AddContactFromFile(string data, string Id)
+        {
+            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == Id).FirstOrDefault();
+            if (user == null)
+                return;
+            
+            var contacts = TranslateToContacts(data, user);
+            foreach (var temp in contacts)
+            {
+                unitOfWork.Contacts.Insert(temp);
+            }
+
+            unitOfWork.Save();
+            
+        }
+
+        private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
+        {
+            var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
+            var result = new List<Contact>();
+            foreach (var item in splitedContactsR.Skip(1))
+            {
+                var tempList = string.IsNullOrEmpty(item)?null : item.Split(',').ToList();
+                if (tempList!= null)
+                {
+                    
+                        var temp = new Contact();
+                        temp.ApplicationGroupId = user.ApplicationGroupId;
+                        var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0))
+                            .FirstOrDefault();
+                        if (tempPhone == null)
+                        {
+                            temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
+                        }
+                        else
+                        {
+                            temp.PhoneId = tempPhone.Id;
+                        }
+
+                        temp.BirthDate = DateTime.ParseExact((tempList.ElementAt(1)), "yyyy-MM-dd",
+                            System.Globalization.CultureInfo.InvariantCulture);
+
+                        temp.Gender = Convert.ToByte(tempList.ElementAt(2));
+					result.Add(temp);
+                    
+                }
+            }
+            
+
+            return result;
+        }
+
+       
     }
 }

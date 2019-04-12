@@ -1,67 +1,277 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization;
+@using Microsoft.AspNetCore.Builder;
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Localization
 @inject IViewLocalizer Localizer
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject IOptions<RequestLocalizationOptions> LocOps
+
+@{
+    var requestCultures = Context.Features.Get<IRequestCultureFeature>();
+    var requestCulture = CultureInfo.CurrentCulture;
+    var supportedCultures = LocOps.Value.SupportedUICultures
+        .Select(c => new SelectListItem
+        {
+            Value = c.Name,
+            Text = $"{c.TwoLetterISOLanguageName}"
+        }).ToList();
+
+    var location = new Uri($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+
+    var url = location.AbsoluteUri;
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var routeData = new Dictionary<string, string>();
+
+    if (Context.Request.QueryString.HasValue)
+    {
+        returnUrl = $"{Context.Request.Path}{Context.Request.QueryString.Value}";
+    }
+
+    // capture all route parameters
+    // necessary for "Page Route" opioon
+    foreach (var r in ViewContext.RouteData.Values)
+    {
+        routeData.Add(r.Key, r.Value.ToString());
+    }
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SmsService</title>
-
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>@ViewData["Title"] SmsService</title>
     <environment include="Development">
+        <link rel="stylesheet" href="~/css/style2.css">
+        <link href="~/css/bootstrap.min.css" rel="stylesheet"/>
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-        <link href="~/css/menunav.css" rel="stylesheet" />
+        <link href="~/css/font-awesome.min.css" rel="stylesheet"/>
+        <link href="~/css/AdminLTE.min.css" rel="stylesheet"/>
+        <link href="~/css/_all-skins.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet" href="~/css/site.css"/>
+        <link href="~/css/menunav.css" rel="stylesheet"/>
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link href="~/css/menunav.css" rel="stylesheet" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/style2.css">
+        <link href="~/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="~/css/font-awesome.min.css" rel="stylesheet"/>
+        <link href="~/css/AdminLTE.min.css" rel="stylesheet"/>
+        <link href="~/css/_all-skins.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <link rel="stylesheet" href="~/css/site.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-tema.css"/>
+        <link href="~/css/menunav.css" rel="stylesheet"/>
     </environment>
 </head>
-<body>
-    <nav class="navbar navbar-default ">
-        <div class="container-fluid">
-            <div class="navbar-header">
-
-                <div id="myNav" class="overlay">
-                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    <div class="overlay-content">
+<body id="menu" class="hold-transition skin-black sidebar-collapse sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <a asp-controller="Home" asp-action="Index" class="logo">
+                <span class="logo-mini"><strong>SMS</strong></span>
+                <span class="logo-lg"><strong>SMS</strong>Service</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <a asp-area="" asp-controller="Company" asp-action="Index">@Localizer["Campaigns"]</a>
-                            <a asp-area="" asp-controller="Contact" asp-action="Contacts">@Localizer["Contacts"]</a>
-                            <a asp-area="" asp-controller="EmailCampaign" asp-action="Index">Email Campaign</a>
+                            <li class="dropdown notifications-menu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="onNotificationsOpened(); fillReport();">
+                                    <em class="fa fa-bell-o"></em>
+                                    <span class="label label-warning" id="notificationBadge"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li id="notificationMenu">
+                                    </li>
+                                    <li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
+                                </ul>
+                            </li>
                         }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <a asp-area="" asp-controller="Operator" asp-action="Operators">@Localizer["Operators"]</a>
-                            <a asp-area="" asp-controller="StopWord" asp-action="Index">@Localizer["Stop Words"]</a>
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
-                        {
-                            <a asp-area="" asp-controller="Group" asp-action="Index">@Localizer["Group"]</a>
-                        }
-                        @await Html.PartialAsync("_LoginPartial")
-                    </div>
-                    <div id="LanguageSwitcher">
-                        @await Html.PartialAsync("_SelectLanguagePartial")
-                    </div>
-                </div>
-                <span class="main__menu" cursor:pointer" onclick="openNav() ">&#9776;</span>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">SMS Service</a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a role="button" data-toggle="modal" data-target="#notificationModal" onclick="clearBadge();">
-                        Notifications
-                        <span class="badge" id="notificationBadge"></span>
+                        <li class="dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <em class="fa fa-language"></em>
+                                <span class="label label-primary">@($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form id="form" asp-controller="Home" name="form" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
+
+                                <ul class="lang-switcher lang-switcher--pill">
+                                    <li>
+                                        <a class="is-active">
+                                            @($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")
+                                        </a>
+                                    </li>
+                                    <li>
+                                        @foreach (var culture in supportedCultures)
+                                        {
+                                            if (culture.Value.ToLower() != requestCulture.Name.ToLower())
+                                            {
+                                                routeData["culture"] = culture.Value;
+
+                                                <a href="#" onclick="document.getElementById('form').submit();" class="linkLanguage">
+                                                    @culture.Text.ToUpper()
+                                                </a>
+
+                                                <input type="hidden" name="culture" value="@culture.Value"/>
+                                            }
+                                        }
+                                    </li>
+                                </ul>
+
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <em class="fa fa-user"></em>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <p>
+                                @Context.User.Identity.Name
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                    <div class="pull-left">
+                                        <a asp-controller="Manage" asp-action="Index" class="btn btn-primary"><span class="fa fa-user"></span> @Localizer["Profile"]</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary"><span class="fa fa-sign-out"></span> @Localizer["Sign out"]</button>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="pull-left">
+                                    <a asp-controller="Account" asp-action="NewLogin" class="btn btn-primary"><span class="fa fa-sign-in"></span> @Localizer["Sign in"]</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a asp-controller="Account" asp-action="NewRegister" class="btn btn-primary"><span class="fa fa-registered"></span> @Localizer["Register"]</a>
+                                </div>
+                            }
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
     </nav>
+</header>
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <li>
+                    <a asp-controller="TestMessage" asp-action="Index">
+                        <em class="fa fa fa-envelope-o"></em><span>@Localizer["Message"]</span>
+                        <span class="pull-right-container">
+                            <small class="label pull-right bg-green">demo</small>
+                        </span>
+                    </a>
+                </li>
+            }
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="treeview">
+                    <a href="#">
+                        <em class="fa fa-comments-o"></em> <span>@Localizer["SMS Campaign"]</span>
+                        <span class="pull-right-container">
+                            <em class="fa fa-angle-left pull-right"></em>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a asp-controller="Company" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+                        <li><a asp-controller="Company" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <em class="fa fa-envelope"></em> <span>@Localizer["Email Campaign"]</span>
+                        <span class="pull-right-container">
+                            <em class="fa fa-angle-left pull-right"></em>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a asp-controller="EmailCampaign" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+                        <li><a asp-controller="EmailCampaign" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a asp-controller="Contact" asp-action="Contacts">
+                        <em class="fa fa-address-book-o"></em> <span>@Localizer["Contacts"]</span>
+                        <span class="pull-right-container"> </span>
+                    </a>
+                </li>
+            }
+            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                <li>
+                    <a asp-area="" asp-controller="Operator" asp-action="Operators">
+                        <em class="fa fa-money"></em> <span>@Localizer["Operators"]</span>
+                        <span class="pull-right-container"> </span>
+                    </a>
+                </li>
+                
+                <li class="treeview">
+                    <a href="#">
+                        <em class="fa fa-stop"></em> <span>@Localizer["Stop words"]</span>
+                        <span class="pull-right-container">
+                            <em class="fa fa-angle-left pull-right"></em>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a asp-controller="StopWord" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+                        <li><a asp-controller="StopWord" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of words"]</a></li>
+                    </ul>
+                </li>
+                <li>
+                <a asp-area="" asp-controller="AdminStatistic" asp-action="AdminStatistics">
+                <em class="fa fa-bar-chart"></em> <span>@Localizer["Statistic"]</span>
+                <span class="pull-right-container"> </span>
+                </a>
+                </li>
+
+            }
+            @if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
+            {
+                <li class="treeview">
+                    <a href="#">
+                        <em class="fa fa-users"></em> <span>@Localizer["User group"]</span>
+                        <span class="pull-right-container">
+                            <em class="fa fa-angle-left pull-right"></em>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a asp-area="" asp-controller="Group" asp-action="AddUsers"><em class="fa fa-envelope-open-o"></em>@Localizer["Send invite"]</a></li>
+                        <li><a asp-area="" asp-controller="Group" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["Users in group"]</a></li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </section>
+</aside>
+<div class="content-wrapper">
+    <section id="pageContent" class="container body-container">
+        @RenderBody()
+
+                <link href="~/css/site.css" rel="stylesheet" />
+            </section>
+        </div>
+    </div>
 
     <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel">
         <div class="modal-dialog" role="document">
@@ -76,18 +286,14 @@
         </div>
     </div>
 
-    <div class="container body-content">
-        @RenderBody()
-
-        <link href="~/css/site.css" rel="stylesheet" />
-    </div>
-
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/jquery.slimscroll.min.js"></script>
+        <script src="~/js/fastclick.js"></script>
+        <script src="~/js/adminlte.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-        <script src="~/js/notifications.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -104,9 +310,10 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
-        <script src="~/js/notifications.js"></script>
     </environment>
-
+    
+    @Html.Partial("_NotificationSriptsPartial")
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

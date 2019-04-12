@@ -1,0 +1,83 @@
+﻿@using Model.ViewModels.TestMessageViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization;
+@inject IViewLocalizer Localizer
+@model TestMessageViewModel
+@{
+    ViewData["Title"] = Localizer["Create"];
+}
+@{
+    var requestCulture = CultureInfo.CurrentCulture;
+    var culture = requestCulture.TwoLetterISOLanguageName;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/css/MessagePreview.css" rel="stylesheet" type="text/css" />
+    <script src="~/js/MessagePreview.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <title>@Localizer["Test message"]</title>
+</head>
+<body>
+    <h2>@Localizer["Test message"]</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Sender" class="control-label"></label>
+                        <input asp-for="Sender" class="form-control" />
+                        <span asp-validation-for="Sender" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Recipient" class="control-label"></label>
+                        <input asp-for="Recipient" class="form-control" />
+                        <span asp-validation-for="Recipient" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Message" class="control-label"></label>
+                        <textarea rows="7" style="resize:none; width:100%" readonly
+                                  asp-for="Message" class="form-control" id="message" onclick="ClickPosition(this)"
+                                  onkeyup="MessagePreview(this)"></textarea>
+                        <span asp-validation-for="Message" class="text-danger"></span>
+                        <script>
+                            $("#message").val("This message is send by SMSSender");
+                        </script>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <button type="submit" class="btn btn-success"><em class="glyphicon glyphicon-send"></em>  @Localizer["Send"]</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="form-group col-md-5" id="messagePreviewContainer" contenteditable>
+                <div style="position:absolute; height:auto !important;">
+                    <div rows="1" readonly class="form-control" id="messagePreview">
+                        ::before
+                    </div>
+                </div>
+            </div>
+            <script>
+                MessagePreview($('#message'));
+            </script>
+            <button id="messagePreviewSwitcher" onclick="MessagePreviewShow(this)">
+                <span class="glyphicon glyphicon-phone"></span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
