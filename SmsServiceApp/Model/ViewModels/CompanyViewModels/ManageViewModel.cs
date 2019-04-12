@@ -32,6 +32,7 @@ namespace Model.ViewModels.CompanyViewModels
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
         [StringLength(100)]
+		[Display(Name = "Name")]
         public string Name { get; set; }
         [StringLength(500)]
         [Display(Name="Description")]
