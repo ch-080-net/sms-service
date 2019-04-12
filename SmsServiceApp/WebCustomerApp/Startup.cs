@@ -41,7 +41,6 @@ namespace WebApp
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
                services.AddDbContext<ApplicationDbContext>(options =>
@@ -55,14 +54,12 @@ namespace WebApp
 			{
 				facebookOptions.AppId = "650976532012853";
 				facebookOptions.AppSecret = "bafe321bce69a757c812991f4468597e";
-				//facebookOptions.CallbackPath = "/Account/ExternalLoginCallback";
 			});
 
 			services.AddAuthentication().AddGoogle(configureOptions =>
 			{
 				configureOptions.ClientId = "91528411350-j52vl6bbdp58ild09dqelr9n4ccl11vf.apps.googleusercontent.com";
 				configureOptions.ClientSecret = "11May0pGIYDGLc0ZO0GNi05y";
-				//configureOptions.CallbackPath = "/Account/ExternalLoginCallback";
 			});
             // Add application services.
             services.AddSingleton<ILoggerManager, LoggerManager>();
