@@ -34,7 +34,6 @@ namespace WebApp.Controllers
         private readonly IRecipientManager recipientManager;
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
-        private readonly ILoggerManager logger;
         private readonly ISubscribeWordManager subscribeWordManager;
 
 
@@ -42,7 +41,7 @@ namespace WebApp.Controllers
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
                                  IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
-                                 ILoggerManager loggerManager, ISubscribeWordManager subscribeWordManager)
+                                 ISubscribeWordManager subscribeWordManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -53,7 +52,6 @@ namespace WebApp.Controllers
             this.recipientManager = recipientManager;
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
-            this.logger = loggerManager;
             this.subscribeWordManager = subscribeWordManager;
         }
 
@@ -87,7 +85,6 @@ namespace WebApp.Controllers
         {
             var item = companyManager.GetDetails(companyId);
             item.PhoneNumber = phoneManager.GetPhoneById(item.PhoneId).PhoneNumber;
-            int count = recipientManager.GetRecipients(companyId).Count();
             if (item.Type == CompanyType.Send || item.Type == CompanyType.SendAndRecieve)
             {
                 if (item.TariffId <= 0)
@@ -399,8 +396,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<TariffViewModel> Tariffs(int id)
         {
-            List<TariffViewModel> model = new List<TariffViewModel>();
-            model = tariffManager.GetTariffs(id).ToList();
+            List<TariffViewModel> model = tariffManager.GetTariffs(id).ToList();
             return model;
         }
 
