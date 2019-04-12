@@ -23,7 +23,9 @@ namespace BAL.Services
 			SeedOperators(operatorManager, codeManager, tariffManager);
 			SeedStopWords(stopWordManager);
             SeedCampaigns(unitOfWork);
-		}
+            SeedEmailCampaigns(unitOfWork);
+
+        }
 
 
             public static void SeedUsers(UserManager<ApplicationUser> userManager)
@@ -204,12 +206,13 @@ namespace BAL.Services
             var company = new Company();
             var tariff = new Tariff() { Limit = 15, Price = 10, Name = "Intermidiate", Description = "For good people!", Operator = 
                 new Operator() { Name = "UMC" } };
+            var phone= new Phone() { PhoneNumber = "+380333333333" };
             company.Tariff = tariff;
             company.Type = CompanyType.SendAndRecieve;
             company.StartTime = DateTime.Parse("2019.02.15");
             company.EndTime = DateTime.Parse("2019.02.21");
             company.SendingTime = DateTime.Parse("2019.02.15");
-            company.Phone = new Phone() { PhoneNumber = "+380333333333" };
+            company.Phone = phone;
             company.Name = "Great campaign!";
             company.Message = "Hello, world!";
             company.Description = "For great people only";
@@ -246,9 +249,55 @@ namespace BAL.Services
 
             company.RecievedMessages = recievedMessages;
 
+            company.SubscribeWords=new List<SubscribeWord>()
+            {
+                new SubscribeWord()
+                {
+                    Word = "start",Phone = phone
+
+                }
+            };
+
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();
         }
-	}
+
+
+        public static void SeedEmailCampaigns(IUnitOfWork unitOfWork)
+        {
+            if (unitOfWork.EmailCampaigns.Get(com => com.Name == "Great email campaign!").Any())
+                return;
+
+             var ecompany = new EmailCampaign
+            {
+                Email = new Email() {EmailAddress = "emailcompany@gamil.com"},
+                Message = "Hello User!",
+                Name = "Great email campaign!",
+                Description = "example",
+                SendingTime = DateTime.Now
+            };
+
+
+
+            var recipients = new List<EmailRecipient>()
+          {
+              new EmailRecipient(){Email = new Email(){EmailAddress = "recipient1@gamil.com"}},
+              new EmailRecipient(){Email = new Email(){EmailAddress = "recipient2@gamil.com"}}
+          };
+           ecompany.EmailRecipients = recipients;
+           ecompany.UserId = unitOfWork.ApplicationUsers.Get().First(a=>a.Email== "Admin@gmail.com").Id;
+           ecompany.EmailCampaignNotifications=new List<EmailCampaignNotification>()
+           {
+               new EmailCampaignNotification(){
+                   ApplicationUserId =ecompany.UserId,
+                   BeenSent = true,
+                   Type =NotificationType.Email
+               }
+           };
+           unitOfWork.EmailCampaigns.Insert(ecompany);
+           unitOfWork.Save();
+        }
+
+    }
 }
 
