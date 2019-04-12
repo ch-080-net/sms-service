@@ -236,10 +236,9 @@ function onAddContact(item) {
 
     var RecSimilar = false;
     for (var k = 0; k < recipients.length; k++) {
-        if (recipients[k].phoneNumber == obj.phoneNumber || recipients[k].length > tariff.limit) {
+        if (recipients[k].phoneNumber == obj.phoneNumber) {
             RecSimilar = true;
         }
-        var tariffId = $("#tariff").val();
        
         if (recipients.length >= tarifflimit) {
             RecSimilar = true;
@@ -383,8 +382,7 @@ function GetFromFile(tariffId) {
                         if (recipients[k].phoneNumber == obj.phoneNumber) {
                             found = true;
                             break;
-                        }
-                        var tariffId = $("#tariff").val();
+                        }                  
                         
                         if (recipients.length >= tarifflimit) {
                             found = true;
