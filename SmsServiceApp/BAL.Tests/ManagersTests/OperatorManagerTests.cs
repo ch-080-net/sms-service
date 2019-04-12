@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BAL.Managers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using Moq;
@@ -13,10 +12,11 @@ using System.IO;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using NUnit.Framework;
 
-namespace BAL.Test.ManagersTests
+namespace BAL.Tests.ManagersTests
 {
-	[TestClass]
+
 	public class OperatorManagerTests
 	{
 		private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -24,21 +24,20 @@ namespace BAL.Test.ManagersTests
 		OperatorManager manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
 		public TestContext TestContext { get; set; }
 
-		[TestInitialize]
+		[SetUp]
 		public void Initialize()
 		{
 			TestContext.WriteLine("Initialize test data");
 		}
 
-		[TestCleanup]
+		[TearDown]
 		public void Cleanup()
 		{
-			TestContext.WriteLine($"Test name: {TestContext.TestName}");
-			TestContext.WriteLine($"Test result: {TestContext.CurrentTestOutcome}");
+			TestContext.WriteLine($"Test name: {TestContext.Result}");
 			TestContext.WriteLine("Cleanup test data");
 		}
 
-		[TestMethod]
+		[Test]
 		public void Add_EmptyOperator_ErrorResult()
 		{
 			OperatorViewModel emptyOperator = new OperatorViewModel();
@@ -49,7 +48,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Add_ExistingOperator_ErrorResult()
 		{
 			var testList = new List<Operator>() {new Operator(){Name = "name"}, new Operator(){Name = "ds"}};
@@ -64,7 +63,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Add_TestObject_CatchExceptionError()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
@@ -80,7 +79,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Add_NewTestObject_SuccessResult()
 		{
 			OperatorViewModel testOperator = new OperatorViewModel() { Name = "Operator" };
@@ -96,7 +95,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsTrue(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Remove_InvalidId_ErrorResult()
 		{
 			mockUnitOfWork
@@ -109,7 +108,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Remove_OperatorWithTariffs_ErrorResult()
 		{
 			List<Tariff> tariffs = new List<Tariff>();
@@ -124,7 +123,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Remove_OperatorWithoutTariffs_CatchExceptionError()
 		{
 			mockUnitOfWork
@@ -139,7 +138,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Remove_OperatorWithoutTariffs_SuccessResult()
 		{
 			mockUnitOfWork
@@ -156,7 +155,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsTrue(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Update_EmptyOperator_ErrorResult()
 		{
 			OperatorViewModel test = new OperatorViewModel();
@@ -167,7 +166,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Update_OperatorWithoutName_ErrorResult()
 		{
 			OperatorViewModel test = new OperatorViewModel() { Name = "" };
@@ -178,7 +177,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Update_ExistingOperator_ErrorResult()
 		{
 			var testList = new List<Operator>() { new Operator() { Name = "name" }, new Operator() { Name = "ds" } };
@@ -193,7 +192,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Update_OperatorObject_ErrorResult()
 		{
 			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
@@ -211,7 +210,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Update_OperatorObject_SuccessResult()
 		{
 			OperatorViewModel test = new OperatorViewModel() { Name = "name" };
@@ -226,7 +225,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsTrue(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void GetPage_Null_ReturnNull()
 		{
 			var result = manager.GetPage(null);
@@ -234,7 +233,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsNull(result);
 		}
 
-		[TestMethod]
+		[Test]
 		public void GetPage_PageState_CurrentPage()
 		{
 			PageState test = new PageState() {  Page = 1};
@@ -247,7 +246,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsNotNull(result);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLogo_EmptyLogo_ErrorResult()
 		{
 			LogoViewModel logo = new LogoViewModel() { Logo = null };
@@ -258,7 +257,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLogo_EmptyOperator_ErrorResult()
 		{
 			LogoViewModel logo = new LogoViewModel() {};
@@ -269,7 +268,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLogo_NullOperatorId_ErrorResult()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
@@ -281,7 +280,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLogo_InvalidStream_CatchArgumentException()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
@@ -295,7 +294,7 @@ namespace BAL.Test.ManagersTests
 			Assert.IsFalse(result.Success);
 		}
 
-		[TestMethod]
+		[Test]
 		public void AddLogo_LogoModel_CatchException()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();

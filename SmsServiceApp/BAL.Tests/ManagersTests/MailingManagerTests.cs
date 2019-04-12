@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BAL.Managers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Interfaces;
 using Model.ViewModels.OperatorViewModels;
 using Moq;
@@ -14,11 +13,12 @@ using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
 using Model.ViewModels.CodeViewModels;
 using Model.DTOs;
+using NUnit.Framework;
 
 
-namespace BAL.Test.ManagersTests
+namespace BAL.Tests.ManagersTests
 {
-    [TestClass]
+ 
     public class MailingManagerTests
     {
         private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -26,21 +26,20 @@ namespace BAL.Test.ManagersTests
         MailingManager manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
         public TestContext TestContext { get; set; }
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             TestContext.WriteLine("Initialize test data");
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
-            TestContext.WriteLine($"Test name: {TestContext.TestName}");
-            TestContext.WriteLine($"Test result: {TestContext.CurrentTestOutcome}");
+            TestContext.WriteLine($"Test name: {TestContext.Result}");
             TestContext.WriteLine("Cleanup test data");
         }
 
-        [TestMethod]
+        [Test]
         public void GetUnsentMessages_NoValidMessages_EmptyEnumeration()
         {
             IEnumerable<Recipient> emptyEnumeration = new List<Recipient>();
@@ -58,7 +57,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Any());
         }
 
-        [TestMethod]
+        [Test]
         public void GetUnsentMessages_NValidMessages_EnumerationWithNDTOs()
         {
             int n = 50;

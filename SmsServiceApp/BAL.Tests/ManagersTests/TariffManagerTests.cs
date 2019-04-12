@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BAL.Managers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Interfaces;
 using Model.ViewModels.TariffViewModels;
 using Moq;
@@ -10,10 +9,12 @@ using WebApp.Models;
 using System.Linq;
 using System;
 using System.Linq.Expressions;
+using NUnit.Framework;
+using NUnit.Framework.Internal;
 
-namespace BAL.Test.ManagersTests
+namespace BAL.Tests.ManagersTests
 {
-    [TestClass]
+  
     public class TariffManagerTests
     {
         private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
@@ -21,22 +22,21 @@ namespace BAL.Test.ManagersTests
         TariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
         public TestContext TestContext { get; set; }
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             TestContext.WriteLine("Initialize test data");
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
-            TestContext.WriteLine($"Test name: {TestContext.TestName}");
-            TestContext.WriteLine($"Test result: {TestContext.CurrentTestOutcome}");
+            TestContext.WriteLine($"Test name: {TestContext.Result}");
             TestContext.WriteLine("Cleanup test data");
         }
 
-    
-        [TestMethod]
+
+        [Test]
         public void Update_ExistingObject_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -50,7 +50,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_TariffWithout_SuccessResult()
         {
             TariffsViewModel testTariff = new TariffsViewModel();
@@ -61,7 +61,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Delete_EmptyTariff_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -75,7 +75,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Delete_EmptyTariff_SuccessResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -88,7 +88,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Delete_ExistingObject_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -100,8 +100,8 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result);
         }
 
-       
-        [TestMethod]
+
+        [Test]
         public void Insert_EmptyTariffNotNull_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel(){Id=2};
@@ -128,7 +128,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Insert_EmptyTariffNull_SuccessResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -140,7 +140,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Insert_SaveTariff_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
