@@ -240,4 +240,10 @@
   <data name="Sign out" xml:space="preserve">
     <value>Вийти</value>
   </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Сповіщення</value>
+  </data>
+  <data name="View all" xml:space="preserve">
+    <value>Переглянути всі</value>
+  </data>
 </root>

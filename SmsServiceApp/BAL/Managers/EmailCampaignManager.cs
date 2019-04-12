@@ -63,7 +63,7 @@ namespace BAL.Managers
             {
                 emailCampaign.EmailId = email.Id;
             }
-            notificationsGenerator.SupplyWithNotifications(emailCampaign);
+            notificationsGenerator.SupplyWithCampaignNotifications(emailCampaign);
             unitOfWork.EmailCampaigns.Insert(emailCampaign);
             unitOfWork.Save();
         }
@@ -71,7 +71,7 @@ namespace BAL.Managers
         public int InsertWithId(EmailCampaignViewModel item)
         {
             EmailCampaign company = mapper.Map<EmailCampaign>(item);
-            notificationsGenerator.SupplyWithNotifications(company);
+            notificationsGenerator.SupplyWithCampaignNotifications(company);
             int id = unitOfWork.EmailCampaigns.InsertWithId(company);
             return id;
         }
@@ -117,7 +117,7 @@ namespace BAL.Managers
             {
                 emailCampaign.EmailId = email.Id;
             }
-            notificationsGenerator.SupplyWithNotifications(emailCampaign);
+            notificationsGenerator.SupplyWithCampaignNotifications(emailCampaign);
             unitOfWork.EmailCampaigns.Insert(emailCampaign);
             unitOfWork.Save();
             foreach (var recipient in emailRecipients)
