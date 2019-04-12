@@ -45,7 +45,7 @@ namespace WebApp.Controllers
 			return View(recipientManager.GetRecipients(companyId).ToList());
         }
         [HttpGet]
-        public IActionResult IndexDetails(int companyId)
+        public IActionResult Details(int companyId)
         {
             int limit = companyManager.GetTariffLimit(companyId);
             int count = recipientManager.GetRecipients(companyId).Count();

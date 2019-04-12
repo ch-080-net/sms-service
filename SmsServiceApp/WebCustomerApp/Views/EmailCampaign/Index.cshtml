@@ -13,12 +13,12 @@
 </head>
 <body>
     <div id="app">
-        <a class="btn btn-success" asp-action="Create"><i class="glyphicon glyphicon-plus"></i>&nbsp @Localizer["Create"]</a>
+        <a class="btn btn-success" asp-action="Create"><em class="glyphicon glyphicon-plus"></em>&nbsp @Localizer["Create"]</a>
         <br />
         <div v-if="PageCount != 0">
             <label>@Localizer["Search"]</label>
             <input v-model="searchValue">
-            <button value="Search" v-on:click="getData" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>&nbsp @Localizer["Search"]</button>
+            <button value="Search" v-on:click="getData" class="btn btn-primary"><em class="glyphicon glyphicon-search"></em>&nbsp @Localizer["Search"]</button>
             <br />
             <label>@Localizer["Campaigns on page"]:</label><select v-model.lazy="CountOnPage" v-on:change="getData">
                 <option>1</option>
@@ -55,7 +55,7 @@
                     <tr v-for="item in Campaigns">
                         <td>{{ item.name }}</td>
                         <td>{{ item.description }}</td>
-                        <td><a class="btn btn-success" v-bind:href="'/EmailCampaign/Details?campaignId='+item.id"><i class="glyphicon glyphicon-folder-open"></i>&nbsp @Localizer["Details"]</a></td>
+                        <td><a class="btn btn-success" v-bind:href="'/EmailCampaign/Details?campaignId='+item.id"><em class="glyphicon glyphicon-folder-open"></em>&nbsp @Localizer["Details"]</a></td>
                     </tr>
                 </tbody>
             </table>
