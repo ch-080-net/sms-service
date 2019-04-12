@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApp.Models;
 using WebApp.Services;
+using BAL.Notifications;
+using BAL.Notifications.Infrastructure;
 
 namespace WebApp.Controllers
 {
@@ -25,7 +27,6 @@ namespace WebApp.Controllers
         private readonly IMapper mapper;
         private readonly IEmailSender emailSender;
         private readonly INotificationManager notificationManager;
-       
 
         public GroupController(UserManager<ApplicationUser> userManager, IMapper mapper
             , IGroupManager groupManager, IEmailSender emailSender, INotificationManager notificationManager)
@@ -95,6 +96,11 @@ namespace WebApp.Controllers
                 else
                 {
                     user.InviteId = groupId;
+                    //user = (new PersonalNotificationBuilder(user))
+                    //    .SetMessage("Group invite", "You have been invited to group " + groupName)
+                    //    .SetTime(DateTime.Now)
+                    //    .GenerateHref(Url, "Manage", "Index")
+                    //    .Build();
                     notificationManager.AddNotificationsToUser(user.Id, DateTime.Now
                         , "Group invite", "You have been invited to group " + groupName, Url.Action("Index", "Manage"));
                     userManager.UpdateAsync(user);
