@@ -6,7 +6,6 @@ using Model.Interfaces;
 using AutoMapper;
 using System.Linq;
 using Model.DTOs;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using BAL.Notifications;
 using BAL.Notifications.Infrastructure;
@@ -54,8 +53,15 @@ namespace BAL.Managers
         public void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
             handler.SetAsSent(notifications);
-            unitOfWork.Save();
-        }      
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+                // Notification sending will be repeated
+            }
+    }      
 
         /// <summary>
         /// Set notificaton as sent in corresponding tables
@@ -65,8 +71,16 @@ namespace BAL.Managers
         /// <param name="userId">Id of ApplicationUser who owns notification</param>
         public void SetAsSent(string userId)
         {
+
             handler.SetAsSent(userId);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Save();
+            }
+            catch
+            {
+                // Notification badge will be filled
+            }
         }
 
 
@@ -95,51 +109,22 @@ namespace BAL.Managers
         /// <summary>
         /// Add personal notification to Identity User
         /// </summary>
-        /// <param name="userId">Identity user Id</param>
-        /// <param name="time">Time, when messages should be sent</param>
-        /// <param name="title">Title of message</param>
-        /// <param name="message">Text of message</param>
-        /// <param name="href">Optional hyper reference</param>
         /// <returns>succes result if succesfull</returns>
-        public TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null)
+        public TransactionResultDTO AddNotificationsToUser(ICollection<Notification> notifications)
         {
-            var user = unitOfWork.ApplicationUsers.Get(au => au.Id == userId).FirstOrDefault();
-            if (user == null)
-                return new TransactionResultDTO() { Success = false, Details = "User does not exist!" };
-
-            AddSpecificNotifications(userId, NotificationType.Web, time, title, message, href);
-            if (user.EmailNotificationsEnabled && user.EmailConfirmed)
-            {
-                AddSpecificNotifications(userId, NotificationType.Email, time, title, message, href);
-            }
-            if (user.SmsNotificationsEnabled && user.PhoneNumberConfirmed)
-            {
-                AddSpecificNotifications(userId, NotificationType.Sms, time, title, message, href);
-            }
             try
             {
+                foreach (var notification in notifications)
+                {
+                    unitOfWork.Notifications.Insert(notification);
+                }
                 unitOfWork.Save();
             }
             catch
             {
-                return new TransactionResultDTO() { Success = false, Details = "Internal error" };
+                return new TransactionResultDTO { Success = false, Details = "Notification addition failed" };
             }
-
-            return new TransactionResultDTO() { Success = true };
-        }
-
-        private void AddSpecificNotifications(string userId, NotificationType type, DateTime time, string title, string message, string href = null)
-        {            
-            unitOfWork.Notifications.Insert(new Notification()
-            {
-                BeenSent = false,
-                Type = type,
-                Title = title,
-                Message = message,
-                Time = time,
-                ApplicationUserId = userId,
-                Href = href                
-            });       
+            return new TransactionResultDTO { Success = true };
         }
 
         public int GetNumberOfWebNotifications(string userId)

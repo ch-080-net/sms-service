@@ -10,23 +10,22 @@ namespace BAL.Notifications
 {
     public class PersonalNotificationBuilder : IPersonalNotificationBuilder
     {
-        private readonly ApplicationUser applicationUser;
         private ICollection<Notification> notifications;
         public PersonalNotificationBuilder(ApplicationUser applicationUser)
         {
-            this.applicationUser = applicationUser;
-            notifications = new List<Notification> { new Notification { Type = NotificationType.Web } };
+            notifications = new List<Notification> { new Notification { Type = NotificationType.Web
+                , ApplicationUserId = applicationUser.Id } };
             if (applicationUser.EmailConfirmed && applicationUser.EmailNotificationsEnabled)
-                notifications.Add(new Notification { Type = NotificationType.Email });
+                notifications.Add(new Notification { Type = NotificationType.Email
+                    , ApplicationUserId = applicationUser.Id });
             if (applicationUser.PhoneNumberConfirmed && applicationUser.SmsNotificationsEnabled)
-                notifications.Add(new Notification { Type = NotificationType.Sms });
+                notifications.Add(new Notification { Type = NotificationType.Sms
+                    , ApplicationUserId = applicationUser.Id });
         }
 
-        public ApplicationUser Build()
+        public ICollection<Notification> Build()
         {
-            applicationUser.Notifications = applicationUser.Notifications ?? new List<Notification>();
-            applicationUser.Notifications = applicationUser.Notifications.Concat(notifications).ToList();
-            return applicationUser;
+            return notifications;
         }
 
         public IPersonalNotificationBuilder GenerateHref(IUrlHelper urlHelper

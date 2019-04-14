@@ -12,6 +12,6 @@ namespace BAL.Notifications.Infrastructure
         IPersonalNotificationBuilder SetTime(DateTime time);
         IPersonalNotificationBuilder SetHref(string href);
         IPersonalNotificationBuilder GenerateHref(IUrlHelper urlHelper, string controller, string action, object values = null);
-        ApplicationUser Build();
+        ICollection<Notification> Build();
     }
 }
