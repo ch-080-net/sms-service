@@ -168,7 +168,7 @@
   <data name="STATISTICS" xml:space="preserve">
     <value>СТАТИСТИКА</value>
   </data>
-  <data name="Stop Words" xml:space="preserve">
+  <data name="Stop words" xml:space="preserve">
     <value>Слова зупинки</value>
   </data>
   <data name="SUBSCRIPTION FORMS" xml:space="preserve">
@@ -220,7 +220,7 @@
     <value>Відстеження часу роботи сервера та статус індексування найважливіших повідомлень.</value>
   </data>
   <data name="Profile" xml:space="preserve">
-    <value>Профіль</value>
+    <value>Мій кабінет</value>
   </data>
   <data name="demo" xml:space="preserve">
     <value>демо</value>
@@ -239,6 +239,27 @@
   </data>
   <data name="Sign out" xml:space="preserve">
     <value>Вийти</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Створити</value>
+  </data>
+  <data name="Email Campaign" xml:space="preserve">
+    <value>Поштова розсилка</value>
+  </data>
+  <data name="List of campaigns" xml:space="preserve">
+    <value>Список розсилок</value>
+  </data>
+  <data name="List of words" xml:space="preserve">
+    <value>Список слів</value>
+  </data>
+  <data name="SMS Campaign" xml:space="preserve">
+    <value>СМС розсилка</value>
+  </data>
+  <data name="User group" xml:space="preserve">
+    <value>Група користувачів</value>
+  </data>
+  <data name="Users in group" xml:space="preserve">
+    <value>Користувачі в групі</value>
   </data>
   <data name="Notifications" xml:space="preserve">
     <value>Сповіщення</value>

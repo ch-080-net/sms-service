@@ -56,8 +56,6 @@ namespace WebApp.Controllers
 
         public IActionResult CreateCampaign(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> recepients)
         {
-            if(campaign.SendingTime == null)
-                campaign.SendingTime = DateTime.Now;
             if (campaign.SendingTime < DateTime.Now)
                 campaign.SendingTime = DateTime.Now;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
