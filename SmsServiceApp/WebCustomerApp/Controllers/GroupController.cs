@@ -3,7 +3,6 @@ using BAL.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using Model.ViewModels.GroupViewModels;
 using Model.ViewModels.UserViewModels;
 using System;
@@ -14,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApp.Models;
 using WebApp.Services;
+using BAL.Notifications;
 
 namespace WebApp.Controllers
 {
@@ -25,7 +25,6 @@ namespace WebApp.Controllers
         private readonly IMapper mapper;
         private readonly IEmailSender emailSender;
         private readonly INotificationManager notificationManager;
-       
 
         public GroupController(UserManager<ApplicationUser> userManager, IMapper mapper
             , IGroupManager groupManager, IEmailSender emailSender, INotificationManager notificationManager)
@@ -95,8 +94,11 @@ namespace WebApp.Controllers
                 else
                 {
                     user.InviteId = groupId;
-                    notificationManager.AddNotificationsToUser(user.Id, DateTime.Now
-                        , "Group invite", "You have been invited to group " + groupName, Url.Action("Index", "Manage"));
+                    notificationManager.AddNotificationsToUser((new PersonalNotificationBuilder(user))
+                        .SetMessage("Group invite", "You have been invited to group " + groupName)
+                        .SetTime(DateTime.Now)
+                        .GenerateHref(Url, "Manage", "Index")
+                        .Build());
                     userManager.UpdateAsync(user);
                     string subjectNew = "SMS Service invite you to join the group";
                     var sb = new StringBuilder("You invited to join the group ");

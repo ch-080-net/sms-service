@@ -17,7 +17,7 @@ namespace BAL.Notifications.Infrastructure
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IMapper mapper;
 
-        public NotificationHandler(INotificationHandler notificationHandler, IUnitOfWork unitOfWork, IMapper mapper)
+        protected NotificationHandler(INotificationHandler notificationHandler, IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.notificationHandler = notificationHandler;
             this.unitOfWork = unitOfWork;
