@@ -39,6 +39,7 @@ namespace BAL.Tests.ManagersTests
                 .Returns(new ApplicationGroup());
             var result = manager.Insert(item);
             Assert.IsFalse(result);
+
         }
 
         [Test]
