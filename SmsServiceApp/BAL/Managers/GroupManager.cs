@@ -45,17 +45,17 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of group</param>
         public bool Insert(GroupViewModel item)
         {
-                ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
-                try
-                {
-                    unitOfWork.ApplicationGroups.Insert(group);
-                    unitOfWork.Save();
-                }
-                catch(Exception)
-                {
-                    return false;
-                }
-                return true;
+            ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            try
+            {
+                unitOfWork.ApplicationGroups.Insert(group);
+                unitOfWork.Save();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -64,22 +64,22 @@ namespace BAL.Managers
         /// <param name="item">ViewModel which need to update in db</param>
         public bool Update(GroupViewModel item)
         {
-                var exisctGroup = unitOfWork.ApplicationGroups.GetById(item.Id);
-                if (exisctGroup == null)
-                {
-                    return false;
-                }
-                ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
-                try
-                {
-                    unitOfWork.ApplicationGroups.Update(group);
-                    unitOfWork.Save();
-                }
-                catch
-                {
-                    return false;
-                }
-                return true;
+            var exisctGroup = unitOfWork.ApplicationGroups.GetById(item.Id);
+            if (exisctGroup == null)
+            {
+                return false;
+            }
+            ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            try
+            {
+                unitOfWork.ApplicationGroups.Update(group);
+                unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
