@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
@@ -8,7 +9,10 @@ using BAL.Notifications.Infrastructure;
 using BAL.Tests;
 using Model.Interfaces;
 using Model.ViewModels.CompanyViewModels;
+using Model.ViewModels.EmailCampaignViewModels;
+using Model.ViewModels.EmailRecipientViewModels;
 using Model.ViewModels.GroupViewModels;
+using Model.ViewModels.RecipientViewModels;
 using Moq;
 using NUnit.Framework;
 using WebApp.Models;
@@ -20,17 +24,14 @@ namespace BAL.Tests.ManagersTests
     {
    
         private static Mock<INotificationsGenerator<Company>> mockNotification = new Mock<INotificationsGenerator<Company>>();
-        private CompanyManager manager = new CompanyManager(mockUnitOfWork.Object, mockMapper.Object, mockNotification.Object );
+        private CompanyManager manager;
 
 
         [SetUp]
-        public void SetUp()
+        protected override void Initialize()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
-            mockNotification= new Mock<INotificationsGenerator<Company>>();
-            manager = new CompanyManager(mockUnitOfWork.Object, mockMapper.Object, mockNotification.Object);
-        
+            base.Initialize();
+            manager = new CompanyManager(mockUnitOfWork.Object, mockMapper.Object, mockNotification.Object);      
         }
 
         [Test]
@@ -137,5 +138,68 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Get(1);
             Assert.That(result, Is.EqualTo(result));
         }
+
+        [Test]
+        public void Insert_EmptyCampaign_FalseResult()
+        {
+            ManageViewModel emptyCampaign = new ManageViewModel();
+            List<RecipientViewModel> recepientsList = new List<RecipientViewModel>();
+            recepientsList.Add(new RecipientViewModel()
+            {
+                Phonenumber = "+380999999999",
+                Birthdate = DateTime.Now,
+                Gender = "Male",
+                Name = "Test",
+                Surname = "Test",
+                Priority = "Low"
+            });
+            var result = manager.CreateWithRecipient(emptyCampaign, recepientsList);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CreateWithRecipient_CampignWithoutPhoneInDatabase_TrueResult()
+        {
+            ManageViewModel emptyCampaign = new ManageViewModel() { PhoneId = 1, Name = "test", Description = "Test" };
+            List<RecipientViewModel> recepientsList = new List<RecipientViewModel>();
+            List<Phone> Phones = new List<Phone>();
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 10,
+                    PhoneNumber = "+380999999999"
+                });
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 11,
+                    PhoneNumber = "+380999999998"
+                });
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
+                IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(new List<Phone>());
+            mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
+            mockUnitOfWork.Setup(u => u.Recipients.Insert(It.IsAny<Recipient>()));
+            mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));
+            mockMapper.Setup(m => m.Map<Company>(It.IsAny<ManageViewModel>()))
+                .Returns(new Company() { Name = "test", Message = "test", Description = "Test" });
+            recepientsList.Add(new RecipientViewModel()
+            {
+                Phonenumber = "+380999999997",
+                Birthdate = DateTime.Now,
+                Gender = "Male",
+                Name = "John",
+                Surname = "Snow",
+                Priority = "Low"
+            });
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(It.IsAny<RecipientViewModel>()))
+                .Returns(new Recipient() { BirthDate = DateTime.Now, Name = "John", Surname = "Snow", Priority = "Low" });
+            var result = manager.CreateWithRecipient(emptyCampaign, recepientsList);
+            Assert.IsFalse(result);
+        }
+
+       
+
+
+
     }
 }

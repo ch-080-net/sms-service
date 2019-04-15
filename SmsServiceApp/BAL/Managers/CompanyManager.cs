@@ -10,6 +10,7 @@ using System.Text;
 using WebApp.Models;
 using BAL.Notifications;
 using BAL.Notifications.Infrastructure;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BAL.Managers
 {
@@ -127,10 +128,11 @@ namespace BAL.Managers
 
         }
 
-        public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
+        public bool CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
         {
+            try { 
             Company company = mapper.Map<ManageViewModel, Company>(item);
-            company.ApplicationGroupId = item.ApplicationGroupId;
+           
             Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
             if (phone == null)
             {
@@ -168,6 +170,15 @@ namespace BAL.Managers
                 unitOfWork.Recipients.Insert(newRecepient);
                 unitOfWork.Save();
             }
+
+            return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
         }
         public void CreateCampaignCopy(ManageViewModel item)
         {
