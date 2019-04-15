@@ -21,7 +21,7 @@ namespace BAL.Managers
         /// <summary>
         /// Get one group from db by Id
         /// </summary>
-        /// <param name="id">Id of company wich you need</param>
+        /// <param name="id">Id of company which you need</param>
         /// <returns>ViewModel of group from db</returns>
         public GroupViewModel Get(int id)
         {
@@ -43,33 +43,60 @@ namespace BAL.Managers
         /// Method for inserting new group to db
         /// </summary>
         /// <param name="item">ViewModel of group</param>
-        public void Insert(GroupViewModel item)
+        public bool Insert(GroupViewModel item)
         {
-                ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            try
+            {
                 unitOfWork.ApplicationGroups.Insert(group);
                 unitOfWork.Save();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
         /// Update group in db
         /// </summary>
-        /// <param name="item">ViewModel wich need to update in db</param>
-        public void Update(GroupViewModel item)
+        /// <param name="item">ViewModel which need to update in db</param>
+        public bool Update(GroupViewModel item)
         {
-                ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            var exisctGroup = unitOfWork.ApplicationGroups.GetById(item.Id);
+            if (exisctGroup == null)
+            {
+                return false;
+            }
+            ApplicationGroup group = mapper.Map<GroupViewModel, ApplicationGroup>(item);
+            try
+            {
                 unitOfWork.ApplicationGroups.Update(group);
                 unitOfWork.Save();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
         /// Delete group by Id
         /// </summary>
-        /// <param name="id">Id of group wich need to delete</param>
-        public void Delete(int id)
+        /// <param name="id">Id of group which need to delete</param>
+        public bool Delete(int id)
         {
-                ApplicationGroup group = unitOfWork.ApplicationGroups.GetById(id);
-                unitOfWork.ApplicationGroups.Delete(group);
-                unitOfWork.Save();
+            ApplicationGroup group = unitOfWork.ApplicationGroups.GetById(id);
+            if (group == null)
+            {
+                return false;
+            }
+
+            unitOfWork.ApplicationGroups.Delete(group);
+            unitOfWork.Save();
+            return true;
         }
     }
 }
