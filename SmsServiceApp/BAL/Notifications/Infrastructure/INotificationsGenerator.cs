@@ -7,6 +7,6 @@ namespace BAL.Notifications.Infrastructure
 {
     public interface INotificationsGenerator<T>
     {
-        T SupplyWithNotifications(T item);
+        T SupplyWithCampaignNotifications(T item);
     }
 }

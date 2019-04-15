@@ -514,8 +514,7 @@
     margin-right: 5px;
   }
 .footer_content{
-    display:flex;
-    align-items:center;
+	text-align: center;
 }
 .main__menu {
     position: center;
