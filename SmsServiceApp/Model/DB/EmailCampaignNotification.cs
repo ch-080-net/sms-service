@@ -11,6 +11,8 @@ namespace WebApp.Models
         public EmailCampaign EmailCampaign { get; set; }
         public NotificationType Type { get; set; }
         public bool BeenSent { get; set; }
+        public string ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
     }
 }

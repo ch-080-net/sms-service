@@ -13,29 +13,30 @@
     <title>@Localizer["Stop Word"]</title>
 </head>
 <body>
-   
+<div class="container">
     <header>
         <h2>@Localizer["Create"]</h2>
         <h4>@Localizer["Stop Word"]</h4>
     </header>
 
     <hr />
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Word" class="control-label"></label>
-                    <input asp-for="Word" class="form-control" placeholder="@Localizer["Enter stop word"]" />
-                    <span asp-validation-for="Word" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="@Localizer["Create"]" class="btn btn-success" />
-                    <a class="btn btn-primary" asp-action="Index"><i class="glyphicon glyphicon-arrow-left"></i> @Localizer["Back to List"]</a>
-                </div>
-            </form>
-        </div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Word" class="control-label"></label>
+                <input asp-for="Word" class="form-control" placeholder="@Localizer["Enter stop word"]" />
+                <span asp-validation-for="Word" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-success" />
+                <a class="btn btn-primary" asp-action="Index"><em class="glyphicon glyphicon-arrow-left"></em> @Localizer["Back to List"]</a>
+            </div>
+        </form>
     </div>
+</div>
+</div>
 </body>
     </html>
 @section Scripts {

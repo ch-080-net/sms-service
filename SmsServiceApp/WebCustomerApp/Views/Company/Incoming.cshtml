@@ -9,50 +9,52 @@
     <title>@Localizer["Incoming Messages"]</title>
 </head>
 <body>
-<h2>@Localizer["Incoming Messages"]</h2>
-<hr />
-<div class="container">
-    <div class="col-lg-9">
-        <table class="table table-striped ">
-            <thead class="thead-dark">
-                <tr>
-                    <th class="col-md-2">
-                        @Html.DisplayNameFor(model => model.SenderPhone)
-                    </th>
-                    <th class="col-md-6">
-                        @Html.DisplayNameFor(model => model.MessageText)
-                    </th>
-                    <th class="col-md-3">
-                        @Html.DisplayNameFor(model => model.TimeOfRecieve)
-                    </th>
-                    <th class="col-md-1"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ViewBag.RecievedMessages)
-                {
+    <div class="container">
+        <h2>@Localizer["Incoming Messages"]</h2>
+        <hr />
+    <div class="row">
+        <div class="col-lg-9">
+            <table class="table table-striped ">
+                <thead class="thead-dark">
                     <tr>
-                        <td class="col-md-2">
-                            @item.SenderPhone
-                        </td>
-                        <td class="col-md-6">
-                            @item.MessageText
-                        </td>
-                        <td class="col-md-3">
-                            @item.TimeOfRecieve
-                        </td>
-                        <td class="col-md-1">
-                            <a class="btn btn-success" asp-action="DeleteIncomingMessage"
-                               asp-route-companyId="@ViewData["companyId"]" asp-route-recievedMessageId="@item.Id">@Localizer["Delete"]</a>
-                        </td>
+                        <th class="col-md-2">
+                            @Html.DisplayNameFor(model => model.SenderPhone)
+                        </th>
+                        <th class="col-md-6">
+                            @Html.DisplayNameFor(model => model.MessageText)
+                        </th>
+                        <th class="col-md-3">
+                            @Html.DisplayNameFor(model => model.TimeOfRecieve)
+                        </th>
+                        <th class="col-md-1"></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.RecievedMessages)
+                    {
+                        <tr>
+                            <td class="col-md-2">
+                                @item.SenderPhone
+                            </td>
+                            <td class="col-md-6">
+                                @item.MessageText
+                            </td>
+                            <td class="col-md-3">
+                                @item.TimeOfRecieve
+                            </td>
+                            <td class="col-md-1">
+                                <a class="btn btn-success" asp-action="DeleteIncomingMessage"
+                                   asp-route-companyId="@ViewData["companyId"]" asp-route-recievedMessageId="@item.Id">@Localizer["Delete"]</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+     </div>
+    <div>
+        <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">@Localizer["Back to Details"]</a>
     </div>
-</div>
-<div>
-    <a class="btn btn-primary" asp-action="Details" asp-route-companyId="@ViewData["companyId"]">@Localizer["Back to Details"]</a>
-</div>
+     </div>
 </body>
 </html>

@@ -63,8 +63,6 @@ namespace BAL.Managers
         public List<ContactViewModel> GetContactBySearchValue(int groupId, int pageNumber, int pageSize,
             string searchValue)
         {
-            try
-            {
                 var contacts = unitOfWork.Contacts.GetAll();
                 foreach (var contact in contacts)
                 {
@@ -77,11 +75,6 @@ namespace BAL.Managers
                         .Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
                 return mapper.Map<IEnumerable<Contact>, List<ContactViewModel>>(contacts);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -91,16 +84,9 @@ namespace BAL.Managers
         /// <returns></returns>
         public int GetContactCount(int groupId)
         {
-            try
-            {
                 List<Contact> contacts = unitOfWork.Contacts.Get(
                     filter: item => item.ApplicationGroupId == groupId).ToList();
                 return contacts.Count;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -132,8 +118,6 @@ namespace BAL.Managers
         /// <returns></returns>
         public bool CreateContact(ContactViewModel contactModel, int groupId)
         {
-            try
-            {
                 Contact newContact = mapper.Map<Contact>(contactModel);
                 newContact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get
@@ -158,11 +142,6 @@ namespace BAL.Managers
                 unitOfWork.Contacts.Insert(newContact);
                 unitOfWork.Save();
                 return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -171,16 +150,9 @@ namespace BAL.Managers
         /// <param name="id">Id of contact</param>
         public void DeleteContact(int id)
         {
-            try
-            {
                 Contact contact = unitOfWork.Contacts.GetById(id);
                 unitOfWork.Contacts.Delete(contact);
                 unitOfWork.Save();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
         /// <summary>
@@ -191,8 +163,6 @@ namespace BAL.Managers
         /// <returns></returns>
         public bool UpdateContact(ContactViewModel contactModel, int groupId)
         {
-            try
-            {
                 Contact contact = mapper.Map<Contact>(contactModel);
                 contact.ApplicationGroupId = groupId;
                 List<Phone> phone = unitOfWork.Phones.Get(filter: item => item.PhoneNumber == contactModel.PhonePhoneNumber).ToList();
@@ -212,11 +182,6 @@ namespace BAL.Managers
                 unitOfWork.Contacts.Update(contact);
                 unitOfWork.Save();
                 return true;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
         }
 
         public void AddContactFromFile(string data, string Id)
@@ -237,7 +202,6 @@ namespace BAL.Managers
 
         private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
         {
-            //var splitedContacts = string.IsNullOrEmpty(contacts) ? null : contacts.Split(',').ToList();
             var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
             var result = new List<Contact>();
             foreach (var item in splitedContactsR.Skip(1))
@@ -250,9 +214,7 @@ namespace BAL.Managers
                         temp.ApplicationGroupId = user.ApplicationGroupId;
                         var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0))
                             .FirstOrDefault();
-                        try
-                        {
-                        if (tempPhone != null)
+                        if (tempPhone == null)
                         {
                             temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
                         }
@@ -265,12 +227,7 @@ namespace BAL.Managers
                             System.Globalization.CultureInfo.InvariantCulture);
 
                         temp.Gender = Convert.ToByte(tempList.ElementAt(2));
-                    }
-                    catch
-                    {
-                    }
-                    
-                        result.Add(temp);
+					result.Add(temp);
                     
                 }
             }

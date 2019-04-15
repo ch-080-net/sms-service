@@ -1,8 +1,9 @@
-﻿new Vue({
+﻿var vue = new Vue({
     el: '#app',
     data: () => ({
         dialog: false,
         step: 1,
+        active: null,
         firstStepComplite: false,
         secondStepComplite: false,
         thirdStepComplite: false,
@@ -40,8 +41,8 @@
                         campaign: this.Campaign,
                         recepients: this.Recepients
                     },
-                    success: function () {
-                        window.location.href = "/EmailCampaign/Index";
+                    success: function (href) {
+                        window.location.href = href.newUrl;
                     },
                     error: function (request, message, error) {
                         handleException(request, message, error);
@@ -96,44 +97,49 @@
             this.thirdStepComplite = true;
         },
         AddRecepient() {
-            var valid = true;
-            var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-            if (this.Recepient.emailAddress == "") {
-                $("#RecepientEmailValidationError").text("Email field is required");
-                return;
-            }
-            else {
-                if (!re.test(this.Recepient.EmailAddress)) {
-                    $("#RecepientEmailValidationError").text("Invalid email");
+            if (vue.Campaign.recipientsCount < 100) {
+                var valid = true;
+                var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                if (this.Recepient.emailAddress == "") {
+                    $("#RecepientEmailValidationError").text("Email field is required");
                     return;
                 }
-                else
-                    $("#RecepientEmailValidationError").text("");
-            }
-            var found = false;
-            for (var i = 0; i < this.Recepients.length; i++) {
-                if (this.Recepients[i].EmailAddress == this.Recepient.EmailAddress) {
-                    found = true;
-                    break;
+                else {
+                    if (!re.test(this.Recepient.EmailAddress)) {
+                        $("#RecepientEmailValidationError").text("Invalid email");
+                        return;
+                    }
+                    else
+                        $("#RecepientEmailValidationError").text("");
                 }
+                var found = false;
+                for (var i = 0; i < this.Recepients.length; i++) {
+                    if (this.Recepients[i].EmailAddress == this.Recepient.EmailAddress) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    $("#RecepientEmailValidationError").text("Recipient with this email already exist");
+                    return;
+                }
+                this.Recepient.BirthDate = $("#birthDate").val();
+                this.index++;
+                this.Recepient.Id = this.index;
+                this.Campaign.recipientsCount++;
+                this.Recepients.push(Object.assign({}, this.Recepient));
+                this.Recepient.Id = null;
+                this.Recepient.EmailAddress = null;
+                this.Recepient.Name = null;
+                this.Recepient.Surname = null;
+                this.Recepient.BirthDate = null;
+                this.Recepient.Gender = null;
+                this.Recepient.Priority = null;
+                this.Recepient.KeyWords = null;
             }
-            if (found) {
-                $("#RecepientEmailValidationError").text("Recepient with this email already exist");
-                return;
+            else {
+                alert("Recipients limit 100");
             }
-            this.Recepient.BirthDate = $("#birthDate").val();
-            this.index++;
-            this.Recepient.Id = this.index;
-            this.Campaign.recipientsCount++;
-            this.Recepients.push(Object.assign({}, this.Recepient));
-            this.Recepient.Id = null;
-            this.Recepient.EmailAddress = null;
-            this.Recepient.Name = null;
-            this.Recepient.Surname = null;
-            this.Recepient.BirthDate = null;
-            this.Recepient.Gender = null;
-            this.Recepient.Priority = null;
-            this.Recepient.KeyWords = null;
         },
         DeleteRecepient(event) {
             var recid = $(event.target).data("recid");
@@ -145,7 +151,60 @@
         },
         openDialog() {
             this.dialog = true;
-        }
+        },
+        GetFromFile() {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+            if (regex.test($("#fileUpload").val().toLowerCase())) {
+                if (typeof (FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.readAsText($("#fileUpload")[0].files[0]);
 
+                    reader.onload = function () {
+                        var recepientrow = reader.result;
+                        var lines = recepientrow.split("\n");
+                        var result = [];
+                        var headers = lines[0].split(",");
+                        for (var i = 1; i < lines.length; i++) {
+
+                            var obj = {};
+                            var currentline = lines[i].split(",");
+
+                            for (var j = 0; j < headers.length; j++) {
+                                obj[headers[j]] = currentline[j];
+                            }
+
+                            result.push(obj);
+                            if (vue.Campaign.recipientsCount < 100)
+                                vue.AddRecepientFromFile(obj);
+                            else {
+                                alert("Recipients limit 100")
+                                break;
+                            }
+                        }
+                        console.dir(result);
+                    }
+                }
+                else {
+                    alert("This browser does not support HTML5.");
+                }
+            }
+            else {
+                alert("Please upload a valid CSV file.");
+            }
+        },
+        AddRecepientFromFile(recepient) {
+            var found = false;
+            for (var i = 0; i < this.Recepients.length; i++) {
+                if (this.Recepients[i].EmailAddress == recepient.EmailAddress) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                return;
+            }
+            this.Recepients.push(recepient);
+            this.Campaign.recipientsCount++;
+        }
     }
 })

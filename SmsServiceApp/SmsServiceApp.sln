@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL", "BAL\BAL.csproj", "{CE7F46CE-5C8C-49BD-A372-4C1FA7364E2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAL.Test", "BAL.Test\BAL.Test.csproj", "{086AED59-1027-4F0A-B7A9-D9A1C8B554C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL.Test", "BAL.Test\BAL.Test.csproj", "{086AED59-1027-4F0A-B7A9-D9A1C8B554C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -131,7 +131,7 @@
   /* main__title */
   .main_title {
     font-family: 'Times New Roman', Times, serif;
-    font-size: 36px;
+    font-size: 3vw;
     font-weight: 700;
     font-style: italic;
     letter-spacing: 1.8px;
@@ -146,7 +146,7 @@
     display: block;
     color: #fff;
     font-family: 'Lato', sans-serif;
-    font-size: 100px;
+    font-size: 6.5vw;
     font-style: normal;
     text-transform: uppercase;
   }
@@ -287,7 +287,11 @@
     min-width: 300px;
     background-size: cover;
 }
-
+@media screen and (max-width: 600px) {
+    .tariff_photo {
+  
+    }
+}
   .app_content {
     width: 50%;
     margin-left: auto;
@@ -510,8 +514,7 @@
     margin-right: 5px;
   }
 .footer_content{
-    display:flex;
-    align-items:center;
+	text-align: center;
 }
 .main__menu {
     position: center;

@@ -54,17 +54,14 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public void CreateCampaign(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> recepients)
+        public IActionResult CreateCampaign(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> recepients)
         {
-            if (!User.Identity.IsAuthenticated)
-                return;
-            if(campaign.SendingTime == null)
-                campaign.SendingTime = DateTime.Now;
             if (campaign.SendingTime < DateTime.Now)
                 campaign.SendingTime = DateTime.Now;
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             campaign.UserId = userId;
             emailCampaignManager.IncertWithRecepients(campaign, recepients);
+            return Json(new { newUrl = Url.Action("Index", "EmailCampaign") });
         }
 
         public IActionResult Details(int campaignId)

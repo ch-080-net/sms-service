@@ -1,44 +1,57 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Model.DTOs
 @inject IViewLocalizer Localizer
 <script type="text/javascript">
     "use strict";
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
-    window.onload = notificationStartup();
+    connection.start();
     var notificationsToShow = 10;
 
-    connection.on("GetNotification", function (notification) {
-        incrementBadge();
-        connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
+    var intervalId = setInterval(function () {
+        connection.invoke("GetNumberOfNotifications").catch(function (err) {
             return console.error(err.toString());
+        }).then(function (num) {
+            setBadge(num);
         });
+    }, 15000)
+
+    async function start() {
+        try {
+            await connection.start();
+            console.log("connected");
+        } catch (err) {
+            console.log(err);
+            setTimeout(() => start(), 5000);
+        }
+    };
+
+    connection.onclose(async () => {
+        await start();
     });
 
-    connection.start();
+    connection.on('NotificationsNumRecieved', function (num) {
+        setBadge(num);
+    });
 
-    function incrementBadge() {
-        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
-        activeNotifications = JSON.parse(activeNotifications);
-        if (activeNotifications == null) {
-            activeNotifications = 0;
-        }
-        activeNotifications = JSON.stringify(++activeNotifications);
-        localStorage.setItem("numOfActiveNotifications", activeNotifications);
-        loadBadge();
+    function onNotificationsOpened() {
+        clearBadge();
+        connection.invoke("ConfirmReceival").catch(function (err) {
+            return console.error(err.toString());
+        });
     }
 
-    function loadBadge() {
-        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
-        activeNotifications = JSON.parse(activeNotifications);
-        if (activeNotifications == null) {
-            activeNotifications = "";
+    function setBadge(num) {
+        if (num == 0) {
+            document.getElementById("notificationBadge").innerHTML = "";
         }
-        document.getElementById("notificationBadge").innerHTML = activeNotifications;
+        else {
+            document.getElementById("notificationBadge").innerHTML = num;
+        }        
     }
 
     function clearBadge() {
-        localStorage.setItem("numOfActiveNotifications", null);
-        loadBadge();
+        setBadge("");
     }
 
     function fillModal() {
@@ -66,7 +79,8 @@
                 content += "</p>";
                 content += "<br />";
             }
-            content += '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="showMoreNotifications()">Load more</button>'
+            content += '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="showMoreNotifications()">'
+                + '@Localizer["Load more"]' + '</button>'
             document.getElementById("notificationContent").innerHTML = content;
         });
     }
@@ -99,8 +113,17 @@
             }
 
             content += "<br />"
-
+            
             for (var i = 0; i < value.notifications.length; i++) {
+                switch (value.notifications[i].origin) {
+                    case @((int) NotificationOrigin.CampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "Company")' + '?companyId=' + value.notifications[i].campaignId;
+                        break;
+                    case @((int) NotificationOrigin.EmailCampaignReport):
+                        value.notifications[i].href = '@Url.Action("Details", "EmailCampaign")' + '?campaignId=' + value.notifications[i].campaignId;
+                        break;
+                }
+
                 content += "<ul class='menu'><li style='width:99%'>";
                 if (value.notifications[i].href != null)
                     content += "<a href='" + value.notifications[i].href + "'>";
@@ -130,9 +153,5 @@
     function showMoreNotifications() {
         notificationsToShow += 10;
         fillModal();
-    }
-
-    function notificationStartup() {
-        loadBadge();
     }
 </script>
