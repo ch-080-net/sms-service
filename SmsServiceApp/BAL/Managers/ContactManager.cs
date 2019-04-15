@@ -184,21 +184,7 @@ namespace BAL.Managers
                 return true;
         }
 
-        //public bool AddContactFromFile(string data, string Id)
-        //{
-        //    var user = unitOfWork.ApplicationUsers.Get(x => x.Id == Id).FirstOrDefault();
-        //    if (user == null)
-        //        return false;
-            
-        //    var contacts = TranslateToContacts(data, user);
-        //    foreach (var temp in contacts)
-        //    {
-        //        unitOfWork.Contacts.Insert(temp);
-        //    }
-
-        //    unitOfWork.Save();
-        //    return true;
-        //}
+        
 
         public bool TranslateToContacts(string contacts, string userId)
         {
