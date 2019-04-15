@@ -12,5 +12,7 @@ namespace BAL.Interfaces
         IEnumerable<RecievedMessageViewModel> GetRecievedMessages(int companyId);
         void Insert(RecievedMessageDTO item);
         void Delete(int id);
+        void SearchSubscribeWordInMessages(RecievedMessageDTO message);
+        void SearchStopWordInMessages(RecievedMessageDTO message);
     }
 }
