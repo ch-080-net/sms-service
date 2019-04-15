@@ -13,7 +13,7 @@ namespace BAL.Notifications.Infrastructure
 {
     public interface INotificationHandler
     {
-        IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5);
+        IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5);
         NotificationReportDTO GetWebNotificationsReport(string userId);
         int GetNumOfWebNotifications(string userId);
 

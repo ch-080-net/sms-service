@@ -21,7 +21,7 @@ namespace BAL.Notifications
             this.unitOfWork = unitOfWork;
         }
 
-        public Company SupplyWithNotifications(Company item)
+        public Company SupplyWithCampaignNotifications(Company item)
         {
             if (item == null)
             {
