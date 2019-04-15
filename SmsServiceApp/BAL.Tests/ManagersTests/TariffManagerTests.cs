@@ -17,9 +17,17 @@ namespace BAL.Tests.ManagersTests
 	[TestFixture]
 	public class TariffManagerTests : TestInitializer
     {
-        ITariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
+        ITariffManager manager;
 
-        [Test]
+        [SetUp]
+        protected override void Initialize()
+        {
+	        base.Initialize();
+	        manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
+	        TestContext.WriteLine("Overrided");
+        }
+
+		[Test]
         public void Update_ExistingObject_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
@@ -76,7 +84,8 @@ namespace BAL.Tests.ManagersTests
         {
             TariffViewModel testTariff = new TariffViewModel();
 
-             mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+            mockUnitOfWork.Setup(n => n.Tariffs.GetById(9)).Returns(new Tariff() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 });
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
 
             var result = manager.Delete(testTariff, 9);
 

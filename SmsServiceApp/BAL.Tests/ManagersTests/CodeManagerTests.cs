@@ -17,9 +17,17 @@ namespace BAL.Tests.ManagersTests
 	[TestFixture]
 	public class CodeManagerTests : TestInitializer
 	{
-        ICodeManager manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
+        ICodeManager manager;
 
-        [Test]
+        [SetUp]
+        protected override void Initialize()
+        {
+	        base.Initialize();
+			manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
+	        TestContext.WriteLine("Overrided");
+        }
+
+		[Test]
         public void Add_EmptyCode_ErrorResult()
         {
             var emptyCode = new CodeViewModel();
