@@ -49,9 +49,9 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
 
-        public void MarkAs(MessageDTO messages, MessageState messageState)
+        public void MarkAs(MessageDTO message, MessageState messageState)
         {
-            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
+            var tempRecipient = unitOfWork.Mailings.GetById(message.RecipientId);
             if (tempRecipient != null)
                 tempRecipient.MessageState = messageState;
             unitOfWork.Save();

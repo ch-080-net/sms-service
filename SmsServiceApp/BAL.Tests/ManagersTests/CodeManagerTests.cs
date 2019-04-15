@@ -1,46 +1,25 @@
-﻿using AutoMapper;
-using BAL.Managers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.Interfaces;
-using Model.ViewModels.OperatorViewModels;
-using Moq;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using WebApp.Models;
-using System.Linq;
-using System;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
+using BAL.Managers;
+using Model.Interfaces;
 using Model.ViewModels.CodeViewModels;
-using Page = Model.ViewModels.OperatorViewModels.Page;
+using Moq;
+using NUnit.Framework;
+using WebApp.Models;
 using PageState = Model.ViewModels.CodeViewModels.PageState;
 
-namespace BAL.Test.ManagersTests
+namespace BAL.Tests.ManagersTests
 {
-    [TestClass]
-    public class CodeManagerTests
-    {
-        private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-        private static Mock<IMapper> mockMapper = new Mock<IMapper>();
+	[TestFixture]
+	public class CodeManagerTests : TestInitializer
+	{
         ICodeManager manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
-        public TestContext TestContext { get; set; }
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            TestContext.WriteLine("Initialize test data");
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            TestContext.WriteLine($"Test name: {TestContext.TestName}");
-            TestContext.WriteLine($"Test result: {TestContext.CurrentTestOutcome}");
-            TestContext.WriteLine("Cleanup test data");
-        }
-
-        [TestMethod]
+        [Test]
         public void Add_EmptyCode_ErrorResult()
         {
             var emptyCode = new CodeViewModel();
@@ -55,7 +34,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Add_ExistingCode_ErrorResult()
         {
             var testingCode = new CodeViewModel() {OperatorCode = "+38066" };   
@@ -70,7 +49,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Add_DBError_ErrorResult()
         {
             var testingCode = new CodeViewModel();
@@ -84,7 +63,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Add_CodeObject_SuccessResult()
         {
             var newCode = new CodeViewModel() {OperatorCode = "+38066" };
@@ -99,7 +78,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void GetById_NonExistingId_null()
         {
             Code nullCode = null;
@@ -111,7 +90,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void GetById_ExistingId_Code()
         {
             var testCode = new Code();
@@ -125,7 +104,7 @@ namespace BAL.Test.ManagersTests
             Assert.AreEqual(testCodeViewModel, result);
         }
 
-        [TestMethod]
+        [Test]
         public void Remove_NonExistingId_ErrorResult()
         {
             const int testId = 11;
@@ -139,7 +118,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Remove_DBError_ErrorResult()
         {
             const int testId = 11;
@@ -153,7 +132,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Remove_ExistingId_SuccessResult()
         {
             const int testId = 11;
@@ -167,7 +146,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_NullOperatorCode_ErrorResult()
         {
             var testCodeViewModel = new CodeViewModel();
@@ -181,7 +160,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_EmptyOperatorCode_ErrorResult()
         {
             var testCodeViewModel = new CodeViewModel() {OperatorCode = ""};
@@ -195,7 +174,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_ExistingOperatorCode_ErrorResult()
         {
             var testCodeViewModel = new CodeViewModel() { OperatorCode = "+38066" };
@@ -211,7 +190,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_DBError_ErrorResult()
         {
             var testCodeViewModel = new CodeViewModel() { OperatorCode = "+38066" };
@@ -225,7 +204,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsFalse(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void Update_ValidCode_SuccessResult()
         {
             var testCodeViewModel = new CodeViewModel() { OperatorCode = "+38066" };
@@ -239,7 +218,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsTrue(result.Success);
         }
 
-        [TestMethod]
+        [Test]
         public void GetPage_nullPageState_null()
         {
             PageState testPageState = null;
@@ -256,7 +235,7 @@ namespace BAL.Test.ManagersTests
             Assert.IsNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void GetPage_IncorrectPageState_Page()
         {
             PageState testPageState = new PageState(){CodesOnPage = 10, LastPage = -6, OperatorId = 1, OperatorName = null, Page = 100};
