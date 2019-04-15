@@ -19,15 +19,11 @@ namespace BAL.Managers
         List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue);
         int GetCampaignsCount(int groupId, string searchValue);
         int GetTariffLimit(int companyId);
-        int InsertWithId(StepViewModel item);
         void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList);
         void CreateCampaignCopy(ManageViewModel item);
-        void Insert(CompanyViewModel item);
-		void Update(CompanyViewModel item);
-		void Delete(int id);
-        void AddSend(SendViewModel item);
-        void AddRecieve(RecieveViewModel item);
-        void AddSendRecieve(SendRecieveViewModel item);
+        bool Insert(CompanyViewModel item);
+		bool Update(CompanyViewModel item);
+		bool Delete(int id);
         ManageViewModel GetDetails(int id);
     }
 }
