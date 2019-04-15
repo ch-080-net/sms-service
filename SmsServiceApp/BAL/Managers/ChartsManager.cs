@@ -29,7 +29,7 @@ namespace BAL.Managers
         /// <returns>Model correct chart selection, chart data, campaign name</returns>
         public CampaignDetailsViewModel GetChart(CampaignDetailsViewModel campaignDetails, string userId)
         {
-            if (campaignDetails == null || userId == null)
+            if (campaignDetails == null || string.IsNullOrEmpty(userId))
                 return null;
 
             var campaign = unitOfWork.Charts.Get(pcc => pcc.Id == campaignDetails.CampaignId
