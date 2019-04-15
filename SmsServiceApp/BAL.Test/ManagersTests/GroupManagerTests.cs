@@ -18,6 +18,8 @@ namespace BAL.Test.ManagersTests
         private Mock<IUnitOfWork> mockUnitOfWork;
         private Mock<IMapper> mockMapper;
         private GroupManager manager;
+        private ApplicationGroup itemWithId;
+        private GroupViewModel modelWithId;
 
         [SetUp]
         public void SetUp()
@@ -25,6 +27,8 @@ namespace BAL.Test.ManagersTests
             mockUnitOfWork = new Mock<IUnitOfWork>();
             mockMapper = new Mock<IMapper>();
             manager = new GroupManager(mockUnitOfWork.Object, mockMapper.Object);
+            itemWithId = new ApplicationGroup() { Id = 1, Name = "Test", PhoneId = 2 };
+            modelWithId = new GroupViewModel() { Id = 1, Name = "Test", PhoneId = 2 };
         }
 
         [Test]
@@ -51,10 +55,9 @@ namespace BAL.Test.ManagersTests
         [Test]
         public void Insert_ExistingObject_ReturnsFalse()
         {
-            GroupViewModel item = new GroupViewModel() { Id = 1, Name = "Test", PhoneId = 2 };
-            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(item))
-                .Returns(new ApplicationGroup() { Id=1, Name = "Test", PhoneId = 2 });
-            var result = manager.Insert(item);
+            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(modelWithId))
+                .Returns(itemWithId);
+            var result = manager.Insert(modelWithId);
             Assert.IsFalse(result);
         }
 
@@ -70,28 +73,23 @@ namespace BAL.Test.ManagersTests
         [Test]
         public void Update_GroupWithoutPhone_ReturnFalse()
         {
-            GroupViewModel item = new GroupViewModel(){Id = 1, Name = "Test"};
-            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(item))
-                .Returns(new ApplicationGroup() { Id = 1, Name = "Test" });
+            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(modelWithId))
+                .Returns(itemWithId);
             mockUnitOfWork.Setup(u => u.ApplicationGroups.GetById(1))
-                .Returns(new ApplicationGroup() {Id = 1, Name = "Test"});
+                .Returns(itemWithId);
             mockUnitOfWork.Setup(u => u.Save()).Throws(new Exception());
-            var result = manager.Update(item);
+            var result = manager.Update(modelWithId);
             Assert.IsFalse(result);
         }
 
         [Test]
         public void Update_ExistingGroup_ReturnTrue()
         {
-            GroupViewModel item = new GroupViewModel(){Id =2, Name = "Test", PhoneId = 2};
-            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(item))
-                .Returns(new ApplicationGroup() { Id = 2, Name = "Test", PhoneId = 2 });
+            mockMapper.Setup(m => m.Map<GroupViewModel, ApplicationGroup>(modelWithId))
+                .Returns(itemWithId);
             mockUnitOfWork.Setup(u =>
-                u.ApplicationGroups.GetById(item.Id)).Returns(new ApplicationGroup()
-                {
-                    Id = 2, Name = "Test2", PhoneId = 2
-                });
-            var result = manager.Update(item);
+                u.ApplicationGroups.GetById(itemWithId.Id)).Returns(itemWithId);
+            var result = manager.Update(modelWithId);
             Assert.IsTrue(result);
         }
 
@@ -120,10 +118,55 @@ namespace BAL.Test.ManagersTests
         public void Delete_ExistingObject_ReturnTrue()
         {
             mockUnitOfWork.Setup(u => u.ApplicationGroups.GetById(1))
-                .Returns(new ApplicationGroup() {Id = 1, Name = "Test", PhoneId = 2});
+                .Returns(itemWithId);
             var result = manager.Delete(1);
             Assert.IsTrue(result);
         }
 
+        [Test]
+        public void Get_NotExistingId_ReturnNull()
+        {
+            mockUnitOfWork.Setup(u => u.ApplicationGroups.GetById(0));
+            var result = manager.Get(0);
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void Get_ExistingId_ReturnGroupViewModel()
+        {
+            mockUnitOfWork.Setup(u => u.ApplicationGroups.GetById(1))
+                .Returns(itemWithId);
+            mockMapper.Setup(m => m.Map<ApplicationGroup, GroupViewModel>(itemWithId))
+                .Returns(modelWithId);
+            var result = manager.Get(1);
+            Assert.That(result, Is.EqualTo(modelWithId));
+        }
+
+        [Test]
+        public void GetGroups_EmptyList_ReturnEmpty()
+        {
+            mockUnitOfWork.Setup(u => u.ApplicationGroups.GetAll());
+            var result = manager.GetGroups();
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void GetGroups_ExistingGroup_ReturnIEnumerable()
+        {
+            List<ApplicationGroup> list = new List<ApplicationGroup>()
+            {
+                itemWithId
+            };
+            List<GroupViewModel> listModels = new List<GroupViewModel>()
+            {
+               modelWithId
+            };
+            mockUnitOfWork.Setup(u => u.ApplicationGroups.GetAll())
+                .Returns(list);
+            mockMapper.Setup(m => m.Map<IEnumerable<ApplicationGroup>, IEnumerable<GroupViewModel>>(list))
+                .Returns(listModels);
+            var result = manager.GetGroups();
+            Assert.That(result, Is.EqualTo(listModels));
+        }
     }
 }
