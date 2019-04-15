@@ -191,12 +191,24 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public void UploadFile(string fileData)
+        public IActionResult UploadFile(string fileData)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-           contactManager.AddContactFromFile(fileData, userId);
-        }
+            try
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+                if (contactManager.TranslateToContacts(fileData, userId))
+                    return new ObjectResult("Phone added successfully!");
+                else
+                    return new ObjectResult("Contact with this phone number already exist!");
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(ex.Message);
+            }
+        }
+       
     }
+
 }
+
