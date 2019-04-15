@@ -13,22 +13,20 @@ using WebApp.Models;
 namespace BAL.Tests.ManagersTests
 {
     [TestFixture]
-    public class GroupManagerTests
+    public class GroupManagerTests : TestInitializer
     {
-        private Mock<IUnitOfWork> mockUnitOfWork;
-        private Mock<IMapper> mockMapper;
         private GroupManager manager;
         private ApplicationGroup itemWithId;
         private GroupViewModel modelWithId;
 
         [SetUp]
-        public void SetUp()
+        protected override void Initialize()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
-            manager = new GroupManager(mockUnitOfWork.Object, mockMapper.Object);
-            itemWithId = new ApplicationGroup() { Id = 1, Name = "Test", PhoneId = 2 };
-            modelWithId = new GroupViewModel() { Id = 1, Name = "Test", PhoneId = 2 };
+	        base.Initialize();
+	        manager = new GroupManager(mockUnitOfWork.Object, mockMapper.Object);
+	        itemWithId = new ApplicationGroup() { Id = 1, Name = "Test", PhoneId = 2 };
+	        modelWithId = new GroupViewModel() { Id = 1, Name = "Test", PhoneId = 2 };
+			TestContext.WriteLine("Overrided");
         }
 
         [Test]
