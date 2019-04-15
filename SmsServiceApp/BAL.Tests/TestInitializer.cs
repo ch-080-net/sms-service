@@ -8,13 +8,15 @@ namespace BAL.Tests
 	[TestFixture]
 	public abstract class TestInitializer
 	{
-		protected static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-		protected static Mock<IMapper> mockMapper = new Mock<IMapper>();
+		protected static Mock<IUnitOfWork> mockUnitOfWork;
+		protected static Mock<IMapper> mockMapper;
 		protected TestContext TestContext { get; set; }
 
 		[SetUp]
 		protected virtual void Initialize()
 		{
+			mockUnitOfWork = new Mock<IUnitOfWork>();
+			mockMapper = new Mock<IMapper>();
 			TestContext.WriteLine("Initialize test data");
 		}
 
