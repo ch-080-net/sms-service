@@ -261,4 +261,10 @@
   <data name="Users in group" xml:space="preserve">
     <value>Користувачі в групі</value>
   </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Сповіщення</value>
+  </data>
+  <data name="View all" xml:space="preserve">
+    <value>Переглянути всі</value>
+  </data>
 </root>

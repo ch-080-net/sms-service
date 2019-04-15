@@ -71,7 +71,7 @@ namespace BAL.Managers
         {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
                 unitOfWork.Companies.Insert(company);
-                notificationsGenerator.SupplyWithNotifications(company);
+                notificationsGenerator.SupplyWithCampaignNotifications(company);
                 unitOfWork.Save();
         }
 
@@ -129,7 +129,7 @@ namespace BAL.Managers
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
-            notificationsGenerator.SupplyWithNotifications(company);
+            notificationsGenerator.SupplyWithCampaignNotifications(company);
             unitOfWork.Save();
             foreach (var recipient in recipientList)
             {
@@ -183,7 +183,7 @@ namespace BAL.Managers
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
-            notificationsGenerator.SupplyWithNotifications(company);
+            notificationsGenerator.SupplyWithCampaignNotifications(company);
             unitOfWork.Save();
            
         }
@@ -283,7 +283,7 @@ namespace BAL.Managers
                 company.StartTime = item.RecieveModel.StartTime; 
                 company.EndTime = item.RecieveModel.EndTime;
                 int id = unitOfWork.Companies.InsertWithId(company);
-                notificationsGenerator.SupplyWithNotifications(company);
+                notificationsGenerator.SupplyWithCampaignNotifications(company);
                 unitOfWork.Save();
                 return id;
         }        

@@ -21,7 +21,7 @@ namespace BAL.Notifications
             this.unitOfWork = unitOfWork;
         }
 
-        public EmailCampaign SupplyWithNotifications(EmailCampaign item)
+        public EmailCampaign SupplyWithCampaignNotifications(EmailCampaign item)
         {
             if (item == null)
             {
