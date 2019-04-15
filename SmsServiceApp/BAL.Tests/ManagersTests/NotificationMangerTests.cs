@@ -17,17 +17,14 @@ using BAL.Notifications.Infrastructure;
 namespace BAL.Tests.ManagersTests
 {
     [TestFixture]
-    public class NotificationMangerTests
+    public class NotificationMangerTests : TestInitializer
     {
-        private Mock<IUnitOfWork> mockUnitOfWork;
-        private Mock<IMapper> mockMapper;
         private INotificationManager manager;
 
         [SetUp]
         public void SetUp()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
+            base.Initialize();
             manager = new NotificationManager(mockUnitOfWork.Object, mockMapper.Object);
         }
 
