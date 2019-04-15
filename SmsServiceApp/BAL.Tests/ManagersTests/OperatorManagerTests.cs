@@ -16,7 +16,7 @@ using NUnit.Framework;
 
 namespace BAL.Tests.ManagersTests
 {
-
+	[TestFixture]
 	public class OperatorManagerTests : TestInitializer
 	{
 		IOperatorManager manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);

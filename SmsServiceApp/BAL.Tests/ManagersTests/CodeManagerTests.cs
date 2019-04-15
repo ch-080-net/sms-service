@@ -14,7 +14,8 @@ using PageState = Model.ViewModels.CodeViewModels.PageState;
 
 namespace BAL.Tests.ManagersTests
 {
-    public class CodeManagerTests : TestInitializer
+	[TestFixture]
+	public class CodeManagerTests : TestInitializer
 	{
         ICodeManager manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
 

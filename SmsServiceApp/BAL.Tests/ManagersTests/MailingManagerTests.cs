@@ -18,10 +18,10 @@ using NUnit.Framework;
 
 namespace BAL.Tests.ManagersTests
 {
- 
-    public class MailingManagerTests : TestInitializer
+	[TestFixture]
+	public class MailingManagerTests : TestInitializer
 	{
-        IMailingManager manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
+		IMailingManager manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
 
         [Test]
         public void GetUnsentMessages_NoValidMessages_EmptyEnumeration()

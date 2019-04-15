@@ -14,8 +14,8 @@ using NUnit.Framework.Internal;
 
 namespace BAL.Tests.ManagersTests
 {
-  
-    public class TariffManagerTests : TestInitializer
+	[TestFixture]
+	public class TariffManagerTests : TestInitializer
     {
         ITariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
 
