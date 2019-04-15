@@ -19,7 +19,15 @@ namespace BAL.Tests.ManagersTests
 	[TestFixture]
 	public class OperatorManagerTests : TestInitializer
 	{
-		IOperatorManager manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
+		IOperatorManager manager;
+
+		[SetUp]
+		protected override void Initialize()
+		{
+			base.Initialize();
+			manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
+			TestContext.WriteLine("Overrided");
+		}
 
 		[Test]
 		public void Add_EmptyOperator_ErrorResult()
