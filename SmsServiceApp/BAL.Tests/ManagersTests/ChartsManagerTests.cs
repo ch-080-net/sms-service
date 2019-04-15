@@ -14,18 +14,16 @@ using System.Linq;
 namespace BAL.Tests.ManagersTests
 {
     [TestFixture]
-    public class ChartsManagerTests
+    public class ChartsManagerTests : TestInitializer
     {
-        private Mock<IUnitOfWork> mockUnitOfWork;
-        private Mock<IMapper> mockMapper;
         private ChartsManager manager;
 
         [SetUp]
-        public void SetUp()
+        protected override void Initialize()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
-            manager = new ChartsManager(mockUnitOfWork.Object, mockMapper.Object);
+	        base.Initialize();
+	        manager = new ChartsManager(mockUnitOfWork.Object, mockMapper.Object);
+			TestContext.WriteLine("Overrided");
         }
 
         [Test]
