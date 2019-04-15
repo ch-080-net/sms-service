@@ -17,24 +17,9 @@ using NUnit.Framework;
 namespace BAL.Tests.ManagersTests
 {
 
-	public class OperatorManagerTests
+	public class OperatorManagerTests : TestInitializer
 	{
-		private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-		private static Mock<IMapper> mockMapper = new Mock<IMapper>();
-		OperatorManager manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
-		public TestContext TestContext { get; set; }
-
-		[SetUp]
-		public void Initialize()
-		{
-			TestContext.WriteLine("Initialize test data");
-		}
-
-		[TearDown]
-		public void Cleanup()
-		{
-			TestContext.WriteLine("Cleanup test data");
-		}
+		IOperatorManager manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
 
 		[Test]
 		public void Add_EmptyOperator_ErrorResult()

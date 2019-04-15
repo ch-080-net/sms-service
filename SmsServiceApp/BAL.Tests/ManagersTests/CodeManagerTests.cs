@@ -14,24 +14,9 @@ using PageState = Model.ViewModels.CodeViewModels.PageState;
 
 namespace BAL.Tests.ManagersTests
 {
-    public class CodeManagerTests
-    {
-        private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-        private static Mock<IMapper> mockMapper = new Mock<IMapper>();
+    public class CodeManagerTests : TestInitializer
+	{
         ICodeManager manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
-        public TestContext TestContext { get; set; }
-
-        [SetUp]
-        public void Initialize()
-        {
-            TestContext.WriteLine("Initialize test data");
-        }
-
-        [TearDown]
-        public void Cleanup()
-        {
-            TestContext.WriteLine("Cleanup test data");
-        }
 
         [Test]
         public void Add_EmptyCode_ErrorResult()

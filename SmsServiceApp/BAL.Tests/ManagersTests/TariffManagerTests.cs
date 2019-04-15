@@ -15,25 +15,9 @@ using NUnit.Framework.Internal;
 namespace BAL.Tests.ManagersTests
 {
   
-    public class TariffManagerTests
+    public class TariffManagerTests : TestInitializer
     {
-        private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-        private static Mock<IMapper> mockMapper = new Mock<IMapper>();
-        TariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
-        public TestContext TestContext { get; set; }
-
-        [SetUp]
-        public void Initialize()
-        {
-            TestContext.WriteLine("Initialize test data");
-        }
-
-        [TearDown]
-        public void Cleanup()
-        {
-            TestContext.WriteLine("Cleanup test data");
-        }
-
+        ITariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
 
         [Test]
         public void Update_ExistingObject_ErrorResult()

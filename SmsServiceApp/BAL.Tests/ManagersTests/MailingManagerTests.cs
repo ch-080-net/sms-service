@@ -19,24 +19,9 @@ using NUnit.Framework;
 namespace BAL.Tests.ManagersTests
 {
  
-    public class MailingManagerTests
-    {
-        private static Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
-        private static Mock<IMapper> mockMapper = new Mock<IMapper>();
-        MailingManager manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
-        public TestContext TestContext { get; set; }
-
-        [SetUp]
-        public void Initialize()
-        {
-            TestContext.WriteLine("Initialize test data");
-        }
-
-        [TearDown]
-        public void Cleanup()
-        {
-            TestContext.WriteLine("Cleanup test data");
-        }
+    public class MailingManagerTests : TestInitializer
+	{
+        IMailingManager manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
 
         [Test]
         public void GetUnsentMessages_NoValidMessages_EmptyEnumeration()
