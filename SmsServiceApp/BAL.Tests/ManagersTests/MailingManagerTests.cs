@@ -35,7 +35,6 @@ namespace BAL.Tests.ManagersTests
         [TearDown]
         public void Cleanup()
         {
-            TestContext.WriteLine($"Test name: {TestContext.Result}");
             TestContext.WriteLine("Cleanup test data");
         }
 
