@@ -50,6 +50,7 @@ namespace BAL.Notifications
 
         public IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5)
         {
+            quantity = (quantity < 1) ? 5 : quantity;
             var notifications = unitOfWork.Notifications
                 .Get(n => n.Time <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == userId)
                 .OrderByDescending(x => x.Time).Take(quantity);

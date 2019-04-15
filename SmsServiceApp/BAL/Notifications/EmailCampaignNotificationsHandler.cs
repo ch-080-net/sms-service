@@ -52,6 +52,7 @@ namespace BAL.Notifications
 
         public override IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5)
         {
+            quantity = (quantity < 1) ? 5 : quantity;
             var result = GetWebNotificationsForEmailCampaign(userId, quantity);
             result = result.Concat(base.notificationHandler.GetWebNotifications(userId, quantity))
                 .OrderByDescending(x => x.Time).Take(quantity);
@@ -60,6 +61,7 @@ namespace BAL.Notifications
 
         private IEnumerable<WebNotificationDTO> GetWebNotificationsForEmailCampaign(string userId, int quantity = 5)
         {
+            quantity = (quantity < 1) ? 5 : quantity;
             var notifications = unitOfWork.EmailCampaignNotifications
                 .Get(n => n.EmailCampaign.SendingTime <= DateTime.Now && n.Type == NotificationType.Web && n.ApplicationUserId == userId)
                 .OrderByDescending(x => x.EmailCampaign.SendingTime).Take(quantity);
