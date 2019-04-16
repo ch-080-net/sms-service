@@ -45,7 +45,7 @@ namespace BAL.Managers
         public IEnumerable<AnswersCodeViewModel> GetAnswersCodes(int companyId)
         {
             IEnumerable<AnswersCode> answersCodes = unitOfWork.AnswersCodes.Get(r => r.CompanyId == companyId);
-            return mapper.Map<IEnumerable<AnswersCode>, List<AnswersCodeViewModel>>(answersCodes);
+            return mapper.Map<IEnumerable<AnswersCode>, IEnumerable<AnswersCodeViewModel>>(answersCodes);
         }
 
         /// <summary>
