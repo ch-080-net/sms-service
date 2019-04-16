@@ -25,8 +25,11 @@ namespace BAL.Tests.ManagersTests
         private Phone phoneSender;
         private Phone phoneRecipient;
         private SubscribeWord subscribeWord;
+        private List<SubscribeWord> listSubscribeWords;
         private RecievedMessageDTO recievedMessageDto;
+        private List<Phone> listPhones;
         private Company testCompany;
+        private List<Company> listCompanyCompanies;
         [SetUp]
         public void SetUp()
         {
@@ -35,13 +38,26 @@ namespace BAL.Tests.ManagersTests
             TestContext.WriteLine("Overrided");
             phoneSender =new Phone(){Id=9,PhoneNumber = "+380999999999" };
             phoneRecipient = new Phone() { Id = 10, PhoneNumber = "+380111111111" };
-            testCompany=new Company()
+            listPhones = new List<Phone>()
+            {
+                phoneSender,
+                phoneRecipient,
+                new Phone() {Id = 7,PhoneNumber = "+380501465619"}
+            };
+            testCompany =new Company()
             {   Id=1,
                 PhoneId = 10,
                 Name= "Test",
 
             };
+            listCompanyCompanies=new List<Company>(){ testCompany };
             subscribeWord =new SubscribeWord(){Id = 21,CompanyId = 1,SubscribePhoneId =10,Word = "subWord"};
+
+            listSubscribeWords=new List<SubscribeWord>()
+            {
+                subscribeWord,
+                new SubscribeWord() { Id = 2, Word = "test2" }
+            };
             message = new RecievedMessage() {Id = 3,CompanyId = testCompany.Id, PhoneId = 10,Message = "test"};
             viewMessage= new RecievedMessageViewModel()
             {
@@ -104,16 +120,17 @@ namespace BAL.Tests.ManagersTests
         }
 
         [Test]
+        [TestCase]
         public void SSubscribeWordInM_RecivedMessage_NullOrignator()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { subscribeWord, new SubscribeWord() { Id = 2, Word = "test2" } });
+                .Returns(listSubscribeWords);
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>() { new Phone() { PhoneNumber = "+380999999999" }, new Phone() { PhoneNumber = "+380501465615" }, null, null });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneRecipient, new Phone() { Id = 100, PhoneNumber = "+380501465615" } });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>() { testCompany });
@@ -131,13 +148,13 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_NullSubscribePhoneId()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { new SubscribeWord(){ Id = 21, CompanyId = 1, SubscribePhoneId = null, Word = "subWord" }, new SubscribeWord() { Id = 2, Word = "test2" } });
+                .Returns(new List<SubscribeWord>() { new SubscribeWord(){ Id = 21, CompanyId = 1, SubscribePhoneId = null, Word = "subWord" } });
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>() { new Phone() { PhoneNumber = "+380999999999" }, new Phone() { PhoneNumber = "+380501465615" }, null, null });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneRecipient, new Phone() { Id = 100, PhoneNumber = "+380501465615" } });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>() { testCompany });
@@ -154,13 +171,13 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_CompanyPhoneEqualRecipientPhone()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { subscribeWord, new SubscribeWord() { Id = 2, Word = "test2" } });
+                .Returns(listSubscribeWords);
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>() { new Phone() { PhoneNumber = "+380999999999" }, new Phone() { PhoneNumber = "+380501465615" }, null, null });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneSender, phoneRecipient });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetById((int) subscribeWord.SubscribePhoneId)).Returns(phoneRecipient);
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
@@ -185,13 +202,13 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_NullCompanyException()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { subscribeWord, new SubscribeWord() { Id = 2, Word = "test2" } });
+                .Returns(listSubscribeWords);
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>() { new Phone() { PhoneNumber = "+380999999999" }, new Phone() { PhoneNumber = "+380501465615" }, null, null });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneSender, phoneRecipient, new Phone() { Id = 100, PhoneNumber = "+380501465615" } });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns((List<Company>)null);
@@ -209,13 +226,13 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_NullCompany()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { subscribeWord, new SubscribeWord() { Id = 2, Word = "test2" } });
+                .Returns(listSubscribeWords);
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>() { new Phone() { PhoneNumber = "+380999999999" }, new Phone() { PhoneNumber = "+380501465615" }, null, null });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneSender, phoneRecipient, new Phone() { Id = 100, PhoneNumber = "+380501465615" } });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>(){new Company(){Id=3,PhoneId = 999}});
@@ -233,13 +250,13 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_SuccessResult()
         {
             mockUnitOfWork.Setup(m=>m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>(){subscribeWord,new SubscribeWord(){Id=2,Word = "test2"}});
+                .Returns(listSubscribeWords);
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
-                .Returns(new List<Phone>(){new Phone(){PhoneNumber = "+380999999999" },new Phone(){PhoneNumber = "+380501465615"},null,null});
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(new List<Phone>() { phoneSender,phoneRecipient, new Phone() {Id=100, PhoneNumber = "+380501465615" } });
+                .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>(){testCompany});
