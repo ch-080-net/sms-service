@@ -114,7 +114,8 @@ namespace BAL.Tests.ManagersTests
                 }
             };
 
-            var tariff = mockUnitOfWork.Setup(n => n.Tariffs.Get(It.IsAny<Expression<Func<Tariff, bool>>>(), null, "")).Returns(testList);
+            mockUnitOfWork.Setup(n => n.Tariffs
+                .Get(It.IsAny<Expression<Func<Tariff, bool>>>(), null, "")).Returns(testList);
             mockUnitOfWork.Setup(n => n.Save());
             var result = manager.Insert(testTariff);
         
@@ -185,11 +186,7 @@ namespace BAL.Tests.ManagersTests
             Assert.That(result,Is.EqualTo(new List<TariffViewModel>()));
 
         }
-        //IEnumerable<TariffViewModel> ITariffManager.GetAll()
-        //{
-        //    IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll();
-        //    return mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffViewModel>>(tariffs);
-        //}
+    
         [Test]
         public void GetAll_SuccessResult()
         {
