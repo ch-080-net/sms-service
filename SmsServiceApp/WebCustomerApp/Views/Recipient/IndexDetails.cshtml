@@ -1,0 +1,186 @@
+﻿@using Model.ViewModels.RecipientViewModels;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model IEnumerable<RecipientViewModel> 
+    @{
+    ViewData["Title"] = Localizer["Index"];
+    }
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>@Localizer["Index"]</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    </head>
+    <body>
+    <div class="container">
+    <h2>@Localizer["Recipients"]</h2>
+
+        @if (ViewData["warningMessage"] == null)
+        {
+            <p>
+                <a class="btn btn-success" asp-action="Create" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Create New"]</a>
+            </p>
+        }
+        else
+        {
+            <label class="text-danger">@ViewData["warningMessage"]</label>
+        }
+        
+            <div id="tables">
+            
+                    <label>@Localizer["Search"]</label>
+                    <input v-model="searchValue">
+                    <button value="Search" v-on:click="getData" class="btn btn-primary"> <span class="glyphicon glyphicon-search"></span> @Localizer["Search"]</button>
+                    <br />
+                    <label>@Localizer["Recipients on page"]:</label><select v-model.lazy="CountOnPage" v-on:change="getData">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>5</option>
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                    </select>
+
+                    <br />
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Phonenumber)
+                                </th>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Surname)
+                                </th>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Gender)
+                                </th>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Priority)
+                                </th>
+                                <th scope="col" class="col-md">
+                                    @Html.DisplayNameFor(model => model.Keywords)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in Recipients">
+                                <td>{{item.phonenumber}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.surname}}</td>
+                                <td>{{item.gender}}</td>
+                                <td>{{item.priority}}</td>
+                                <td>{{item.keywords}}</td>
+                                <td>
+                                    <a class="btn btn-warning" v-bind:href="'/Recipient/Edit/'+item.id+'?companyId=@ViewData["CompanyId"]'">@Localizer["Edit"]</a> |
+                                    <a class="btn btn-danger" v-bind:href="'/Recipient/Delete/'+item.id+'?companyId=@ViewData["CompanyId"]'">@Localizer["Delete"]</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="padding:inherit" class="btn-group">
+                        <button class="btn btn-default" v-on:click="previousPage"><span class='glyphicon glyphicon-triangle-left' /></button>
+                        <button class="btn btn-default" v-for="pageNumber in pages" v-on:click="getPageByNumber(pageNumber)">{{pageNumber}}</button>
+                        <button class="btn btn-default" v-on:click="nextPage"><span class='glyphicon glyphicon-triangle-right' /></button>
+                    </div>
+              
+                    <a class="btn btn-primary" asp-controller="Company" asp-action="Details" asp-route-companyId="@ViewData["CompanyId"]">@Localizer["Back to Details"]</a>
+                </div>
+            </div>
+        <script src="https://unpkg.com/vue"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="//unpkg.com/vue-plain-pagination@0.2.1"></script>
+        <script>
+
+
+       
+            var Vue1 = new Vue({
+
+                el: "#tables",
+                data: {
+                    Recipients: [],
+                    page: 1,
+                    CountOnPage: 5,
+                    PageCount: 1,
+                    pages: [],
+                    searchValue: ""
+                },
+                methods: {
+                    getRecipients() {
+                        axios({
+                            method: 'post',
+                            url: '/Recipient/Get',
+                            params: {
+                                page: this.page,
+                                countOnPage: this.CountOnPage,
+                                searchValue: this.searchValue,
+                                companyid: @ViewData["CompanyId"]
+                            }
+                        })
+                            .then(response => {
+                                this.Recipients = response.data;
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            })
+                            .finally();
+                    },
+                    getRecipientsCount() {
+                        axios({
+                            method: 'post',
+                            url: '/Recipient/GetRecipientsCount',
+                            params: {
+                                searchValue: this.searchValue,
+                                companyid: @ViewData["CompanyId"]
+                            }
+                        })
+                            .then(response => {
+                                if (response.data % this.CountOnPage == 0)
+                                    this.PageCount = response.data / this.CountOnPage;
+                                else
+                                    this.PageCount = (response.data / this.CountOnPage) + 1;
+                                this.pages = [];
+                                for (let i = 1; i <= this.PageCount; i++) {
+                                    this.pages.push(i);
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            })
+                            .finally();
+                    },
+                    getData() {
+                        this.getRecipients();
+                        this.getRecipientsCount();
+                    },
+                    nextPage() {
+                        if (this.page < parseInt(this.PageCount)) {
+                            this.page++;
+                            this.getData();
+                        }
+                    },
+                    previousPage() {
+                        if (this.page > 1) {
+                            this.page--;
+                            this.getData();
+                        }
+                    },
+                    getPageByNumber(pageNum) {
+                        this.page = pageNum;
+                        this.getData();
+                    }
+                },
+                mounted() {
+                    this.getData();
+                }
+
+            });
+
+
+        </script>
+    </body>
+</html>

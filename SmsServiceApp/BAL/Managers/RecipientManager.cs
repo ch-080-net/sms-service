@@ -35,7 +35,7 @@ namespace BAL.Managers
                 return true;
         }
 
-        public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
+        public IEnumerable<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
         {
             IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId)&& (
                 ec.Name.Contains(searchValue)    || 
@@ -47,8 +47,7 @@ namespace BAL.Managers
             {
                 recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
             }
-
-            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(Recipients);
+            return mapper.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(Recipients);
         }
 
         public int GetRecipientsCount(int companyId, string searchValue)
