@@ -21,10 +21,15 @@ namespace BAL.Tests.ManagersTests
         private Tariff modelWithId;
         private TariffViewModel itemWithId;
         private IEnumerable<TariffViewModel> listModelWithId;
+        ITariffManager manager;
 
-      [SetUp]
-        public void SetUp()
+        [SetUp]
+        protected override void Initialize()
         {
+	        base.Initialize();
+	        manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
+	        TestContext.WriteLine("Overrided");
+     
             modelWithId =new Tariff() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 };
             itemWithId = new TariffViewModel() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 };
             listModelWithId = new List<TariffViewModel>() {itemWithId};
@@ -86,7 +91,8 @@ namespace BAL.Tests.ManagersTests
         {
             TariffViewModel testTariff = new TariffViewModel();
 
-             mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
+            mockUnitOfWork.Setup(n => n.Tariffs.GetById(9)).Returns(new Tariff() { Id = 9, Name = "kjn", Limit = 4, Price = 5, Description = "test", OperatorId = 4 });
+			mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
 
             var result = manager.Delete(testTariff, 9);
 

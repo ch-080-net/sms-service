@@ -17,9 +17,17 @@ namespace BAL.Tests.ManagersTests
 	[TestFixture]
 	public class CodeManagerTests : TestInitializer
 	{
-        ICodeManager manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
+        ICodeManager manager;
 
-        [Test]
+        [SetUp]
+        protected override void Initialize()
+        {
+	        base.Initialize();
+			manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
+	        TestContext.WriteLine("Overrided");
+        }
+
+		[Test]
         public void Add_EmptyCode_ErrorResult()
         {
             var emptyCode = new CodeViewModel();
@@ -52,7 +60,7 @@ namespace BAL.Tests.ManagersTests
         [Test]
         public void Add_DBError_ErrorResult()
         {
-            var testingCode = new CodeViewModel();
+            var testingCode = new CodeViewModel { OperatorCode = "+36778"};
             mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), It.IsAny<Func<IQueryable<Code>,
                 IOrderedQueryable<Code>>>(), It.IsAny<string>()))
                 .Returns(new List<Code>());
@@ -250,6 +258,40 @@ namespace BAL.Tests.ManagersTests
             var result = manager.GetPage(testPageState);
 
             Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void GetPage_CodesOnPageLessThen1_Page()
+        {
+            PageState testPageState = new PageState(){CodesOnPage = -10, LastPage = -6, OperatorId = 1, OperatorName = null, Page = 100};
+            var codeList = new List<Code>() {new Code()};
+            var codeViewModelList = new List<CodeViewModel>() {new CodeViewModel()};
+            mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), It.IsAny<Func<IQueryable<Code>,
+                IOrderedQueryable<Code>>>(), It.IsAny<string>())).Returns(codeList);
+            mockUnitOfWork.Setup(m => m.Operators.GetById(It.Is<int>(x => x == testPageState.OperatorId))).Returns(new Operator(){Name = "Zhora"});
+            mockMapper.Setup(m => m.Map<IEnumerable<Code>,
+                IEnumerable<CodeViewModel>>(It.Is<IEnumerable<Code>>(x => x.Equals(codeList)))).Returns(codeViewModelList);
+
+            var result = manager.GetPage(testPageState);
+
+            Assert.GreaterOrEqual(result.PageState.CodesOnPage, 1);
+        }
+
+        [Test]
+        public void GetPage_SelectedPageLessThen1_Page()
+        {
+            PageState testPageState = new PageState() { CodesOnPage = 10, LastPage = 6, OperatorId = 1, OperatorName = null, Page = -10 };
+            var codeList = new List<Code>() { new Code() };
+            var codeViewModelList = new List<CodeViewModel>() { new CodeViewModel() };
+            mockUnitOfWork.Setup(m => m.Codes.Get(It.IsAny<Expression<Func<Code, bool>>>(), It.IsAny<Func<IQueryable<Code>,
+                IOrderedQueryable<Code>>>(), It.IsAny<string>())).Returns(codeList);
+            mockUnitOfWork.Setup(m => m.Operators.GetById(It.Is<int>(x => x == testPageState.OperatorId))).Returns(new Operator() { Name = "Zhora" });
+            mockMapper.Setup(m => m.Map<IEnumerable<Code>,
+                IEnumerable<CodeViewModel>>(It.Is<IEnumerable<Code>>(x => x.Equals(codeList)))).Returns(codeViewModelList);
+
+            var result = manager.GetPage(testPageState);
+
+            Assert.GreaterOrEqual(result.PageState.Page, 1);
         }
 
     }

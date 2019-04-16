@@ -14,18 +14,16 @@ using System.Linq;
 namespace BAL.Tests.ManagersTests
 {
     [TestFixture]
-    public class ChartsManagerTests
+    public class ChartsManagerTests : TestInitializer
     {
-        private Mock<IUnitOfWork> mockUnitOfWork;
-        private Mock<IMapper> mockMapper;
         private ChartsManager manager;
 
         [SetUp]
-        public void SetUp()
+        protected override void Initialize()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
-            manager = new ChartsManager(mockUnitOfWork.Object, mockMapper.Object);
+	        base.Initialize();
+	        manager = new ChartsManager(mockUnitOfWork.Object, mockMapper.Object);
+			TestContext.WriteLine("Overrided");
         }
 
         [Test]
@@ -234,6 +232,31 @@ namespace BAL.Tests.ManagersTests
             var result = manager.GetChart(item, userId);
 
             Assert.NotNull(result.StackedChart);
+        }
+
+        [Test]
+        public void GetChart_IncorrectSelection_UnmodifiedViewModel()
+        {
+            CampaignDetailsViewModel item = new CampaignDetailsViewModel
+            {
+                CampaignId = 42,
+                CampaignName = "BadBoy!",
+                Selection = (ChartSelection)10
+            };
+            Company comp = new Company
+            {
+                Name = "GoodBoy",
+                Type = CompanyType.SendAndRecieve
+            };
+            string userId = "WhoIsGoodBoy?";
+            mockUnitOfWork.Setup(m => m.Charts.Get(It.IsAny<Expression<Func<Company, bool>>>(), It.IsAny<Func<IQueryable<Company>,
+                IOrderedQueryable<Company>>>(), It.IsAny<string>()))
+                .Returns(new List<Company> { comp });
+            mockMapper.Setup(m => m.Map<Company, CompaingPieChart>(It.Is<Company>(x => x == comp))).Returns(new CompaingPieChart());
+
+            var result = manager.GetChart(item, userId);
+
+            Assert.AreSame(item, result);
         }
 
 
