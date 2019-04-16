@@ -23,14 +23,19 @@ namespace BAL.Managers
         /// Delete recipient by Id
         /// </summary>
         /// <param name="id">Id of recipient wich need to delete</param>
-        public void Delete(int id)
+        public bool Delete(int id)
         {
                 Recipient recipient = unitOfWork.Recipients.GetById(id);
+                if (recipient == null)
+                {
+                    return false;
+                }
                 unitOfWork.Recipients.Delete(recipient);
                 unitOfWork.Save();
+                return true;
         }
 
-        public List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
+        public IEnumerable<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue)
         {
             IEnumerable<Recipient> Recipients = unitOfWork.Recipients.Get(ec => (ec.CompanyId == companyId)&& (
                 ec.Name.Contains(searchValue)    || 
@@ -42,8 +47,7 @@ namespace BAL.Managers
             {
                 recipient.Phone = unitOfWork.Phones.GetById(recipient.PhoneId);
             }
-
-            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(Recipients);
+            return mapper.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(Recipients);
         }
 
         public int GetRecipientsCount(int companyId, string searchValue)
@@ -72,12 +76,12 @@ namespace BAL.Managers
         /// <returns>IEnumerable of mapped to ViewModel objects</returns>
         public IEnumerable<RecipientViewModel> GetRecipients(int companyId)
         {
-            IEnumerable<Recipient> recipients = unitOfWork.Recipients.GetAll().Where(r => r.CompanyId == companyId);
+            IEnumerable<Recipient> recipients = unitOfWork.Recipients.Get(r => r.CompanyId == companyId);
             foreach (var rec in recipients)
             {
                 rec.Phone = unitOfWork.Phones.GetById(rec.PhoneId);
             }
-            return mapper.Map<IEnumerable<Recipient>, List<RecipientViewModel>>(recipients);
+            return mapper.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(recipients);
         }
 
 
@@ -86,7 +90,7 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="item">ViewModel of recipient</param>
         /// <param name="companyId">Id of company wich belongs this recipient</param>
-        public void Insert(RecipientViewModel item, int companyId)
+        public bool Insert(RecipientViewModel item, int companyId)
         {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
                 recipient.CompanyId = companyId;
@@ -105,13 +109,14 @@ namespace BAL.Managers
                 }
                 unitOfWork.Recipients.Insert(recipient);
                 unitOfWork.Save();
+                return true;
         }
 
         /// <summary>
         /// Method for updating recipient in db, and check Phone table, if phone doesn't exist - adding it to Phones
         /// </summary>
         /// <param name="item">ViewModel of recipient</param>
-        public void Update(RecipientViewModel item)
+        public bool Update(RecipientViewModel item)
         {
                 Recipient recipient = mapper.Map<RecipientViewModel, Recipient>(item);
                 List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.Phonenumber).ToList();
@@ -129,6 +134,7 @@ namespace BAL.Managers
                 }
                 unitOfWork.Recipients.Update(recipient);
                 unitOfWork.Save();
+                return true;
         }
     }
 }

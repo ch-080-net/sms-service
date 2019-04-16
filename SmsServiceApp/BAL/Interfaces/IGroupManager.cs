@@ -12,8 +12,8 @@ namespace BAL.Managers
     {
         GroupViewModel Get(int id);
         IEnumerable<GroupViewModel> GetGroups();
-       bool Insert(GroupViewModel item);
-       bool Update(GroupViewModel item);
-       bool Delete(int id);
+        bool Insert(GroupViewModel item);
+        bool Update(GroupViewModel item);
+        bool Delete(int id);
     }
 }

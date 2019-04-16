@@ -26,7 +26,7 @@ namespace BAL.Managers
         /// <returns>Get Tariff from Operators</returns>
         public IEnumerable<TariffViewModel> GetTariffs(int operatorId)
         {
-            IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.GetAll().Where(op => op.OperatorId == operatorId);
+            IEnumerable<Tariff> tariffs = unitOfWork.Tariffs.Get(op => op.OperatorId == operatorId);
 
             return mapper.Map<IEnumerable<Tariff>, IEnumerable<TariffViewModel>>(tariffs);
         }

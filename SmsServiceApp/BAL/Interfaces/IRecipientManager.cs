@@ -12,11 +12,11 @@ namespace BAL.Managers
     public interface IRecipientManager
     {
         IEnumerable<RecipientViewModel> GetRecipients(int companyId);
-        List<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue);
+        IEnumerable<RecipientViewModel> GetRecipients(int companyId, int page, int countOnPage, string searchValue);
         int GetRecipientsCount(int companyId, string searchValue);
         RecipientViewModel GetRecipientById(int id);
-        void Insert(RecipientViewModel item, int companyId);
-        void Update(RecipientViewModel item);
-        void Delete(int id);
+        bool Insert(RecipientViewModel item, int companyId);
+        bool Update(RecipientViewModel item);
+        bool Delete(int id);
     }
 }
