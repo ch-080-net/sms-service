@@ -15,19 +15,16 @@ using WebApp.Models;
 namespace BAL.Tests.ManagersTests
 {
     [TestFixture]
-    public class RecipientManagerTests
+    public class RecipientManagerTests : TestInitializer
     {
-        private Mock<IUnitOfWork> mockUnitOfWork;
-        private Mock<IMapper> mockMapper;
         private RecipientManager manager;
         private Recipient item;
         private RecipientViewModel model;
 
         [SetUp]
-        public void SetUp()
+        protected override void Initialize()
         {
-            mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockMapper = new Mock<IMapper>();
+            base.Initialize();
             manager = new RecipientManager(mockUnitOfWork.Object, mockMapper.Object);
             item = new Recipient() {Id = 1, PhoneId = 1, Name = "Test", CompanyId = 1};
             model = new RecipientViewModel() { Id = 1, Name = "Test", CompanyId = 1, Phonenumber = "+380661660777"};
