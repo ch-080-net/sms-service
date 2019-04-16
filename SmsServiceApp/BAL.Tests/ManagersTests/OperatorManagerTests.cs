@@ -8,11 +8,14 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace BAL.Tests.ManagersTests
 {
@@ -27,6 +30,48 @@ namespace BAL.Tests.ManagersTests
 			base.Initialize();
 			manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
 			TestContext.WriteLine("Overrided");
+		}
+
+		[Test]
+		public void GetAll_GettingOperators_SuccessResult()
+		{
+			List<Operator> operatorsList = new List<Operator>(){new Operator(){Name = "Name"}};
+			List<OperatorViewModel> operatorsViewList = new List<OperatorViewModel>() { new OperatorViewModel() { Name = "Name" } };
+			mockUnitOfWork.Setup(n => n.Operators.GetAll())
+                .Returns(operatorsList);
+			mockMapper.Setup(m => m.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>(new List<Operator>())).Returns(operatorsViewList);
+
+			var result = manager.GetAll();
+
+			Assert.That(result, Is.EqualTo(new List<OperatorViewModel>()));
+		}
+
+		[Test]
+		public void GetByName_GettingOperators_SuccessResult()
+		{
+			Operator item = new Operator() { Name = "name" };
+			OperatorViewModel itemView = new OperatorViewModel() { Name = "name" };
+			List<Operator> operatorsList = new List<Operator>() { new Operator() { Name = "name" } };
+			mockUnitOfWork.Setup(n => n.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(),null,""))
+				.Returns(operatorsList);
+			mockMapper.Setup(m => m.Map<OperatorViewModel>(It.IsAny<Operator>())).Returns(itemView);
+
+			var result = manager.GetByName("name");
+
+			Assert.That(result, Is.EqualTo(itemView));
+		}
+
+		[Test]
+		public void GetById_GettingOperators_SuccessResult()
+		{
+			Operator item = new Operator() {Name = "name"};
+			OperatorViewModel itemView = new OperatorViewModel() {Name = "name"};
+			mockUnitOfWork.Setup(n => n.Operators.GetById(1)).Returns(item);
+			mockMapper.Setup(m => m.Map<OperatorViewModel>(item)).Returns(itemView);
+
+			var result = manager.GetById(1);
+
+			Assert.That(result, Is.EqualTo(itemView));
 		}
 
 		[Test]
@@ -291,8 +336,29 @@ namespace BAL.Tests.ManagersTests
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
 			var content = "Hello World from a Fake File";
-			var fileName = "test.pdf";
+			var fileName = "test.jpg";
+
+			//Create the empty image.
+			Bitmap image = new Bitmap(50, 50);
+
+			//draw a useless line for some data
+			Graphics imageData = Graphics.FromImage(image);
+			imageData.DrawLine(new Pen(Color.Red), 0, 0, 50, 50);
+
+			//Convert to byte array
+			MemoryStream memoryStream = new MemoryStream();
+			byte[] bitmapData;
+
+			using (memoryStream)
+			{
+				image.Save(memoryStream, ImageFormat.Bmp);
+				bitmapData = memoryStream.ToArray();
+			}
 			var ms = new MemoryStream();
+
+			ms.Write(bitmapData, 0, bitmapData.Length);
+			ms.Seek(0, SeekOrigin.Begin);
+
 			var writer = new StreamWriter(ms);
 			writer.Write(content);
 			writer.Flush();

@@ -59,15 +59,12 @@ namespace WebApp.Controllers
 
             return View(recipientManager.GetRecipients(companyId).ToList());
         }
-        public List<RecipientViewModel> Get(int page, int countOnPage, string searchValue,int companyid)
+
+        public IEnumerable<RecipientViewModel> Get(int page, int countOnPage, string searchValue,int companyid)
         {
             if (searchValue == null)
             {
                 searchValue = "";
-            }
-            if (!User.Identity.IsAuthenticated)
-            {
-                return new List<RecipientViewModel>();
             }
            
             return recipientManager.GetRecipients(companyid, page, countOnPage, searchValue);
@@ -125,6 +122,22 @@ namespace WebApp.Controllers
                 return RedirectToAction("Index", "Recipient", new { companyId = (int)TempData.Peek("companyId") });
             }
             return View(item);
+        }
+
+        [HttpGet]
+        public IActionResult IndexDetails(int companyId)
+        {
+            int limit = companyManager.GetTariffLimit(companyId);
+            int count = recipientManager.GetRecipients(companyId).ToList().Count();
+
+            ViewData["CompanyId"] = companyId;
+
+            if (limit == count)
+                ViewData["warningMessage"] = "Recipients limit is full";
+            else if (limit < count)
+                ViewData["warningMessage"] = "Recipients limit is overflowing";
+
+            return View(recipientManager.GetRecipients(companyId).ToList());
         }
 
         [HttpGet]
