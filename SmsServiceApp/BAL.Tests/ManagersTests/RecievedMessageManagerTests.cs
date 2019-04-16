@@ -18,7 +18,7 @@ namespace BAL.Tests.ManagersTests
 {
     public class RecievedMessageManagerTests : TestInitializer
     {
-        IRecievedMessageManager recievedMessageManager = new RecievedMessageManager(mockUnitOfWork.Object, mockMapper.Object);
+        IRecievedMessageManager recievedMessageManager ;
 
         private RecievedMessage message;
         private RecievedMessageViewModel viewMessage;
@@ -30,7 +30,10 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         public void SetUp()
         {
-            phoneSender=new Phone(){Id=9,PhoneNumber = "+380999999999" };
+            base.Initialize();
+            recievedMessageManager = new RecievedMessageManager(mockUnitOfWork.Object, mockMapper.Object);
+            TestContext.WriteLine("Overrided");
+            phoneSender =new Phone(){Id=9,PhoneNumber = "+380999999999" };
             phoneRecipient = new Phone() { Id = 10, PhoneNumber = "+380111111111" };
             testCompany=new Company()
             {   Id=1,

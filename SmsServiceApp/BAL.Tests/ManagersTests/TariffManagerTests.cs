@@ -17,7 +17,6 @@ namespace BAL.Tests.ManagersTests
 	[TestFixture]
 	public class TariffManagerTests : TestInitializer
     {
-        readonly ITariffManager manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
         private Tariff modelWithId;
         private TariffViewModel itemWithId;
         private IEnumerable<TariffViewModel> listModelWithId;
