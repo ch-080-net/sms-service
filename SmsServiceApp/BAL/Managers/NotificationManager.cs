@@ -112,6 +112,8 @@ namespace BAL.Managers
         /// <returns>succes result if succesfull</returns>
         public TransactionResultDTO AddNotificationsToUser(ICollection<Notification> notifications)
         {
+            if (notifications == null)
+                return new TransactionResultDTO { Success = false, Details = "Null argument not allowed" };
             try
             {
                 foreach (var notification in notifications)
