@@ -24,12 +24,15 @@ namespace BAL.Tests.ManagersTests
         private RecievedMessageViewModel viewMessage;
         private Phone phoneSender;
         private Phone phoneRecipient;
+        private List<Phone> listPhones;
         private SubscribeWord subscribeWord;
         private List<SubscribeWord> listSubscribeWords;
         private RecievedMessageDTO recievedMessageDto;
-        private List<Phone> listPhones;
+        private RecievedMessageDTO recievedMessageInsert;
+        private StopWord stopWord;
+        private List<StopWord> listStopWords;
         private Company testCompany;
-        private List<Company> listCompanyCompanies;
+        private List<Company> listCompanies;
         [SetUp]
         public void SetUp()
         {
@@ -44,14 +47,16 @@ namespace BAL.Tests.ManagersTests
                 phoneRecipient,
                 new Phone() {Id = 7,PhoneNumber = "+380501465619"}
             };
+
             testCompany =new Company()
             {   Id=1,
                 PhoneId = 10,
                 Name= "Test",
+                ApplicationGroupId = 5
 
             };
-            listCompanyCompanies=new List<Company>(){ testCompany };
-            subscribeWord =new SubscribeWord(){Id = 21,CompanyId = 1,SubscribePhoneId =10,Word = "subWord"};
+            listCompanies=new List<Company>(){ testCompany };
+            subscribeWord =new SubscribeWord(){Id = 21,CompanyId = 1,SubscribePhoneId =10,Word = "sWord"};
 
             listSubscribeWords=new List<SubscribeWord>()
             {
@@ -63,16 +68,27 @@ namespace BAL.Tests.ManagersTests
             {
                 SenderPhone = "+380999999999",
                 RecipientPhone = "+380111111111",
-                MessageText = "subWord"
+                MessageText = "sWord"
             };
-            recievedMessageDto=new RecievedMessageDTO()
+            recievedMessageInsert=new RecievedMessageDTO()
+            {
+                SenderPhone = viewMessage.SenderPhone,
+                RecipientPhone = viewMessage.RecipientPhone,
+                MessageText = "test1"
+            };
+            recievedMessageDto =new RecievedMessageDTO()
            {
                SenderPhone = viewMessage.SenderPhone,
                RecipientPhone = viewMessage.RecipientPhone,
                MessageText = viewMessage.MessageText
 
            };
+            stopWord = new StopWord() {Id = 1, Word = "sWord"};
+            listStopWords=new List<StopWord>()
+            {
+                stopWord
 
+            };
         }
 
 
@@ -109,6 +125,9 @@ namespace BAL.Tests.ManagersTests
             var result = recievedMessageManager.Delete(2);
             Assert.IsFalse(result);
         }
+
+        #region RecievedMessageManager
+
         [Test]
         public void SSubscribeWordInM_RecivedMessage_NoSuchWord()
         {
@@ -130,10 +149,10 @@ namespace BAL.Tests.ManagersTests
                 .Returns(listPhones);
 
             mockUnitOfWork.Setup(m => m.Phones.GetAll())
-                .Returns(listPhones);
+                .Returns(new List<Phone>(){phoneRecipient,new Phone(){Id=2,PhoneNumber = "+380550505055"}});
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
-                .Returns(new List<Company>() { testCompany });
+                .Returns(listCompanies);
 
             mockUnitOfWork.Setup(m => m.Recipients.GetAll()).Returns(new List<Recipient>());
 
@@ -266,6 +285,159 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.Recipients.Insert(new Recipient()));
 
             var result = recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto);
+
+            Assert.IsTrue(result);
+        }
+        #endregion
+
+        #region SearchStopWordInMessages
+
+        [Test]
+        public void SStopWordInM_RecivedMessage_NullStopWord()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(new List<StopWord>() { new StopWord() { Id = 2, Word = "test1" } });
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsFalse(result);
+        }
+        [Test]
+        public void SStopWordInM_RecivedMessage_ExceptionNullCompanyObject()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(listStopWords);
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns((List<Company>)null);
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsFalse(result);
+        }
+        [Test]
+        public void SStopWordInM_RecivedMessage_ExcenNullObject()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(listStopWords);
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(new List<Phone>() { phoneRecipient, new Phone() { Id = 2, PhoneNumber = "+380550505055" } });
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsFalse(result);
+        }
+        [Test]
+        public void SStopWordInM_RecivedMessage_NullPhoneGroupUnsubscribe()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(new List<StopWord>(){new StopWord() {Id = 3,Word = "START"}});
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(listPhones);
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.GetAll())
+                .Returns((List<PhoneGroupUnsubscribe>) null);
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsFalse(result);
+        }
+        [Test]
+        public void SStopWordInM_RecivedMessage_PhoneGroupUnsubscribeNull()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(new List<StopWord>() { new StopWord() { Id = 3, Word = "START" } });
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(listPhones);
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.GetAll())
+                .Returns((new List<PhoneGroupUnsubscribe>()));
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.Delete(new PhoneGroupUnsubscribe()));
+            mockUnitOfWork.Setup(m => m.Save());
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsFalse(result);
+        }
+        [Test]
+        public void SStopWordInM_RecivedMessage_PhoneGroupUnsubscribe()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(new List<StopWord>() { new StopWord() { Id = 3, Word = "START" } });
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(listPhones);
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.GetAll())
+                .Returns((new List<PhoneGroupUnsubscribe>(){new PhoneGroupUnsubscribe(){GroupId = testCompany.ApplicationGroupId,PhoneId = phoneSender.Id}}));
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.Delete(new PhoneGroupUnsubscribe()));
+            mockUnitOfWork.Setup(m => m.Save());
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void SStopWordInM_RecivedMessage_SuccessResult()
+        {
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(listStopWords);
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.Phones.GetAll())
+                .Returns(listPhones);
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+        
+            mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.Insert(new PhoneGroupUnsubscribe()));
+            mockUnitOfWork.Setup(m => m.Save());
+
+            var result = recievedMessageManager.SearchStopWordInMessages(recievedMessageDto);
+
+            Assert.IsTrue(result);
+        }
+        #endregion
+
+
+        [Test]
+        public void Insert_RecivedMessage_SuccessResult()
+        {
+            mockUnitOfWork.Setup(m => m.Phones.Insert(new Phone()));
+            mockUnitOfWork.Setup(m => m.RecievedMessages.Insert(message));
+            mockUnitOfWork.Setup(m => m.Save());
+            mockMapper.Setup(m => m.Map<RecievedMessageDTO, RecievedMessage>(recievedMessageInsert)).Returns(message);
+               
+         
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(listPhones);
+            mockUnitOfWork.Setup(m => m.StopWords.GetAll())
+                .Returns(new List<StopWord>(){new StopWord(){Id = 1234,Word = "1234"}});
+            mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
+                .Returns(new List<SubscribeWord>() { new SubscribeWord() { Id = 1234, Word = "1234" } });
+
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
+                .Returns(listCompanies);
+            var result = recievedMessageManager.Insert(recievedMessageInsert);
 
             Assert.IsTrue(result);
         }
