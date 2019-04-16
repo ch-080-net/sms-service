@@ -56,7 +56,7 @@ namespace BAL.Tests.ManagersTests
                 .Returns(new List<Recipient>());
             mockMapper.Setup(m => m.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(new List<Recipient>()))
                 .Returns(new List<RecipientViewModel>());
-            var result = manager.GetRecipients(2);
+            var result = manager.GetRecipients(2, 1,1,"");
             Assert.That(result.Count(), Is.EqualTo(0));
         }
 
@@ -71,13 +71,15 @@ namespace BAL.Tests.ManagersTests
             {
                 model
             };
-            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), null, ""))
+            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), It
+                    .IsAny<Func<IQueryable<Recipient>,
+                        IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
                 .Returns(list);
             mockUnitOfWork.Setup(u => u.Phones.GetById(1))
                 .Returns(new Phone(){Id = 1, PhoneNumber = "+380661660777"});
             mockMapper.Setup(m => m.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(list))
                 .Returns(models);
-            var result = manager.GetRecipients(1);
+            var result = manager.GetRecipients(1, 1, 1, "");
             Assert.That(result.Count(), Is.EqualTo(1));
         }
 
@@ -90,6 +92,152 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(u => u.Recipients.Insert(item));
             mockUnitOfWork.Setup(u => u.Save());
             Assert.Throws<NullReferenceException>(() => manager.Insert(model, 1));
+        }
+
+        [Test]
+        public void Insert_NewRecipientWithNotExistingPhone_ReturnTrue()
+        {
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(model))
+                .Returns(item);
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(new List<Phone>());
+            mockUnitOfWork.Setup(u => u.Recipients.Insert(item));
+            mockUnitOfWork.Setup(u => u.Save());
+            var result = manager.Insert(model, 1);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Insert_NewRecipientWithExistingPhone_ReturnTrue()
+        {
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(model))
+                .Returns(item);
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(new List<Phone>()
+                {
+                    new Phone(){Id = 1, PhoneNumber = "+380661660777"}
+                });
+            mockUnitOfWork.Setup(u => u.Recipients.Insert(item));
+            mockUnitOfWork.Setup(u => u.Save());
+            var result = manager.Insert(model, 1);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Update_EmptyObject_ThrowException()
+        {
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(new RecipientViewModel()))
+                .Returns(new Recipient());
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""));
+            mockUnitOfWork.Setup(u => u.Recipients.Update(item));
+            mockUnitOfWork.Setup(u => u.Save());
+            Assert.Throws<ArgumentNullException>(() => manager.Update(model));
+        }
+
+        [Test]
+        public void Update_NewRecipientWithNotExistingPhone_ReturnTrue()
+        {
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(model))
+                .Returns(item);
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(new List<Phone>());
+            mockUnitOfWork.Setup(u => u.Recipients.Update(item));
+            mockUnitOfWork.Setup(u => u.Save());
+            var result = manager.Update(model);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void Update_NewRecipientWithExistingPhone_ReturnTrue()
+        {
+            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(model))
+                .Returns(item);
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(new List<Phone>()
+                {
+                    new Phone(){Id = 1, PhoneNumber = "+380661660777"}
+                });
+            mockUnitOfWork.Setup(u => u.Recipients.Update(item));
+            mockUnitOfWork.Setup(u => u.Save());
+            var result = manager.Update(model);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void GetRecipientById_NotExistingId_ReturnNull()
+        {
+            mockUnitOfWork.Setup(u => u.Recipients.GetById(0)).Returns(new Recipient());
+            mockUnitOfWork.Setup(u => u.Phones.GetById(0)).Returns(new Phone());
+            mockMapper.Setup(m => m.Map<Recipient, RecipientViewModel>(new Recipient()))
+                .Returns(new RecipientViewModel());
+            var result = manager.GetRecipientById(0);
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void GetRecipientById_ExistingId_ReturnRecipient()
+        {
+            mockUnitOfWork.Setup(u => u.Recipients.GetById(1)).Returns(item);
+            mockUnitOfWork.Setup(u => u.Phones.GetById(1)).Returns(new Phone() { Id = 1, PhoneNumber = "+380661660777" });
+            mockMapper.Setup(m => m.Map<Recipient, RecipientViewModel>(item))
+                .Returns(model);
+            var result = manager.GetRecipientById(1);
+            Assert.That(result, Is.EqualTo(model));
+        }
+
+        [Test]
+        public void GetRecipientsCount_InvalidId_ReturnsNull()
+        {
+            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), null, ""))
+                .Returns(new List<Recipient>());
+            var result = manager.GetRecipientsCount(0, null);
+            Assert.That(result, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetRecipientsCount_ExistingId_ReturnsList()
+        {
+            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), null, ""))
+                .Returns(new List<Recipient>()
+                {
+                    item
+                });
+            var result = manager.GetRecipientsCount(1, null);
+            Assert.That(result, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void GetRecipients_NotExistingIdNoPadding_ReturnNull()
+        {
+            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), null, ""))
+                .Returns(new List<Recipient>());
+            mockMapper.Setup(m => m.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(new List<Recipient>()))
+                .Returns(new List<RecipientViewModel>());
+            var result = manager.GetRecipients(2);
+            Assert.That(result.Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GetRecipients_ExistingIdNoPadding_ReturnIEnumerable()
+        {
+            IEnumerable<Recipient> list = new List<Recipient>()
+            {
+                item
+            };
+            IEnumerable<RecipientViewModel> models = new List<RecipientViewModel>()
+            {
+                model
+            };
+            mockUnitOfWork.Setup(u => u.Recipients.Get(It.IsAny<Expression<Func<Recipient, bool>>>(), It
+                    .IsAny<Func<IQueryable<Recipient>,
+                        IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
+                .Returns(list);
+            mockUnitOfWork.Setup(u => u.Phones.GetById(1))
+                .Returns(new Phone() { Id = 1, PhoneNumber = "+380661660777" });
+            mockMapper.Setup(m => m.Map<IEnumerable<Recipient>, IEnumerable<RecipientViewModel>>(list))
+                .Returns(models);
+            var result = manager.GetRecipients(1);
+            Assert.That(result.Count(), Is.EqualTo(1));
         }
     }
 }
