@@ -331,45 +331,7 @@ namespace BAL.Tests.ManagersTests
             Assert.IsTrue(result);
         }
 
-        public void CreateWithRecipient_CampignWithoutPhoneInDatabase_TrueResult()
-        {
-            ManageViewModel emptyCampaign = new ManageViewModel() { PhoneId = 1, Name = "test", Description = "Test" };
-            List<RecipientViewModel> recepientsList = new List<RecipientViewModel>();
-            List<Phone> Phones = new List<Phone>();
-            Phones.Add(
-                new Phone()
-                {
-                    Id = 10,
-                    PhoneNumber = "+380999999999"
-                });
-            Phones.Add(
-                new Phone()
-                {
-                    Id = 11,
-                    PhoneNumber = "+380999999998"
-                });
-            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
-                IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(new List<Phone>());
-            mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
-            mockUnitOfWork.Setup(u => u.Recipients.Insert(It.IsAny<Recipient>()));
-            mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));
-            mockMapper.Setup(m => m.Map<ManageViewModel, Company>(It.IsAny<ManageViewModel>()))
-                .Returns(new Company() { PhoneId = 1, Name = "test", Message = "test", Description = "Test" });
-            recepientsList.Add(new RecipientViewModel()
-            {
-                Phonenumber = "+380999999997",
-                Birthdate = DateTime.Now,
-                Gender = "Male",
-                Name = "John",
-                Surname = "Snow",
-                Priority = "Low"
-            });
-            mockMapper.Setup(m => m.Map<RecipientViewModel, Recipient>(It.IsAny<RecipientViewModel>()))
-                .Returns(new Recipient() { PhoneId = 1, BirthDate = DateTime.Now, Name = "John", Surname = "Snow", Priority = "Low" });
-            var result = manager.CreateWithRecipient(emptyCampaign, recepientsList);
-            Assert.IsTrue(result);
-        }
-
+       
 
 
 
