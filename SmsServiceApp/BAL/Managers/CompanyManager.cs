@@ -51,7 +51,7 @@ namespace BAL.Managers
 
         public List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue)
         {
-            IEnumerable<Company> Campaigns = unitOfWork.Companies.GetAll().Where(c => (c.ApplicationGroupId == groupId)
+            IEnumerable<Company> Campaigns = unitOfWork.Companies.Get(c => (c.ApplicationGroupId == groupId)
                 &&( c.Name.Contains(searchValue)||c.Description.Contains(searchValue)))
                 .Skip((page - 1) * countOnPage).Take(countOnPage);
             
@@ -94,7 +94,7 @@ namespace BAL.Managers
 		public int GetTariffLimit(int companyId)
 		{
 			Company comp = unitOfWork.Companies.Get(filter: c => c.Id == companyId).FirstOrDefault();
-			Tariff tariff = unitOfWork.Tariffs.Get(c => c.Id == comp.TariffId).FirstOrDefault();
+            Tariff tariff = unitOfWork.Tariffs.GetById((int)comp.TariffId);
 			return tariff.Limit;
 		}
 
@@ -182,19 +182,8 @@ namespace BAL.Managers
         }
         public void CreateCampaignCopy(ManageViewModel item)
         {
-            Company company = new Company()
-            {
-                Id = 0,
-                Name = item.Name,
-                Description = item.Description,
-                TariffId = item.TariffId,
-                Message = item.Message,
-                ApplicationGroupId = item.ApplicationGroupId,
-                SendingTime = item.SendingTime,
-                StartTime = item.StartTime,
-                EndTime = item.EndTime,
-                Type =item.Type
-            };
+            Company company = mapper.Map<ManageViewModel, Company>(item);
+            company.Id = 0;
             company.ApplicationGroupId = item.ApplicationGroupId;
             Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
             if (phone == null)
