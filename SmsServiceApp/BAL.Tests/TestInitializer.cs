@@ -10,7 +10,6 @@ namespace BAL.Tests
 	{
 		protected static Mock<IUnitOfWork> mockUnitOfWork;
 		protected static Mock<IMapper> mockMapper;
-		protected TestContext TestContext { get; set; }
 
 		[SetUp]
 		protected virtual void Initialize()
