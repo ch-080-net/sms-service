@@ -178,6 +178,7 @@ namespace BAL.Tests.ManagersTests
 
             Assert.That(result, Is.EqualTo(itemWithId));
         }
+
         [Test]
         public void GetTariffs_SuccessResult()
         {

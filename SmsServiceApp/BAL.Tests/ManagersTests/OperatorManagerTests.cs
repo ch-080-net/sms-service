@@ -9,10 +9,13 @@ using WebApp.Models;
 using System.Linq;
 using System;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace BAL.Tests.ManagersTests
 {
@@ -30,6 +33,48 @@ namespace BAL.Tests.ManagersTests
 		}
 
 		[Test]
+		public void GetAll_GettingOperators_SuccessResult()
+		{
+			List<Operator> operatorsList = new List<Operator>(){new Operator(){Name = "Name"}};
+			List<OperatorViewModel> operatorsViewList = new List<OperatorViewModel>() { new OperatorViewModel() { Name = "Name" } };
+			mockUnitOfWork.Setup(n => n.Operators.GetAll())
+                .Returns(operatorsList);
+			mockMapper.Setup(m => m.Map<IEnumerable<Operator>, IEnumerable<OperatorViewModel>>(new List<Operator>())).Returns(operatorsViewList);
+
+			var result = manager.GetAll();
+
+			Assert.That(result, Is.EqualTo(new List<OperatorViewModel>()));
+		}
+
+		[Test]
+		public void GetByName_GettingOperators_SuccessResult()
+		{
+			Operator item = new Operator() { Name = "name" };
+			OperatorViewModel itemView = new OperatorViewModel() { Name = "name" };
+			List<Operator> operatorsList = new List<Operator>() { new Operator() { Name = "name" } };
+			mockUnitOfWork.Setup(n => n.Operators.Get(It.IsAny<Expression<Func<Operator, bool>>>(),null,""))
+				.Returns(operatorsList);
+			mockMapper.Setup(m => m.Map<OperatorViewModel>(It.IsAny<Operator>())).Returns(itemView);
+
+			var result = manager.GetByName("name");
+
+			Assert.That(result, Is.EqualTo(itemView));
+		}
+
+		[Test]
+		public void GetById_GettingOperators_SuccessResult()
+		{
+			Operator item = new Operator() {Name = "name"};
+			OperatorViewModel itemView = new OperatorViewModel() {Name = "name"};
+			mockUnitOfWork.Setup(n => n.Operators.GetById(1)).Returns(item);
+			mockMapper.Setup(m => m.Map<OperatorViewModel>(item)).Returns(itemView);
+
+			var result = manager.GetById(1);
+
+			Assert.That(result, Is.EqualTo(itemView));
+		}
+
+		[Test]
 		public void Add_EmptyOperator_ErrorResult()
 		{
 			OperatorViewModel emptyOperator = new OperatorViewModel();
@@ -37,7 +82,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(emptyOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -52,7 +97,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -68,7 +113,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -84,7 +129,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -97,7 +142,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -112,7 +157,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -127,7 +172,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -144,7 +189,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -155,7 +200,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -166,7 +211,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -181,7 +226,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -199,7 +244,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -214,7 +259,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -246,7 +291,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -257,7 +302,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -269,7 +314,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -283,31 +328,23 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
 		public void AddLogo_LogoModel_CatchException()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
-			var content = "Hello World from a Fake File";
-			var fileName = "test.pdf";
 			var ms = new MemoryStream();
-			var writer = new StreamWriter(ms);
-			writer.Write(content);
-			writer.Flush();
-			ms.Position = 0;
+			var image = 
 			fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-			fileMock.Setup(_ => _.FileName).Returns(fileName);
-			fileMock.Setup(_ => _.Length).Returns(ms.Length);
-
 			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
 
-			var result = manager.AddLogo(logo); //bad work
+			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
-	}
+    }
 }
