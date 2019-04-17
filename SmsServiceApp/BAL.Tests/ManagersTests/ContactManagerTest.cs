@@ -34,19 +34,20 @@ namespace BAL.Tests.ManagersTests
            Assert.IsNull(result);
        }
 
-       //[Test]
-       //public void GetContact_ExistingId_Contact()
-       //{
-       //     var contact = new Contact();
-       //     var contactViewModel= new ContactViewModel();
-       //     int Id = 10;
-       //     mockUnitOfWork.Setup(x => x.Contacts.GetById(It.Is<int>(c=>c==Id))).Returns(contact);
-       //     mockMapper.Setup(m => m.Map<ContactViewModel>(It.Is<Contact>(x => x != contact))).Returns(contactViewModel);
-       //     var result = manager.GetContact(Id);
+        [Test]
+        public void GetContact_ExistingId_Contact()
+        {
+             var contact = new Contact();
+            var contactViewModel = new ContactViewModel();
+            int Id = 10;
+            mockUnitOfWork.Setup(x => x.Contacts.GetById(It.Is<int>(c => c == Id))).Returns(contact);
+            mockMapper.Setup(m => m.Map<ContactViewModel>(It.Is<Contact>(x => x == contact))).Returns(contactViewModel);
+            var result = manager.GetContact(Id);
 
-       //     Assert.AreEqual(contactViewModel,result);
+            Assert.AreEqual(contactViewModel, result);
 
-       // }
+        }
 
-    }
+       
+   }
 }
