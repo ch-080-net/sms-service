@@ -475,7 +475,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetNumberOfWebNotifications("GoodGirl");
 
-            Assert.That(result > 0);
+            Assert.That(result, Is.GreaterThan(0));
         }
 
         [Test]
@@ -498,7 +498,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetNumberOfWebNotifications("GoodGirl");
 
-            Assert.That(result == 0);
+            Assert.That(result, Is.Zero);
         }
 
 

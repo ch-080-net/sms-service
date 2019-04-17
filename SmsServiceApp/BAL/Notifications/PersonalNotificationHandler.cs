@@ -67,6 +67,8 @@ namespace BAL.Notifications
 
         public void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
+            if (notifications == null)
+                return;
             var actualNotifications = notifications.Where(x => x.Origin == NotificationOrigin.PersonalNotification);
             var personalNotifications = unitOfWork.Notifications.Get(x => actualNotifications.Any(y => y.Id == x.Id));
             foreach (var notification in personalNotifications)
@@ -77,6 +79,8 @@ namespace BAL.Notifications
 
         public void SetAsSent(string userId)
         {
+            if (string.IsNullOrEmpty(userId))
+                return;
             var personalNotifications = unitOfWork.Notifications.Get(n => n.ApplicationUserId == userId);
             foreach (var notification in personalNotifications)
             {
