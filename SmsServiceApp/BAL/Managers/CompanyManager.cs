@@ -180,8 +180,10 @@ namespace BAL.Managers
 
 
         }
-        public void CreateCampaignCopy(ManageViewModel item)
+
+        public bool CreateCampaignCopy(ManageViewModel item)
         {
+            try { 
             Company company = mapper.Map<ManageViewModel, Company>(item);
             company.Id = 0;
             company.ApplicationGroupId = item.ApplicationGroupId;
@@ -197,16 +199,23 @@ namespace BAL.Managers
             {
                 company.PhoneId = phone.Id;
             }
+
             if (company.TariffId == 0)
                 company.TariffId = null;
 
             unitOfWork.Companies.Insert(company);
             notificationsGenerator.SupplyWithCampaignNotifications(company);
             unitOfWork.Save();
-           
-        }
+            
+            return true;
+            }
 
-       
+            catch (Exception)
+            {
+            return false;
+            }
+
+}
 
         /// <summary>
         /// Get one company from db by Id

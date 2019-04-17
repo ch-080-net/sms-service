@@ -143,8 +143,6 @@ namespace BAL.Tests.ManagersTests
             Assert.That(result, Is.Null);
         }
 
-       
-
         [Test]
         public void Get_ExistingId_ReturnCompanyViewModel()
         {
@@ -436,6 +434,91 @@ namespace BAL.Tests.ManagersTests
                 .Returns(new Recipient() {PhoneId = 1, BirthDate = DateTime.Now, Name = "John", Surname = "Snow", Priority = "Low" });
             var result = manager.CreateWithRecipient(emptyCampaign, recepientsList);
             Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void CreateCompanyCopy_CampaignWithoutPhone_TrueResult()
+        {
+            ManageViewModel emptyCampaign = new ManageViewModel() { PhoneId = 1, Name = "test", Description = "Test" };
+            List<Phone> Phones = new List<Phone>();
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 10,
+                    PhoneNumber = "+380999999999"
+                });
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 11,
+                    PhoneNumber = "+380999999998"
+                });
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
+                IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(new List<Phone>());
+            mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
+            mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));
+            mockMapper.Setup(m => m.Map<ManageViewModel, Company>(It.IsAny<ManageViewModel>()))
+                .Returns(new Company() { PhoneId = 1, Name = "test", Message = "test", Description = "Test" });
+            var result = manager.CreateCampaignCopy(emptyCampaign);
+            Assert.IsTrue(result);
+        }
+
+
+        [Test]
+        public void CreateCompanyCopy_CampaignWithZeroTariff_TrueResult()
+        {
+            ManageViewModel emptyCampaign = new ManageViewModel() { TariffId = 0, Name = "test", Message = "test", Description = "Test" };
+            List<Phone> Phones = new List<Phone>();
+          
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 10,
+                    PhoneNumber = "+380999999999"
+                });
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 10,
+                    PhoneNumber = "+380999999998"
+                });
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
+                IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(Phones);
+            mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
+            mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));
+            mockMapper.Setup(m => m.Map<ManageViewModel, Company>(It.IsAny<ManageViewModel>()))
+                .Returns(new Company() { PhoneId = 1, TariffId = 0, Name = "test", Message = "test", Description = "Test" });
+            var result = manager.CreateCampaignCopy(emptyCampaign);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void CreateCompanyCopy_CampignWithWrongPhoneMapping_FalseResult()
+        {
+            ManageViewModel emptyCampaign = new ManageViewModel() { PhoneId = 1, Name = "test", Description = "Test" };
+            List<Phone> Phones = new List<Phone>();
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 10,
+                    PhoneNumber = "+380999999999"
+                });
+            Phones.Add(
+                new Phone()
+                {
+                    Id = 11,
+                    PhoneNumber = "+380999999998"
+                });
+            mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
+                IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(new List<Phone>());
+            mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
+            mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>())).Throws(new Exception());
+            mockMapper.Setup(m => m.Map<ManageViewModel, Company>(It.IsAny<ManageViewModel>()))
+                .Returns(new Company() { PhoneId = 1, Name = "test", Message = "test", Description = "Test" });
+          
+
+            var result = manager.CreateCampaignCopy(emptyCampaign);
+            Assert.IsFalse(result);
         }
 
     }

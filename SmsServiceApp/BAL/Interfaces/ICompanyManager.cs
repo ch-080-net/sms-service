@@ -20,7 +20,7 @@ namespace BAL.Managers
         int GetCampaignsCount(int groupId, string searchValue);
         int GetTariffLimit(int companyId);
         bool CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList);
-        void CreateCampaignCopy(ManageViewModel item);
+        bool CreateCampaignCopy(ManageViewModel item);
         bool Insert(CompanyViewModel item);
 		bool Update(CompanyViewModel item);
 		bool Delete(int id);
