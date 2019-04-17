@@ -34,17 +34,17 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             mockMapper.Setup(m => m.Map<IEnumerable<CampaignNotification>, IEnumerable<EmailNotificationDTO>>
                 (It.IsAny<IEnumerable<CampaignNotification>>())).Returns(new List<EmailNotificationDTO> { new EmailNotificationDTO() });
@@ -98,17 +98,17 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             mockMapper.Setup(m => m.Map<IEnumerable<CampaignNotification>, IEnumerable<SmsNotificationDTO>>
                 (It.IsAny<IEnumerable<CampaignNotification>>())).Returns(new List<SmsNotificationDTO> { new SmsNotificationDTO() });
@@ -261,17 +261,17 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             mockMapper.Setup(m => m.Map<IEnumerable<CampaignNotification>, IEnumerable<WebNotificationDTO>>
                             (It.IsAny<IEnumerable<CampaignNotification>>())).Returns(new List<WebNotificationDTO> { new WebNotificationDTO() });
@@ -328,17 +328,17 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             mockUnitOfWork.Setup(m => m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>()
                 , It.IsAny<Func<IQueryable<ApplicationUser>,
@@ -375,17 +375,17 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             mockUnitOfWork.Setup(m => m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>()
                 , It.IsAny<Func<IQueryable<ApplicationUser>,
@@ -461,21 +461,21 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.CampaignNotifications.Get(It.IsAny<Expression<Func<CampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<CampaignNotification>,
                 IOrderedQueryable<CampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<CampaignNotification> { new CampaignNotification() });
+                .Returns(new List<CampaignNotification> { new CampaignNotification { Campaign = new Company() } });
 
             mockUnitOfWork.Setup(m => m.Notifications.Get(It.IsAny<Expression<Func<Notification, bool>>>()
                 , It.IsAny<Func<IQueryable<Notification>,
                 IOrderedQueryable<Notification>>>(), It.IsAny<string>()))
-                .Returns(new List<Notification> { new Notification() });
+                .Returns(new List<Notification> { new Notification { Time = DateTime.Now } });
 
             mockUnitOfWork.Setup(m => m.EmailCampaignNotifications.Get(It.IsAny<Expression<Func<EmailCampaignNotification, bool>>>()
                 , It.IsAny<Func<IQueryable<EmailCampaignNotification>,
                 IOrderedQueryable<EmailCampaignNotification>>>(), It.IsAny<string>()))
-                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification() });
+                .Returns(new List<EmailCampaignNotification> { new EmailCampaignNotification { EmailCampaign = new EmailCampaign() } });
 
             var result = manager.GetNumberOfWebNotifications("GoodGirl");
 
-            Assert.That(result > 0);
+            Assert.That(result, Is.GreaterThan(0));
         }
 
         [Test]
@@ -498,7 +498,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetNumberOfWebNotifications("GoodGirl");
 
-            Assert.That(result == 0);
+            Assert.That(result, Is.Zero);
         }
 
 
