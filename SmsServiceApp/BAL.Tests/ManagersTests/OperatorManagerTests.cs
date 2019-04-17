@@ -8,9 +8,9 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
@@ -346,5 +346,5 @@ namespace BAL.Tests.ManagersTests
 			Assert.That(result.Success, Is.False);
 		}
 
-	}
+    }
 }

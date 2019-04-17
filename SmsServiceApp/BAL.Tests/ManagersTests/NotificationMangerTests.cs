@@ -319,7 +319,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetWebNotificationsPage("GoodGirl", a);
 
-            Assert.IsFalse(result.Any());
+            Assert.That(result.Any(), Is.False);
         }
 
         [Test]
@@ -366,7 +366,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetWebNotificationsReport("GoodGirl");
 
-            Assert.That(result.Notifications.Any());
+            Assert.That(result.Notifications.Any(), Is.True);
         }
 
         [Test]
