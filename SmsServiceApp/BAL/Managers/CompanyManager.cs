@@ -10,6 +10,7 @@ using System.Text;
 using WebApp.Models;
 using BAL.Notifications;
 using BAL.Notifications.Infrastructure;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BAL.Managers
 {
@@ -33,7 +34,7 @@ namespace BAL.Managers
         /// <returns>IEnumerable of mapped to ViewModel objects</returns>
         public IEnumerable<CompanyViewModel> GetCompanies(int groupId)
         {
-            IEnumerable<Company> companies = unitOfWork.Companies.GetAll().Where(c => c.ApplicationGroupId == groupId);
+            IEnumerable<Company> companies = unitOfWork.Companies.Get(c => c.ApplicationGroupId == groupId);
             return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyViewModel>>(companies);
         }
 
@@ -50,7 +51,7 @@ namespace BAL.Managers
 
         public List<CompanyViewModel> GetCampaigns(int groupId, int page, int countOnPage, string searchValue)
         {
-            IEnumerable<Company> Campaigns = unitOfWork.Companies.GetAll().Where(c => (c.ApplicationGroupId == groupId)
+            IEnumerable<Company> Campaigns = unitOfWork.Companies.Get(c => (c.ApplicationGroupId == groupId)
                 &&( c.Name.Contains(searchValue)||c.Description.Contains(searchValue)))
                 .Skip((page - 1) * countOnPage).Take(countOnPage);
             
@@ -67,12 +68,22 @@ namespace BAL.Managers
         /// </summary>
         /// <param name="item">ViewModel of Company</param>
         /// <param name="groupId">Id of Group wich create this company</param>
-        public void Insert(CompanyViewModel item)
+        public bool Insert(CompanyViewModel item)
         {
                 Company company = mapper.Map<CompanyViewModel, Company>(item);
-                unitOfWork.Companies.Insert(company);
-                notificationsGenerator.SupplyWithCampaignNotifications(company);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Companies.Insert(company);
+                    notificationsGenerator.SupplyWithCampaignNotifications(company);
+                    unitOfWork.Save();
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return true;
+
+
         }
 
         /// <summary>
@@ -83,7 +94,7 @@ namespace BAL.Managers
 		public int GetTariffLimit(int companyId)
 		{
 			Company comp = unitOfWork.Companies.Get(filter: c => c.Id == companyId).FirstOrDefault();
-			Tariff tariff = unitOfWork.Tariffs.Get(c => c.Id == comp.TariffId).FirstOrDefault();
+            Tariff tariff = unitOfWork.Tariffs.GetById((int)comp.TariffId);
 			return tariff.Limit;
 		}
 
@@ -91,12 +102,10 @@ namespace BAL.Managers
         /// Update base entity of Company
         /// </summary>
         /// <param name="item">CompanyViewModel item from view</param>
-        public void Update(CompanyViewModel item)
+        public bool Update(CompanyViewModel item)
         {
                 Company company = unitOfWork.Companies.GetById(item.Id);
-                company.Name = item.Name;
-                company.Description = item.Description;
-                company.IsPaused = item.IsPaused;
+               
                 if (item.TariffId > 0)
                 {
                     company.TariffId = item.TariffId;
@@ -105,14 +114,25 @@ namespace BAL.Managers
                 {
                     company.TariffId = null;
                 }
-                unitOfWork.Companies.Update(company);
-                unitOfWork.Save();
+
+                try
+                {
+                    unitOfWork.Companies.Update(company);
+                    unitOfWork.Save();
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return true;
+
         }
 
-        public void CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
+        public bool CreateWithRecipient(ManageViewModel item, List<RecipientViewModel> recipientList)
         {
+            try { 
             Company company = mapper.Map<ManageViewModel, Company>(item);
-            company.ApplicationGroupId = item.ApplicationGroupId;
+           
             Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
             if (phone == null)
             {
@@ -150,22 +170,20 @@ namespace BAL.Managers
                 unitOfWork.Recipients.Insert(newRecepient);
                 unitOfWork.Save();
             }
+
+            return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
         }
         public void CreateCampaignCopy(ManageViewModel item)
         {
-            Company company = new Company()
-            {
-                Id = 0,
-                Name = item.Name,
-                Description = item.Description,
-                TariffId = item.TariffId,
-                Message = item.Message,
-                ApplicationGroupId = item.ApplicationGroupId,
-                SendingTime = item.SendingTime,
-                StartTime = item.StartTime,
-                EndTime = item.EndTime,
-                Type =item.Type
-            };
+            Company company = mapper.Map<ManageViewModel, Company>(item);
+            company.Id = 0;
             company.ApplicationGroupId = item.ApplicationGroupId;
             Phone phone = unitOfWork.Phones.Get(filter: e => e.PhoneNumber == item.PhoneNumber).FirstOrDefault();
             if (phone == null)
@@ -188,51 +206,7 @@ namespace BAL.Managers
            
         }
 
-        /// <summary>
-        /// Find base entity of company from db
-        /// and add Send info from view
-        /// </summary>
-        /// <param name="item">SendViewModel from send view</param>
-        public void AddSend(SendViewModel item)
-        {
-                Company company = unitOfWork.Companies.GetById(item.Id);
-                company.TariffId = item.TariffId;
-                company.Message = item.Message;
-                company.SendingTime = item.SendingTime;
-                unitOfWork.Companies.Update(company);
-                unitOfWork.Save();
-        }
-
-        /// <summary>
-        /// Find base entity of company from db
-        /// and add Recieve info from view
-        /// </summary>
-        /// <param name="item">RecieveViewModel from view</param>
-        public void AddRecieve(RecieveViewModel item)
-        {
-                Company company = unitOfWork.Companies.GetById(item.Id);
-                company.StartTime = item.StartTime;
-                company.EndTime = item.EndTime;
-                unitOfWork.Companies.Update(company);
-                unitOfWork.Save();
-        }
-
-        /// <summary>
-        /// Find base entity of company from db
-        /// and add SendAndRecieve info from view
-        /// </summary>
-        /// <param name="item">SendRecieveViewModel from view</param>
-        public void AddSendRecieve(SendRecieveViewModel item)
-        {
-                Company company = unitOfWork.Companies.GetById(item.Id);
-                company.TariffId = item.TariffId;
-                company.Message = item.Message;
-                company.SendingTime = item.SendingTime;
-                company.StartTime = item.StartTime;
-                company.EndTime = item.EndTime;
-                unitOfWork.Companies.Update(company);
-                unitOfWork.Save();
-        }
+       
 
         /// <summary>
         /// Get one company from db by Id
@@ -260,32 +234,20 @@ namespace BAL.Managers
         /// Delete company by Id
         /// </summary>
         /// <param name="id">Id of company wich need to delete</param>
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-                Company company = unitOfWork.Companies.GetById(id);
-                unitOfWork.Companies.Delete(company);
-                unitOfWork.Save();
+            Company company = unitOfWork.Companies.GetById(id);
+            if (company == null)
+            {
+                return false;
+            }
+
+           unitOfWork.Companies.Delete(company);
+           unitOfWork.Save();
+            return true;
+
         }
 
-        /// <summary>
-        /// Insert company entity to db and return Id
-        /// </summary>
-        /// <param name="item">CompanyViewModel that we isert to db</param>
-        /// <returns>Id of inserted company</returns>
-        public int InsertWithId(StepViewModel item)
-        {
-                Company company = mapper.Map<StepViewModel, Company>(item);
-               
-                company.Name = item.CompanyModel.Name;
-                company.PhoneId = item.CompanyModel.PhoneId;
-                company.ApplicationGroupId = item.CompanyModel.ApplicationGroupId;
-                company.Description = item.CompanyModel.Description;
-                company.StartTime = item.RecieveModel.StartTime; 
-                company.EndTime = item.RecieveModel.EndTime;
-                int id = unitOfWork.Companies.InsertWithId(company);
-                notificationsGenerator.SupplyWithCampaignNotifications(company);
-                unitOfWork.Save();
-                return id;
-        }        
+            
     }
 }
