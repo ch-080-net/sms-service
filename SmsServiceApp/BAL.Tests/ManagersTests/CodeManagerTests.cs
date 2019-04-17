@@ -39,7 +39,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Add(emptyCode);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Add(testingCode);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -68,7 +68,8 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.Add(testingCode);
 
-            Assert.IsFalse(result.Success);
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(newCode);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsTrue(result.Success);
+            Assert.That(result.Success, Is.True);
         }
 
         [Test]
@@ -95,7 +96,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetById(42);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -109,7 +110,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetById(id);
 
-            Assert.AreEqual(testCodeViewModel, result);
+            Assert.That(testCodeViewModel, Is.EqualTo(result));
         }
 
         [Test]
@@ -123,7 +124,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Remove(testId);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -137,7 +138,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Remove(testId);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -151,7 +152,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Remove(testId);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsTrue(result.Success);
+            Assert.That(result.Success, Is.True);
         }
 
         [Test]
@@ -165,7 +166,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Update(testCodeViewModel);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -179,7 +180,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Update(testCodeViewModel);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -195,7 +196,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Update(testCodeViewModel);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -209,7 +210,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Update(testCodeViewModel);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsFalse(result.Success);
+            Assert.That(result.Success, Is.False);
         }
 
         [Test]
@@ -223,7 +224,7 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Update(testCodeViewModel);
 
             TestContext.WriteLine(result.Details);
-            Assert.IsTrue(result.Success);
+            Assert.That(result.Success, Is.True);
         }
 
         [Test]
@@ -240,7 +241,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetPage(testPageState);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -257,7 +258,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetPage(testPageState);
 
-            Assert.IsNotNull(result);
+            Assert.That(result, Is.Not.Null);
         }
 
         [Test]
@@ -274,7 +275,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetPage(testPageState);
 
-            Assert.GreaterOrEqual(result.PageState.CodesOnPage, 1);
+            Assert.That(result.PageState.CodesOnPage, Is.GreaterThanOrEqualTo(1));
         }
 
         [Test]
@@ -291,7 +292,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetPage(testPageState);
 
-            Assert.GreaterOrEqual(result.PageState.Page, 1);
+            Assert.That(result.PageState.Page, Is.GreaterThanOrEqualTo(1));
         }
 
     }
