@@ -149,6 +149,8 @@ namespace WebApp.Services
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 scope.ServiceProvider.GetService<IRecievedMessageManager>().Insert(recievedMessage);
+                scope.ServiceProvider.GetService<IRecievedMessageManager>().SearchStopWordInMessages(recievedMessage);
+                scope.ServiceProvider.GetService<IRecievedMessageManager>().SearchSubscribeWordInMessages(recievedMessage);
             }
         }
 
