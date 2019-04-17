@@ -14,7 +14,5 @@ namespace BAL.Managers
         Phone GetPhoneById(int Id);
         string GetPhoneNumber(int Id);
         void Insert(Phone item);
-        bool IsPhoneNumberExist(string phoneNumber);
-        int GetPhoneId(string number);
     }
 }
