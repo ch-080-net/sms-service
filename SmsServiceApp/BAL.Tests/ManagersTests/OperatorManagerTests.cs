@@ -82,7 +82,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(emptyOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -97,7 +97,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -113,7 +113,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -129,7 +129,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -142,7 +142,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -157,7 +157,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -172,7 +172,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -189,7 +189,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -200,7 +200,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -211,7 +211,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -226,7 +226,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -244,7 +244,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -259,7 +259,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -291,7 +291,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -302,7 +302,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -314,7 +314,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -328,51 +328,22 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
 		public void AddLogo_LogoModel_CatchException()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
-			var content = "Hello World from a Fake File";
-			var fileName = "test.jpg";
-
-			//Create the empty image.
-			Bitmap image = new Bitmap(50, 50);
-
-			//draw a useless line for some data
-			Graphics imageData = Graphics.FromImage(image);
-			imageData.DrawLine(new Pen(Color.Red), 0, 0, 50, 50);
-
-			//Convert to byte array
-			MemoryStream memoryStream = new MemoryStream();
-			byte[] bitmapData;
-
-			using (memoryStream)
-			{
-				image.Save(memoryStream, ImageFormat.Bmp);
-				bitmapData = memoryStream.ToArray();
-			}
 			var ms = new MemoryStream();
-
-			ms.Write(bitmapData, 0, bitmapData.Length);
-			ms.Seek(0, SeekOrigin.Begin);
-
-			var writer = new StreamWriter(ms);
-			writer.Write(content);
-			writer.Flush();
-			ms.Position = 0;
+			var image = 
 			fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-			fileMock.Setup(_ => _.FileName).Returns(fileName);
-			fileMock.Setup(_ => _.Length).Returns(ms.Length);
-
 			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
 
-			var result = manager.AddLogo(logo); //bad work
+			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 	}
