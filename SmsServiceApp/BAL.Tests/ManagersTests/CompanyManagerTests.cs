@@ -132,8 +132,46 @@ namespace BAL.Tests.ManagersTests
             var result = manager.Delete(1);
             Assert.IsTrue(result);
         }
-        
 
+        [Test]
+        public void GetCompanies_List_ReturnList()
+        {
+            List<Company> campaigns = new List<Company>();
+            campaigns.Add(
+                new Company()
+                {
+                    Name = "test",
+                    Description = "test",
+                    PhoneId = 1,
+                    Id = 1,
+                }
+            );
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), It
+                .IsAny<Func<IQueryable<Company>,
+                    IOrderedQueryable<Company>>>(), It.IsAny<string>())).Returns(campaigns);
+            var result = manager.GetCompanies(1);
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void GetCompaniesByPhoneId_EmptyList_ReturnEmpty()
+        {
+            List<Company> campaigns = new List<Company>();
+            campaigns.Add(
+                new Company()
+                {
+                    Name = "test",
+                    Description = "test",
+                    PhoneId = 1,
+                    Id = 1,
+                }
+            );
+            mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), It
+                .IsAny<Func<IQueryable<Company>,
+                    IOrderedQueryable<Company>>>(), It.IsAny<string>())).Returns(campaigns);
+            var result = manager.GetCompaniesByPhoneId(1);
+            Assert.That(result, Is.Empty);
+        }
 
         [Test]
         public void Get_NotExistingId_ReturnNull()
@@ -520,6 +558,8 @@ namespace BAL.Tests.ManagersTests
             var result = manager.CreateCampaignCopy(emptyCampaign);
             Assert.IsFalse(result);
         }
+
+       
 
     }
 }
