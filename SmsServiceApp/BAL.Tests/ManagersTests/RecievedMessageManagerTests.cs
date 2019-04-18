@@ -450,6 +450,7 @@ namespace BAL.Tests.ManagersTests
                 .Returns(new List<RecievedMessage>(){message});
             mockUnitOfWork.Setup(m=>m.Companies.GetById(message.CompanyId)).Returns(testCompany);
             mockUnitOfWork.Setup(m => m.Phones.GetById(message.CompanyId)).Returns(phoneRecipient);
+            mockUnitOfWork.Setup(m => m.Phones.GetById(message.PhoneId)).Returns(phoneSender);
             mockMapper.Setup(m => m.Map<RecievedMessage, RecievedMessageViewModel>(message)).Returns(viewMessage);
 
             var result = recievedMessageManager.GetRecievedMessages(message.CompanyId);
@@ -468,6 +469,7 @@ namespace BAL.Tests.ManagersTests
                     ApplicationGroupId = testCompany.ApplicationGroupId
                 });
             mockUnitOfWork.Setup(m => m.Phones.GetById(message.CompanyId)).Returns(phoneRecipient);
+            mockUnitOfWork.Setup(m => m.Phones.GetById(message.PhoneId)).Returns(phoneSender);
             mockMapper.Setup(m => m.Map<RecievedMessage, RecievedMessageViewModel>(message)).Returns(viewMessage);
 
             var result = recievedMessageManager.GetRecievedMessages(message.CompanyId);
