@@ -30,16 +30,6 @@ namespace BAL.Managers
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
 
-
-        public SubscribeWordViewModel GetWordById(int id)
-        {
-            SubscribeWord word = unitOfWork.SubscribeWords.GetById(id);
-
-            word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
-
-            return mapper.Map<SubscribeWord, SubscribeWordViewModel>(word);
-        }
-
         public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
         {
             IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll().Where(sw=>sw.CompanyId==companyId);
