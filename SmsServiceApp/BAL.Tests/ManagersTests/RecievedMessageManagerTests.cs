@@ -64,7 +64,7 @@ namespace BAL.Tests.ManagersTests
                 subscribeWord,
                 new SubscribeWord() { Id = 2, Word = "test2" }
             };
-            message = new RecievedMessage() {Id = 3,CompanyId = testCompany.Id, PhoneId = 10,Message = "test"};
+            message = new RecievedMessage() {Id = 3,CompanyId = testCompany.Id, PhoneId = phoneRecipient.Id, Message = "test"};
             viewMessage= new RecievedMessageViewModel()
             {
                 SenderPhone = "+380999999999",
@@ -161,7 +161,7 @@ namespace BAL.Tests.ManagersTests
         public void SSubscribeWordInM_RecivedMessage_NullSubscribePhoneId()
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
-                .Returns(new List<SubscribeWord>() { new SubscribeWord(){ Id = 21, CompanyId = 1, SubscribePhoneId = null, Word = "subWord" } });
+                .Returns(new List<SubscribeWord>() { new SubscribeWord(){ Id = 21, CompanyId = 1, SubscribePhoneId = null, Word = listSubscribeWords[0].Word } });
 
             mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
                 .Returns(listPhones);
@@ -265,8 +265,8 @@ namespace BAL.Tests.ManagersTests
 
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>(){testCompany});
-
-            mockUnitOfWork.Setup(m => m.Recipients.GetAll()).Returns(new List<Recipient>());
+           // r.CompanyId == subscribeCompany.Id && r.PhoneId == orignator.Id
+            mockUnitOfWork.Setup(m => m.Recipients.GetAll()).Returns(new List<Recipient>(){new Recipient(){CompanyId = testCompany.Id,PhoneId = phoneSender.Id}});
 
             mockUnitOfWork.Setup(m => m.Recipients.Insert(new Recipient()));
 
@@ -440,6 +440,38 @@ namespace BAL.Tests.ManagersTests
                 .Returns(listCompanies);
          
            Assert.That(() => { recievedMessageManager.Insert(recievedMessageInsert); }, Throws.Nothing);
+        }
+
+        [Test]
+        public void GetRecievedMessages_RecivedMessage_SuccessResult()
+        {
+            mockUnitOfWork.Setup(m =>
+                m.RecievedMessages.Get(It.IsAny<Expression<Func<RecievedMessage, bool>>>(), null, ""))
+                .Returns(new List<RecievedMessage>(){message});
+            mockUnitOfWork.Setup(m=>m.Companies.GetById(message.CompanyId)).Returns(testCompany);
+            mockUnitOfWork.Setup(m => m.Phones.GetById(message.CompanyId)).Returns(phoneRecipient);
+            mockMapper.Setup(m => m.Map<RecievedMessage, RecievedMessageViewModel>(message)).Returns(viewMessage);
+
+            var result = recievedMessageManager.GetRecievedMessages(message.CompanyId);
+            Assert.That(result,Is.EqualTo(new List<RecievedMessageViewModel>()));
+        }
+        [Test]
+        public void GetRecievedMessages_RecivedMessage_NullPhoneIdSuccessResult()
+        {
+            mockUnitOfWork.Setup(m =>
+                    m.RecievedMessages.Get(It.IsAny<Expression<Func<RecievedMessage, bool>>>(), null, ""))
+                .Returns(new List<RecievedMessage>() { message });
+            mockUnitOfWork.Setup(m => m.Companies.GetById(message.CompanyId))
+                .Returns(new Company(){Name = testCompany.Name,
+                    PhoneId = null,
+                    Id = 1,
+                    ApplicationGroupId = testCompany.ApplicationGroupId
+                });
+            mockUnitOfWork.Setup(m => m.Phones.GetById(message.CompanyId)).Returns(phoneRecipient);
+            mockMapper.Setup(m => m.Map<RecievedMessage, RecievedMessageViewModel>(message)).Returns(viewMessage);
+
+            var result = recievedMessageManager.GetRecievedMessages(message.CompanyId);
+            Assert.That(result, Is.EqualTo(new List<RecievedMessageViewModel>()));
         }
     }
 }
