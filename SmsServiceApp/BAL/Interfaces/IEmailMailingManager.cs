@@ -9,7 +9,6 @@ namespace BAL.Interfaces
     {
         IEnumerable<EmailDTO> GetUnsentEmails();
 
-        void MarkAs(IEnumerable<EmailDTO> messages, byte messageState);
         void MarkAs(EmailDTO messages, byte messageState);
     }
 }
