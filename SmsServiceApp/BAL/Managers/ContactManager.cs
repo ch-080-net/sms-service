@@ -43,8 +43,7 @@ namespace BAL.Managers
         /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
-                var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,
-                    filter: item => item.ApplicationGroupId == groupId);
+                var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize, filter: item => item.ApplicationGroupId == groupId);
                 foreach (var contact in contacts)
                 {
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
