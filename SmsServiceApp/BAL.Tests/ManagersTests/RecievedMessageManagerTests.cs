@@ -112,8 +112,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.RecievedMessages.Delete(message));
             mockUnitOfWork.Setup(m => m.Save());
 
-            var result = recievedMessageManager.Delete(3);
-            Assert.IsTrue(result);
+            Assert.That(() => { recievedMessageManager.Delete(2); }, Throws.Nothing);
         }
 
         [Test]
@@ -123,8 +122,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.RecievedMessages.Delete(message)).Throws(new Exception());
             mockUnitOfWork.Setup(m => m.Save());
 
-            var result = recievedMessageManager.Delete(2);
-            Assert.IsFalse(result);
+            Assert.That(() => { recievedMessageManager.Delete(2);}, Throws.TypeOf<TypeAccessException>());
         }
 
         #region RecievedMessageManager

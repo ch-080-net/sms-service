@@ -101,18 +101,17 @@ namespace BAL.Managers
         /// Delete Recieved Message from db
         /// </summary>
         /// <param name="id">id of recieved message for deleting</param>
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             try
             {
                 RecievedMessage recievedMessage = unitOfWork.RecievedMessages.GetById(id);
                 unitOfWork.RecievedMessages.Delete(recievedMessage);
                 unitOfWork.Save();
-                return true;
             }
             catch
             {
-                return false;
+               throw new  TypeAccessException();
             }
         }
 
