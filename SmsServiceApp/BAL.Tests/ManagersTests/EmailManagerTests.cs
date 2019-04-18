@@ -71,7 +71,7 @@ namespace BAL.Tests.ManagersTests
         }
 
         [Test]
-        public void Insert_Email_TrueResult()
+        public void Insert_Email_DoesNotThrow()
         {
             mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
             mockUnitOfWork.Setup(u => u.Save());
@@ -79,7 +79,7 @@ namespace BAL.Tests.ManagersTests
         }
 
         [Test]
-        public void Insert_WrongEmail_FalseResult()
+        public void Insert_WrongEmail_ThrowException()
         {
             mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>())).Throws(new Exception("test"));
             mockUnitOfWork.Setup(u => u.Save());
