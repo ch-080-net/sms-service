@@ -23,7 +23,7 @@ namespace BAL.Tests.ManagersTests
         protected override void Initialize()
         {
 	        base.Initialize();
-			manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
+            manager = new CodeManager(mockUnitOfWork.Object, mockMapper.Object);
 	        TestContext.WriteLine("Overrided");
         }
 
