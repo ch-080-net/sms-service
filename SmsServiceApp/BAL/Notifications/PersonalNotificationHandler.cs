@@ -67,7 +67,7 @@ namespace BAL.Notifications
 
         public void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
-            if (notifications == null)
+            if (notifications == null || !notifications.Any())
                 return;
             var actualNotifications = notifications.Where(x => x.Origin == NotificationOrigin.PersonalNotification);
             var personalNotifications = unitOfWork.Notifications.Get(x => actualNotifications.Any(y => y.Id == x.Id));

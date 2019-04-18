@@ -87,6 +87,8 @@ namespace BAL.Notifications
 
         public override void SetAsSent(IEnumerable<NotificationDTO> notifications)
         {
+            if (notifications == null || !notifications.Any())
+                return;
             var actualNotifications = notifications.Where(x => x.Origin == NotificationOrigin.EmailCampaignReport);
             var campaignNotifications = unitOfWork.EmailCampaignNotifications.Get(x => actualNotifications.Any(y => y.Id == x.Id));
             foreach (var notification in campaignNotifications)
