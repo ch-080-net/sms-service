@@ -30,7 +30,7 @@ namespace BAL.Notifications.Infrastructure
 
         public abstract int GetNumOfWebNotifications(string userId);
 
-        public abstract IEnumerable<WebNotificationDTO> GetWebNotifications(string UserId, int quantity = 5);
+        public abstract IEnumerable<WebNotificationDTO> GetWebNotifications(string userId, int quantity = 5);
 
         public abstract NotificationReportDTO GetWebNotificationsReport(string userId);
 

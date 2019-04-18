@@ -12,6 +12,6 @@ namespace BAL.Managers
         IEnumerable<MessageDTO> GetUnsentMessages();
 
         void MarkAs(IEnumerable<MessageDTO> messages, MessageState messageState);
-        void MarkAs(MessageDTO messages, MessageState messageState);
+        void MarkAs(MessageDTO message, MessageState messageState);
     }
 }

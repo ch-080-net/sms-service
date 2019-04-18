@@ -10,7 +10,7 @@ namespace BAL.Notifications
 {
     public class PersonalNotificationBuilder : IPersonalNotificationBuilder
     {
-        private ICollection<Notification> notifications;
+        private readonly ICollection<Notification> notifications;
         public PersonalNotificationBuilder(ApplicationUser applicationUser)
         {
             notifications = new List<Notification> { new Notification { Type = NotificationType.Web

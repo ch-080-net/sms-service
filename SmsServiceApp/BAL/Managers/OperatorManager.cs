@@ -19,7 +19,7 @@ namespace BAL.Managers
     /// </summary>
     public class OperatorManager : BaseManager, IOperatorManager
     {
-        IFileIoWrapper fileIo;
+        private readonly IFileIoWrapper fileIo;
         public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper, IFileIoWrapper fileIo) : base(unitOfWork, mapper)
         {
             this.fileIo = fileIo;
