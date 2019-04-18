@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using BAL.Managers;
 using Model.DTOs;
-using Model.ViewModels.EmailRecipientViewModels;
 using Moq;
 using NUnit.Framework;
 using WebApp.Models;
@@ -42,6 +39,24 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.GetUnsentEmails();
 
 			Assert.That(result, Is.Not.Empty);
+		}
+
+		[Test]
+		public void MarkAs_UndefinedRecipientId_ThrowsNothing()
+		{
+			mockUnitOfWork.Setup(m => m.EmailRecipients.GetById(1)).Returns(new EmailRecipient());
+			mockUnitOfWork.Setup(m => m.Save());
+
+			Assert.That(() => manager.MarkAs(new EmailDTO(), 1), Throws.Nothing);
+		}
+
+		[Test]
+		public void MarkAs_MessageWithRecipientId_ChangeStateAndThrowsNothing()
+		{
+			mockUnitOfWork.Setup(m => m.EmailRecipients.GetById(1)).Returns(new EmailRecipient());
+			mockUnitOfWork.Setup(m => m.Save());
+
+			Assert.That(() => manager.MarkAs(new EmailDTO(){EmailRecipientId = 1}, 1), Throws.Nothing);
 		}
 
 	}
