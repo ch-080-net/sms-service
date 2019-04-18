@@ -34,7 +34,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
@@ -156,7 +156,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.IsTrue(result.HaveVoting);
+            Assert.That(result.HaveVoting, Is.True);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.NotNull(result.CompaingPieChart);
+            Assert.That(result.CompaingPieChart, Is.Not.Null);
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.NotNull(result.PieChart);
+            Assert.That(result.PieChart, Is.Not.Null);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.NotNull(result.StackedChart);
+            Assert.That(result.StackedChart, Is.Not.Null);
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace BAL.Tests.ManagersTests
 
             var result = manager.GetChart(item, userId);
 
-            Assert.AreSame(item, result);
+            Assert.That(item, Is.SameAs(result));
         }
 
 

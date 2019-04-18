@@ -8,14 +8,15 @@ using System.Diagnostics;
 using WebApp.Models;
 using System.Linq;
 using System;
+using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using BAL.Wrappers;
 
 namespace BAL.Tests.ManagersTests
 {
@@ -23,12 +24,14 @@ namespace BAL.Tests.ManagersTests
 	public class OperatorManagerTests : TestInitializer
 	{
 		IOperatorManager manager;
+        Mock<IFileIoWrapper> mockWrapper;
 
 		[SetUp]
 		protected override void Initialize()
 		{
 			base.Initialize();
-			manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object);
+            this.mockWrapper = new Mock<IFileIoWrapper>();
+			manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object, mockWrapper.Object);
 			TestContext.WriteLine("Overrided");
 		}
 
@@ -82,7 +85,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(emptyOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -97,7 +100,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -113,7 +116,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -129,7 +132,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Add(testOperator);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -142,7 +145,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -157,7 +160,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -172,11 +175,13 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
-		[Test]
-		public void Remove_OperatorWithoutTariffs_SuccessResult()
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+		public void Remove_OperatorWithoutTariffs_SuccessResult(bool logoExists)
 		{
 			mockUnitOfWork
 				.Setup(m => m.Operators.GetById(1))
@@ -185,14 +190,34 @@ namespace BAL.Tests.ManagersTests
 				.Setup(n => n.Operators.Delete(new Operator() { Name = "name" }));
 			mockUnitOfWork
 				.Setup(n => n.Save());
+            mockWrapper.Setup(x => x.FileExists(It.IsAny<string>())).Returns(logoExists);
 
-			var result = manager.Remove(1);
+            var result = manager.Remove(1);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
-		[Test]
+        [Test]
+        public void Remove_OperatorWithoutTariffsLogoRemovalFailed_ErrorResult()
+        {
+            mockUnitOfWork
+                .Setup(m => m.Operators.GetById(1))
+                .Returns(new Operator() { Name = "name", Tariffs = new List<Tariff>() });
+            mockUnitOfWork
+                .Setup(n => n.Operators.Delete(new Operator() { Name = "name" }));
+            mockUnitOfWork
+                .Setup(n => n.Save());
+            mockWrapper.Setup(x => x.FileExists(It.IsAny<string>())).Returns(true);
+            mockWrapper.Setup(x => x.FileDelete(It.IsAny<string>())).Throws(new Exception());
+
+            var result = manager.Remove(1);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
 		public void Update_EmptyOperator_ErrorResult()
 		{
 			OperatorViewModel test = new OperatorViewModel();
@@ -200,7 +225,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -211,7 +236,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -226,7 +251,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -244,7 +269,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -259,7 +284,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.Update(test);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsTrue(result.Success);
+			Assert.That(result.Success, Is.True);
 		}
 
 		[Test]
@@ -291,7 +316,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -302,7 +327,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -314,7 +339,7 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
@@ -328,52 +353,118 @@ namespace BAL.Tests.ManagersTests
 			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
 		[Test]
 		public void AddLogo_LogoModel_CatchException()
 		{
 			Mock<IFormFile> fileMock = new Mock<IFormFile>();
-			var content = "Hello World from a Fake File";
-			var fileName = "test.jpg";
-
-			//Create the empty image.
-			Bitmap image = new Bitmap(50, 50);
-
-			//draw a useless line for some data
-			Graphics imageData = Graphics.FromImage(image);
-			imageData.DrawLine(new Pen(Color.Red), 0, 0, 50, 50);
-
-			//Convert to byte array
-			MemoryStream memoryStream = new MemoryStream();
-			byte[] bitmapData;
-
-			using (memoryStream)
-			{
-				image.Save(memoryStream, ImageFormat.Bmp);
-				bitmapData = memoryStream.ToArray();
-			}
 			var ms = new MemoryStream();
-
-			ms.Write(bitmapData, 0, bitmapData.Length);
-			ms.Seek(0, SeekOrigin.Begin);
-
-			var writer = new StreamWriter(ms);
-			writer.Write(content);
-			writer.Flush();
-			ms.Position = 0;
+			var image = 
 			fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
-			fileMock.Setup(_ => _.FileName).Returns(fileName);
-			fileMock.Setup(_ => _.Length).Returns(ms.Length);
-
 			LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
 
-			var result = manager.AddLogo(logo); //bad work
+			var result = manager.AddLogo(logo);
 
 			TestContext.WriteLine(result.Details);
-			Assert.IsFalse(result.Success);
+			Assert.That(result.Success, Is.False);
 		}
 
-	}
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void AddLogo_ValidLogoModelSaveSuccesfull_SuccessResult(bool directoryExistence)
+        {
+            Mock<IFormFile> fileMock = new Mock<IFormFile>();
+            var image = new Bitmap(100, 100);
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+            mockWrapper.Setup(x => x.Exists(It.IsAny<string>())).Returns(directoryExistence);
+
+            var result = manager.AddLogo(logo);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.True);
+        }
+
+        [Test]
+        public void AddLogo_ValidLogoModelDirectoryCreationFailed_ErrorResult()
+        {
+            Mock<IFormFile> fileMock = new Mock<IFormFile>();
+            var image = new Bitmap(100, 100);
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+            mockWrapper.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
+            mockWrapper.Setup(x => x.CreateDirectory(It.IsAny<string>())).Throws(new Exception());
+
+            var result = manager.AddLogo(logo);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
+        public void AddLogo_ValidLogoModelSaveFailedWithArgumentNullException_ErrorResult()
+        {
+            Mock<IFormFile> fileMock = new Mock<IFormFile>();
+            var image = new Bitmap(100, 100);
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+            mockWrapper.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
+            mockWrapper.Setup(x => x.CreateDirectory(It.IsAny<string>()));
+            mockWrapper.Setup(x => x.SaveBitmap(It.IsAny<Bitmap>(), It.IsAny<string>(), It.IsAny<ImageFormat>())).Throws(new ArgumentNullException());
+
+            var result = manager.AddLogo(logo);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
+        public void AddLogo_ValidLogoModelSaveFailedWithExternalException_ErrorResult()
+        {
+            Mock<IFormFile> fileMock = new Mock<IFormFile>();
+            var image = new Bitmap(100, 100);
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+            mockWrapper.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
+            mockWrapper.Setup(x => x.CreateDirectory(It.IsAny<string>()));
+            mockWrapper.Setup(x => x.SaveBitmap(It.IsAny<Bitmap>(), It.IsAny<string>(), It.IsAny<ImageFormat>()))
+                .Throws(new System.Runtime.InteropServices.ExternalException());
+
+            var result = manager.AddLogo(logo);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
+        }
+
+        [Test]
+        public void AddLogo_ValidLogoModelSaveFailedWithException_ErrorResult()
+        {
+            Mock<IFormFile> fileMock = new Mock<IFormFile>();
+            var image = new Bitmap(100, 100);
+            var ms = new MemoryStream();
+            image.Save(ms, ImageFormat.Png);
+            fileMock.Setup(_ => _.OpenReadStream()).Returns(ms);
+            LogoViewModel logo = new LogoViewModel() { Logo = fileMock.Object, OperatorId = 4 };
+            mockWrapper.Setup(x => x.Exists(It.IsAny<string>())).Returns(false);
+            mockWrapper.Setup(x => x.CreateDirectory(It.IsAny<string>()));
+            mockWrapper.Setup(x => x.SaveBitmap(It.IsAny<Bitmap>(), It.IsAny<string>(), It.IsAny<ImageFormat>()))
+                .Throws(new Exception());
+
+            var result = manager.AddLogo(logo);
+
+            TestContext.WriteLine(result.Details);
+            Assert.That(result.Success, Is.False);
+        }
+    }
 }

@@ -43,8 +43,7 @@ namespace BAL.Managers
         /// <returns>List with view models of contacts</returns>
         public List<ContactViewModel> GetContact(int groupId, int pageNumber, int pageSize)
         {
-                var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize,
-                    filter: item => item.ApplicationGroupId == groupId);
+                var contacts = unitOfWork.Contacts.GetContactsByPageNumber(pageNumber, pageSize, filter: item => item.ApplicationGroupId == groupId);
                 foreach (var contact in contacts)
                 {
                     contact.Phone = unitOfWork.Phones.GetById(contact.PhoneId);
@@ -184,56 +183,46 @@ namespace BAL.Managers
                 return true;
         }
 
-        public void AddContactFromFile(string data, string Id)
+        
+
+        public bool TranslateToContacts(string contacts, string userId)
         {
-            var user = unitOfWork.ApplicationUsers.Get(x => x.Id == Id).FirstOrDefault();
+           var user = unitOfWork.ApplicationUsers.Get(x => x.Id == userId).FirstOrDefault();
             if (user == null)
-                return;
-            
-            var contacts = TranslateToContacts(data, user);
-            foreach (var temp in contacts)
-            {
-                unitOfWork.Contacts.Insert(temp);
-            }
+                return false;            
 
-            unitOfWork.Save();
-            
-        }
-
-        private List<Contact> TranslateToContacts(string contacts, ApplicationUser user)
-        {
-            var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
+                var splitedContactsR = string.IsNullOrEmpty(contacts) ? null : contacts.Split("\r\n").ToList();
             var result = new List<Contact>();
             foreach (var item in splitedContactsR.Skip(1))
             {
-                var tempList = string.IsNullOrEmpty(item)?null : item.Split(',').ToList();
+                var tempList = string.IsNullOrEmpty(item) ? null : item.Split(',').ToList();
                 if (tempList!= null)
                 {
                     
                         var temp = new Contact();
                         temp.ApplicationGroupId = user.ApplicationGroupId;
-                        var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0))
-                            .FirstOrDefault();
+                        var tempPhone = unitOfWork.Phones.Get(x => x.PhoneNumber == tempList.ElementAt(0)).FirstOrDefault();
+
                         if (tempPhone == null)
                         {
                             temp.Phone = new Phone() {PhoneNumber = tempList.ElementAt(0)};
+                            temp.BirthDate = DateTime.ParseExact((tempList.ElementAt(1)), "yyyy-MM-dd",System.Globalization.CultureInfo.InvariantCulture);
+                            temp.Gender = Convert.ToByte(tempList.ElementAt(2));
+                            unitOfWork.Contacts.Insert(temp);
+
                         }
                         else
                         {
+                            
                             temp.PhoneId = tempPhone.Id;
+                            temp.Gender = temp.Gender;
+                            temp.BirthDate = temp.BirthDate;
+                            unitOfWork.Contacts.Update(temp);
                         }
-
-                        temp.BirthDate = DateTime.ParseExact((tempList.ElementAt(1)), "yyyy-MM-dd",
-                            System.Globalization.CultureInfo.InvariantCulture);
-
-                        temp.Gender = Convert.ToByte(tempList.ElementAt(2));
-					result.Add(temp);
-                    
                 }
             }
-            
-
-            return result;
+            unitOfWork.Save();
+            return true;
         }
 
        

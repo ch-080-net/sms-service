@@ -12,7 +12,7 @@ namespace Model.Interfaces
     /// </summary>
     public interface IContactRepository : IBaseRepository<Contact>
     {
-        IEnumerable<Contact> GetContactsByPageNumber(int pageNumber, int pageSize,
+            IEnumerable<Contact> GetContactsByPageNumber(int pageNumber, int pageSize,
             Expression<Func<Contact, bool>> filter = null,
             Func<IQueryable<Contact>,
             IOrderedQueryable<Contact>> orderBy = null);

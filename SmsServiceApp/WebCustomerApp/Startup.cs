@@ -28,6 +28,7 @@ using StackExchange.Redis;
 using WebApp.Extensions;
 using BAL.Notifications.Infrastructure;
 using BAL.Notifications;
+using BAL.Wrappers;
 
 namespace WebApp
 {
@@ -166,6 +167,7 @@ namespace WebApp
             services.AddScoped<IAdminStatisticManager, AdminStatisticManager>();
             services.AddScoped<INotificationsGenerator<EmailCampaign>, EmailCampaignNotificationGenerator>();
             services.AddScoped<INotificationsGenerator<Company>, SmsCampaignNotificationGenerator>();
+            services.AddTransient<IFileIoWrapper, FileIoWrapper>();
 
             // Configure sessions
 
