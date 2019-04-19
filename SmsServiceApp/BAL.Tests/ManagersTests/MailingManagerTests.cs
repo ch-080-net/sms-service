@@ -72,5 +72,30 @@ namespace BAL.Tests.ManagersTests
 
             Assert.IsTrue(result.Count() == n);
         }
+
+        [Test]
+        public void MarkAs_MessageObject_ThrowsNothing()
+        {
+	        MessageDTO testMessage = new MessageDTO() { RecipientId = 1 };
+
+	        mockUnitOfWork.Setup(m => m.Mailings.GetById(1)).Returns(new Recipient());
+	        mockUnitOfWork.Setup(m => m.Save());
+
+	        Assert.That(() => manager.MarkAs(testMessage, MessageState.Accepted), Throws.Nothing);
+
+        }
+
+		[Test]
+        public void MarkAs_MessageCollection_ThrowsNothing()
+        {
+			MessageDTO testMessage = new MessageDTO() {RecipientId = 1};
+			List<MessageDTO> testMessageList = new List<MessageDTO>(){testMessage};
+
+			mockUnitOfWork.Setup(m => m.Mailings.GetById(1)).Returns(new Recipient());
+			mockUnitOfWork.Setup(m => m.Save());
+
+			Assert.That(() => manager.MarkAs(testMessageList, MessageState.Accepted), Throws.Nothing);
+
+        }
     }
 }
