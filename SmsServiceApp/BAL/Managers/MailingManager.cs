@@ -21,7 +21,7 @@ namespace BAL.Managers
         }
 
         /// <summary>
-        /// Get messages wich was not been sent
+        /// Get messages which was not been sent
         /// </summary>
         public IEnumerable<MessageDTO> GetUnsentMessages()
         {
