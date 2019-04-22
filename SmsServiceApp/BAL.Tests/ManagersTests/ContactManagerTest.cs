@@ -124,7 +124,7 @@ namespace BAL.Tests.ManagersTests
 		}
 
 		[Test]
-		public void GetContactCount_ValidData_CountAreMoreThenZero()
+		public void GetContactCount_ValidData_CountAreMoreThanZero()
 		{
 			mockUnitOfWork
 				.Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
@@ -135,5 +135,18 @@ namespace BAL.Tests.ManagersTests
 			Assert.That(result, Is.Not.EqualTo(0));
 			Assert.That(result, Is.EqualTo(1));
 		}
-	}
+
+        [Test]
+        public void GetContactCountBySearchValue_Value_CountEqualOne()
+        {
+            mockUnitOfWork
+                .Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
+                .Returns(new List<Contact>() { new Contact() {PhoneId = 1}});
+            mockUnitOfWork.Setup(m => m.Phones.GetById(1)).Returns(new Phone(){PhoneNumber = "0"});
+            var result = manager.GetContactCountBySearchValue(1,"0");
+
+            Assert.That(result, Is.EqualTo(1));
+        }
+       
+    }
 }
