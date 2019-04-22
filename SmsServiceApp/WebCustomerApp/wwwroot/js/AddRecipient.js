@@ -183,19 +183,6 @@ function contactBuildTableRow(contact) {
         "<td>" + contact.priority + "</td>" +
         "<td>" + contact.keyWords + "</td>" +
         "<td>" +
-        "<button type='button'" +
-        "onclick='contactEditAllow(this);'" +
-        "class='btn btn-primary'" +
-        "data-id='" + contact.id + "'" +
-        "data-phonenumber='" + contact.phoneNumber + "'" +
-        "data-name='" + contact.name + "'" +
-        "data-surname='" + contact.surname + "'" +
-        "data-birthdate='" + contact.birthDate.slice(0, 10) + "'" +
-        "data-gender='" + contact.gender + "'" +
-        "data-notes='" + contact.priority + "'" +
-        "data-keywords='" + contact.keyWords + "'" +
-        +
-        "</button> " +
         " <button type='button' " +
         "onclick='DeleteRecipient(this);'" +
         "class='btn btn-danger' " +
@@ -237,14 +224,16 @@ function onAddContact(item) {
 
     var RecSimilar = false;
     for (var k = 0; k < recipients.length; k++) {
-        if (recipients[k].phoneNumber == obj.phoneNumber || recipients[k].length > tariff.limit) {
+        if (recipients[k].phoneNumber == obj.phoneNumber) {
+            $("#msg").html("Phone Number already exist");
             RecSimilar = true;
         }
-        var tariffId = $("#tariff").val();
+       
        
         if (recipients.length >= tarifflimit) {
+            $("#msg").html("Tariff Limit is full");
             RecSimilar = true;
-            break;
+          
         }
 
     }
@@ -383,12 +372,14 @@ function GetFromFile(tariffId) {
                     for (var k = 0; k < recipients.length; k++) {
                         if (recipients[k].phoneNumber == obj.phoneNumber) {
                             found = true;
+                            $("#msg").html("Phone Number already exist");
                             break;
                         }
-                        var tariffId = $("#tariff").val();
+          
                         
                         if (recipients.length >= tarifflimit) {
                             found = true;
+                            $("#msg").html("Tariff Limit is full");
                             break;
                         }
                     }
