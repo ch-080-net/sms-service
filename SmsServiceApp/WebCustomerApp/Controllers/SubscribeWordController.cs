@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Create(int companyId)
         {
-            SubscribeWordViewModel word=new SubscribeWordViewModel(){CompanyId = companyId};
+            SubscribeWordViewModel word = new SubscribeWordViewModel(){CompanyId = companyId};
             return View(word);
         }
         /// <summary>

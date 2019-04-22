@@ -9,6 +9,8 @@ using Model.ViewModels.StopWordViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using BAL.Interfaces;
+using Model.ViewModels.SubscribeWordViewModels;
 
 namespace BAL.Services
 {
@@ -20,7 +22,7 @@ namespace BAL.Services
         {
             SeedRoles(roleManager);
             SeedUsers(userManager);
-			SeedOperators(operatorManager, codeManager, tariffManager);
+            SeedOperators(operatorManager, codeManager, tariffManager);
 			SeedStopWords(stopWordManager);
             SeedCampaigns(unitOfWork);
             SeedEmailCampaigns(unitOfWork);
@@ -178,7 +180,8 @@ namespace BAL.Services
 			tariffManager.Insert(tariff3);
 		}
 
-		public static void SeedStopWords(IStopWordManager stopWordManager)
+       
+        public static void SeedStopWords(IStopWordManager stopWordManager)
 		{
 			IEnumerable<StopWordViewModel> stopWords = stopWordManager.GetStopWords();
 
@@ -249,14 +252,23 @@ namespace BAL.Services
 
             company.RecievedMessages = recievedMessages;
 
-            company.SubscribeWords=new List<SubscribeWord>()
+            company.CompanySubscribeWords=new List<CompanySubscribeWord>()
             {
-                new SubscribeWord()
+                new CompanySubscribeWord()
                 {
-                    Word = "start",Phone = phone
+                  SubscribeWord = new SubscribeWord(){Word="start"},
+                  CompanyId = company.Id
 
-                }
+                },
+                
             };
+            //company.SubscribeWords=new List<SubscribeWord>()
+            //{
+            //    new SubscribeWord()
+            //    {
+            //        Word = "start",Phone = phone
+            //    }
+            //};
 
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();

@@ -34,6 +34,7 @@ namespace BAL.Tests.ManagersTests
         private List<StopWord> listStopWords;
         private Company testCompany;
         private List<Company> listCompanies;
+        /*
         [SetUp]
         public void SetUp()
         {
@@ -273,7 +274,7 @@ namespace BAL.Tests.ManagersTests
           Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         #endregion
-
+        
         #region SearchStopWordInMessages
 
         [Test]
@@ -475,5 +476,6 @@ namespace BAL.Tests.ManagersTests
             var result = recievedMessageManager.GetRecievedMessages(message.CompanyId);
             Assert.That(result, Is.EqualTo(new List<RecievedMessageViewModel>()));
         }
+   */
     }
 }
