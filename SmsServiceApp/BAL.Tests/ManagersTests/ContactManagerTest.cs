@@ -96,20 +96,25 @@ namespace BAL.Tests.ManagersTests
 			Assert.That(result, Is.Null);
         }
 
-		//[Test]
-		//public void GetContactBySearchValue_ValidSearchValue_NonEmptyCollection()
-		//{
-		//	List<Contact> testContactList = new List<Contact>() { new Contact() { KeyWords = "name", ApplicationGroupId = 1 }, new Contact() { KeyWords = "a", ApplicationGroupId = 1 } };
+		[Test]
+		public void GetContactBySearchValue_ValidSearchValue_NonEmptyCollection()
+		{
+			List<Contact> testContactList = new List<Contact>()
+			{
+				new Contact() { KeyWords = "name", ApplicationGroupId = 1, PhoneId = 1}, 
+				new Contact() { KeyWords = "a", ApplicationGroupId = 1, PhoneId = 2}
+			};
 
-		//	mockUnitOfWork.Setup(m => m.Contacts.GetAll()).Returns(testContactList);
-		//	mockUnitOfWork.Setup(m => m.Phones.GetById(1)).Returns(new Phone() { PhoneNumber = "0" });
-		//	mockMapper.Setup(c => c.Map<IEnumerable<Contact>, List<ContactViewModel>>(It.IsAny<List<Contact>>()))
-		//		.Returns(new List<ContactViewModel>());
+			mockUnitOfWork.Setup(m => m.Contacts.GetAll()).Returns(testContactList);
+			mockUnitOfWork.Setup(m => m.Phones.GetById(1)).Returns(new Phone() { PhoneNumber = "+380993276748" });
+			mockUnitOfWork.Setup(m => m.Phones.GetById(2)).Returns(new Phone() { PhoneNumber = "+380974357666" });
+			mockMapper.Setup(c => c.Map<IEnumerable<Contact>, List<ContactViewModel>>(It.IsAny<IEnumerable<Contact>>()))
+				.Returns(new List<ContactViewModel>(){new ContactViewModel()});
 
-		//	var result = manager.GetContactBySearchValue(1, 1, 1, "a");
+			var result = manager.GetContactBySearchValue(1, 1, 5, "name");
 
-		//	Assert.That(result, Is.Not.Null);
-		//}
+			Assert.That(result, Is.Not.Empty);
+		}
 
 		[Test]
 		public void GetContactCount_InvalidId_NullResult()
