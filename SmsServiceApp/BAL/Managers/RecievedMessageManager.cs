@@ -78,14 +78,14 @@ namespace BAL.Managers
             phone = unitOfWork.Phones.Get(filter: p => p.PhoneNumber == item.RecipientPhone).ToList();
             if (phone.Count == 0)
             {
-                throw new NullDataException("phone=null");
+               return;
             }
             else
             {
                 List<Company> company = unitOfWork.Companies.Get(filter: c => c.PhoneId == phone[0].Id).ToList();
                 if (company.Count == 0)
                 {
-                    throw  new NullDataException("company=null");
+                   return;
                 }
                 else
                 {
@@ -129,8 +129,10 @@ namespace BAL.Managers
         {
             SubscribeWord subscribeWord = unitOfWork.SubscribeWords.GetAll().FirstOrDefault(c => c.Word == message.MessageText);
 
-            if (subscribeWord == null) throw new NullDataException("subscribeWord=null");
-
+            if (subscribeWord == null)
+            {
+                return;
+            }
             Phone orignator;
             Phone destination;
             Company company;
@@ -153,21 +155,18 @@ namespace BAL.Managers
             }
             catch
             {
-             
-                    throw new NullDataException("company=null");
-
+             return;
             }
 
             if ((company == null) || (subscribeWord.CompanyId != company.Id))
             {
-                throw new NullDataException("subscribeWord.CompanyId != company.Id");
+             return;
             }
-
           
 
             if (subscribeWord.SubscribePhoneId == null)
             {
-                throw new NullDataException("subscribeWord.SubscribePhoneId = null");
+             return;
             }
             
                 Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
@@ -176,7 +175,7 @@ namespace BAL.Managers
 
                 if (subscribeCompanyPhone == orignator)
                 {
-                    throw new SendingToHimselfExeption("subscribeCompanyPhone ="+ message.RecipientPhone+"orignator ="+message.SenderPhone);
+                return;
                 }
 
                 foreach (var subscribeCompany in subscribeCompanies)
@@ -213,11 +212,11 @@ namespace BAL.Managers
         public void SearchStopWordInMessages(RecievedMessageDTO message)
         {
             StopWord words = unitOfWork.StopWords.GetAll().FirstOrDefault(c =>
-                (c.Word == message.MessageText) || (c.Word == "START") || (c.Word == "STOP"));
+                c.Word == message.MessageText);
 
             if (words == null)
             {
-                throw new NullDataException("StopWord=null");
+                return;
             }
 
             Phone orignator;
@@ -235,10 +234,9 @@ namespace BAL.Managers
             }
             catch
             {
-                throw new NullDataException("company=null");
+            return;
             }
-
-            if ((words.Word == "START") && (orignator != null) && (company != null))
+        if ((words.Word == "START") && (orignator != null) && (company != null))
             {
                 try
                 {
@@ -253,17 +251,16 @@ namespace BAL.Managers
                 }
                 catch
                 {
-                    throw new NullDataException("PhoneGroupUnsubscribe=null");
+                    return;
                 }
 
-               
-                throw new NullDataException("PhoneGroupUnsubscribe=null");
             }
             else
             {
-                if ((orignator == null) && (company != null))
+                if ((orignator == null)||(company==null))
                 {
-                    throw new NullDataException("company = null or orignator = null");
+                 return;
+
                 }
 
 

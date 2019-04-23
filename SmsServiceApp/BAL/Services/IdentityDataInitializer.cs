@@ -188,9 +188,9 @@ namespace BAL.Services
 				StopWordViewModel stopWord2 = new StopWordViewModel();
 				StopWordViewModel stopWord3 = new StopWordViewModel();
 
-				stopWord1.Word = "stop";
+				stopWord1.Word = "START";
 				stopWord2.Word = "astanavites";
-				stopWord3.Word = "block";
+				stopWord3.Word = "STOP";
 
 				stopWordManager.Insert(stopWord1);
 				stopWordManager.Insert(stopWord2);

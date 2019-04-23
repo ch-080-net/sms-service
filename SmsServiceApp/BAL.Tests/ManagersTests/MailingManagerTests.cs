@@ -36,13 +36,13 @@ namespace BAL.Tests.ManagersTests
         {
             IEnumerable<Recipient> emptyEnumeration = new List<Recipient>();
             IEnumerable<MessageDTO> emptyDtoEnumeration = new List<MessageDTO>();
-            mockUnitOfWork.Setup(m => m.Mailings.Get(It.IsAny<Expression<Func<Recipient, bool>>>(),
-                    It.IsAny<Func<IQueryable<Recipient>,
-                    IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
+            mockUnitOfWork
+	            .Setup(m => m.Mailings.Get(It.IsAny<Expression<Func<Recipient, bool>>>(),
+                    It.IsAny<Func<IQueryable<Recipient>,IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
                 .Returns(emptyEnumeration);
-            mockMapper.Setup(m => m.Map<IEnumerable<Recipient>,
-                IEnumerable<MessageDTO>>(It.Is<IEnumerable<Recipient>>(x => 
-                x == emptyEnumeration))).Returns(emptyDtoEnumeration);
+            mockMapper
+	            .Setup(m => m.Map<IEnumerable<Recipient>,IEnumerable<MessageDTO>>(It.Is<IEnumerable<Recipient>>(x => x == emptyEnumeration)))
+	            .Returns(emptyDtoEnumeration);
 
             var result = manager.GetUnsentMessages();
 
@@ -60,17 +60,43 @@ namespace BAL.Tests.ManagersTests
                 recipientEnumeration.Add(new Recipient());
                 dtoEnumeration.Add(new MessageDTO());
             }
-            mockUnitOfWork.Setup(m => m.Mailings.Get(It.IsAny<Expression<Func<Recipient, bool>>>(),
-                    It.IsAny<Func<IQueryable<Recipient>,
-                    IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
+            mockUnitOfWork
+	            .Setup(m => m.Mailings.Get(It.IsAny<Expression<Func<Recipient, bool>>>(),
+                    It.IsAny<Func<IQueryable<Recipient>,IOrderedQueryable<Recipient>>>(), It.IsAny<string>()))
                 .Returns(recipientEnumeration);            
-            mockMapper.Setup(m => m.Map<IEnumerable<Recipient>,
-                IEnumerable<MessageDTO>>(It.Is<IEnumerable<Recipient>>(x =>
-                x == recipientEnumeration))).Returns(dtoEnumeration);
+            mockMapper
+	            .Setup(m => m.Map<IEnumerable<Recipient>,
+					IEnumerable<MessageDTO>>(It.Is<IEnumerable<Recipient>>(x =>x == recipientEnumeration)))
+	            .Returns(dtoEnumeration);
 
             var result = manager.GetUnsentMessages();
 
             Assert.IsTrue(result.Count() == n);
+        }
+
+        [Test]
+        public void MarkAs_MessageObject_ThrowsNothing()
+        {
+	        MessageDTO testMessage = new MessageDTO() { RecipientId = 1 };
+
+	        mockUnitOfWork.Setup(m => m.Mailings.GetById(1)).Returns(new Recipient());
+	        mockUnitOfWork.Setup(m => m.Save());
+
+	        Assert.That(() => manager.MarkAs(testMessage, MessageState.Accepted), Throws.Nothing);
+
+        }
+
+		[Test]
+        public void MarkAs_MessageCollection_ThrowsNothing()
+        {
+			MessageDTO testMessage = new MessageDTO() {RecipientId = 1};
+			List<MessageDTO> testMessageList = new List<MessageDTO>(){testMessage};
+
+			mockUnitOfWork.Setup(m => m.Mailings.GetById(1)).Returns(new Recipient());
+			mockUnitOfWork.Setup(m => m.Save());
+
+			Assert.That(() => manager.MarkAs(testMessageList, MessageState.Accepted), Throws.Nothing);
+
         }
     }
 }

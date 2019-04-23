@@ -132,7 +132,7 @@ namespace BAL.Tests.ManagersTests
         {
             mockUnitOfWork.Setup(m => m.SubscribeWords.GetAll())
                  .Returns(new List<SubscribeWord>() { new SubscribeWord() { Id = 2, Word = "test1" } });
-            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace BAL.Tests.ManagersTests
 
             mockUnitOfWork.Setup(m => m.Recipients.Insert(new Recipient()));
 
-            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SSubscribeWordInM_RecivedMessage_CompanyPhoneEqualRecipientPhone()
@@ -205,7 +205,7 @@ namespace BAL.Tests.ManagersTests
                 RecipientPhone = viewMessage.RecipientPhone,
                 MessageText = viewMessage.MessageText
             };
-            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recivedMessDto); }, Throws.TypeOf<SendingToHimselfExeption>());
+            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recivedMessDto); }, Throws.Nothing);
         }
         [Test]
         public void SSubscribeWordInM_RecivedMessage_NullCompanyException()
@@ -226,7 +226,7 @@ namespace BAL.Tests.ManagersTests
 
             mockUnitOfWork.Setup(m => m.Recipients.Insert(new Recipient()));
 
-            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
 
         [Test]
@@ -248,7 +248,7 @@ namespace BAL.Tests.ManagersTests
 
             mockUnitOfWork.Setup(m => m.Recipients.Insert(new Recipient()));
 
-            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchSubscribeWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
 
         [Test]
@@ -282,7 +282,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.StopWords.GetAll())
                 .Returns(new List<StopWord>() { new StopWord() { Id = 2, Word = "test1" } });
 
-            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SStopWordInM_RecivedMessage_ExceptionNullCompanyObject()
@@ -296,7 +296,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns((List<Company>)null);
 
-            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SStopWordInM_RecivedMessage_ExcenNullObject()
@@ -311,7 +311,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(listCompanies);
 
-            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SStopWordInM_RecivedMessage_NullPhoneGroupUnsubscribe()
@@ -328,7 +328,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.GetAll())
                 .Returns((List<PhoneGroupUnsubscribe>) null);
 
-            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SStopWordInM_RecivedMessage_PhoneGroupUnsubscribeNull()
@@ -348,7 +348,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.Delete(new PhoneGroupUnsubscribe()));
            mockUnitOfWork.Setup(m => m.Save());
     
-           Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+           Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
         [Test]
         public void SStopWordInM_RecivedMessage_PhoneGroupUnsubscribe()
@@ -367,7 +367,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.PhoneGroupUnsubscribes.Delete(new PhoneGroupUnsubscribe()));
             mockUnitOfWork.Setup(m => m.Save());
 
-            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.SearchStopWordInMessages(recievedMessageDto); }, Throws.Nothing);
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(listCompanies);
 
-            Assert.That(() => { recievedMessageManager.Insert(recievedMessageInsert); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.Insert(recievedMessageInsert); }, Throws.Nothing);
         }
         [Test]
         public void Insert_RecivedMessage_CompanyNull()
@@ -418,7 +418,7 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(m => m.Companies.Get(It.IsAny<Expression<Func<Company, bool>>>(), null, ""))
                 .Returns(new List<Company>());
 
-            Assert.That(() => { recievedMessageManager.Insert(recievedMessageInsert); }, Throws.TypeOf<NullDataException>());
+            Assert.That(() => { recievedMessageManager.Insert(recievedMessageInsert); }, Throws.Nothing);
         }
         [Test]
         public void Insert_RecivedMessage_SuccessResult()
