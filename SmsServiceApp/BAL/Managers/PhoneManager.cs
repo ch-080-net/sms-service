@@ -38,16 +38,6 @@ namespace BAL.Managers
         }
 
         /// <summary>
-        /// Get Phone Id by number
-        /// </summary>
-        /// <param name="number">PhoneNumber</param>
-        /// <returns>PhoneId</returns>
-        public int GetPhoneId(string number)
-        {
-            return unitOfWork.Phones.GetAll().FirstOrDefault(p => p.PhoneNumber == number).Id;
-        }
-
-        /// <summary>
         /// Get All Phones from db
         /// </summary>
         /// <returns>Collection of all phones</returns>
@@ -62,30 +52,8 @@ namespace BAL.Managers
         /// <param name="item">Phone entity</param>
         public void Insert(Phone item)
         {
-            try
-            {
                 unitOfWork.Phones.Insert(item);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
-        }
-
-        /// <summary>
-        /// Check if phone already exist
-        /// </summary>
-        /// <param name="phoneNumber">phone number</param>
-        /// <returns>Is number exist</returns>
-        public bool IsPhoneNumberExist(string phoneNumber)
-        {
-            var phone = unitOfWork.Phones.GetAll().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
-            if(phone == null)
-            {
-                return false;
-            }
-            return true;
         }
     }
 }

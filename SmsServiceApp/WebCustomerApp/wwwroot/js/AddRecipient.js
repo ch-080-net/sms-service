@@ -180,7 +180,6 @@ function contactBuildTableRow(contact) {
         "<td>" + contact.surname + "</td>" +
         "<td>" + contact.birthDate.slice(0, 10) + "</td>" +
         "<td>" + contact.gender + "</td>" +
-        "<td>" + contact.priority + "</td>" +
         "<td>" + contact.keyWords + "</td>" +
         "<td>" +
         " <button type='button' " +
@@ -376,8 +375,7 @@ function GetFromFile(tariffId) {
                             found = true;
                             $("#msg").html("Phone Number already exist");
                             break;
-                        }
-          
+                        }                  
                         
                         if (recipients.length >= tarifflimit) {
                             found = true;

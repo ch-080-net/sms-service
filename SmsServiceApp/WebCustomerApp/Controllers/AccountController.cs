@@ -19,6 +19,7 @@ using WebApp.Services;
 using WebApp.Controllers;
 using Model.ViewModels.AccountViewModels;
 using BAL.Services;
+using BAL.Notifications;
 
 namespace WebApp.Controllers
 {
@@ -31,18 +32,20 @@ namespace WebApp.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILoggerManager _logger;
         private readonly IPhoneManager _phoneManager;
+        private readonly INotificationManager notificationManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILoggerManager logger, IPhoneManager phoneManager)
+            ILoggerManager logger, IPhoneManager phoneManager, INotificationManager notificationManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _phoneManager = phoneManager;
+            this.notificationManager = notificationManager;
         }
 
         [TempData]
@@ -52,14 +55,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
         {
-            // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-
-            if (user == null)
-            {
-                _logger.LogWarn($"Unable to load two-factor authentication for {user.UserName}.");
-            }
-
+            // Ensure the user has gone through the username & password screen first    
             var model = new LoginWith2faViewModel { RememberMe = rememberMe };
             ViewData["ReturnUrl"] = returnUrl;
 
@@ -277,6 +273,12 @@ namespace WebApp.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    notificationManager.AddNotificationsToUser(new PersonalNotificationBuilder(user)
+                        .SetMessage("Confirm email and phone", "Confirm email and phone to recieve notification." +
+                        " Email and SMS notifications can be turned on in Profile/Notifications.")
+                        .SetTime(DateTime.Now)
+                        .GenerateHref(Url, "Manage", "Index")
+                        .Build());
                     if (model.CorporateUser)
                     {
                         await _userManager.AddToRoleAsync(user, "CorporateUser");

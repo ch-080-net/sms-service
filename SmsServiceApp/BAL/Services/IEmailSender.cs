@@ -9,7 +9,7 @@ namespace WebApp.Services
     public interface IEmailSender
     {
         Task SendEmailAsync(string email, string subject, string message);
-        Task SendEmail(EmailDTO email);
+        Task SendEmail(EmailDTO emailDTO);
         void SendEmails(IEnumerable<EmailDTO> emails);
     }
 }

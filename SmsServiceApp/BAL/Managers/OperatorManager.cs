@@ -10,6 +10,7 @@ using System.IO;
 using Model.DTOs;
 using System.Drawing;
 using System.Drawing.Imaging;
+using BAL.Wrappers;
 
 namespace BAL.Managers
 {
@@ -18,9 +19,10 @@ namespace BAL.Managers
     /// </summary>
     public class OperatorManager : BaseManager, IOperatorManager
     {
-        public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        private readonly IFileIoWrapper fileIo;
+        public OperatorManager(IUnitOfWork unitOfWork, IMapper mapper, IFileIoWrapper fileIo) : base(unitOfWork, mapper)
         {
-
+            this.fileIo = fileIo;
         }
 
         /// <summary>
@@ -93,11 +95,11 @@ namespace BAL.Managers
                 return new TransactionResultDTO() { Success = false, Details = "Operator cannot be removed when he have tariffs" };
 
             string logoPath = "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(id) + ".png";
-            if (File.Exists(logoPath))
+            if (fileIo.FileExists(logoPath))
             {
                 try
                 {
-                    File.Delete(logoPath);
+                    fileIo.FileDelete(logoPath);
                 }
                 catch
                 {
@@ -214,11 +216,11 @@ namespace BAL.Managers
                 return new TransactionResultDTO() { Success = false, Details = "Image can't be resized" };
             }
 
-            if(!Directory.Exists("wwwroot/images/OperatorLogo/"))
+            if(!fileIo.Exists("wwwroot/images/OperatorLogo/"))
             {
                 try
                 {
-                    Directory.CreateDirectory("wwwroot/images/OperatorLogo/");
+                    fileIo.CreateDirectory("wwwroot/images/OperatorLogo/");
                 }
                 catch (Exception)
                 {
@@ -228,7 +230,8 @@ namespace BAL.Managers
 
             try
             {
-                image.Save("wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(logo.OperatorId) + ".png", ImageFormat.Png);
+                fileIo.SaveBitmap(image, "wwwroot/images/OperatorLogo/Logo_Id=" + Convert.ToString(logo.OperatorId) + ".png"
+                    , ImageFormat.Png);
             }
             catch(ArgumentNullException)
             {

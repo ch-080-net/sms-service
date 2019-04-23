@@ -75,8 +75,8 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<a asp-controller="Home" asp-action="Index" class="logo">
-				<span class="logo-mini"><b>SMS</b></span>
-				<span class="logo-lg"><b>SMS</b>Service</span>
+				<span class="logo-mini"><strong>SMS</strong></span>
+				<span class="logo-lg"><strong>SMS</strong>Service</span>
 			</a>
 			<nav class="navbar navbar-static-top">
 				<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -90,20 +90,20 @@
 						@if (User.Identity.IsAuthenticated)
 						{
 							<li class="dropdown notifications-menu">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="clearBadge(); fillReport();">
-									<i class="fa fa-bell-o"></i>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="onNotificationsOpened(); fillReport();">
+									<em class="fa fa-bell-o"></em>
 									<span class="label label-warning" id="notificationBadge"></span>
 								</a>
 								<ul class="dropdown-menu">
 									<li id="notificationMenu">
 									</li>
-									<li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">View all</a></li>
+									<li class="footer"><a role="button" data-toggle="modal" data-target="#notificationModal" onclick="fillModal();">@Localizer["View all"]</a></li>
 								</ul>
 							</li>
 						}
 						<li class="dropdown notifications-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="fa fa-language"></i>
+								<em class="fa fa-language"></em>
 								<span class="label label-primary">@($"{requestCulture.TwoLetterISOLanguageName.ToUpper()}")</span>
 							</a>
 							<ul class="dropdown-menu">
@@ -139,7 +139,7 @@
 						</li>
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-								<i class="fa fa-user"></i>
+								<em class="fa fa-user"></em>
 							</a>
 							<ul class="dropdown-menu">
 								<li class="user-header">
@@ -182,9 +182,9 @@
 					{
 						<li>
 							<a asp-controller="TestMessage" asp-action="Index">
-								<i class="fa fa fa-envelope-o"></i><span>@Localizer["Message"]</span>
+								<em class="fa fa fa-envelope-o"></em><span>@Localizer["Message"]</span>
 								<span class="pull-right-container">
-									<small class="label pull-right bg-green">demo</small>
+									<small class="label pull-right bg-green">@Localizer["demo"]</small>
 								</span>
 							</a>
 						</li>
@@ -193,31 +193,31 @@
 					{
 						<li class="treeview">
 							<a href="#">
-								<i class="fa fa-comments-o"></i> <span>@Localizer["SMS Campaign"]</span>
+								<em class="fa fa-comments-o"></em> <span>@Localizer["SMS Campaign"]</span>
 								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
+									<em class="fa fa-angle-left pull-right"></em>
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li><a asp-controller="Company" asp-action="Create"><i class="fa fa-plus-circle"></i>@Localizer["Create"]</a></li>
-								<li><a asp-controller="Company" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["List of campaigns"]</a></li>
+								<li><a asp-controller="Company" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+								<li><a asp-controller="Company" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
 							</ul>
 						</li>
 						<li class="treeview">
 							<a href="#">
-								<i class="fa fa-envelope"></i> <span>@Localizer["Email Campaign"]</span>
+								<em class="fa fa-envelope"></em> <span>@Localizer["Email Campaign"]</span>
 								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
+									<em class="fa fa-angle-left pull-right"></em>
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li><a asp-controller="EmailCampaign" asp-action="Create"><i class="fa fa-plus-circle"></i>@Localizer["Create"]</a></li>
-								<li><a asp-controller="EmailCampaign" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["List of campaigns"]</a></li>
+								<li><a asp-controller="EmailCampaign" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+								<li><a asp-controller="EmailCampaign" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of campaigns"]</a></li>
 							</ul>
 						</li>
 						<li>
 							<a asp-controller="Contact" asp-action="Contacts">
-								<i class="fa fa-address-book-o"></i> <span>@Localizer["Contacts"]</span>
+								<em class="fa fa-address-book-o"></em> <span>@Localizer["Contacts"]</span>
 								<span class="pull-right-container"> </span>
 							</a>
 						</li>
@@ -226,35 +226,41 @@
 					{
 						<li>
 							<a asp-area="" asp-controller="Operator" asp-action="Operators">
-								<i class="fa fa-money"></i> <span>@Localizer["Operators"]</span>
+								<em class="fa fa-money"></em> <span>@Localizer["Operators"]</span>
 								<span class="pull-right-container"> </span>
 							</a>
 						</li>
-						<li class="treeview">
-							<a href="#">
-								<i class="fa fa-stop"></i> <span>@Localizer["Stop words"]</span>
-								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
-								</span>
-							</a>
-							<ul class="treeview-menu">
-								<li><a asp-controller="StopWord" asp-action="Create"><i class="fa fa-plus-circle"></i>@Localizer["Create"]</a></li>
-								<li><a asp-controller="StopWord" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["List of words"]</a></li>
-							</ul>
-						</li>
+					    <li class="treeview">
+                            <a href="#">
+                                <em class="fa fa-stop"></em> <span>@Localizer["Stop words"]</span>
+                                <span class="pull-right-container">
+                                    <em class="fa fa-angle-left pull-right"></em>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a asp-controller="StopWord" asp-action="Create"><em class="fa fa-plus-circle"></em>@Localizer["Create"]</a></li>
+                                <li><a asp-controller="StopWord" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["List of words"]</a></li>
+                            </ul>
+                        </li>
+					    <li>
+                            <a asp-area="" asp-controller="AdminStatistic" asp-action="AdminStatistics">
+                                <em class="fa fa-bar-chart"></em> <span>@Localizer["Statistic"]</span>
+                                <span class="pull-right-container"> </span>
+                            </a>
+                        </li>
 					}
 					@if (User.Identity.IsAuthenticated && User.IsInRole("CorporateUser"))
 					{
 						<li class="treeview">
 							<a href="#">
-								<i class="fa fa-users"></i> <span>@Localizer["User group"]</span>
+								<em class="fa fa-users"></em> <span>@Localizer["User group"]</span>
 								<span class="pull-right-container">
-									<i class="fa fa-angle-left pull-right"></i>
+									<em class="fa fa-angle-left pull-right"></em>
 								</span>
 							</a>
 							<ul class="treeview-menu">
-								<li><a asp-area="" asp-controller="Group" asp-action="AddUsers"><i class="fa fa-envelope-open-o"></i>@Localizer["Send invite"]</a></li>
-								<li><a asp-area="" asp-controller="Group" asp-action="Index"><i class="fa fa-list-ul"></i>@Localizer["Users in group"]</a></li>
+								<li><a asp-area="" asp-controller="Group" asp-action="AddUsers"><em class="fa fa-envelope-open-o"></em>@Localizer["Send invite"]</a></li>
+								<li><a asp-area="" asp-controller="Group" asp-action="Index"><em class="fa fa-list-ul"></em>@Localizer["Users in group"]</a></li>
 							</ul>
 						</li>
 					}
@@ -281,18 +287,14 @@
 					<a href="#" class="logo_home">
 						<img src="../images/landing/logo.svg" alt="logo unload" class="logo_img">
 					</a>
-					<!--/.header-->
 				</header>
 				<section class="main">
 					<h1 class="main_title">@Localizer["SMS on 150 mobile networks no matter where you are"] <span class="main_title-big">sms service</span></h1>
 					<a href="#log" class="main_button anchor">@Localizer["get started"]</a>
-					@*<p class="main_description">some text <a href="#">@Localizer["some link"]</a>!</p>*@
 				</section>
-				<!--/.main-->
 				<section class="second">
 
 					<section class="features">
-						<!-- <img src="styles/images/text1.svg" class="start"> -->
 						<ul class="features_list">
 
 							<li class="features_item features_item--sms_tools_1">
@@ -356,7 +358,6 @@
 
 					</p>
 				</section>
-				<!--/.features -->
 				<section class="app second" id="app">
 					<div class="app_image_phone"></div>
 
@@ -407,7 +408,6 @@
 					</ul>
 				</section>
 
-				<!--/.footer -->
 				<footer>
 					<div class="footer_content">
 						@Localizer["All rights reserved"] &copy; 2019
@@ -427,7 +427,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="notificationModalLabel">Notifications</h4>
+					<h4 class="modal-title" id="notificationModalLabel">@Localizer["Notifications"]</h4>
 				</div>
 				<div class="modal-body" id="notificationContent">
 				</div>

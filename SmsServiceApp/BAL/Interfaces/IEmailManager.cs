@@ -9,7 +9,7 @@ namespace BAL.Interfaces
     {
         IEnumerable<Email> GetEmails();
         Email GetEmailById(int id);
-        string GetEmailText(int id);
+        string GetEmailAddress(int id);
         void Insert(Email item);
         bool IsEmailExist(string email);
         int GetEmailId(string email);

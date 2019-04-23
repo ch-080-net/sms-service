@@ -14,19 +14,40 @@ namespace BAL.Managers
         public EmailManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         { }
 
-        public Email GetEmailById(int Id)
+        public Email GetEmailById(int id)
         {
-            return unitOfWork.Emails.GetById(Id);
+            try
+            {
+                return unitOfWork.Emails.GetById(id);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }           
         }
 
-        public string GetEmailText(int Id)
+        public string GetEmailAddress(int id)
         {
-            return unitOfWork.Emails.GetById(Id).EmailAddress;
+            try
+            {
+                return unitOfWork.Emails.GetById(id).EmailAddress;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }            
         }
 
         public int GetEmailId(string email)
         {
-            return unitOfWork.Emails.GetAll().FirstOrDefault(p => p.EmailAddress == email).Id;
+            try
+            {
+                return unitOfWork.Emails.GetAll().FirstOrDefault(p => p.EmailAddress == email).Id;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }            
         }
 
         public IEnumerable<Email> GetEmails()
@@ -36,18 +57,32 @@ namespace BAL.Managers
 
         public void Insert(Email item)
         {
-            unitOfWork.Emails.Insert(item);
-            unitOfWork.Save();
+            try
+            {
+                unitOfWork.Emails.Insert(item);
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }           
         }
 
         public bool IsEmailExist(string email)
         {
-            var _email = unitOfWork.Emails.GetAll().FirstOrDefault(p => p.EmailAddress == email);
-            if (_email == null)
+            try
             {
-                return false;
+                var _email = unitOfWork.Emails.GetAll().FirstOrDefault(p => p.EmailAddress == email);
+                if (_email == null)
+                {
+                    return false;
+                }
+                return true;
             }
-            return true;
+            catch (Exception)
+            {
+                return true;
+            }
         }
     }
 }

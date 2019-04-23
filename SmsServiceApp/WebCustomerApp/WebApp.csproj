@@ -60,7 +60,7 @@
     <Content Update="Views\AnswersCode\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Recipient\IndexDetails.cshtml">
+    <Content Update="Views\Recipient\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\SubscribeWord\Delete.cshtml">

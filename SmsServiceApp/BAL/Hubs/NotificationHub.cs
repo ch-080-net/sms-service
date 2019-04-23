@@ -17,14 +17,6 @@ namespace BAL.Hubs
         }
 
         /// <summary>
-        /// Sets notification with given Id and origin as sent
-        /// </summary>
-        public void ConfirmReceival(int notificationId, NotificationOrigin origin)
-        {
-            notificationManager.SetAsSent(notificationId, origin, Context.UserIdentifier);
-        }
-
-        /// <summary>
         /// Gets enumeration of actual notifications for user
         /// </summary>
         /// <param name="number">Maximum quantity of notification</param>
@@ -39,6 +31,22 @@ namespace BAL.Hubs
         public NotificationReportDTO GetNotificationReport()
         {
             return notificationManager.GetWebNotificationsReport(Context.UserIdentifier);
+        }
+
+        public int GetNumberOfNotifications()
+        {
+            return notificationManager.GetNumberOfWebNotifications(Context.UserIdentifier);
+        }
+
+        public override async Task OnConnectedAsync()
+        {
+            var result = notificationManager.GetNumberOfWebNotifications(Context.UserIdentifier);
+            await Clients.User(Context.UserIdentifier).SendAsync("NotificationsNumRecieved", result);
+        }
+
+        public void ConfirmReceival()
+        {
+            notificationManager.SetAsSent(Context.UserIdentifier);
         }
     }
 }

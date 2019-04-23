@@ -45,23 +45,16 @@ namespace BAL.Managers
                 if (tempRecipient != null)
                     tempRecipient.MessageState = messageState;
             }
-            try { unitOfWork.Save(); }
-            finally
-            {
-                // Attempt to set state will be repeated after next mailing
-            }
+
+            unitOfWork.Save();
         }
 
-        public void MarkAs(MessageDTO messages, MessageState messageState)
+        public void MarkAs(MessageDTO message, MessageState messageState)
         {
-            var tempRecipient = unitOfWork.Mailings.GetById(messages.RecipientId);
+            var tempRecipient = unitOfWork.Mailings.GetById(message.RecipientId);
             if (tempRecipient != null)
                 tempRecipient.MessageState = messageState;
-            try { unitOfWork.Save(); }
-            finally
-            {
-                // Attempt to set state will be repeated after next mailing
-            }
+            unitOfWork.Save();
         }
     }
 }

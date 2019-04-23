@@ -27,7 +27,7 @@
        
         
 
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus"></i> Add Contact</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-plus"></i>@Localizer["Add Contact"]</button>
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
@@ -37,8 +37,8 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-                            <li><a data-toggle="tab" href="#menu1">Upload</a></li>
+                            <li class="active"><a data-toggle="tab" href="#home">@Localizer["New"]</a></li>
+                            <li><a data-toggle="tab" href="#menu1">@Localizer["Upload"]</a></li>
                         </ul>
                     </div>
                     <div class="modal-body">
@@ -46,163 +46,155 @@
                             
                             
 
-                            <div class="tab-content">
-                                <div id="home" class="tab-pane fade in active">
-                                    <h3>Add Contact</h3>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="PhonePhoneNumber"></label>
-                                            </td>
-                                            <td>
-                                                <input id="phoneNumber" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="Name"></label>
-                                            </td>
-                                            <td>
-                                                <input id="name" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="Surname"></label>
-                                            </td>
-                                            <td>
-                                                <input id="surname" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="BirthDate"></label>
-                                            </td>
-                                            <td>
-                                                <input id="birthDate" width="175" />
-                                                <script>
-                                                    $('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
-                                                </script>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="Gender"></label>
-                                            </td>
-                                            <td>
-                                                <input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
-                                                <br>
-                                                <input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
-                                                <br>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="Notes"></label>
-                                            </td>
-                                            <td>
-                                                <input id="notes" type="text" />
+								<div class="tab-content">
+									<div id="home" class="tab-pane fade in active">
+										<h3>@Localizer["Add Contact"]</h3>
+											<table>
+												<tr>
+													<td>
+														<label asp-for="PhonePhoneNumber"></label>
+													</td>
+													<td>
+														<input id="phoneNumber" type="text" />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="Name"></label>
+													</td>
+													<td>
+														<input id="name" type="text" />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="Surname"></label>
+													</td>
+													<td>
+														<input id="surname" type="text" />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="BirthDate"></label>
+													</td>
+													<td>
+														<input id="birthDate" width="175" />
+														<script>
+															$('#birthDate').datepicker({ footer: true, modal: true, format: 'dd.mm.yyyy' });
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="Gender"></label>
+													</td>
+													<td>
+														<input type="radio" name="gender" checked id="genderMale" value="Male">@Localizer["Male"]
+														<br>
+														<input type="radio" name="gender" id="genderFemale" value="Female">@Localizer["Female"]
+														<br>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="Notes"></label>
+													</td>
+													<td>
+														<input id="notes" type="text" />
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <label asp-for="KeyWords"></label>
-                                            </td>
-                                            <td>
-                                                <input id="keywords" type="text" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button type='button' class="btn btn-success" id='insert' onclick='onAddContact(this)'>
-                                                    <span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>                                </div>
-                                <div id="menu1" class="tab-pane fade">
-                                    <h4>Add contact from file </h4>
-                        <input type="file" id="fileUpload"/>
-                        <input type="button" class="btn btn-primary" id="upload" value="Upload"/>
-                                </div>
-                                <div id="menu2" class="tab-pane fade">
-                                    <h3>Menu 2</h3>
-                                </div>
-                                <div id="menu3" class="tab-pane fade">
-                                    <h3>Menu 3</h3>
-                                </div>
-                            </div>
-                        </div>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<label asp-for="KeyWords"></label>
+													</td>
+													<td>
+														<input id="keywords" type="text" />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<button type='button' class="btn btn-success" id='insert' onclick='onAddContact(this)'>
+															<span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
+														</button>
+													</td>
+												</tr>
+											</table>
+									</div>
+									<div id="menu1" class="tab-pane fade">
+										<h4>@Localizer["Add contact from file"]</h4>
+											<input type="file" id="fileUpload" />
+											<input type="button" class="btn btn-primary" id="upload" value="Upload" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">@Localizer["Close"]</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-      
-            </div>
-        </div>
-        
-        <hr />
-        <div id="dvCSV">
-        </div>
+			<hr />
+			<div id="dvCSV">
+			</div>
 
-        <div id="msg"></div>
-        <div>
-            <br />
-            @Localizer["Page Size"]:
-            <select id="pageSizeSelector" onchange="pageSizeChange(this)">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option selected>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>11</option>
-                <option>12</option>
-                <option>13</option>
-                <option>14</option>
-                <option>15</option>
-                <option>16</option>
-                <option>17</option>
-                <option>18</option>
-                <option>19</option>
-                <option>20</option>
-            </select>
-        </div>
-        <div>
-            <input id="searchField" type="text" />
-            <button type='button' id="search" onclick='searchContacts()' class='btn btn-default'>
-                <span class='glyphicon glyphicon-search' /> @Localizer["Search"]
-            </button>
-        </div>
+			<div id="msg"></div>
+			<div>
+				<br />
+				@Localizer["Page Size"]:
+				<select id="pageSizeSelector" onchange="pageSizeChange(this)">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+					<option>4</option>
+					<option selected>5</option>
+					<option>6</option>
+					<option>7</option>
+					<option>8</option>
+					<option>9</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+				</select>
+			</div>
+			<div>
+				<input id="searchField" type="text" />
+				<button type='button' id="search" onclick='searchContacts()' class='btn btn-default'>
+					<span class='glyphicon glyphicon-search' /> @Localizer["Search"]
+				</button>
+			</div>
 
-        <table class="table table-hover" id="contactTable">
-            <thead class="thead-dark">
-                <tr>
-                    <td><label asp-for="PhonePhoneNumber"></label></td>
-                    <td><label asp-for="Name"></label></td>
-                    <td><label asp-for="Surname"> </label></td>
-                    <td><label asp-for="BirthDate"> </label></td>
-                    <td><label asp-for="Gender"></label></td>
-                    <td><label asp-for="Notes"></label></td>
-                    <td><label asp-for="KeyWords"></label></td>
-                    <td> </td>
-                </tr>
-            </thead>
-        </table>
-        <div style="padding:inherit" class="btn-group" id="pageButtons">
-            <button type="button" class="btn btn-default" onclick="" id="previousPage"><span class="glyphicon glyphicon-triangle-left"/></button>
-            <button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
-            <button type="button" class="btn btn-default" onclick="" id="nextPage"><span class="glyphicon glyphicon-triangle-right"/></button>
-        </div>
-    </form>
+			<table class="table table-hover" id="contactTable">
+				<thead class="thead-dark">
+					<tr>
+						<td><label asp-for="PhonePhoneNumber"></label></td>
+						<td><label asp-for="Name"></label></td>
+						<td><label asp-for="Surname"> </label></td>
+						<td><label asp-for="BirthDate"> </label></td>
+						<td><label asp-for="Gender"></label></td>
+						<td><label asp-for="Notes"></label></td>
+						<td><label asp-for="KeyWords"></label></td>
+						<td> </td>
+					</tr>
+				</thead>
+			</table>
+			<div style="padding:inherit" class="btn-group" id="pageButtons">
+				<button type="button" class="btn btn-default" onclick="" id="previousPage"><span class="glyphicon glyphicon-triangle-left" /></button>
+				<button type="button" class="btn btn-default" onclick="" id="Page1">1</button>
+				<button type="button" class="btn btn-default" onclick="" id="nextPage"><span class="glyphicon glyphicon-triangle-right" /></button>
+			</div>
+</form>
     
 </body>
 </html>

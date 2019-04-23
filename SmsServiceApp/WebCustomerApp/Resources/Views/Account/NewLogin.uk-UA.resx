@@ -138,4 +138,10 @@
   <data name="SIGN IN" xml:space="preserve">
     <value>УВІЙТИ</value>
   </data>
+  <data name="Use another service to log in" xml:space="preserve">
+    <value>Увійти через сторонні сервіси</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

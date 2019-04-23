@@ -30,34 +30,12 @@ namespace BAL.Managers
             return mapper.Map<IEnumerable<EmailRecipient>, IEnumerable<EmailDTO>>(recepients);
         }
 
-        public void MarkAs(IEnumerable<EmailDTO> messages, byte messageState)
-        {
-            var recipientIds = from m in messages
-                               select m.EmailRecipientId;
-
-            foreach (var id in recipientIds)
-            {
-                var tempRecipient = unitOfWork.EmailRecipients.GetById(id);
-                if (tempRecipient != null)
-                    tempRecipient.IsSend = messageState;
-            }
-            try { unitOfWork.Save(); }
-            finally
-            {
-                // Attempt to set state will be repeated after next mailing
-            }
-        }
-
         public void MarkAs(EmailDTO messages, byte messageState)
         {
             var tempRecipient = unitOfWork.EmailRecipients.GetById(messages.EmailRecipientId);
             if (tempRecipient != null)
                 tempRecipient.IsSend = messageState;
-            try { unitOfWork.Save(); }
-            finally
-            {
-                // Attempt to set state will be repeated after next mailing
-            }
+            unitOfWork.Save();
         }
     }
 }

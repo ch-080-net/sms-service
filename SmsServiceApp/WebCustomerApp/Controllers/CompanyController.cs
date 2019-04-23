@@ -34,7 +34,6 @@ namespace WebApp.Controllers
         private readonly IRecipientManager recipientManager;
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
-        private readonly ILoggerManager logger;
         private readonly ISubscribeWordManager subscribeWordManager;
 
 
@@ -42,7 +41,7 @@ namespace WebApp.Controllers
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
                                  IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
-                                 ILoggerManager loggerManager, ISubscribeWordManager subscribeWordManager)
+                                 ISubscribeWordManager subscribeWordManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -53,7 +52,6 @@ namespace WebApp.Controllers
             this.recipientManager = recipientManager;
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
-            this.logger = loggerManager;
             this.subscribeWordManager = subscribeWordManager;
         }
 
@@ -82,9 +80,36 @@ namespace WebApp.Controllers
             return View(companies);
         }
 
+        [HttpGet]
+        public IActionResult GetCampaignCopy(int companyId)
+        {
+            var item = companyManager.GetDetails(companyId);
+            item.PhoneNumber = phoneManager.GetPhoneById(item.PhoneId).PhoneNumber;
+            if (item.Type == CompanyType.Send || item.Type == CompanyType.SendAndRecieve)
+            {
+                if (item.TariffId <= 0)
+                {
+                    item.Tariff = "Tariff not choosen";
+                }
+                else
+                {
+                    item.Tariff = tariffManager.GetTariffById(item.TariffId).Name;
+                }
+            }
+            return View(item);
+        }
+        [HttpPost]
+        public IActionResult GetCampaignCopy(ManageViewModel item, int companyId)
+        {
+            item.ApplicationGroupId = GetGroupId();
+            item.RecipientViewModels = recipientManager.GetRecipients(companyId);
+            if (item.SendingTime < DateTime.Now)
+                item.SendingTime = DateTime.Now;
+            companyManager.CreateCampaignCopy(item);
+            return RedirectToAction("Index","Company");
+        }
 
-
-        public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
+            public IEnumerable<CompanyViewModel> Get(int page, int countOnPage, string searchValue)
         {
             if (searchValue == null)
             {
@@ -155,160 +180,6 @@ namespace WebApp.Controllers
             return View(item);
         }
 
-        /// <summary>
-        /// Return View of Send details
-        /// </summary>
-        /// <param name="companyId">companyId</param>
-        /// <returns>View of send details</returns>
-        [HttpGet]
-        public IActionResult Send(int companyId)
-        {
-            ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
-            SendViewModel item = new SendViewModel();
-            item.Id = companyId;
-            item.TariffId = company.TariffId;
-            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
-            if (item.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.TariffId).Name;
-                item.Tariff = tariff;
-            }
-            return View(item);
-        }
-
-        /// <summary>
-        /// Update company in db with send info
-        /// </summary>
-        /// <param name="item">Model from View</param>
-        /// <returns>Index if all valid</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Send(SendViewModel item, int companyId)
-        {
-            if (ModelState.IsValid)
-            {
-                if (item.SendingTime < DateTime.Now)
-                {
-                    item.SendingTime = DateTime.Now.AddMinutes(1);
-                }
-                item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
-                companyManager.AddSend(item);
-                return RedirectToAction("Index", "Company");
-            }
-            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
-            ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
-            item.TariffId = company.TariffId;
-            if (item.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.TariffId).Name;
-                item.Tariff = tariff;
-            }
-           
-            return View(item);
-        }
-
-        /// <summary>
-        /// Return View of Recieve details
-        /// </summary>
-        /// <param name="companyId">companyId</param>
-        /// <returns>View of recieve details</returns>
-        [HttpGet]
-        public IActionResult Recieve(int companyId)
-        {
-            ViewData["companyId"] = companyId;
-            RecieveViewModel item = new RecieveViewModel();
-            item.Id = companyId;
-            return View(item);
-        }
-
-        /// <summary>
-        /// Update company in db with recieve info
-        /// </summary>
-        /// <param name="item">Model from View</param>
-        /// <returns>Index if all valid</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Recieve(RecieveViewModel item)
-        {
-            if (item.StartTime <= DateTime.Now)
-            {
-                ModelState.AddModelError(string.Empty, "The date can not be less than the current");
-            }
-            if (item.EndTime <= item.StartTime)
-            {
-                ModelState.AddModelError(string.Empty, "The date can not be less than the start date");
-            }
-            if (ModelState.IsValid)
-            {
-                companyManager.AddRecieve(item);
-                return RedirectToAction("Index");
-            }
-            return View(item);
-        }
-
-        /// <summary>
-        /// Return View of SendAndRecieve details
-        /// </summary>
-        /// <param name="companyId">companyId</param>
-        /// <returns>View of sendRecieve details</returns>
-        [HttpGet]
-        public IActionResult SendRecieve(int companyId)
-        {
-            ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
-            SendRecieveViewModel item = new SendRecieveViewModel();
-            item.Id = companyId;
-            item.TariffId = company.TariffId;
-            item.RecipientsCount = recipientManager.GetRecipients(companyId).Count();
-            if (item.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.TariffId).Name;
-                item.Tariff = tariff;
-            }
-            return View(item);
-        }
-
-        /// <summary>
-        /// Update company in db with sendRecieve info
-        /// </summary>
-        /// <param name="item">Model from View</param>
-        /// <returns>Index if all valid</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SendRecieve(SendRecieveViewModel item, int companyId)
-        {
-            if (item.StartTime <= DateTime.Now)
-            {
-                ModelState.AddModelError(string.Empty, "The date can not be less than the current");
-            }
-            if (item.EndTime <= item.StartTime)
-            {
-                ModelState.AddModelError(string.Empty, "The date can not be less than the start date");
-            }
-
-            if (ModelState.IsValid)
-            {
-                if (item.SendingTime < DateTime.Now)
-                {
-                    item.SendingTime = DateTime.Now.AddMinutes(1);
-                }
-                item.TariffId = tariffManager.GetAll().FirstOrDefault(t => t.Name == item.Tariff).Id;
-                companyManager.AddSendRecieve(item);
-                return RedirectToAction("Index");
-            }
-            ViewData["companyId"] = companyId;
-            CompanyViewModel company = companyManager.Get(companyId);
-            item.TariffId = company.TariffId;
-            if (item.TariffId != 0)
-            {
-                var tariff = tariffManager.GetById(item.TariffId).Name;
-                item.Tariff = tariff;
-            }
-            item.RecipientsCount = recipientManager.GetRecipients(item.Id).Count();
-            return View(item);
-        }
 
         /// <summary>
         /// Return View with all company info
@@ -371,8 +242,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public List<TariffViewModel> Tariffs(int id)
         {
-            List<TariffViewModel> model = new List<TariffViewModel>();
-            model = tariffManager.GetTariffs(id).ToList();
+            List<TariffViewModel> model = tariffManager.GetTariffs(id).ToList();
             return model;
         }
 

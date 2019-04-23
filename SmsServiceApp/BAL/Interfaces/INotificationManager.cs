@@ -12,18 +12,17 @@ namespace BAL.Managers
         IEnumerable<EmailNotificationDTO> GetAllEmailNotifications();
 
         IEnumerable<SmsNotificationDTO> GetAllSmsNotifications();
-
-        IEnumerable<NotificationDTO> GetNewWebNotifications();
-
+       
         IEnumerable<WebNotificationDTO> GetWebNotificationsPage(string userId, int number);
+
+        int GetNumberOfWebNotifications(string userId);
 
         NotificationReportDTO GetWebNotificationsReport(string userId);
 
-        TransactionResultDTO AddNotificationsToUser(string userId, DateTime time, string title, string message, string href = null);
+        TransactionResultDTO AddNotificationsToUser(ICollection<Notification> notifications);
 
         void SetAsSent(IEnumerable<NotificationDTO> notifications);
-        void SetAsSent(NotificationDTO notification);
-        void SetAsSent(int notificationId, NotificationOrigin origin, string userId);
+        void SetAsSent(string userId);
 
     }
 }

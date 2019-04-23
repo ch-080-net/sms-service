@@ -16,6 +16,7 @@ namespace WebApp.Models
         public ApplicationGroup ApplicationGroup { get; set; }
         public ICollection<Notification> Notifications { get; set; }
         public ICollection<CampaignNotification> CampaignNotifications { get; set; }
+        public ICollection<EmailCampaignNotification> EmailCampaignNotifications { get; set; }
 
         /// <summary>
         /// Invite ID

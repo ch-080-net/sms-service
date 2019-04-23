@@ -21,16 +21,9 @@ namespace BAL.Managers
         /// <param name="id">id of AnswersCode for deleting</param>
         public void Delete(int id)
         {
-            try
-            {
                 AnswersCode answersCode = unitOfWork.AnswersCodes.GetById(id);
                 unitOfWork.AnswersCodes.Delete(answersCode);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("Exception from delete method", ex); 
-            }
         }
 
         /// <summary>
@@ -52,7 +45,7 @@ namespace BAL.Managers
         public IEnumerable<AnswersCodeViewModel> GetAnswersCodes(int companyId)
         {
             IEnumerable<AnswersCode> answersCodes = unitOfWork.AnswersCodes.Get(r => r.CompanyId == companyId);
-            return mapper.Map<IEnumerable<AnswersCode>, List<AnswersCodeViewModel>>(answersCodes);
+            return mapper.Map<IEnumerable<AnswersCode>, IEnumerable<AnswersCodeViewModel>>(answersCodes);
         }
 
         /// <summary>
@@ -62,17 +55,10 @@ namespace BAL.Managers
         /// <param name="companyId"></param>
         public void Insert(AnswersCodeViewModel item, int companyId)
         {
-            try
-            {
                 AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
                 answersCode.CompanyId = companyId;
                 unitOfWork.AnswersCodes.Insert(answersCode);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from insert method", ex);
-			}
         }
 
         /// <summary>
@@ -81,16 +67,9 @@ namespace BAL.Managers
         /// <param name="item">AnswersCode for updating</param>
         public void Update(AnswersCodeViewModel item)
         {
-            try
-            {
                 AnswersCode answersCode = mapper.Map<AnswersCodeViewModel, AnswersCode>(item);
                 unitOfWork.AnswersCodes.Update(answersCode);
                 unitOfWork.Save();
-            }
-            catch(Exception ex)
-            {
-				throw new Exception("Exception from update method", ex);
-			}
         }
     }
 }

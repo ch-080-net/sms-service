@@ -26,6 +26,9 @@ using System.IO;
 using BAL.Exceptions;
 using StackExchange.Redis;
 using WebApp.Extensions;
+using BAL.Notifications.Infrastructure;
+using BAL.Notifications;
+using BAL.Wrappers;
 
 namespace WebApp
 {
@@ -39,7 +42,6 @@ namespace WebApp
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
                services.AddDbContext<ApplicationDbContext>(options =>
@@ -53,14 +55,12 @@ namespace WebApp
 			{
 				facebookOptions.AppId = "650976532012853";
 				facebookOptions.AppSecret = "bafe321bce69a757c812991f4468597e";
-				//facebookOptions.CallbackPath = "/Account/ExternalLoginCallback";
 			});
 
 			services.AddAuthentication().AddGoogle(configureOptions =>
 			{
 				configureOptions.ClientId = "91528411350-j52vl6bbdp58ild09dqelr9n4ccl11vf.apps.googleusercontent.com";
 				configureOptions.ClientSecret = "11May0pGIYDGLc0ZO0GNi05y";
-				//configureOptions.CallbackPath = "/Account/ExternalLoginCallback";
 			});
             // Add application services.
             services.AddSingleton<ILoggerManager, LoggerManager>();
@@ -165,7 +165,9 @@ namespace WebApp
             services.AddScoped<IEmailMailingManager, EmailMailingManager>();
             services.AddScoped<ITestMessageManager, TestMessageManager>();
             services.AddScoped<IAdminStatisticManager, AdminStatisticManager>();
-
+            services.AddScoped<INotificationsGenerator<EmailCampaign>, EmailCampaignNotificationGenerator>();
+            services.AddScoped<INotificationsGenerator<Company>, SmsCampaignNotificationGenerator>();
+            services.AddTransient<IFileIoWrapper, FileIoWrapper>();
 
             // Configure sessions
 

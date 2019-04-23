@@ -5,41 +5,53 @@
     "use strict";
 
     var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
-    window.onload = notificationStartup();
+    connection.start();
     var notificationsToShow = 10;
 
-    connection.on("GetNotification", function (notification) {
-        incrementBadge();
-        connection.invoke("ConfirmReceival", notification.id, notification.origin).catch(function (err) {
+    var intervalId = setInterval(function () {
+        connection.invoke("GetNumberOfNotifications").catch(function (err) {
             return console.error(err.toString());
+        }).then(function (num) {
+            setBadge(num);
         });
+    }, 15000)
+
+    async function start() {
+        try {
+            await connection.start();
+            console.log("connected");
+        } catch (err) {
+            console.log(err);
+            setTimeout(() => start(), 5000);
+        }
+    };
+
+    connection.onclose(async () => {
+        await start();
     });
 
-    connection.start();
+    connection.on('NotificationsNumRecieved', function (num) {
+        setBadge(num);
+    });
 
-    function incrementBadge() {
-        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
-        activeNotifications = JSON.parse(activeNotifications);
-        if (activeNotifications == null) {
-            activeNotifications = 0;
-        }
-        activeNotifications = JSON.stringify(++activeNotifications);
-        localStorage.setItem("numOfActiveNotifications", activeNotifications);
-        loadBadge();
+    function onNotificationsOpened() {
+        clearBadge();
+        connection.invoke("ConfirmReceival").catch(function (err) {
+            return console.error(err.toString());
+        });
     }
 
-    function loadBadge() {
-        var activeNotifications = localStorage.getItem("numOfActiveNotifications");
-        activeNotifications = JSON.parse(activeNotifications);
-        if (activeNotifications == null) {
-            activeNotifications = "";
+    function setBadge(num) {
+        if (num == 0) {
+            document.getElementById("notificationBadge").innerHTML = "";
         }
-        document.getElementById("notificationBadge").innerHTML = activeNotifications;
+        else {
+            document.getElementById("notificationBadge").innerHTML = num;
+        }        
     }
 
     function clearBadge() {
-        localStorage.setItem("numOfActiveNotifications", null);
-        loadBadge();
+        setBadge("");
     }
 
     function fillModal() {
@@ -141,9 +153,5 @@
     function showMoreNotifications() {
         notificationsToShow += 10;
         fillModal();
-    }
-
-    function notificationStartup() {
-        loadBadge();
     }
 </script>

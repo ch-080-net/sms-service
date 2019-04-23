@@ -65,7 +65,7 @@
 				@*<span asp-validation-for="Password" class="text-danger"></span>*@
 			</div>
 			<div class="agile-field-txt">
-				<label asp-for="ConfirmPassword">Confirm password</label>
+				<label asp-for="ConfirmPassword"></label>
 				<input asp-for="ConfirmPassword" id="pass" class="form-control" placeholder="@Localizer["Confirm password"]" />
 				@*<span asp-validation-for="ConfirmPassword" class="text-danger"></span>*@
 				<div asp-validation-summary="All" class="agile_label" style="color : red"></div>
@@ -83,8 +83,8 @@
 			</div>
 			<div class="agile-field-txt">
 				<div class="agile_label">
-					<a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">LOGIN</a>
-				</div>
+					<a asp-action="NewLogin" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["LOGIN"]</a>
+</div>
 			</div>
 		</form>
     </div>
