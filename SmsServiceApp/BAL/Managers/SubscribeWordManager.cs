@@ -33,8 +33,25 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(SubscribeWordViewModel item)
         {
-            SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-            unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord(){ SubscribeWord = word,CompanyId = item.CompanyId});
+            var word = unitOfWork.SubscribeWords.Get(w => w.Word == item.Word).FirstOrDefault();
+
+            if (word!=null)
+            {
+                var compSw = unitOfWork.CompanySubscribeWords.Get(cw =>
+                    cw.SubscribeWordId == word.Id && cw.CompanyId == item.CompanyId);
+                if (!compSw.Any())
+                {
+                    unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord()
+                        {SubscribeWordId = word.Id, CompanyId = item.CompanyId});
+                }
+            }
+            else
+            {
+                word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
+                unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord()
+                    { SubscribeWord = word, CompanyId = item.CompanyId });
+            }
+          
             unitOfWork.Save();
         }
         /// <summary>
@@ -61,58 +78,7 @@ namespace BAL.Managers
               }
               return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
           }
-       /*   /// <summary>
-          /// Method for inserting new stopwod to db
-          /// </summary>
-          /// <param name="item">ViewModel of stopword</param>
-          public void Insert(SubscribeWordViewModel item)
-          {
-              SubscribeWord subscribeWord = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-              List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
-
-              if (phone.Count == 0)
-              {
-                  Phone newPhone = new Phone();
-                  newPhone.PhoneNumber = item.PhoneNumber;
-                  unitOfWork.Phones.Insert(newPhone);
-                  unitOfWork.Save();
-                  subscribeWord.Phone = newPhone;
-              }
-              else
-              {
-                  subscribeWord.Phone = phone[0];
-              }
-              unitOfWork.SubscribeWords.Insert(subscribeWord);
-              unitOfWork.Save();
-
-          }
-          /// <summary>
-          ///  Update Subscribe Word in db
-          /// </summary>
-          /// <param name="item">ViewModel of SubscribeWord</param>
-          public void Update(SubscribeWordViewModel item)
-          {
-                  SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-                  List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
-
-                  if (phone.Count == 0)
-                  {
-                      Phone newPhone = new Phone();
-                      newPhone.PhoneNumber = item.PhoneNumber;
-                      unitOfWork.Phones.Insert(newPhone);
-                      unitOfWork.Save();
-                      word.Phone = newPhone;
-                  }
-                  else
-                  {
-                      word.Phone = phone[0];
-                  }
-
-              unitOfWork.SubscribeWords.Update(word);
-                  unitOfWork.Save();
-
-          }*/
-
+     
         public void Delete(int item)
         {
                 SubscribeWord word = unitOfWork.SubscribeWords.GetById(item);

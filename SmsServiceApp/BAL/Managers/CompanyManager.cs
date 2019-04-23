@@ -151,6 +151,16 @@ namespace BAL.Managers
             unitOfWork.Companies.Insert(company);
             notificationsGenerator.SupplyWithCampaignNotifications(company);
             unitOfWork.Save();
+
+            SubscribeWord subWord = unitOfWork.SubscribeWords.Get(sw => sw.Word == "start").FirstOrDefault();
+
+            if (subWord != null)
+                unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord()
+                {
+                    Company = company,
+                    SubscribeWord = subWord
+                });
+
             foreach (var recipient in recipientList)
             {
                 Recipient newRecepient = mapper.Map<RecipientViewModel, Recipient>(recipient);

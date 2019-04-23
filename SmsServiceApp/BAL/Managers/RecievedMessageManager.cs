@@ -133,71 +133,48 @@ namespace BAL.Managers
             {
                 return;
             }
-           /*     Phone orignator;
-                Phone destination;
-                Company company;
-                try
-                {
-                    orignator = unitOfWork.Phones.GetAll()
-                        .FirstOrDefault(item => item.PhoneNumber == message.SenderPhone);
-                    //Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
 
-                    destination = unitOfWork.Phones.GetAll()
-                        .FirstOrDefault(item => item.PhoneNumber == message.RecipientPhone);
-                    // Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
-                    company = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
-                    if (orignator == null)
+            Phone orignator = unitOfWork.Phones.GetAll()
+                .FirstOrDefault(item => item.PhoneNumber == message.SenderPhone);
+            //Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
+            if (orignator == null)
+            {
+                orignator = new Phone() { PhoneNumber = message.SenderPhone };
+                unitOfWork.Phones.Insert(orignator);
+                unitOfWork.Save();
+            }
+
+            Phone destination = unitOfWork.Phones.GetAll()
+                   .FirstOrDefault(item => item.PhoneNumber == message.RecipientPhone);
+            if (destination == null)
+            {
+                return;
+            }
+                // Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
+            var companies = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id);       
+              
+            foreach (var company in companies)
+            {
+                var companySubscribeWords = unitOfWork.CompanySubscribeWords.Get(m => m.CompanyId == company.Id);
+                    //  .FirstOrDefault(csw => csw.SubscribeWordId == subscribeWords.Id&&csw.CompanyId==company.Id);
+
+                if (companySubscribeWords.Any(n => n.SubscribeWordId == subscribeWord.Id))
+                {
+                    var rec = unitOfWork.Recipients.Get(r => r.CompanyId == company.Id && r.PhoneId == orignator.Id);
+                    if (!rec.Any())
                     {
-                        orignator = new Phone() { PhoneNumber = message.SenderPhone };
-                        unitOfWork.Phones.Insert(orignator);
-                        unitOfWork.Save();
-                    }
-                }
-                catch
-                {
-                 return;
-                }
-
-                if ((company == null) || (subscribeWord.CompanyId != company.Id))
-                {
-                 return;
-                }
-
-
-                if (subscribeWord.SubscribePhoneId == null)
-                {
-                 return;
-                }
-
-                    Phone subscribeCompanyPhone = unitOfWork.Phones.GetById((int) subscribeWord.SubscribePhoneId);
-                    var subscribeCompanies = unitOfWork.Companies
-                        .Get(item => item.PhoneId == subscribeCompanyPhone.Id);
-
-                    if (subscribeCompanyPhone == orignator)
-                    {
-                    return;
-                    }
-
-                    foreach (var subscribeCompany in subscribeCompanies)
-                    {
-
-
-                        var rec = unitOfWork.Recipients.GetAll()
-                            .FirstOrDefault(r =>(r.CompanyId == subscribeCompany.Id && r.PhoneId == orignator.Id));
-
-                        if (rec == null)
+                        unitOfWork.Recipients.Insert(new Recipient()
                         {
-                            unitOfWork.Recipients.Insert(new Recipient()
-                            {
-                                CompanyId = subscribeCompany.Id,
-                                PhoneId = orignator.Id,
-                                KeyWords = "Subscribed himself",
-                            });
-                        }
+                            CompanyId = companySubscribeWords.FirstOrDefault().CompanyId,
+                            PhoneId = orignator.Id,
+                            KeyWords = "Subscribed himself",
+                        });
                     }
+                }
+            }
 
-                    unitOfWork.Save();
-              */
+            unitOfWork.Save();
+            
         }
 
         /// <summary>

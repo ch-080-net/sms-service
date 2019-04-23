@@ -306,7 +306,7 @@ namespace WebApp.Controllers
             ViewData["CompanyId"] = companyId;
             if (!sword.Any())
             {
-                return RedirectToAction("Create", "SubscribeWord");
+                return RedirectToAction("Create", "SubscribeWord",new{CompanyId=companyId});
             }
           
             return View(sword);
