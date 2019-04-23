@@ -156,7 +156,7 @@ function onAddContact(item) {
     options.type = "POST";
     var obj = Contact;
     obj.PhonePhoneNumber = $("#phoneNumber").val();
-    var regex = new RegExp("^[+][0-9]{12}");
+    var regex = new RegExp(" ^\[+][0 - 9]{ 12}$");
     if (!regex.test(obj.PhonePhoneNumber)) {
         $("#msg").html("Invalid phone number");
         return;
@@ -228,7 +228,7 @@ function contactUpdate(idOfUpdatePhone) {
     var obj = Contact;
     obj.Id = id;
     obj.PhonePhoneNumber = $("#phoneNumber").val();
-    var regex = new RegExp("^[+][0-9]{12}");
+    var regex = new RegExp("^\[+][0-9]{12}$");
     if (!regex.test(obj.PhonePhoneNumber)) {
         $("#msg").html("Invalid phone number");
         return;
