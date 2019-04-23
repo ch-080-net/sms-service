@@ -103,17 +103,11 @@ namespace BAL.Managers
         /// <param name="id">id of recieved message for deleting</param>
         public void Delete(int id)
         {
-            try
-            {
+          
                 RecievedMessage recievedMessage = unitOfWork.RecievedMessages.GetById(id);
                 unitOfWork.RecievedMessages.Delete(recievedMessage);
                 unitOfWork.Save();
-            }
-            catch
-            {
-               throw new  TypeAccessException();
-            }
-        }
+          }
 
         /// <summary>
         /// check who is in the reported subscribeword
@@ -215,9 +209,7 @@ namespace BAL.Managers
             }
         if ((words.Word == "START") && (orignator != null) && (company != null))
             {
-                try
-                {
-                    PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll().FirstOrDefault(w =>
+               PhoneGroupUnsubscribe phoneGroup = unitOfWork.PhoneGroupUnsubscribes.GetAll().FirstOrDefault(w =>
                         ((w.GroupId == company.ApplicationGroupId) && (w.PhoneId == orignator.Id)));
                     if (phoneGroup != null)
                     {
@@ -225,12 +217,7 @@ namespace BAL.Managers
                         unitOfWork.Save();
                         //return true;
                     }
-                }
-                catch
-                {
-                    return;
-                }
-
+              
             }
             else
             {
