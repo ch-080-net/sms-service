@@ -25,7 +25,7 @@ namespace Model.Interfaces
         IEmailCampaignNotificationRepository EmailCampaignNotifications { get; }
         IBaseRepository<ApplicationUser> ApplicationUsers { get; }
         IBaseRepository<SubscribeWord> SubscribeWords { get; }
-
+        IBaseRepository<CompanySubscribeWord> CompanySubscribeWords { get; }
         IBaseRepository<ApplicationGroup> ApplicationGroups { get; }
         IBaseRepository<RecievedMessage> RecievedMessages { get; }
         IBaseRepository<AnswersCode> AnswersCodes { get; }

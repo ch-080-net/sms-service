@@ -28,6 +28,7 @@ namespace WebApp.Data
         public DbSet<RecievedMessage> RecievedMessages { get; set; }
         public DbSet<AnswersCode> AnswersCodes { get; set; }
         public DbSet<PhoneGroupUnsubscribe> PhoneGroupUnsubscriptions { get; set; }
+        public DbSet<CompanySubscribeWord> CompanySubscribeWords { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<CampaignNotification> CampaignNotifications { get; set; }
         public DbSet<SubscribeWord> SubscribeWords { get; set; }
@@ -56,7 +57,7 @@ namespace WebApp.Data
             builder.Entity<EmailCampaign>().HasKey(i => i.Id);
             builder.Entity<EmailRecipient>().HasKey(i => i.Id);
             builder.Entity<Email>().HasKey(i => i.Id);
-
+            
             builder.Entity<EmailCampaignNotification>().HasKey(i => i.Id);
             builder.Entity<CampaignNotification>().HasKey(i => i.Id);
             builder.Entity<Notification>().HasKey(i => i.Id);
@@ -195,6 +196,18 @@ namespace WebApp.Data
                 .HasForeignKey(pgu => pgu.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Company>()
+                .HasMany(ag => ag.CompanySubscribeWords)
+                .WithOne(c => c.Company)
+                .HasForeignKey(pgu => pgu.CompanyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<SubscribeWord>()
+                .HasMany(ag => ag.CompanySubscribeWords)
+                .WithOne(c => c.SubscribeWord)
+                .HasForeignKey(pgu => pgu.SubscribeWordId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Phone>()
                 .HasMany(p => p.PhoneGroupUnsubscribtions)
                 .WithOne(pgu => pgu.Phone)
@@ -226,19 +239,11 @@ namespace WebApp.Data
                 .HasIndex(r => new { r.EmailId, r.CompanyId })
                 .IsUnique();
 
-            builder.Entity<Company>()
-                .HasMany(com => com.SubscribeWords)
-                .WithOne(sw => sw.Company)
-                .HasForeignKey(sw => sw.CompanyId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
+           
 
-            builder.Entity<Phone>()
-                .HasMany(p => p.SubscribeWords)
-                .WithOne(r => r.Phone)
-                .HasForeignKey(s => s.SubscribePhoneId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<CompanySubscribeWord>()
+                .HasKey(pgu => new { pgu.SubscribeWordId, pgu.CompanyId });
+
 
             // Required fields
             #region Required fields

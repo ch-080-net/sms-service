@@ -303,11 +303,12 @@ namespace WebApp.Controllers
         public IActionResult SubscribeWord(int companyId)
         {
             var sword =subscribeWordManager.GetWordsByCompanyId(companyId);
-
+            ViewData["CompanyId"] = companyId;
             if (!sword.Any())
             {
-                return RedirectToAction("Create", "SubscribeWord", new {CompanyId = companyId });
+                return RedirectToAction("Create", "SubscribeWord",new{CompanyId=companyId});
             }
+          
             return View(sword);
         }
 

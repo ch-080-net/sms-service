@@ -350,6 +350,9 @@ namespace BAL.Tests.ManagersTests
             mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
             mockUnitOfWork.Setup(u => u.Recipients.Insert(It.IsAny<Recipient>()));
             mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));
+            mockUnitOfWork.Setup(u => u.CompanySubscribeWords.Insert(It.IsAny<CompanySubscribeWord>()));
+            mockUnitOfWork.Setup(u => u.SubscribeWords.Get(It.IsAny<Expression<Func<SubscribeWord, bool>>>(), It.IsAny<Func<IQueryable<SubscribeWord>,
+                IOrderedQueryable<SubscribeWord>>>(), It.IsAny<string>())).Returns(new List<SubscribeWord>(){new SubscribeWord(){Id=3,Word = "start"}});
             mockMapper.Setup(m => m.Map<ManageViewModel, Company>(It.IsAny<ManageViewModel>()))
                 .Returns(new Company() { PhoneId = 1, Name = "test", Message = "test", Description = "Test" });
             recepientsList.Add(new RecipientViewModel()
@@ -372,7 +375,9 @@ namespace BAL.Tests.ManagersTests
         {
             ManageViewModel emptyCampaign = new ManageViewModel() { PhoneId = 1, Name = "test", Description = "Test" };
             List<RecipientViewModel> recepientsList = new List<RecipientViewModel>();
-
+            mockUnitOfWork.Setup(u => u.CompanySubscribeWords.Insert(It.IsAny<CompanySubscribeWord>()));
+            mockUnitOfWork.Setup(u => u.SubscribeWords.Get(It.IsAny<Expression<Func<SubscribeWord, bool>>>(), It.IsAny<Func<IQueryable<SubscribeWord>,
+                IOrderedQueryable<SubscribeWord>>>(), It.IsAny<string>())).Returns(new List<SubscribeWord>() { new SubscribeWord() { Id = 3, Word = "start" } });
             mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
                 IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(new List<Phone>());
             mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
@@ -454,6 +459,9 @@ namespace BAL.Tests.ManagersTests
                 });
             mockUnitOfWork.Setup(u => u.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), It.IsAny<Func<IQueryable<Phone>,
                 IOrderedQueryable<Phone>>>(), It.IsAny<string>())).Returns(Phones);
+            mockUnitOfWork.Setup(u => u.CompanySubscribeWords.Insert(It.IsAny<CompanySubscribeWord>()));
+            mockUnitOfWork.Setup(u => u.SubscribeWords.Get(It.IsAny<Expression<Func<SubscribeWord, bool>>>(), It.IsAny<Func<IQueryable<SubscribeWord>,
+                IOrderedQueryable<SubscribeWord>>>(), It.IsAny<string>())).Returns(new List<SubscribeWord>() { new SubscribeWord() { Id = 3, Word = "start" } });
             mockUnitOfWork.Setup(u => u.Companies.Insert(It.IsAny<Company>()));
             mockUnitOfWork.Setup(u => u.Recipients.Insert(It.IsAny<Recipient>()));
             mockUnitOfWork.Setup(u => u.Phones.Insert(It.IsAny<Phone>()));

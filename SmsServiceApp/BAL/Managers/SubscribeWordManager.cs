@@ -23,74 +23,61 @@ namespace BAL.Managers
         public IEnumerable<SubscribeWordViewModel> GetWords()
         {
             IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll();
-            foreach (var word in words)
-            {
-                word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
-            }
+           
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
-
-        public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
-        {
-            IEnumerable<SubscribeWord> words = unitOfWork.SubscribeWords.GetAll().Where(sw=>sw.CompanyId==companyId);
-            foreach (var word in words)
-            {
-                word.Phone = unitOfWork.Phones.GetById((int)word.SubscribePhoneId);
-            }
-            return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
-        }
+       
         /// <summary>
         /// Method for inserting new stopwod to db
         /// </summary>
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(SubscribeWordViewModel item)
         {
-            SubscribeWord subscribeWord = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-            List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
+            var word = unitOfWork.SubscribeWords.Get(w => w.Word == item.Word).FirstOrDefault();
 
-            if (phone.Count == 0)
+            if (word!=null)
             {
-                Phone newPhone = new Phone();
-                newPhone.PhoneNumber = item.PhoneNumber;
-                unitOfWork.Phones.Insert(newPhone);
-                unitOfWork.Save();
-                subscribeWord.Phone = newPhone;
+                var compSw = unitOfWork.CompanySubscribeWords.Get(cw =>
+                    cw.SubscribeWordId == word.Id && cw.CompanyId == item.CompanyId);
+                if (!compSw.Any())
+                {
+                    unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord()
+                        {SubscribeWordId = word.Id, CompanyId = item.CompanyId});
+                }
             }
             else
             {
-                subscribeWord.Phone = phone[0];
+                word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
+                unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord()
+                    { SubscribeWord = word, CompanyId = item.CompanyId });
             }
-            unitOfWork.SubscribeWords.Insert(subscribeWord);
+          
             unitOfWork.Save();
-         
         }
         /// <summary>
-        ///  Update Subscribe Word in db
+        ///  Update stop word in db
         /// </summary>
-        /// <param name="item">ViewModel of SubscribeWord</param>
+        /// <param name="item">ViewModel of stopword</param>
         public void Update(SubscribeWordViewModel item)
         {
-                SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
-                List<Phone> phone = unitOfWork.Phones.Get(p => p.PhoneNumber == item.PhoneNumber).ToList();
-
-                if (phone.Count == 0)
-                {
-                    Phone newPhone = new Phone();
-                    newPhone.PhoneNumber = item.PhoneNumber;
-                    unitOfWork.Phones.Insert(newPhone);
-                    unitOfWork.Save();
-                    word.Phone = newPhone;
-                }
-                else
-                {
-                    word.Phone = phone[0];
-                }
-               
+            SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
             unitOfWork.SubscribeWords.Update(word);
-                unitOfWork.Save();
-         
+            unitOfWork.Save();
         }
+        public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
+          {
+              IEnumerable<CompanySubscribeWord> companySubscribes = unitOfWork.CompanySubscribeWords.GetAll().Where(cw => cw.CompanyId == companyId);
 
+              List<SubscribeWord> words = new List<SubscribeWord>();
+
+              foreach (var companySubscribe in companySubscribes)
+              {
+                words.Add(unitOfWork.SubscribeWords.Get(csw => csw.Id == companySubscribe.SubscribeWordId).FirstOrDefault());
+
+              }
+              return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
+          }
+     
         public void Delete(int item)
         {
                 SubscribeWord word = unitOfWork.SubscribeWords.GetById(item);

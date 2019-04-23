@@ -9,6 +9,7 @@ using Moq;
 using WebApp.Models;
 using System.Linq;
 using System.Linq.Expressions;
+using AutoMapper.Configuration;
 using WebApp.Services;
 
 namespace BAL.Tests.ManagersTests
@@ -18,191 +19,183 @@ namespace BAL.Tests.ManagersTests
     {
         private static Mock<INotificationsGenerator<EmailCampaign>> mockNotification = new Mock<INotificationsGenerator<EmailCampaign>>();
         private EmailCampaignManager manager;
+        private List<Email> Emails;
+        private List<EmailRecipientViewModel> recipientViewModels;
+        private EmailCampaignViewModel emailCampaignViewModel;
+        private EmailRecipient emailRecipient;
+        private EmailCampaign emailCampaign;
 
         [SetUp]
         protected override void Initialize()
         {
             base.Initialize();
             manager = new EmailCampaignManager(mockUnitOfWork.Object, mockMapper.Object, mockNotification.Object);
+            Emails = new List<Email>();
+            Emails.Add(
+                new Email()
+                {
+                    Id = 10,
+                    EmailAddress = "qq@qq.qq"
+                });
+            Emails.Add(
+                new Email()
+                {
+                    Id = 11,
+                    EmailAddress = "tt@tt.tt"
+                });
+            recipientViewModels = new List<EmailRecipientViewModel>();
+            recipientViewModels.Add(new EmailRecipientViewModel()
+            {
+                EmailAddress = "tt@tt.tt",
+                BirthDate = DateTime.Now,
+                Gender = "Male",
+                KeyWords = "add",
+                Name = "John",
+                Surname = "Snow",
+                Priority = "Low",
+                Id = 0,
+                CompanyId = 0
+            });
+            emailCampaignViewModel = new EmailCampaignViewModel()
+            {
+                Id = 0,
+                EmailAddress = "qq@qq.qq",
+                Description = "test",
+                Message = "test",
+                Name = "test",
+                SendingTime = DateTime.Now,
+                UserId = "1cf1c047-9687-4663-be13-09e4a99f35f3",
+                RecipientsCount = 1,
+                EmailId = 0
+            };
+            emailRecipient = new EmailRecipient()
+            {
+                BirthDate = DateTime.Now,
+                Gender = 0,
+                IsSend = 0,
+                KeyWords = "test",
+                Name = "test",
+                Priority = "Low",
+                Surname = "test"
+            };
+            emailCampaign = new EmailCampaign()
+            {
+                Name = "test",
+                Description = "test",
+                Message = "test",
+                SendingTime = DateTime.Now
+            };
             TestContext.WriteLine("Overrided");
         }
 
         [Test]
-        public void InsertWithRecepients_EmptyCampaign_FalseResult()
+        public void InsertWithRecepients_EmptyCampaign_ThrowNullReferenceException()
         {
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(value: null);
+            mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
+                IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(Emails);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockNotification.Setup(n => n.SupplyWithCampaignNotifications(It.IsAny<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(recipientViewModels[0]))
+                .Returns(emailRecipient);
+            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsNotNull<EmailRecipient>()));
             EmailCampaignViewModel emptyCampaign = new EmailCampaignViewModel();
             List<EmailRecipientViewModel> recepientsList = new List<EmailRecipientViewModel>();
-            recepientsList.Add(new EmailRecipientViewModel()
-            {
-                EmailAddress = "tt@tt.tt",
-                BirthDate = DateTime.Now,
-                Gender = "Male",
-                KeyWords = "add",
-                Name = "John",
-                Surname = "Snow",
-                Priority = "Low"
-            });
-            var result = manager.IncertWithRecepients(emptyCampaign, recepientsList);
-            Assert.IsFalse(result);
+            Assert.Throws<NullReferenceException>(() => manager.IncertWithRecepients(emptyCampaign, recipientViewModels));
         }
 
         [Test]
-        public void InsertWithRecepients_CampignWithoutEmailInDatabase_TrueResult()
-        {            
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel() { EmailAddress = "", Name = "test", Message = "test", };
-            List<EmailRecipientViewModel> recepientsList = new List<EmailRecipientViewModel>();
+        public void InsertWithRecepients_CampignWithoutEmailInDatabase_DoesNotThrow()
+        {
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
             mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
                 IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(new List<Email>());
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsAny<EmailCampaign>()));
-            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsAny<EmailRecipient>()));
-            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() {Name = "test", Message = "test"});
-            recepientsList.Add(new EmailRecipientViewModel()
-            {
-                EmailAddress = "tt@tt.tt",
-                BirthDate = DateTime.Now,
-                Gender = "Male",
-                KeyWords = "add",
-                Name = "John",
-                Surname = "Snow",
-                Priority = "Low"
-            });
-            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(It.IsAny<EmailRecipientViewModel>()))
-                .Returns(new EmailRecipient() { BirthDate = DateTime.Now, Gender = 0, KeyWords = "add", Name = "John", Surname = "Snow", Priority = "Low"});
-            var result = manager.IncertWithRecepients(campaign, recepientsList);
-            Assert.IsTrue(result);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockNotification.Setup(n => n.SupplyWithCampaignNotifications(It.IsAny<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(recipientViewModels[0]))
+                .Returns(emailRecipient);
+            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsNotNull<EmailRecipient>()));
+            Assert.DoesNotThrow(() => manager.IncertWithRecepients(emailCampaignViewModel, recipientViewModels));
         }
 
         [Test]
-        public void InsertWithRecepients_CampignWithEmailInDatabase_TrueResult()
+        public void InsertWithRecepients_CampignWithEmailInDatabase_DoesNotThrow()
         {
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel() { EmailAddress = "qq@qq.qq", Name = "test", Message = "test", };
-            List<EmailRecipientViewModel> recepientsList = new List<EmailRecipientViewModel>();
-            List<Email> Emails = new List<Email>();
-            Emails.Add(
-                new Email()
-                {
-                    Id = 10,
-                    EmailAddress = "qq@qq.qq"
-                });
-            Emails.Add(
-                new Email()
-                {
-                    Id = 11,
-                    EmailAddress = "tt@tt.tt"
-                });
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
             mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
                 IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(Emails);
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsAny<EmailCampaign>()));
-            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsAny<EmailRecipient>()));
-            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() { Name = "test", Message = "test" });
-            recepientsList.Add(new EmailRecipientViewModel()
-            {
-                EmailAddress = "tt@tt.tt",
-                BirthDate = DateTime.Now,
-                Gender = "Male",
-                KeyWords = "add",
-                Name = "John",
-                Surname = "Snow",
-                Priority = "Low"
-            });
-            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(It.IsAny<EmailRecipientViewModel>()))
-                .Returns(new EmailRecipient() { BirthDate = DateTime.Now, Gender = 0, KeyWords = "add", Name = "John", Surname = "Snow", Priority = "Low" });
-            var result = manager.IncertWithRecepients(campaign, recepientsList);
-            Assert.IsTrue(result);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockNotification.Setup(n => n.SupplyWithCampaignNotifications(It.IsAny<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(recipientViewModels[0]))
+                .Returns(emailRecipient);
+            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsNotNull<EmailRecipient>()));
+            Assert.DoesNotThrow(() => manager.IncertWithRecepients(emailCampaignViewModel, recipientViewModels));
         }
 
         [Test]
-        public void InsertWithRecepients_CampignWithWrongRecipientMapping_FalseResult()
+        public void InsertWithRecepients_CampignWithWrongRecipientMapping_ThrowNullReferenceException()
         {
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel() { EmailAddress = "", Name = "test", Message = "test", };
-            List<EmailRecipientViewModel> recepientsList = new List<EmailRecipientViewModel>();
-            List<Email> Emails = new List<Email>();
-            Emails.Add(
-                new Email()
-                {
-                    Id = 10,
-                    EmailAddress = "qq@qq.qq"
-                });
-            Emails.Add(
-                new Email()
-                {
-                    Id = 11,
-                    EmailAddress = "tt@tt.tt"
-                });
-            mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
-                IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(new List<Email>());
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsAny<EmailCampaign>()));
-            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsAny<EmailRecipient>()));
-            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() { Name = "test", Message = "test" });
-            recepientsList.Add(new EmailRecipientViewModel()
-            {
-                EmailAddress = "tt@tt.tt",
-                BirthDate = DateTime.Now,
-                Gender = "Male",
-                KeyWords = "add",
-                Name = "John",
-                Surname = "Snow",
-                Priority = "Low"
-            });
-            var result = manager.IncertWithRecepients(campaign, recepientsList);
-            Assert.IsFalse(result);
-        }
-
-        [Test]
-        public void Update_EmptyCampaign_FalseResult()
-        {
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel();
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() { Name = "test", Message = "test" });
-            var result = manager.Update(campaign);
-            Assert.IsFalse(result);
-        }
-
-        [Test]
-        public void Update_CampaignWithEmailInDatabase_TrueResult()
-        {
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel() { Id = 1, EmailAddress = "qq@qq.qq", Name = "test", Message = "test", };
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() {Id = 1, Name = "test", Message = "test" });
-            List<Email> Emails = new List<Email>();
-            Emails.Add(
-                new Email()
-                {
-                    Id = 10,
-                    EmailAddress = "qq@qq.qq"
-                });
-            Emails.Add(
-                new Email()
-                {
-                    Id = 11,
-                    EmailAddress = "tt@tt.tt"
-                });
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
             mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
                 IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(Emails);
-            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Update(It.IsAny<EmailCampaign>()));
-            var result = manager.Update(campaign);
-            Assert.IsTrue(result);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockNotification.Setup(n => n.SupplyWithCampaignNotifications(It.IsAny<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Insert(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            mockMapper.Setup(m => m.Map<EmailRecipientViewModel, EmailRecipient>(It.IsNotNull<EmailRecipientViewModel>()))
+                .Throws<NullReferenceException>();
+            recipientViewModels[0] = null;
+            mockUnitOfWork.Setup(u => u.EmailRecipients.Insert(It.IsNotNull<EmailRecipient>()));
+            Assert.Throws<NullReferenceException>(() => manager.IncertWithRecepients(emailCampaignViewModel, recipientViewModels));
+        }
+
+        [Test]
+        public void Update_EmptyCampaign_ThrowNullReferenceException()
+        {
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
+            mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
+                IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(Emails);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Update(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            Assert.Throws<NullReferenceException>(() => manager.Update(null));
+        }
+
+        [Test]
+        public void Update_CampaignWithEmailInDatabase_DoesNotThrow()
+        {
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
+            mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
+                IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(Emails);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Update(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            Assert.DoesNotThrow(() => manager.Update(emailCampaignViewModel));
         }
 
         [Test]
         public void Update_CampaignWithoutEmailInDatabase_TrueResult()
         {
-            EmailCampaignViewModel campaign = new EmailCampaignViewModel() { Id = 1, EmailAddress = "qq@qq.qq", Name = "test", Message = "test", };
-            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsAny<EmailCampaignViewModel>()))
-                .Returns(new EmailCampaign() { Id = 1, Name = "test", Message = "test" });
+            mockMapper.Setup(m => m.Map<EmailCampaign>(It.IsNotNull<EmailCampaignViewModel>()))
+                .Returns(emailCampaign);
             mockUnitOfWork.Setup(u => u.Emails.Get(It.IsAny<Expression<Func<Email, bool>>>(), It.IsAny<Func<IQueryable<Email>,
                 IOrderedQueryable<Email>>>(), It.IsAny<string>())).Returns(new List<Email>());
-            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsAny<Email>()));
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Update(It.IsAny<EmailCampaign>()));
-            var result = manager.Update(campaign);
-            Assert.IsTrue(result);
+            mockUnitOfWork.Setup(u => u.Emails.Insert(It.IsNotNull<Email>()));
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Update(It.IsNotNull<EmailCampaign>()));
+            mockUnitOfWork.Setup(u => u.Save());
+            Assert.DoesNotThrow(() => manager.Update(emailCampaignViewModel));
         }
 
         [Test]
@@ -255,21 +248,19 @@ namespace BAL.Tests.ManagersTests
         }
 
         [Test]
-        public void Delete_CampaignWithId_TrueResult()
+        public void Delete_CampaignWithId_DoesNotThrow()
         {
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.GetById(It.IsAny<int>())).Returns(new EmailCampaign() {Id = 1});
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Delete(It.IsAny<EmailCampaign>()));
-            var result = manager.Delete(1);
-            Assert.IsTrue(result);
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.GetById(It.IsAny<int>())).Returns(emailCampaign);
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Delete(It.IsNotNull<EmailCampaign>()));
+            Assert.DoesNotThrow(() => manager.Delete(1));
         }
 
         [Test]
-        public void Delete_CampaignWithWrongId_FalseResult()
+        public void Delete_CampaignWithWrongId_ThrowNullReferenceException()
         {
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.GetById(It.IsAny<int>())).Returns(value: null);
-            mockUnitOfWork.Setup(u => u.EmailCampaigns.Delete(null)).Throws(new Exception("test"));
-            var result = manager.Delete(1);
-            Assert.IsFalse(result);
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.GetById(It.IsAny<int>())).Returns((EmailCampaign)null);
+            mockUnitOfWork.Setup(u => u.EmailCampaigns.Delete(It.IsAny<EmailCampaign>())).Throws(new NullReferenceException());
+            Assert.Throws<NullReferenceException>(() => manager.Delete(1));
         }
 
         [Test]

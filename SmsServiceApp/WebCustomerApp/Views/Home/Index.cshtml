@@ -142,11 +142,14 @@
 								<em class="fa fa-user"></em>
 							</a>
 							<ul class="dropdown-menu">
-								<li class="user-header">
-									<p>
-										@Context.User.Identity.Name
-									</p>
-								</li>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="user-header">
+                                        <p>
+                                            @Context.User.Identity.Name
+                                        </p>
+                                    </li>
+                                }
 								<li class="user-footer">
 									@if (SignInManager.IsSignedIn(User))
 									{
