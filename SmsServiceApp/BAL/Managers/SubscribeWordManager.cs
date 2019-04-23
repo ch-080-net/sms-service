@@ -26,19 +26,15 @@ namespace BAL.Managers
            
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
-        public IEnumerable<SubscribeWordViewModel> GetStopWords()
-        {
-            IEnumerable<StopWord> words = unitOfWork.StopWords.GetAll();
-            return mapper.Map<IEnumerable<StopWord>, IEnumerable<SubscribeWordViewModel>>(words);
-        }
+       
         /// <summary>
         /// Method for inserting new stopwod to db
         /// </summary>
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(SubscribeWordViewModel item)
         {
-            StopWord word = mapper.Map<SubscribeWordViewModel, StopWord>(item);
-            unitOfWork.StopWords.Insert(word);
+            SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
+            unitOfWork.CompanySubscribeWords.Insert(new CompanySubscribeWord(){ SubscribeWord = word,CompanyId = item.CompanyId});
             unitOfWork.Save();
         }
         /// <summary>
@@ -47,8 +43,8 @@ namespace BAL.Managers
         /// <param name="item">ViewModel of stopword</param>
         public void Update(SubscribeWordViewModel item)
         {
-            StopWord word = mapper.Map<SubscribeWordViewModel, StopWord>(item);
-            unitOfWork.StopWords.Update(word);
+            SubscribeWord word = mapper.Map<SubscribeWordViewModel, SubscribeWord>(item);
+            unitOfWork.SubscribeWords.Update(word);
             unitOfWork.Save();
         }
         public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)

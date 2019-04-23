@@ -43,7 +43,7 @@ namespace WebApp.Controllers
             {
                 subscribeWordManager.Insert(item);
             }
-
+           
 
             return RedirectToAction("SubscribeWord", "Company", new { companyId = item.CompanyId});
         }
@@ -52,16 +52,19 @@ namespace WebApp.Controllers
         /// Gets EditView with StopWord info from db
         /// </summary>
         /// <param name="id">Id of stopword which need to edit</param>
+        /// <param name="companyId"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int id,int companyId)
         {
                 SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
-
-                if (word == null)
-                {
+                ViewData["companyId"] = companyId;
+            if (word == null)
+            {
                     return NotFound();
-                }
+            }
+
+            word.CompanyId = companyId;
                 return View(word);
         }
         /// <summary>
@@ -83,27 +86,7 @@ namespace WebApp.Controllers
             return View(wordEdit);
         }
 
-        /// <summary>
-        /// Get Delete Confirmation View with StopWord information
-        /// </summary>
-        /// <param name="id">Id of selected item</param>
-        /// <returns>View with selected StopWord info</returns>
-        [HttpGet]
-        public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            SubscribeWordViewModel word = subscribeWordManager.GetWords().FirstOrDefault(c => c.Id == id);
-
-            if (word == null)
-            {
-                return NotFound();
-            }
-            return View(word);
-        }
+       
 
         /// <summary>
         /// Delete selected item from db
@@ -111,11 +94,10 @@ namespace WebApp.Controllers
         /// <param name="id">Id of StopWord which select to delete</param>
         /// <returns>StopWord Index View</returns>
         [HttpGet]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id,int companyId)
         {
-           int CompanyId = subscribeWordManager.GetWords().FirstOrDefault(w => w.Id == id).CompanyId;
             subscribeWordManager.Delete(id);
-            return RedirectToAction("SubscribeWord","Company",new { companyId = CompanyId });
+            return RedirectToAction("SubscribeWord","Company",new { companyId  });
         }
 
     }
