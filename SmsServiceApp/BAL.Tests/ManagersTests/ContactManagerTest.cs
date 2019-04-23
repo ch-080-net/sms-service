@@ -84,7 +84,12 @@ namespace BAL.Tests.ManagersTests
         [Test]
         public void GetContactBySearchValue_EmptyValue_EmptyResult()
         {
-			List<Contact> testContactList = new List<Contact>(){new Contact(){Name = "name"}, new Contact(){Name = "a"}};
+			List<Contact> testContactList = new List<Contact>()
+                {
+                    new Contact(){Name = "name"},
+                    new Contact(){Name = "a"}
+
+                };
 
 			mockUnitOfWork.Setup(m => m.Contacts.GetAll()).Returns(testContactList);
 			mockUnitOfWork.Setup(m => m.Phones.GetById(1)).Returns(new Phone() {PhoneNumber = "0"});
@@ -152,6 +157,176 @@ namespace BAL.Tests.ManagersTests
 
             Assert.That(result, Is.EqualTo(1));
         }
-       -
+        [Test]
+        public void GetContactCountBySearchValue_EmptyValue_EmptyCountResult()
+        {
+            mockUnitOfWork
+                .Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
+                .Returns(new List<Contact>());
+            mockUnitOfWork.Setup(m => m.Phones.GetById(1)).Returns(new Phone() { PhoneNumber = "0" });
+            var result = manager.GetContactCountBySearchValue(1, "0");
+
+            Assert.That(result, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void CreateContact_Value_ResultFalse()
+        {
+            List<Phone> testPhoneList = new List<Phone>()
+            {
+               new Phone(){PhoneNumber = "+380992033044"},
+               new Phone(){PhoneNumber = "+380992033066"}
+            };
+            ContactViewModel contactViewModel = new ContactViewModel();
+            List<Contact> tempContactList = new List<Contact>()
+            {
+                new Contact() {Id = 1, PhoneId = 1, Name = "Nick", ApplicationGroupId = 1}
+            };
+            mockMapper.Setup(c => c.Map<Contact>(It.IsAny<ContactViewModel>()))
+               .Returns(new Contact());
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+               .Returns(testPhoneList);
+            mockUnitOfWork.Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
+               .Returns(tempContactList);
+            mockUnitOfWork.Setup(n => n.Save());
+            mockUnitOfWork.Setup(n => n.Contacts.Insert(new Contact()));
+            var result = manager.CreateContact(contactViewModel, 1);
+            Assert.That(result,Is.EqualTo(false));
+
+        }
+
+        [Test]
+        public void CreateContact_ValueNotEqual_ResultTrue()
+        {
+            List<Phone> testPhoneList = new List<Phone>()
+            {
+                new Phone(){PhoneNumber = "+380992033044"},
+                new Phone(){PhoneNumber = "+380992033066"}
+            };
+            ContactViewModel contactViewModel = new ContactViewModel();
+            List<Contact> tempContactList = new List<Contact>();
+           
+            mockMapper.Setup(c => c.Map<Contact>(It.IsAny<ContactViewModel>()))
+                .Returns(new Contact());
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(testPhoneList);
+            mockUnitOfWork.Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
+                .Returns(tempContactList);
+            mockUnitOfWork.Setup(n => n.Save());
+            mockUnitOfWork.Setup(n => n.Contacts.Insert(new Contact()));
+
+            var result = manager.CreateContact(contactViewModel, 1);
+            Assert.That(result, Is.EqualTo(true));
+
+        }
+
+        [Test]
+        public void CreateContact_ValueCount_ResultTrue()
+        {
+            List<Phone> testPhoneList = new List<Phone>();
+
+            ContactViewModel contactViewModel = new ContactViewModel()
+            {
+                PhonePhoneNumber = "+380992033044"
+            };
+            List<Contact> tempContactList = new List<Contact>();
+          
+            mockMapper.Setup(c => c.Map<Contact>(It.IsAny<ContactViewModel>()))
+                .Returns(new Contact());
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(testPhoneList);
+            mockUnitOfWork.Setup(m=>m.Phones.Insert(new Phone()));
+            mockUnitOfWork.Setup(m => m.Contacts.Get(It.IsAny<Expression<Func<Contact, bool>>>(), null, ""))
+                .Returns(tempContactList);
+            mockUnitOfWork.Setup(n => n.Save());
+
+            var result = manager.CreateContact(contactViewModel, 1);
+            Assert.That(result, Is.EqualTo(true));
+
+        }
+
+        [Test]
+        public void DeleteContact_EmptyValue_Exseption()
+        {
+            Contact contact = new Contact();
+            mockUnitOfWork.Setup(m => m.Contacts.GetById(1))
+            .Returns(contact);
+            mockUnitOfWork.Setup(m => m.Contacts.Delete(contact));
+            mockUnitOfWork.Setup(n => n.Save()); 
+
+            Assert.DoesNotThrow(() => manager.DeleteContact(1));
+
+        }
+
+        [Test]
+        public void UpdateContact_ValueNotEqual_ResultTrue()
+        {
+            List<Phone> testPhoneList = new List<Phone>()
+            {
+               new Phone(){PhoneNumber = "+380992033044"},
+               new Phone(){PhoneNumber = "+380992033066"}
+            };
+            Contact contact = new Contact();
+            ContactViewModel contactViewModel = new ContactViewModel();
+                    List<Contact> tempContactList = new List<Contact>()
+            {
+                new Contact() {Id = 1, PhoneId = 1, Name = "Nick", ApplicationGroupId = 1}
+            };
+            Phone phone = new Phone();
+            mockMapper.Setup(c => c.Map<Contact>(It.IsAny<ContactViewModel>()))
+               .Returns(new Contact());
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+               .Returns(testPhoneList);
+            mockUnitOfWork.Setup(m=>m.Phones.Insert(phone));
+          
+
+            mockUnitOfWork.Setup(m => m.Contacts.SetStateModified(contact));
+            mockUnitOfWork.Setup(m => m.Contacts.Update(contact));
+            mockUnitOfWork.Setup(n => n.Save());
+
+            var result = manager.UpdateContact(contactViewModel, 1);
+            Assert.That(result, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void UpdateContact_ValueEqual_ResultTrue()
+        {
+            List<Phone> testPhoneList = new List<Phone>()
+            {
+            };
+            Contact contact = new Contact();
+            ContactViewModel contactViewModel = new ContactViewModel()
+            {
+                PhonePhoneNumber = "+380992033044"
+            };
+            List<Contact> tempContactList = new List<Contact>();
+
+            mockMapper.Setup(c => c.Map<Contact>(It.IsAny<ContactViewModel>()))
+                .Returns(new Contact());
+            mockUnitOfWork.Setup(m => m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, ""))
+                .Returns(testPhoneList);
+            mockUnitOfWork.Setup(m => m.Phones.Insert(new Phone()));
+
+            mockUnitOfWork.Setup(m => m.Contacts.SetStateModified(contact));
+            mockUnitOfWork.Setup(m => m.Contacts.Update(contact));
+            mockUnitOfWork.Setup(n => n.Save());
+
+            var result = manager.UpdateContact(contactViewModel, 1);
+            Assert.That(result, Is.EqualTo(true));
+
+        }
+        //[Test]
+        //public void TranslateToContacts_EmptyValue_ResultFalse()
+        //{
+        //    ApplicationUser applicationUsers = new ApplicationUser(){Id = "1"};
+        //    mockUnitOfWork.Setup(m=>m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>(), null, ""));
+        //    var result = manager.TranslateToContacts("Nick", "1");
+
+        //    Assert.That(result, Is.EqualTo(false));
+
+        //}
+
+
+
     }
 }
