@@ -244,12 +244,6 @@ namespace WebApp.Data
             builder.Entity<CompanySubscribeWord>()
                 .HasKey(pgu => new { pgu.SubscribeWordId, pgu.CompanyId });
 
-            //builder.Entity<CompanySubscribeWord>()
-            //    .HasMany(p => p.SubscribeWords)
-            //    .WithOne(r => r.Phone)
-            //    .HasForeignKey(s => s.SubscribePhoneId)
-            //    .IsRequired(false)
-            //    .OnDelete(DeleteBehavior.Cascade);
 
             // Required fields
             #region Required fields

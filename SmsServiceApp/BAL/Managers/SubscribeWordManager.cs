@@ -66,8 +66,7 @@ namespace BAL.Managers
         }
         public IEnumerable<SubscribeWordViewModel> GetWordsByCompanyId(int companyId)
           {
-              IEnumerable<CompanySubscribeWord> companySubscribes =
-                  unitOfWork.CompanySubscribeWords.GetAll().Where(cw => cw.CompanyId == companyId);
+              IEnumerable<CompanySubscribeWord> companySubscribes = unitOfWork.CompanySubscribeWords.GetAll().Where(cw => cw.CompanyId == companyId);
 
               List<SubscribeWord> words = new List<SubscribeWord>();
 
