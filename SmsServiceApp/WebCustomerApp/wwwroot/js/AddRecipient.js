@@ -145,7 +145,7 @@ function getPageByNumber(item) {
 function DeleteRecipient(event) {
     var recid = $(event.target).data("recid");
     recipients.splice(recid - 1, 1);
-    index--;
+    contactListSuccess();
 }
 
 // Display Phones returned from Web API call
