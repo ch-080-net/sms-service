@@ -152,6 +152,6 @@ namespace BAL.Tests.ManagersTests
 
             Assert.That(result, Is.EqualTo(1));
         }
-       
+       -
     }
 }
