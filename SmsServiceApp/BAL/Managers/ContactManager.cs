@@ -212,8 +212,7 @@ namespace BAL.Managers
 
                         }
                         else
-                        {
-                            
+                         {
                             temp.PhoneId = tempPhone.Id;
                             temp.Gender = temp.Gender;
                             temp.BirthDate = temp.BirthDate;

@@ -318,41 +318,27 @@ namespace BAL.Tests.ManagersTests
         [Test]
         public void TranslateToContacts_EmptyValue_ResultFalse()
         {
-            string contact = "+380992033040";
-            Phone phone = new Phone() {PhoneNumber = "380992033040"};
-            ApplicationUser applicationUsers = new ApplicationUser() { Id = "",InviteId = 1};
-            var temp = new Contact()
-            {
-                Phone = phone
+            string contact = "\r\n380992033040,1970-09-09,0\r\n380992033040,1970-09-06,1\r\n";
 
-            };
             mockUnitOfWork.Setup(m =>
-                m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>(), null, "")).Returns(new List<ApplicationUser>(){applicationUsers});
-            mockUnitOfWork.Setup(m =>
-                m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, "")).Returns(new List<Phone>()
-            {
-                phone
-            });
-            mockUnitOfWork.Setup(m =>
-                m.Contacts.Insert(temp));
-            mockUnitOfWork.Setup(m =>
-                m.Contacts.Update(temp));
+                m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>(), null, "")).Returns(new List<ApplicationUser>() { });
+
+
             mockUnitOfWork.Setup(m => m.Save());
             var result = manager.TranslateToContacts(contact, "1");
 
-            Assert.That(result, Is.EqualTo(true));
+            Assert.That(result, Is.EqualTo(false));
 
         }
 
         [Test]
-        public void TranslateToContacts_Value_ResultTrue()
+        public void TranslateToContacts_UpdateValue_ResultTrue()
         {
-            string contact = "\r\n+380992033044,1970-09-09,0\r\n+380992033045,1970-09-06,1\r\n";
+            string contact = "\r\n1970-09-09,0\r\n1970-09-06,1\r\n";
             Phone phone = new Phone(){ PhoneNumber = "380992033040" };
             ApplicationUser applicationUsers = new ApplicationUser() { Id = "2", InviteId = 1 };
             var temp = new Contact()
             {
-                Phone = phone
 
             };
             mockUnitOfWork.Setup(m =>
@@ -363,14 +349,36 @@ namespace BAL.Tests.ManagersTests
                 new Phone() {}
             });
             mockUnitOfWork.Setup(m =>
-                m.Contacts.Insert(temp));
-                
+                m.Contacts.Update(temp));
+
             mockUnitOfWork.Setup(m => m.Save());
             var result = manager.TranslateToContacts(contact, "1");
 
             Assert.That(result, Is.EqualTo(true));
-
         }
 
+        [Test]
+        public void TranslateToContacts_InsertValue_ResultTrue()
+        {
+            string contact = "\r\n380992033040,1970-09-09,0\r\n380992033048,1970-09-06,1\r\n";
+            ApplicationUser applicationUsers = new ApplicationUser() { Id = "2", InviteId = 1,PhoneNumber = "380992033040" };
+            Phone phone = new Phone() {PhoneNumber = "380992033049",Id = 2};
+            var temp = new Contact(){Id = 3,ApplicationGroupId = 1,Gender = 1,Name = "Nick",PhoneId = 2,Phone = phone };
+            mockUnitOfWork.Setup(m =>
+                m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>(), null, "")).Returns(new List<ApplicationUser>() {applicationUsers});
+
+            mockUnitOfWork.Setup(m =>
+                m.Phones.Get(It.IsAny<Expression<Func<Phone, bool>>>(), null, "")).Returns(new List<Phone>()
+            {
+                
+            });
+            mockUnitOfWork.Setup(m =>
+                m.Contacts.Insert(temp));
+
+            mockUnitOfWork.Setup(m => m.Save());
+            var result = manager.TranslateToContacts(contact, "1");
+
+            Assert.That(result, Is.EqualTo(true));
+        }
     }
 }
