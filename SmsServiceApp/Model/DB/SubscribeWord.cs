@@ -9,11 +9,6 @@ namespace WebApp.Models
     {
         public int Id { get; set; }
         public string Word { get; set; }
-
-        public int? CompanyId { get; set; }
-        public Company Company { get; set; }
-
-        public int? SubscribePhoneId { get; set; }
-        public Phone Phone { get; set; }
+        public ICollection<CompanySubscribeWord> CompanySubscribeWords { get; set; }
     }
 }

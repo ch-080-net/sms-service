@@ -131,7 +131,7 @@ namespace BAL.Managers
                 }
                 else
                 {
-                    List<Contact> contact = unitOfWork.Contacts.Get(filter: item => item.PhoneId == phone[0].Id).ToList();
+                    List<Contact> contact = unitOfWork.Contacts.Get(filter: item => item.PhoneId == phone[0].Id && item.ApplicationGroupId == groupId).ToList();
                     if (contact.Count != 0)
                     {
                         return false;

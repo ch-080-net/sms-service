@@ -48,7 +48,11 @@
 
 								<div class="tab-content">
 									<div id="home" class="tab-pane fade in active">
-										<h3>@Localizer["Add Contact"]</h3>
+                                        <h3>@Localizer["Add Contact"]</h3>
+                                        <div id="dvCSV">
+                                        </div>
+
+                                        <div id="msg"></div>
 											<table>
 												<tr>
 													<td>
@@ -117,16 +121,21 @@
 													<td>
 														<button type='button' class="btn btn-success" id='insert' onclick='onAddContact(this)'>
 															<span class='glyphicon glyphicon-plus' /> @Localizer["ADD"]
-														</button>
-													</td>
-												</tr>
-											</table>
-									</div>
-									<div id="menu1" class="tab-pane fade">
-										<h4>@Localizer["Add contact from file"]</h4>
-											<input type="file" id="fileUpload" />
-											<input type="button" class="btn btn-primary" id="upload" value="Upload" />
-									</div>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                    </div>
+                                    <div id="menu1" class="tab-pane fade">
+                                      
+                                        <h4>@Localizer["Add contact from file"]</h4>
+                                        <div id="dvCSV">
+                                        </div>
+
+                                        <div id="msg"></div>
+                                        <input type="file" id="fileUpload"/>
+                                        <input type="button" class="btn btn-primary" id="upload" value="Upload"/>
+                                    </div>
 								</div>
 							</div>
 						</div>
@@ -138,10 +147,7 @@
 			</div>
 
 			<hr />
-			<div id="dvCSV">
-			</div>
-
-			<div id="msg"></div>
+			
 			<div>
 				<br />
 				@Localizer["Page Size"]:

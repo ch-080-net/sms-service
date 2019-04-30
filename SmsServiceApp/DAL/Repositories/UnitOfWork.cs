@@ -32,6 +32,7 @@ namespace DAL.Repositories
         private IBaseRepository<ApplicationUser> appUserRepo;
         private IBaseRepository<SubscribeWord> subscribeWordRepo;
         private IBaseRepository<EmailRecipient> emailRecipientRepo;
+        private IBaseRepository<CompanySubscribeWord> companySubscribeWordRepo;
         private IEmailCampaignRepository emailCampaignRepo;
         private IBaseRepository<Email> emailRepo;
         private IEmailCampaignNotificationRepository emailCampNotRepo;
@@ -74,6 +75,15 @@ namespace DAL.Repositories
             {
                 if (stopWordRepo == null) { stopWordRepo = new BaseRepository<StopWord>(context); }
                 return stopWordRepo;
+            }
+        }
+
+        public IBaseRepository<CompanySubscribeWord> CompanySubscribeWords
+        {
+            get
+            {
+                if (companySubscribeWordRepo == null) {companySubscribeWordRepo = new BaseRepository<CompanySubscribeWord>(context); }
+                return companySubscribeWordRepo;
             }
         }
 

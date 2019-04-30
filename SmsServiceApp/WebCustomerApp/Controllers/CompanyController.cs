@@ -35,13 +35,14 @@ namespace WebApp.Controllers
         private readonly IRecievedMessageManager recievedMessageManager;
         private readonly IAnswersCodeManager answersCodeManager;
         private readonly ISubscribeWordManager subscribeWordManager;
+        private readonly IContactManager contactManager;
 
 
         public CompanyController(ICompanyManager company, IOperatorManager _operator, ITariffManager tariff,
                                  UserManager<ApplicationUser> userManager, IGroupManager groupManager,
                                  IRecipientManager recipientManager, IPhoneManager phoneManager,
                                  IRecievedMessageManager recievedMessageManager, IAnswersCodeManager answersCodeManager,
-                                 ISubscribeWordManager subscribeWordManager)
+                                 ISubscribeWordManager subscribeWordManager, IContactManager contactManager)
         {
             this.companyManager = company;
             this.operatorManager = _operator;
@@ -53,6 +54,7 @@ namespace WebApp.Controllers
             this.recievedMessageManager = recievedMessageManager;
             this.answersCodeManager = answersCodeManager;
             this.subscribeWordManager = subscribeWordManager;
+            this.contactManager = contactManager;
         }
 
         /// <summary>
@@ -152,6 +154,7 @@ namespace WebApp.Controllers
             company.TariffModel = new TariffsViewModel();
             company.TariffModel.TariffsList = tariffManager.GetTariffs(id).ToList();
             company.RecieveModel = new RecieveViewModel();
+            ViewBag.Contacts = contactManager.GetContact(GetGroupId(), 1, contactManager.GetContactCount(GetGroupId()));
             return View(company);
         }
 
@@ -166,19 +169,6 @@ namespace WebApp.Controllers
             return Json(new {newUrl = Url.Action("Index", "Company") });
         }
 
-
-        /// <summary>
-        /// Send new Company fron view to db
-        /// </summary>
-        /// <param name="item">ViewModel of Company from View</param>
-        /// <returns>Company index View</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] StepViewModel item, int companyId,int id)
-        {
-           
-            return View(item);
-        }
 
 
         /// <summary>
@@ -303,11 +293,12 @@ namespace WebApp.Controllers
         public IActionResult SubscribeWord(int companyId)
         {
             var sword =subscribeWordManager.GetWordsByCompanyId(companyId);
-
+            ViewData["CompanyId"] = companyId;
             if (!sword.Any())
             {
-                return RedirectToAction("Create", "SubscribeWord", new {CompanyId = companyId });
+                return RedirectToAction("Create", "SubscribeWord",new{CompanyId=companyId});
             }
+          
             return View(sword);
         }
 

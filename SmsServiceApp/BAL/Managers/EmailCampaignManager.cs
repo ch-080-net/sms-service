@@ -48,7 +48,7 @@ namespace BAL.Managers
             return unitOfWork.EmailCampaigns.Get(ec => ec.UserId == userId && ec.Name.Contains(searchValue)).Count();
         }
 
-        public bool Update(EmailCampaignViewModel item)
+        public void Update(EmailCampaignViewModel item)
         {
             try
             {
@@ -67,30 +67,28 @@ namespace BAL.Managers
                 }
                 unitOfWork.EmailCampaigns.Update(emailCampaign);
                 unitOfWork.Save();
-                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
             }
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
             try
             {
                 EmailCampaign emailCampaign = unitOfWork.EmailCampaigns.GetById(id);
                 unitOfWork.EmailCampaigns.Delete(emailCampaign);
                 unitOfWork.Save();
-                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
             }
         }
 
-        public bool IncertWithRecepients(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> emailRecipients)
+        public void IncertWithRecepients(EmailCampaignViewModel campaign, List<EmailRecipientViewModel> emailRecipients)
         {
             try
             {
@@ -129,12 +127,10 @@ namespace BAL.Managers
                     unitOfWork.EmailRecipients.Insert(newRecepient);
                     unitOfWork.Save();
                 }
-
-                return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
             }
         }        
     }
