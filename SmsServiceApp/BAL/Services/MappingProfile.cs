@@ -184,7 +184,7 @@ namespace BAL.Services
 				.ForMember(sn => sn.Origin, opt => opt.MapFrom(n => NotificationOrigin.EmailCampaignReport))
 				.ForMember(en => en.Title, opt => opt.MapFrom(cn => cn.EmailCampaign.Name))
 				.ForMember(en => en.Message, opt => opt.MapFrom(cn => GenerateNotificationMessage(cn)))
-				.ForMember(en => en.Time, opt => opt.MapFrom(cn => cn.EmailCampaign.SendingTime.ToString("G")))
+				.ForMember(en => en.Time, opt => opt.MapFrom(cn => cn.EmailCampaign.SendingTime))
 				.ForMember(sn => sn.CampaignId, opt => opt.MapFrom(n => n.CampaignId));
 
 

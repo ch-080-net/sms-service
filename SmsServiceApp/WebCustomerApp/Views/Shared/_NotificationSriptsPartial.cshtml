@@ -60,7 +60,7 @@
         }).then(function (value) {
             var content = "";
             for (var i = 0; i < value.length; i++) {
-                content += "<h4>" + value[i].title + "</h4>" + "<small>" + value[i].time + "</small>";
+                content += "<h4>" + value[i].title + "</h4>" + "<small>" + value[i].time.toLocaleString() + "</small>";
                 content += "<p>";
                 switch (value[i].message) {
                     case "Voting started":
