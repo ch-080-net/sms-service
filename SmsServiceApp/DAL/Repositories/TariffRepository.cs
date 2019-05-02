@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Model.Interfaces;
-using System;
+﻿using Model.Interfaces;
 using System.Collections.Generic;
 using WebApp.Data;
 using WebApp.Models;

@@ -216,4 +216,16 @@
   <data name="Page Size" xml:space="preserve">
     <value>Кількість на сторінці</value>
   </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Контакти</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Ім'я</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Прізвище</value>
+  </data>
 </root>
