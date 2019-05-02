@@ -1,10 +1,7 @@
 ﻿using WebApp.Models;
 using Model.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApp.Data;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace DAL.Repositories
