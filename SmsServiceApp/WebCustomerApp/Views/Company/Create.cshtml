@@ -277,8 +277,8 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#home">@Localizer["Manually"]</a></li>
-                                    <li><a data-toggle="tab" href="#menu2" id="contact">Contacts</a></li>
-                                    <li><a data-toggle="tab" href="#menu1">@Localizer["Upload"]</a></li>
+                                    <li><a data-toggle="tab" href="#menu2" id="contact">@Localizer["Contacts"]</a></li>
+<li><a data-toggle="tab" href="#menu1">@Localizer["Upload"]</a></li>
                                 </ul>
                             </div>
                             <div class="modal-body">
@@ -365,10 +365,10 @@
                                                     <thead>
                                                     <tr>
                                                         <th data-checkbox="true" data-field="state"><input name="btSelectAll" type="checkbox"></th>
-                                                        <th data-sortable="true" data-field="Phone">Phone</th>
-                                                        <th data-sortable="true" data-field="Name">Name</th>
-                                                        <th data-sortable="true" data-field="Surname">Surname</th>
-                                                    </tr>
+                                                        <th data-sortable="true" data-field="Phone">@Localizer["Phone"]</th>
+														<th data-sortable="true" data-field="Name">@Localizer["Name"]</th>
+														<th data-sortable="true" data-field="Surname">@Localizer["Surname"]</th>
+</tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach (var contact in ViewBag.Contacts)
@@ -672,11 +672,11 @@
         }
         if (!RecSimilar) {
             recipients.push(obj);
+            contactCount++;
         }
 
 
-        contactCount++;
-
+        buildNavigationButtons();
         contactListSuccess(recipients);
     }
 </script>

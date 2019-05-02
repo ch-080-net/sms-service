@@ -317,7 +317,5 @@ namespace BAL.Tests.ManagersTests
         }
       
 
-
-
     }
 }
