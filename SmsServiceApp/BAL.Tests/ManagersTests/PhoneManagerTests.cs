@@ -19,7 +19,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         protected override void Initialize()
         {
-            base.Initialize();
             manager = new PhoneManager(mockUnitOfWork.Object, mockMapper.Object);
             item = new Phone() { Id = 1, PhoneNumber = "+380661660777"};
             TestContext.WriteLine("Overrided");

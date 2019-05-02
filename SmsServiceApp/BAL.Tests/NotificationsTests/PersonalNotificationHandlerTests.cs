@@ -24,7 +24,6 @@ namespace BAL.Tests.NotificationsTests
         [SetUp]
         public void SetUp()
         {
-            base.Initialize();
             handler = new PersonalNotificationHandler(mockUnitOfWork.Object, mockMapper.Object);
         }
 

@@ -24,7 +24,6 @@ namespace BAL.Tests.NotificationsTests
         [SetUp]
         public void SetUp()
         {
-            base.Initialize();
             this.mockBaseHandler = new Mock<INotificationHandler>();
             this.handler = new EmailCampaignNotificationsHandler(mockBaseHandler.Object, mockUnitOfWork.Object
                 , mockMapper.Object);

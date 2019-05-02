@@ -130,7 +130,7 @@ namespace BAL.Managers
 
             Phone orignator = unitOfWork.Phones.GetAll()
                 .FirstOrDefault(item => item.PhoneNumber == message.SenderPhone);
-            //Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
+            
             if (orignator == null)
             {
                 orignator = new Phone() { PhoneNumber = message.SenderPhone };
@@ -144,13 +144,13 @@ namespace BAL.Managers
             {
                 return;
             }
-                // Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
+               
             var companies = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id);       
               
             foreach (var company in companies)
             {
                 var companySubscribeWords = unitOfWork.CompanySubscribeWords.Get(m => m.CompanyId == company.Id);
-                    //  .FirstOrDefault(csw => csw.SubscribeWordId == subscribeWords.Id&&csw.CompanyId==company.Id);
+                   
 
                 if (companySubscribeWords.Any(n => n.SubscribeWordId == subscribeWord.Id))
                 {
@@ -197,10 +197,10 @@ namespace BAL.Managers
             {
                 orignator = unitOfWork.Phones.GetAll()
                     .FirstOrDefault(item => item.PhoneNumber == message.SenderPhone);
-                //Get(item => item.PhoneNumber == message.SenderPhone).FirstOrDefault();
+               
                 destination = unitOfWork.Phones.GetAll()
                     .FirstOrDefault(item => item.PhoneNumber == message.RecipientPhone);
-                //Get(item => item.PhoneNumber == message.RecipientPhone).FirstOrDefault();
+                
                 company = unitOfWork.Companies.Get(item => item.PhoneId == destination.Id).FirstOrDefault();
             }
             catch

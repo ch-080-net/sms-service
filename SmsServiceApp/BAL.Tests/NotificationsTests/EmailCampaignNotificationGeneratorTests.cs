@@ -22,7 +22,6 @@ namespace BAL.Tests.NotificationsTests
     public class EmailCampaignNotificationGeneratorTests
     {
         protected static Mock<IUnitOfWork> mockUnitOfWork;
-        protected TestContext TestContext { get; set; }
         private INotificationsGenerator<EmailCampaign> generator;
 
         [SetUp]

@@ -315,16 +315,7 @@ namespace BAL.Tests.ManagersTests
             Assert.That(result, Is.EqualTo(true));
 
         }
-        //[Test]
-        //public void TranslateToContacts_EmptyValue_ResultFalse()
-        //{
-        //    ApplicationUser applicationUsers = new ApplicationUser(){Id = "1"};
-        //    mockUnitOfWork.Setup(m=>m.ApplicationUsers.Get(It.IsAny<Expression<Func<ApplicationUser, bool>>>(), null, ""));
-        //    var result = manager.TranslateToContacts("Nick", "1");
-
-        //    Assert.That(result, Is.EqualTo(false));
-
-        //}
+      
 
 
 

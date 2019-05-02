@@ -26,9 +26,9 @@ namespace BAL.Managers
            
             return mapper.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(words);
         }
-       
+
         /// <summary>
-        /// Method for inserting new stopwod to db
+        /// Method for inserting new subscribe word to db
         /// </summary>
         /// <param name="item">ViewModel of stopword</param>
         public void Insert(SubscribeWordViewModel item)
@@ -55,7 +55,7 @@ namespace BAL.Managers
             unitOfWork.Save();
         }
         /// <summary>
-        ///  Update stop word in db
+        ///  Update subscribe word in db
         /// </summary>
         /// <param name="item">ViewModel of stopword</param>
         public void Update(SubscribeWordViewModel item)

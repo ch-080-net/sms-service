@@ -25,7 +25,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         protected override void Initialize()
         {
-            base.Initialize();
             IServiceCollection sc = new ServiceCollection();
             var mockSmsSender = new Mock<ISmsSender>();
             sc.AddSingleton<ISmsSender>(x => mockSmsSender.Object);

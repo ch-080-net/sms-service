@@ -29,7 +29,6 @@ namespace BAL.Tests.ManagersTests
 		[SetUp]
 		protected override void Initialize()
 		{
-			base.Initialize();
             this.mockWrapper = new Mock<IFileIoWrapper>();
 			manager = new OperatorManager(mockUnitOfWork.Object, mockMapper.Object, mockWrapper.Object);
 			TestContext.WriteLine("Overrided");

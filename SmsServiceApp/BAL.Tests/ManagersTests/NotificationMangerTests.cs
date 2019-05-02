@@ -24,7 +24,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         public void SetUp()
         {
-            base.Initialize();
             manager = new NotificationManager(mockUnitOfWork.Object, mockMapper.Object);
         }
 

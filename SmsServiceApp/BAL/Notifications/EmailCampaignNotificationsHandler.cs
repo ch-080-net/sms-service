@@ -7,8 +7,7 @@ using Model.DTOs;
 using Model.Interfaces;
 using WebApp.Models;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
+
 
 namespace BAL.Notifications
 {

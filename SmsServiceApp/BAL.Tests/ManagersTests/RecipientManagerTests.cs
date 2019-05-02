@@ -24,7 +24,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         protected override void Initialize()
         {
-            base.Initialize();
             manager = new RecipientManager(mockUnitOfWork.Object, mockMapper.Object);
             item = new Recipient() {Id = 1, PhoneId = 1, Name = "Test", CompanyId = 1};
             model = new RecipientViewModel() { Id = 1, Name = "Test", CompanyId = 1, Phonenumber = "+380661660777"};

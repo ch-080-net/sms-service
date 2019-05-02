@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Model.ViewModels.CodeViewModels;
+﻿using Model.ViewModels.CodeViewModels;
 using Model.DTOs;
 
 namespace BAL.Managers

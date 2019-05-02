@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using WebApp.Models;
 using Model.Interfaces;
-using AutoMapper;
-using System.Linq;
-using Model.DTOs;
-using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
-using BAL.Notifications;
 using BAL.Notifications.Infrastructure;
 
 namespace BAL.Notifications

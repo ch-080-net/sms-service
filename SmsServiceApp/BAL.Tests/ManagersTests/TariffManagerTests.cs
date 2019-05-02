@@ -25,7 +25,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         protected override void Initialize()
         {
-	        base.Initialize();
 	        manager = new TariffManager(mockUnitOfWork.Object, mockMapper.Object);
 	        TestContext.WriteLine("Overrided");
      
@@ -37,7 +36,6 @@ namespace BAL.Tests.ManagersTests
         public void Update_ExistingObject_ErrorResult()
         {
             TariffViewModel testTariff = new TariffViewModel();
-            //mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
             mockUnitOfWork.Setup(n => n.Tariffs.Update(new Tariff() { Id=9,Name = "kjn", Limit=4,Price=5, Description="test" , OperatorId=4 }));
             mockUnitOfWork.Setup(n => n.Save()).Throws(new Exception());
             var result = manager.Update(testTariff);

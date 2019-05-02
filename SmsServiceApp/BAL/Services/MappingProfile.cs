@@ -356,7 +356,7 @@ namespace BAL.Services
             resultState.Add(new Tuple<string, int>("Rejected", reject));
             resultState.Add(new Tuple<string, int>("Undeliverable", undeliverable));
             resultState.Add(new Tuple<string, int>("Unsubscribed", unsubscribed));
-           // return Json(resultState, JsonRequestBehovior.AllowGet);
+         
             return resultState;
         }
         /// <summary>

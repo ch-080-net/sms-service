@@ -17,7 +17,6 @@ namespace BAL.Tests.ManagersTests
 		[SetUp]
 		protected override void Initialize()
 		{
-			base.Initialize();
 			manager = new EmailMailingManager(mockUnitOfWork.Object, mockMapper.Object);
 		}
 

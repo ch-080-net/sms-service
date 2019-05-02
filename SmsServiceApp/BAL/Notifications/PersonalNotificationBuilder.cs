@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using BAL.Notifications.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
-using System.Linq;
+
 
 namespace BAL.Notifications
 {

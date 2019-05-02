@@ -26,7 +26,6 @@ namespace BAL.Tests.ManagersTests
 		[SetUp]
 		protected override void Initialize()
 		{
-			base.Initialize();
 			manager = new MailingManager(mockUnitOfWork.Object, mockMapper.Object);
 			TestContext.WriteLine("Overrided");
 		}

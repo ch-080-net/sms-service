@@ -38,7 +38,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         public void SetUp()
         {
-            base.Initialize();
             recievedMessageManager = new RecievedMessageManager(mockUnitOfWork.Object, mockMapper.Object);
             TestContext.WriteLine("Overrided");
             phoneSender =new Phone(){Id=9,PhoneNumber = "+380999999999" };

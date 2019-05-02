@@ -9,8 +9,7 @@ using Model.ViewModels.StopWordViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using BAL.Interfaces;
-using Model.ViewModels.SubscribeWordViewModels;
+
 
 namespace BAL.Services
 {
@@ -262,13 +261,7 @@ namespace BAL.Services
                 },
                 
             };
-            //company.SubscribeWords=new List<SubscribeWord>()
-            //{
-            //    new SubscribeWord()
-            //    {
-            //        Word = "start",Phone = phone
-            //    }
-            //};
+           
 
             unitOfWork.Companies.Insert(company);
             unitOfWork.Save();

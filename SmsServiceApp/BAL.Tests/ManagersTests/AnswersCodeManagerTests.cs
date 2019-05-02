@@ -25,7 +25,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         protected override void Initialize()
         {
-            base.Initialize();
             manager = new AnswersCodeManager(mockUnitOfWork.Object, mockMapper.Object);
             item = new AnswersCode() { Id = 1, Answer = "Test", Code = 1, CompanyId = 1};
             model = new AnswersCodeViewModel() { Id = 1, Answer = "Test", Code = 1, CompanyId = 1};

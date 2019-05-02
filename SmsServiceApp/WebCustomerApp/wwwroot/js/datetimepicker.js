@@ -17,9 +17,7 @@
         var mousedown = false;
         var timeout = 800;
         var selectDate = settings.selectData == "now" ? moment() : moment(settings.selectData, settings.dateFormat);
-        //if (selectDate < moment()) {
-        //    selectDate = moment();
-        //}
+      
         var startDate = copyDate(moment());
         var lastSelected = copyDate(selectDate);
         return this.each(function () {
@@ -28,7 +26,7 @@
             }
             elem.addClass("dtp_main");
             updateMainElemGlobal();
-            //  elem.text(selectDate.format(settings.dateFormat));
+           
             function updateMainElemGlobal() {
                 var arrF = settings.dateFormat.split(' ');
                 if (settings.showTime && arrF.length != 2) {
@@ -185,7 +183,7 @@
 
                 function attachChangeTime() {
                     var $angles = $($content).find('i[id^="angle-"]');
-                    // $angles.bind('click', changeTime);
+                 
                     $angles.bind('mouseup', function () {
                         mousedown = false;
                         timeout = 800;

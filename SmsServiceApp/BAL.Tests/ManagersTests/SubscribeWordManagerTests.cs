@@ -47,20 +47,7 @@ namespace BAL.Tests.ManagersTests
             Assert.That(result, Is.Empty);
         }
 
-        //[Test]
-        //public void GetWords_WordsExist_ReturnList()
-        //{
-        //    mockUnitOfWork.Setup(u => u.SubscribeWords.GetAll())
-        //        .Returns(new List<SubscribeWord>() {item});
-        //    mockUnitOfWork.Setup(u => u.Phones.GetById((int) item.SubscribePhoneId));
-        //    mockMapper.Setup(m =>
-        //            m.Map<IEnumerable<SubscribeWord>, IEnumerable<SubscribeWordViewModel>>(new List<SubscribeWord>()
-        //                {item}))
-        //        .Returns(new List<SubscribeWordViewModel>() {model});
-        //    var result = manager.GetWords();
-        //    Assert.That(result.Count(), Is.EqualTo(1));
-        //}
-
+    
         [Test]
         public void GetWordsByCompanyId_WordsNotExist_ReturnEmpty()
         {

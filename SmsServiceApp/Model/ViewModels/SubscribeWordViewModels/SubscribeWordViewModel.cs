@@ -15,9 +15,5 @@ namespace Model.ViewModels.SubscribeWordViewModels
         [StringLength(20)]
         public string Word { get; set; }
       
-        //[Required(ErrorMessage = "The Phone Number field is required.")]
-        //[Display(Name = "Phone number")]
-        //[RegularExpression(@"^\+[0-9]{12}$", ErrorMessage = "Not a valid phone number")]
-        //public string PhoneNumber { get; set; }
     }
 }

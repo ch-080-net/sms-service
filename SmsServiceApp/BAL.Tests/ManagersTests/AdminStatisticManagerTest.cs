@@ -23,7 +23,6 @@ namespace BAL.Tests.ManagersTests
         [SetUp]
         public void SetUp()
         {
-            base.Initialize();
             _adminStatisticManager = new AdminStatisticManager(mockUnitOfWork.Object, mockMapper.Object);
 
             itemWithId = new ApplicationGroup() { Id = 1, Name = "Test", PhoneId = 2 };
