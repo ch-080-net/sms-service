@@ -90,7 +90,7 @@ function ChooseTariff(item) {
 }
 
 var contactCount = 0;
-var pagesCount = 0;
+var pagesCount = 1;
 var currentPage = 1;
 var pageSize = 5;
 var searchValue = "";
@@ -284,7 +284,9 @@ function buildNavigationButtons() {
         $("#pageButtons").append(button);
     }
     button = "<button type='button' class='btn btn -default ' onclick='nextPage()' id='next'><span class='glyphicon glyphicon-triangle-right' /></button>";
-    $("#pageButtons").append(button);
+	$("#pageButtons").append(button);
+	if (currentPage == 0)
+		currentPage = 1;
 }
 
 function pageSizeChange(item) {
