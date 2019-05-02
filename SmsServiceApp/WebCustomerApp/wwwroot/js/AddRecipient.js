@@ -211,7 +211,7 @@ function onAddContact(item) {
     var obj = {};
     Object.assign(obj, Recipient);
     obj.phoneNumber = $("#phoneNumber").val();
-    var regex = new RegExp("^[+][0-9]{12}");
+    var regex = new RegExp("^\[+][0-9]{12}$");
     if (!regex.test(obj.phoneNumber)) {
         $("#msg").html("Invalid phone number");
         return;
@@ -237,11 +237,13 @@ function onAddContact(item) {
     var RecSimilar = false;
     for (var k = 0; k < recipients.length; k++) {
         if (recipients[k].phoneNumber == obj.phoneNumber) {
+            $("#msg").html("Phone number already exists");
             RecSimilar = true;
         }
        
         if (recipients.length >= tarifflimit) {
             RecSimilar = true;
+            $("#msg").html("Tariff limit is full");
             break;
         }
 
