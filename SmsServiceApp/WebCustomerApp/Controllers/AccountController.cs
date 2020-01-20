@@ -264,9 +264,9 @@ namespace WebApp.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInfo("User created a new account with password.");
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                     notificationManager.AddNotificationsToUser(new PersonalNotificationBuilder(user)
                         .SetMessage("Confirm email and phone", "Confirm email and phone to recieve notification." +
                         " Email and SMS notifications can be turned on in Profile/Notifications.")
